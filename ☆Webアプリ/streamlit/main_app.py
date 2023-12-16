@@ -21,7 +21,8 @@ st.image('/mount/src/hatake4911/☆Webアプリ/streamlit/skytree.png',use_colum
 # ローカルのGIFファイルのパスを指定
 video_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/東京到着.gif'
 # 動画を表示
-st.video(video_path)
+#st.video(video_path)
+st.image(video_path)
 
 with st.form(key='profile_form'):
 
