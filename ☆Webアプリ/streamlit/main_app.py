@@ -18,11 +18,10 @@ st.text('こちらは2022年に東京に旅行した際の写真、動画です�
 st.image('/mount/src/hatake4911/☆Webアプリ/streamlit/skytree.png',use_column_width=True)
 
 # ローカルのGIFファイルのパスを指定
+# ローカルのGIFファイルのパスを指定
 video_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/東京到着.gif'
 # 動画を表示
-video_file = open(video_path, 'rb')
-video_bytes = video_file.read()
-st.video(video_bytes)
+st.video(video_path)
 
 with st.form(key='profile_form'):
 
