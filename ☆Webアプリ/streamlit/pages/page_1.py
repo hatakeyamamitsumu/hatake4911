@@ -1,2 +1,2 @@
 import streamlit as st
-st.text("ページ1")
+st.write("ページ1")
