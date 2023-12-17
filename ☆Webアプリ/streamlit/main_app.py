@@ -6,10 +6,7 @@ import os
 df = pd.DataFrame
 
 
-# Streamlitページの構成を設定
-st.set_page_config(
-    page_title="Hello",   # ウェブページのタイトルを設定
-    page_icon="👋",       # ウェブページのアイコンを設定
+
 
 st.title('Hatake')
 st.caption('こんにちは！Hatakeです。')
