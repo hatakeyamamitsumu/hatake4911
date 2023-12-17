@@ -52,7 +52,7 @@ with st.form(key='profile_form'):
         st.write(f'選択した色: {selected_color}')
         
 st.text('売上管理')      
-df2=pd.read_csv("/mount/src/hatake4911/☆Webアプリ/4-4_sales.csv")
+df2=pd.read_csv("/mount/src/hatake4911/☆Webアプリ/csvファイル各種/4-4_sales.csv")
 
 st.dataframe(df2)
 # 特定の列を指定して折れ線グラフを描画
