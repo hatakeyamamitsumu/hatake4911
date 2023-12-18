@@ -15,5 +15,5 @@ df_plot_rain = df_plot_rain.sort_values(by='降水量(mm)合計', ascending=Fals
 # Streamlitで折れ線グラフと縦棒グラフを描画
 st.line_chart(df_plot_temp, use_container_width=True)
 
-# 降水量(mm)合計の縦棒グラフを描画
-st.bar_chart(df_plot_rain, use_container_width=True, height=400)
+# 逆順にしたデータフレームで縦棒グラフを描画
+st.bar_chart(df_plot_rain[::-1], use_container_width=True, height=400)
