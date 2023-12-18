@@ -6,13 +6,9 @@ df = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/csvファイル各種/�
 st.dataframe(df)
 
 # 日ごとの平均気温と降水量を含む新しいデータフレームを作成
-df_plot_temp = df[['日', '平均気温(℃)']]
-df_plot_rain = df[['日', '降水量(mm)合計']]
+df_plot_temp = df[['平均気温(℃)']]
+df_plot_rain = df[['降水量(mm)合計']]
 
-# 日をインデックスに設定
-df_plot_temp.set_index('日', inplace=True)
-df_plot_rain.set_index('日', inplace=True)
-
-# Streamlitで折れ線グラフを描画
-st.line_chart(df_plot_temp)
-st.bar_chart(df_plot_rain)
+# Streamlitで折れ線グラフと縦棒グラフを描画
+st.line_chart(df_plot_temp, use_container_width=True)
+st.bar_chart(df_plot_rain, use_container_width=True)
