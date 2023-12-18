@@ -5,14 +5,14 @@ st.write("https://www.data.jma.go.jp/stats/etrn/index.php")
 df = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/csvファイル各種/２０２２年１０月の東京の天気.csv", encoding='shift_jis',index_col="日")
 st.dataframe(df)
 
-# CSVファイルからデータを読み込む
-df = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/csvファイル各種/２０２２年１０月の東京の天気.csv",encoding='shift_jis')
-
 # 日ごとの平均気温と降水量を含む新しいデータフレームを作成
-df_plot = df[['日', '平均気温(℃)', '降水量(mm)合計']]
+df_plot_temp = df[['日', '平均気温(℃)']]
+df_plot_rain = df[['日', '降水量(mm)合計']]
 
 # 日をインデックスに設定
-df_plot.set_index('日', inplace=True)
+df_plot_temp.set_index('日', inplace=True)
+df_plot_rain.set_index('日', inplace=True)
 
 # Streamlitで折れ線グラフを描画
-st.line_chart(df_plot)
+st.line_chart(df_plot_temp)
+st.bar_chart(df_plot_rain)
