@@ -10,10 +10,11 @@ df_plot_temp = df[['平均気温(℃)']]
 df_plot_rain = df[['降水量(mm)合計']]
 
 # 降水量(mm)合計で降順にソート
-df_plot_rain = df_plot_rain.sort_values(by='降水量(mm)合計', ascending=False)
+df_plot_rain = df_plot_rain.sort_values(by='降水量(mm)合計', ascending=True)
 
 # Streamlitで折れ線グラフと縦棒グラフを描画
 st.line_chart(df_plot_temp, use_container_width=True)
 
 # 逆順にしたデータフレームで縦棒グラフを描画
-st.bar_chart(df_plot_rain[::-1], use_container_width=True, height=400)
+#st.bar_chart(df_plot_rain[::-1], use_container_width=True, height=400)
+st.bar_chart(df_plot_rain, use_container_width=True, height=400)
