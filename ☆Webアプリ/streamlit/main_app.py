@@ -3,7 +3,7 @@ from PIL import Image
 import datetime
 import pandas as pd
 import os
-df = pd.DataFrame
+
 cwd = os.getcwd()
 st.text(cwd)#このコードによってgithub上のフルパスを確認
 
