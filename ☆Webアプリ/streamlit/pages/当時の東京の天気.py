@@ -11,10 +11,10 @@ df_plot_temp = df[['平均気温(℃)']]
 df_plot_rain = df[['降水量(mm)合計']]
 
 # Streamlitで折れ線グラフと縦棒グラフを描画
-st.title("気温")
-st.line_chart(df_plot_temp,y='平均気温(℃)',use_container_width=True,height=250)
-st.title("降水量")
-st.bar_chart(df_plot_rain,y="降水量(mm)合計" ,use_container_width=True, height=250)
+#st.title("気温")
+#st.line_chart(df_plot_temp,y='平均気温(℃)',use_container_width=True,height=250)
+#st.title("降水量")
+#st.bar_chart(df_plot_rain,y="降水量(mm)合計" ,use_container_width=True, height=250)
 
 
 
