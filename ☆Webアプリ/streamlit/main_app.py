@@ -9,8 +9,8 @@ st.text(cwd)#このコードによってgithub上のフルパスを確認
 
 
 
-st.title('Hatake')
-st.caption('こんにちは！Hatakeです。')
+st.title('Hat')
+st.caption('こんにちは！Hatです。')
 st.subheader('説明')
 st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\n'
        'よろしくお願いします。')
