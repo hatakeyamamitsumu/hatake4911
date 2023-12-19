@@ -22,7 +22,7 @@ st.line_chart(df_plot_temp,y='平均気温(℃)',use_container_width=True,height
 #st.bar_chart(df_plot_rain, use_container_width=True, height=400)
  # 降水量(mm)合計の縦棒グラフをMatplotlibで作成
 fig, ax = plt.subplots()
-ax.bar(df_plot_rain['日'], df_plot_rain['降水量(mm)合計'])
+ax.bar(df_plot_rain['降水量(mm)合計'])
 
 # グラフにラベルを追加
 ax.set_xlabel('日')
