@@ -11,10 +11,10 @@ df_plot_temp = df[['平均気温(℃)']]
 df_plot_rain = df[['降水量(mm)合計']]
 
 # Streamlitで折れ線グラフと縦棒グラフを描画
-st.title("気温")
-st.line_chart(df_plot_temp,y='平均気温(℃)',use_container_width=True,height=250)
-st.title("降水量")
-st.bar_chart(df_plot_rain,y="降水量(mm)合計" ,use_container_width=True, height=250)
+#st.title("気温")
+#st.line_chart(df_plot_temp,y='平均気温(℃)',use_container_width=True,height=250)
+#st.title("降水量")
+#st.bar_chart(df_plot_rain,y="降水量(mm)合計" ,use_container_width=True, height=250)
 
 
 
@@ -23,17 +23,18 @@ st.bar_chart(df_plot_rain,y="降水量(mm)合計" ,use_container_width=True, hei
 fig, ax1 = plt.subplots()
 
 # 1つ目の軸（気温）をプロット
+st.title("気温と降水量")
 color = 'tab:red'
 ax1.set_xlabel('day')
 ax1.set_ylabel('temperature(℃)', color=color)
-ax1.plot(df_plot_temp.index, df_plot_temp['temperature(℃)'], color=color)
+ax1.plot(df_plot_temp.index, df_plot_temp['平均気温(℃)'], color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 
 # 2つ目の軸（降水量）をプロット
 ax2 = ax1.twinx()
 color = 'tab:blue'
 ax2.set_ylabel('total_rain(mm)', color=color)
-ax2.bar(df_plot_rain.index, df_plot_rain['total_rain(mm)'], color=color, alpha=0.5)
+ax2.bar(df_plot_rain.index, df_plot_rain['降水量(mm)合計'], color=color, alpha=0.5)
 ax2.tick_params(axis='y', labelcolor=color)
 
 # グラフを表示
