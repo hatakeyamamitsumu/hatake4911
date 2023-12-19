@@ -24,16 +24,16 @@ fig, ax1 = plt.subplots()
 
 # 1つ目の軸（気温）をプロット
 color = 'tab:red'
-ax1.set_xlabel('日')
-ax1.set_ylabel('平均気温(℃)', color=color)
-ax1.plot(df_plot_temp.index, df_plot_temp['平均気温(℃)'], color=color)
+ax1.set_xlabel('day')
+ax1.set_ylabel('temperature(℃)', color=color)
+ax1.plot(df_plot_temp.index, df_plot_temp['temperature(℃)'], color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 
 # 2つ目の軸（降水量）をプロット
 ax2 = ax1.twinx()
 color = 'tab:blue'
-ax2.set_ylabel('降水量(mm)合計', color=color)
-ax2.bar(df_plot_rain.index, df_plot_rain['降水量(mm)合計'], color=color, alpha=0.5)
+ax2.set_ylabel('total_rain(mm)', color=color)
+ax2.bar(df_plot_rain.index, df_plot_rain['total_rain(mm)'], color=color, alpha=0.5)
 ax2.tick_params(axis='y', labelcolor=color)
 
 # グラフを表示
