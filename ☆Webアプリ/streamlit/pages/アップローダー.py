@@ -4,7 +4,7 @@ import openpyxl
 
 st.set_page_config(page_title='csvファイル',layout='centered')
 st.title('CSVファイルのアップロードと読み込み1')
-uploaded_file=st.file_uploader('utf-8 CSV',type='csv',key='csv')
+uploaded_file=st.file_uploader('utf-8 CSV',type='csv',key='csv1')
 
 if uploaded_file:
   df=pd.read_csv(uploaded_file,encoding='utf-8')
@@ -13,7 +13,7 @@ if uploaded_file:
 
 
 st.title('CSVファイルのアップロードと読み込み2')
-uploaded_file=st.file_uploader('shift-jis CSV',type='csv',key='csv')
+uploaded_file=st.file_uploader('shift-jis CSV',type='csv',key='csv2')
 
 if uploaded_file:
   df=pd.read_csv(uploaded_file,encoding='shift-jis')
