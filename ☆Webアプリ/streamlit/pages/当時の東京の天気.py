@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-st.write("２０２２年１０月の東京の天気（気象庁より取得）")
+st.write("２０２２年１０月の東京の天気（気象庁より取得.降雨、積雪の欠損値を0としております）")
 st.write("https://www.data.jma.go.jp/stats/etrn/index.php")  
 df = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/csvファイル各種/２０２２年１０月の東京の天気.csv", encoding='shift_jis',index_col="日")
 st.dataframe(df, height=250)
