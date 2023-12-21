@@ -126,6 +126,21 @@ with col2:
 
 
 def load_ss():
+  try:
+    with open('session_state.pkl','rb')as f:
+      ss_dict=pickle.load(f)
+      st.write(pickle.load(f))
+      st.write(ss_dict)
+      for key in  ss_dict:
+        st.session_state[key]=ss_dict[key]
+  except FileNotFoundError:
+    st.error("指定されたpickleファイルが見つかりませんでした。")
+    return None
+def main():
+  
+
+
+
   
   
 
