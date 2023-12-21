@@ -15,7 +15,7 @@ def load_csv_and_plot(file_uploader_key, encoding):
             st.dataframe(df)
 
             # Create a multiselect dropdown for choosing columns
-            selected_columns = st.multiselect("グラフ化したい列を選択してください。", df.columns)
+            selected_columns = st.multiselect("グラフ化したい列を選択してください。（取り込んだファイルがデータベース形式である場合に限られます）", df.columns)
 
             # 日ごとの選択された列を含む新しいデータフレームを作成
             df_selected_columns = df[selected_columns]
