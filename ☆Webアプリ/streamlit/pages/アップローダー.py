@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import openpyxl
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title='csvファイル',layout='centered')
 st.title('CSVファイルのアップロードと読み込み1')
