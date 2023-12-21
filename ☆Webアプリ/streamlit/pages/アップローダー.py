@@ -26,7 +26,7 @@ for column in selected_columns:
     color = 'tab:red'  # You can choose different colors for each line
     ax1.set_xlabel('day')
     ax1.set_ylabel(column, color=color)
-    ax1.plot(df.index, df_selected_columns[column], color=color, label=column)
+    ax1.plot(df1.index, df_selected_columns[column], color=color, label=column)
     ax1.tick_params(axis='y', labelcolor=color)
 
 # グラフを表示
@@ -59,7 +59,7 @@ for column in selected_columns:
     color = 'tab:red'  # You can choose different colors for each line
     ax1.set_xlabel('day')
     ax1.set_ylabel(column, color=color)
-    ax1.plot(df.index, df_selected_columns[column], color=color, label=column)
+    ax1.plot(df2.index, df_selected_columns[column], color=color, label=column)
     ax1.tick_params(axis='y', labelcolor=color)
 
 # グラフを表示
