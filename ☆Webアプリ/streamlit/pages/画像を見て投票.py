@@ -8,3 +8,6 @@ from io import BytesIO
 import glob
 import os
 from PIL import Image
+
+st.set_config(title="投票",layout='wide')
+
