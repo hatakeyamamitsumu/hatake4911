@@ -136,6 +136,9 @@ def load_ss():
   except FileNotFoundError:
     st.error("指定されたpickleファイルが見つかりませんでした。")
     return None
+
+  st.write('st.session_state')
+  st.write(f'{st.session_state}')
 def main():
   
 
