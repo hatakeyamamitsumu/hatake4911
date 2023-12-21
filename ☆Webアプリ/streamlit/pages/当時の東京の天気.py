@@ -39,3 +39,26 @@ ax2.tick_params(axis='y', labelcolor=color)
 
 # グラフを表示
 st.pyplot(fig)
+
+
+
+
+
+# Create a selection dropdown for choosing columns
+selected_column = st.selectbox("Select Column for Plotting", df.columns)
+
+# 日ごとの選択された列を含む新しいデータフレームを作成
+df_selected_column = df[[selected_column]]
+
+# データを共有するための共通の軸を作成
+fig, ax1 = plt.subplots()
+
+# 1つ目の軸をプロット
+color = 'tab:red'
+ax1.set_xlabel('day')
+ax1.set_ylabel(selected_column, color=color)
+ax1.plot(df_selected_column.index, df_selected_column[selected_column], color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+
+# グラフを表示
+st.pyplot(fig)
