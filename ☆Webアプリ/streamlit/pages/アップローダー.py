@@ -14,16 +14,16 @@ if uploaded_file:
 
 
 
-# Create a multiselect dropdown for choosing columns
+  # Create a multiselect dropdown for choosing columns
   selected_columns = st.multiselect("Select Columns for Plotting", df1.columns)
 
-# 日ごとの選択された列を含む新しいデータフレームを作成
+  # 日ごとの選択された列を含む新しいデータフレームを作成
   df_selected_columns = df1[selected_columns]
 
-# データを共有するための共通の軸を作成
+  # データを共有するための共通の軸を作成
   fig, ax1 = plt.subplots()
 
-# プロットを追加
+  # プロットを追加
   for column in selected_columns:
       color = 'tab:red'  # You can choose different colors for each line
       ax1.set_xlabel('day')
@@ -31,7 +31,7 @@ if uploaded_file:
       ax1.plot(df1.index, df_selected_columns[column], color=color, label=column)
       ax1.tick_params(axis='y', labelcolor=color)
 
-# グラフを表示
+      # グラフを表示
       ax1.legend(loc='upper left', bbox_to_anchor=(1, 1))
       st.pyplot(fig)
 
@@ -47,16 +47,16 @@ if uploaded_file:
   st.markdown('#### dataframe')
   st.dataframe(df2)
 
-# Create a multiselect dropdown for choosing columns
+  # Create a multiselect dropdown for choosing columns
   selected_columns = st.multiselect("Select Columns for Plotting", df2.columns)
 
-# 日ごとの選択された列を含む新しいデータフレームを作成
+  # 日ごとの選択された列を含む新しいデータフレームを作成
   df_selected_columns = df2[selected_columns]
 
-# データを共有するための共通の軸を作成
+  # データを共有するための共通の軸を作成
   fig, ax1 = plt.subplots()
 
-# プロットを追加
+  # プロットを追加
   for column in selected_columns:
       color = 'tab:red'  # You can choose different colors for each line
       ax1.set_xlabel('day')
@@ -64,6 +64,6 @@ if uploaded_file:
       ax1.plot(df2.index, df_selected_columns[column], color=color, label=column)
       ax1.tick_params(axis='y', labelcolor=color)
 
-# グラフを表示
+    # グラフを表示
     ax1.legend(loc='upper left', bbox_to_anchor=(1, 1))
     st.pyplot(fig)
