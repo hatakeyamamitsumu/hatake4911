@@ -13,7 +13,7 @@ if uploaded_file:
   st.dataframe(df1)
 
 # Create a multiselect dropdown for choosing columns
-selected_columns = st.multiselect("Select Columns for Plotting", df.columns)
+selected_columns = st.multiselect("Select Columns for Plotting", df1.columns)
 
 # 日ごとの選択された列を含む新しいデータフレームを作成
 df_selected_columns = df1[selected_columns]
@@ -46,7 +46,7 @@ if uploaded_file:
   st.dataframe(df2)
 
 # Create a multiselect dropdown for choosing columns
-selected_columns = st.multiselect("Select Columns for Plotting", df.columns)
+selected_columns = st.multiselect("Select Columns for Plotting", df2.columns)
 
 # 日ごとの選択された列を含む新しいデータフレームを作成
 df_selected_columns = df2[selected_columns]
