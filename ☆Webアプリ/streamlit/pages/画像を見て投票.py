@@ -59,7 +59,77 @@ st.title(st.session_state['title1'])
 st.markdown('投票する画像を選んで下さい')
 
 folder_path='img'
-    
+
+files=os.listdir(folder_path)
+opend_imgs=[]
+for file in files:
+  file_path=os.path.join(folder_path,file)
+  image=image.open(file_path)
+  opend_imgs.append(image)
+
+imgs=[]
+for file in opend_imgs:
+  image_bytes=BytesIO()
+  file.save(image_bytes,format='PNG')
+  encoded=base64.b64encode(image_bytes.getvalue()).decode()
+  images.append(f'data:image/png:base64,{encoded}')
+
+
+clicked=clickable_imagaes(
+  images,
+  titles=[f'image {fname}' for fname in images],
+  div_style={"display":"flex","justify-content":"center","flex-wrap":"wrap"},
+  img_style={"margin":"5px","height":"200px",},
+)
+if clicked<0:
+  st.stop()
+
+selected_img_name=[files[clicked][:-4]]
+st.write(f'{selected_img_name}に投票しました。')
+
+img_name=[ifle[:-4]for file in files]
+
+for img_names in img_name:
+  if img_name not in st.session_state:
+    st.session_atate[img_name]=0
+
+st.session_atate[selected_img_name]+=1
+
+save_ss()
+count_dict={}
+for img_name in img_names:
+  count_dict[img_name]=st.session_state[]
+
+df=pd.DataFrame(count_dict,index=['投票数']).T
+
+col1,col2=st.columns(2)
+with col1:
+  st.write('投票状況')
+  st.bar_chart(df)
+
+with col2:
+  st.write('構成比')
+  fig=go.Figure(
+    data=[
+      go.Pie(
+        labels=df.index,
+        values=df["投票数"])
+      )
+    ]
+  fig.update_layout(
+    showlegend=True,
+    height=290,
+    margin={"i":20,"r":60,"t":0,"b":0},
+    ),
+  fig.update_traces(textposition='inside',textinfo='label+percent')
+  st.plotly_chart(fig,use_container_width=True)
+
+
+def load_ss():
+  
+  
+
+
       
       
 
