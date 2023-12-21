@@ -10,4 +10,8 @@ import os
 from PIL import Image
 
 st.set_config(title="投票",layout='wide')
+def save_ss():
+  ss_dict={}
+  for key in st.session_state:
+    ss_dict[key]=st.sesion_state[key]
 
