@@ -27,7 +27,7 @@ def load_csv_and_plot(file_uploader_key, encoding):
             for i, column in enumerate(selected_columns):
                 # 異なる色を使いたい場合、以下のように指定します
                 color = plt.cm.viridis(i / len(selected_columns))  # カラーマップを利用して異なる色を生成
-                ax1.set_xlabel('day')
+                ax1.set_xlabel('---')
                 ax1.set_ylabel(column, color=color)
                 ax1.plot(df.index, df_selected_columns[column], label=column, color=color)
                 ax1.tick_params(axis='y', labelcolor=color)
