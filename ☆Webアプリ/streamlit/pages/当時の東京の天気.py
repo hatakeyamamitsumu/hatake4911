@@ -44,21 +44,23 @@ st.pyplot(fig)
 
 
 
-# Create a selection dropdown for choosing columns
-selected_column = st.selectbox("Select Column for Plotting", df.columns)
+# Create a multiselect dropdown for choosing columns
+selected_columns = st.multiselect("Select Columns for Plotting", df.columns)
 
 # 日ごとの選択された列を含む新しいデータフレームを作成
-df_selected_column = df[[selected_column]]
+df_selected_columns = df[selected_columns]
 
 # データを共有するための共通の軸を作成
 fig, ax1 = plt.subplots()
 
-# 1つ目の軸をプロット
-color = 'tab:red'
-ax1.set_xlabel('day')
-ax1.set_ylabel(selected_column, color=color)
-ax1.plot(df_selected_column.index, df_selected_column[selected_column], color=color)
-ax1.tick_params(axis='y', labelcolor=color)
+# プロットを追加
+for column in selected_columns:
+    color = 'tab:red'  # You can choose different colors for each line
+    ax1.set_xlabel('day')
+    ax1.set_ylabel(column, color=color)
+    ax1.plot(df.index, df_selected_columns[column], color=color, label=column)
+    ax1.tick_params(axis='y', labelcolor=color)
 
 # グラフを表示
+ax1.legend(loc='upper left', bbox_to_anchor=(1, 1))
 st.pyplot(fig)
