@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title='csvファイル', layout='centered')
 
 # CSVファイルのアップロードと読み込み
-def load_csv_and_plot(file_uploader_key):
+def load_csv_and_plot(file_uploader_key, encoding):
     uploaded_file = st.file_uploader('CSVファイル', type='csv', key=file_uploader_key)
     
     if uploaded_file:
         try:
-            df = pd.read_csv(uploaded_file, encoding='utf-8')
+            df = pd.read_csv(uploaded_file, encoding=encoding)
             st.markdown('#### DataFrame')
             st.dataframe(df)
 
@@ -38,9 +38,10 @@ def load_csv_and_plot(file_uploader_key):
         except Exception as e:
             st.error(f"エラー: {str(e)}")
 
-# 2回呼び出しているので、関数を使ってコードの重複を削減
-st.title('CSVファイルのアップロードと読み込み1')
-load_csv_and_plot('csv1')
+# UTF-8 の場合の処理
+st.title('CSVファイルのアップロードと読み込み (UTF-8)')
+load_csv_and_plot('csv_utf8', 'utf-8')
 
-st.title('CSVファイルのアップロードと読み込み2')
-load_csv_and_plot('csv2')
+# Shift-JIS の場合の処理
+st.title('CSVファイルのアップロードと読み込み (Shift-JIS)')
+load_csv_and_plot('csv_shiftjis', 'shift-jis')
