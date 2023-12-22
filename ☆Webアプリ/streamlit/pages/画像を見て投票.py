@@ -14,7 +14,7 @@ def save_ss():
     ss_dict = {}
     for key in st.session_state:
         ss_dict[key] = st.session_state[key]
-    with open('session_state.pkl', 'wb') as f:
+    with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
         pickle.dump(ss_dict, f)
 
 
