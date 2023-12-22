@@ -40,6 +40,7 @@ def set_app():
     title1 = st.sidebar.text_input('タイトルを入力', key='input_title1')
     st.write(f'title1:{title1}')
     st.session_state['title1'] = title1
+    save_ss()
 
     img_files = st.sidebar.file_uploader('画像pngファイルをアップロード', accept_multiple_files=True)
 
