@@ -40,7 +40,7 @@ def set_app():
   st.session_state['title1']=title1
 
   save_ss()
-  img_files=st.sidebar.file_uploader('画像pngファイルをアップロード',accept_multiple_file)
+  img_files=st.sidebar.file_uploader('画像pngファイルをアップロード',accept_multiple_files=True)
 
   if img_files is not None:
       for img_file in img_files:
