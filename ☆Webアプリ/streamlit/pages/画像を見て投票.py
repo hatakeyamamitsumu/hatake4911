@@ -13,14 +13,14 @@ st.set_config(title="投票",layout='wide')
 def save_ss():
   ss_dict={}
   for key in st.session_state:
-    ss_dict[key]=st.sesion_state[key]
+    ss_dict[key]=st.session_state[key]
   with open('session_state.pkl','wb') as f:
       pickle.dump(ss_dict.f)
 
 def set_app():
   def init_all():
     for key in st.session_state.keys():
-      del st.sesion_state[key]
+      del st.session_state[key]
       st.write(f'{key} deleted')
 
     file_list=glob.glob(os.path.join('img','*'))
