@@ -44,7 +44,7 @@ def set_app():
 
   if img_files is not None:
       for img_file in img_files:
-          with open(f'img/{img_file.name}','wb')as f:
+          with open(f'/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img/{img_file.name}','wb')as f:
               f.write(img_file.read())
           st.write(f'{img_file.name} uploaded')
 def execute_app():
