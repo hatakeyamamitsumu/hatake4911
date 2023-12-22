@@ -126,7 +126,7 @@ def load_ss():
         return None
 
     st.write('st.session_state')
-    st.write(f'{st.session_state}')
+    st.write(st.session_state)
 
 
 def main():
