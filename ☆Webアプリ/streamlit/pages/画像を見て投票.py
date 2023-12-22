@@ -114,7 +114,7 @@ def execute_app():
 
 def load_ss():
     try:
-        with open('session_state.pkl', 'rb') as f:
+        with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'rb') as f:
             ss_dict = pickle.load(f)
             st.write('pickle.load(f)')
             st.write(ss_dict)
