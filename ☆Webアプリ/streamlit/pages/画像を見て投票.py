@@ -15,7 +15,7 @@ def save_ss():
   for key in st.session_state:
     ss_dict[key]=st.session_state[key]
   with open('session_state.pkl','wb') as f:
-      pickle.dump(ss_dict.f)
+      pickle.dump(ss_dict,f)
 
 def set_app():
   def init_all():
@@ -74,7 +74,7 @@ for file in opend_imgs:
     images.append(f'data:image/png:base64,{encoded}')
 
 
-clicked=clickable_imagaes(
+clicked=clickable_images(  # 誤りがあったため修正
     images,
     titles=[f'Image {fname}' for fname in images],
     div_style={"display":"flex","justify-content":"center","flex-wrap":"wrap"},
@@ -86,9 +86,9 @@ if clicked < 0:
 selected_img_name=files[clicked][:-4]
 st.write(f'{selected_img_name}に投票しました。')
 
-img_name=[ifle[:-4]for file in files]
+img_name=[file[:-4] for file in files]  # 誤りがあったため修正
 
-for img_names in img_name:
+for img_name in img_name:  # 誤りがあったため修正
     if img_name not in st.session_state:
         st.session_state[img_name]=0
 
@@ -96,7 +96,7 @@ st.session_state[selected_img_name]+=1
 
 save_ss()
 count_dict={}
-for img_name in img_names:
+for img_name in img_name:  # 誤りがあったため修正
     count_dict[img_name]=st.session_state[img_name]
 
 df=pd.DataFrame(count_dict,index=['投票数']).T
