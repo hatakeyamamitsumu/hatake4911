@@ -1,5 +1,5 @@
 import streamlit as st
-import base64
+
 import pickle
 import os
 from PIL import Image
