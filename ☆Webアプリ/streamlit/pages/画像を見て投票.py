@@ -48,80 +48,82 @@ def set_app():
               f.write(img_file.read())
           st.write(f'{img_file.name} uploaded')
 def execute_app():
+    if 'title1' not in st.session_state:
+        st.info('appの初期設定を行ってください')
+        st.stop()
 
-  if 'title1' not in st.session_state:
-      st.info('appの初期設定を行ってください')
-      st.stop()
+    st.title(st.session_state['title1'])
 
-  st.title(st.session_state['title1'])
+    st.markdown('投票する画像を選んで下さい')
 
-  st.markdown('投票する画像を選んで下さい')
+    folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+    files = os.listdir(folder_path)
+    opend_imgs = []
 
-  folder_path='/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+    for file in files:
+        file_path = os.path.join(folder_path, file)
+        image = Image.open(file_path)
+        opend_imgs.append(image)
 
-files=os.listdir(folder_path)
-opend_imgs=[]
-for file in files:
-    file_path=os.path.join(folder_path,file)
-    image=Image.open(file_path)
-    opend_imgs.append(image)
+    images = []
 
-images=[]
-for file in opend_imgs:
-    image_bytes=BytesIO()
-    file.save(image_bytes,format='PNG')
-    encoded=base64.b64encode(image_bytes.getvalue()).decode()
-    images.append(f'data:image/png:base64,{encoded}')
+    for file in opend_imgs:
+        image_bytes = BytesIO()
+        file.save(image_bytes, format='PNG')
+        encoded = base64.b64encode(image_bytes.getvalue()).decode()
+        images.append(f'data:image/png:base64,{encoded}')
 
+    clicked = clickable_images(
+        images,
+        titles=[f'Image {fname}' for fname in images],
+        div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
+        img_style={"margin": "5px", "height": "200px"},
+    )
 
-clicked=clickable_images(  # 誤りがあったため修正
-    images,
-    titles=[f'Image {fname}' for fname in images],
-    div_style={"display":"flex","justify-content":"center","flex-wrap":"wrap"},
-    img_style={"margin":"5px","height":"200px"},
-)
-if clicked < 0:
-    st.stop()
+    if clicked < 0:
+        st.stop()
 
-selected_img_name=files[clicked][:-4]
-st.write(f'{selected_img_name}に投票しました。')
+    selected_img_name = files[clicked][:-4]
+    st.write(f'{selected_img_name}に投票しました。')
 
-img_name=[file[:-4] for file in files]  # 誤りがあったため修正
+    img_names = [file[:-4] for file in files]
 
-for img_name in img_name:  # 誤りがあったため修正
-    if img_name not in st.session_state:
-        st.session_state[img_name]=0
+    for img_name in img_names:
+        if img_name not in st.session_state:
+            st.session_state[img_name] = 0
 
-st.session_state[selected_img_name]+=1
+    st.session_state[selected_img_name] += 1
 
-save_ss()
-count_dict={}
-for img_name in img_name:  # 誤りがあったため修正
-    count_dict[img_name]=st.session_state[img_name]
+    save_ss()
+    count_dict = {}
 
-df=pd.DataFrame(count_dict,index=['投票数']).T
+    for img_name in img_names:
+        count_dict[img_name] = st.session_state[img_name]
 
-col1,col2=st.columns(2)
-with col1:
-    st.write('投票状況')
-    st.bar_chart(df)
+    df = pd.DataFrame(count_dict, index=['投票数']).T
 
-with col2:
-    st.write('構成比')
-    fig=go.Figure(
-        data=[
-            go.Pie(
-              labels=df.index,
-              values=df["投票数"]
-              )])
-   
-    fig.update_layout(
-        showlegend=True,
-        height=290,
-        margin={"l":20,"r":60,"t":0,"b":0},
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.write('投票状況')
+        st.bar_chart(df)
+
+    with col2:
+        st.write('構成比')
+        fig = go.Figure(
+            data=[
+                go.Pie(
+                    labels=df.index,
+                    values=df["投票数"]
+                )])
+
+        fig.update_layout(
+            showlegend=True,
+            height=290,
+            margin={"l": 20, "r": 60, "t": 0, "b": 0},
         )
-    fig.update_traces(textposition='inside',textinfo='label+percent')
-    st.plotly_chart(fig,use_container_width=True)
+        fig.update_traces(textposition='inside', textinfo='label+percent')
+        st.plotly_chart(fig, use_container_width=True)
 
 
 def load_ss():
