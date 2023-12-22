@@ -19,7 +19,7 @@ def save_ss():
 
 
 def set_app():
-def init_all():
+    def init_all():
     for key in st.session_state.keys():
         del st.session_state[key]
         st.write(f'{key} deleted')
@@ -34,6 +34,8 @@ def init_all():
             st.write(f'Deleted: {file_path}')
         except Exception as e:
             st.write(f'Error deleting {file_path}: {e}')
+
+
 
 
     if st.button('session_state/imgフォルダの初期化'):
