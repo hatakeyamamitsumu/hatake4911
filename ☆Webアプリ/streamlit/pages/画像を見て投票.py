@@ -5,6 +5,7 @@ import os
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
+import glob  # 追加
 
 st.set_page_config(page_title="投票", layout='wide')
 
@@ -39,7 +40,6 @@ def set_app():
     st.write(f'title1:{title1}')
     st.session_state['title1'] = title1
 
-    save_ss()
     img_files = st.sidebar.file_uploader('画像pngファイルをアップロード', accept_multiple_files=True)
 
     if img_files is not None:
@@ -66,11 +66,12 @@ def execute_app():
         image = Image.open(file_path)
         st.image(image, caption=f'Image {file}', use_column_width=True)
 
-    clicked = st.button('投票する')
+    # ボタンが押されたら True になる変数 selected_img_index
+    selected_img_index = st.button('投票する')
 
-    if clicked:
-        # どの画像がクリックされたかを判定
-        selected_img_name = files[clicked]
+    if selected_img_index:
+        # 選択された画像の名前
+        selected_img_name = files[selected_img_index]
 
         # 選択された画像名を保存
         st.session_state['selected_img_name'] = selected_img_name
