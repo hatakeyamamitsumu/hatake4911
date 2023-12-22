@@ -141,18 +141,18 @@ def load_ss():
     st.write('st.session_state')
     st.write(f'{st.session_state}')
 def main():
-    apps={
-      'appの実行':execute_app,
-      'appの初期設定':set_app,
-      'pickleファイルから読み込み':load_ss
+    apps = {
+        'appの実行': execute_app,
+        'appの初期設定': set_app,
+        'pickleファイルから読み込み': load_ss
     }
-    selected_app_name=st.sidebar.selectbox(label='項目の選択',
-                                          options=list(app.keys()))
-    render_func=apps[selected_app_name]
+    selected_app_name = st.sidebar.selectbox(label='項目の選択', options=list(apps.keys()))
+    render_func = apps[selected_app_name]
     render_func()
 
-if __name__=='__main__':
-  main()
+if __name__ == '__main__':
+    main()
+
   
 
 
