@@ -19,22 +19,19 @@ def save_ss():
 
 
 def set_app():
-def init_all():
-    for key in st.session_state.keys():
-        del st.session_state[key]
-        st.write(f'{key} deleted')
+    def init_all():
+        for key in st.session_state.keys():
+            del st.session_state[key]
+            st.write(f'{key} deleted')
 
-    folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
-    files = os.listdir(folder_path)
+        file_list = glob.glob(os.path.join('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img', '*'))
 
-    for file_name in files:
-        file_path = os.path.join(folder_path, file_name)
-        try:
-            os.remove(file_path)
-            st.write(f'Deleted: {file_path}')
-        except Exception as e:
-            st.write(f'Error deleting {file_path}: {e}')
-
+        for file_path in file_list:
+            try:
+                os.remove(file_path)
+                st.write(f'Deleted:{file_path}')
+            except Exception as e:
+                st.write(f'error deleting{file_path}:{e}')
 
     if st.button('session_state/imgフォルダの初期化'):
         init_all()
