@@ -1,11 +1,10 @@
 import streamlit as st
-
 import pickle
 import os
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
-import glob  # 追加
+import glob
 
 st.set_page_config(page_title="投票", layout='wide')
 
@@ -20,23 +19,20 @@ def save_ss():
 
 def set_app():
     def init_all():
-    for key in st.session_state.keys():
-        del st.session_state[key]
-        st.write(f'{key} deleted')
+        for key in st.session_state.keys():
+            del st.session_state[key]
+            st.write(f'{key} deleted')
 
-    folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
-    files = os.listdir(folder_path)
+        folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+        files = os.listdir(folder_path)
 
-    for file_name in files:
-        file_path = os.path.join(folder_path, file_name)
-        try:
-            os.remove(file_path)
-            st.write(f'Deleted: {file_path}')
-        except Exception as e:
-            st.write(f'Error deleting {file_path}: {e}')
-
-
-
+        for file_name in files:
+            file_path = os.path.join(folder_path, file_name)
+            try:
+                os.remove(file_path)
+                st.write(f'Deleted: {file_path}')
+            except Exception as e:
+                st.write(f'Error deleting {file_path}: {e}')
 
     if st.button('session_state/imgフォルダの初期化'):
         init_all()
@@ -146,16 +142,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-  
-
-
-
-  
-  
-
-
-      
-      
-
