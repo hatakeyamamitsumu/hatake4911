@@ -61,18 +61,16 @@ def execute_app():
     folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
     files = os.listdir(folder_path)
 
-    for file in files:
-        file_path = os.path.join(folder_path, file)
-        image = Image.open(file_path)
-        st.image(image, caption=f'Image {file}', use_column_width=True)
+    # 画像を選択するためのセレクトボックス
+    selected_img_name = st.selectbox('画像を選んでください', files)
 
-    # ボタンが押されたら True になる変数 selected_img_index
-    selected_img_index = st.button('投票する')
+    image_path = os.path.join(folder_path, selected_img_name)
+    image = Image.open(image_path)
+    st.image(image, caption=f'Image {selected_img_name}', use_column_width=True)
 
-    if selected_img_index:
-        # 選択された画像の名前
-        selected_img_name = files[selected_img_index]
+    clicked = st.button('投票する')
 
+    if clicked:
         # 選択された画像名を保存
         st.session_state['selected_img_name'] = selected_img_name
 
