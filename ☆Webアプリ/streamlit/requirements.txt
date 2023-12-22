@@ -4,6 +4,6 @@ pandas==1.4.4
 matplotlib==3.5.2
 openpyxl==3.0.10
 
-plotly==8.2.3
+plotly==5.9.0
 st-clickable-images==0.0.4
 base64==1.0.0
