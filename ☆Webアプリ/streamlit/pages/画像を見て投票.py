@@ -69,25 +69,23 @@ def execute_app():
     clicked = st.button('投票する')
 
     if clicked:
-        st.write(f'投票しました。')
+        # どの画像がクリックされたかを判定
+        selected_img_name = files[clicked]
+
+        # 選択された画像名を保存
+        st.session_state['selected_img_name'] = selected_img_name
 
         # 投票数を更新
-        img_names = [file[:-4] for file in files]
-
-        for img_name in img_names:
-            if img_name not in st.session_state:
-                st.session_state[img_name] = 0
-
-        selected_img_name = st.session_state['selected_img_name']
+        if selected_img_name not in st.session_state:
+            st.session_state[selected_img_name] = 0
         st.session_state[selected_img_name] += 1
 
-        save_ss()
+        st.write(f'{selected_img_name}に投票しました。')
 
-        # グラフ表示
+        # 投票結果を表示
         count_dict = {}
-
-        for img_name in img_names:
-            count_dict[img_name] = st.session_state[img_name]
+        for img_name in files:
+            count_dict[img_name] = st.session_state.get(img_name, 0)
 
         df = pd.DataFrame(count_dict, index=['投票数']).T
 
