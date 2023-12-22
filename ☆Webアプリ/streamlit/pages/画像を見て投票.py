@@ -1,12 +1,10 @@
 import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
 import base64
 import pickle
-from io import BytesIO
-import glob
 import os
 from PIL import Image
+import pandas as pd
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="投票", layout='wide')
 
@@ -73,6 +71,49 @@ def execute_app():
     if clicked:
         st.write(f'投票しました。')
 
+        # 投票数を更新
+        img_names = [file[:-4] for file in files]
+
+        for img_name in img_names:
+            if img_name not in st.session_state:
+                st.session_state[img_name] = 0
+
+        selected_img_name = st.session_state['selected_img_name']
+        st.session_state[selected_img_name] += 1
+
+        save_ss()
+
+        # グラフ表示
+        count_dict = {}
+
+        for img_name in img_names:
+            count_dict[img_name] = st.session_state[img_name]
+
+        df = pd.DataFrame(count_dict, index=['投票数']).T
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.write('投票状況')
+            st.bar_chart(df)
+
+        with col2:
+            st.write('構成比')
+            fig = go.Figure(
+                data=[
+                    go.Pie(
+                        labels=df.index,
+                        values=df["投票数"]
+                    )])
+
+            fig.update_layout(
+                showlegend=True,
+                height=290,
+                margin={"l": 20, "r": 60, "t": 0, "b": 0},
+            )
+            fig.update_traces(textposition='inside', textinfo='label+percent')
+            st.plotly_chart(fig, use_container_width=True)
+
 
 def load_ss():
     try:
@@ -103,6 +144,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
   
 
