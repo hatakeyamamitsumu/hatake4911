@@ -23,7 +23,7 @@ def set_app():
       del st.session_state[key]
       st.write(f'{key} deleted')
 
-    file_list=glob.glob(os.path.join('img','*'))
+    file_list=glob.glob(os.path.join('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img','*'))
 
     for file_path in file_list:
         try:
@@ -57,7 +57,7 @@ def execute_app():
 
   st.markdown('投票する画像を選んで下さい')
 
-  folder_path='img'
+  folder_path='/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
 
 files=os.listdir(folder_path)
 opend_imgs=[]
