@@ -13,7 +13,7 @@ def save_ss():
     ss_dict = {}
     for key in st.session_state:
         ss_dict[key] = st.session_state[key]
-    with open('session_state.pkl', 'wb') as f:
+    with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
         pickle.dump(ss_dict, f)
 
 
@@ -116,7 +116,7 @@ def execute_app():
 
 def load_ss():
     try:
-        with open('session_state.pkl', 'rb') as f:
+        with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'rb') as f:
             ss_dict = pickle.load(f)
             st.write('pickle.load(f)')
             st.write(ss_dict)
