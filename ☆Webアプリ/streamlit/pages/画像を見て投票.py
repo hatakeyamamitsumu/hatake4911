@@ -13,7 +13,7 @@ def save_ss():
     ss_dict = {}
     for key in st.session_state:
         ss_dict[key] = st.session_state[key]
-    with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
+    with open('https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
         pickle.dump(ss_dict, f)
 
 
@@ -23,7 +23,7 @@ def set_app():
             del st.session_state[key]
             st.write(f'{key} deleted')
 
-        folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+        folder_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/☆Webアプリ/streamlit/pages/img'
         files = os.listdir(folder_path)
 
         for file_name in files:
@@ -46,7 +46,7 @@ def set_app():
 
     if img_files is not None:
         for img_file in img_files:
-            with open(f'/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img/{img_file.name}', 'wb') as f:
+            with open(f'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/☆Webアプリ/streamlit/pages/img/{img_file.name}', 'wb') as f:
                 f.write(img_file.read())
             st.write(f'{img_file.name} uploaded')
 
@@ -60,7 +60,7 @@ def execute_app():
 
     st.markdown('投票する画像を選んで下さい')
 
-    folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+    folder_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/☆Webアプリ/streamlit/pages/img'
     files = os.listdir(folder_path)
 
     # 画像を選択するためのセレクトボックス
@@ -116,7 +116,7 @@ def execute_app():
 
 def load_ss():
     try:
-        with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'rb') as f:
+        with open('https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/☆Webアプリ/streamlit/pages/session_state.pkl', 'rb') as f:
             ss_dict = pickle.load(f)
             st.write('pickle.load(f)')
             st.write(ss_dict)
