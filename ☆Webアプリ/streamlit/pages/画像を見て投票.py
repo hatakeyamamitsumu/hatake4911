@@ -4,21 +4,19 @@ import os
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
-import glob
 
 st.set_page_config(page_title="投票", layout='wide')
-
 
 def save_ss():
     ss_dict = {}
     for key in st.session_state:
         ss_dict[key] = st.session_state[key]
-try:
-    with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
-        pickle.dump(ss_dict, f)
-except Exception as e:
-    print(f"Error while writing to the file: {e}")
-
+    
+    try:
+        with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
+            pickle.dump(ss_dict, f)
+    except Exception as e:
+        st.error(f"Error while writing to the file: {e}")
 
 
 def set_app():
