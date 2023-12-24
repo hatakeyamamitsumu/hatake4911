@@ -13,10 +13,13 @@ def save_ss():
         ss_dict[key] = st.session_state[key]
     
     try:
-        with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'wb') as f:
-            pickle.dump(ss_dict, f)
+        # pickle ファイルのパスを修正
+        file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
+        with st.cache(allow_output_mutation=True):
+            with open(file_path, 'wb') as f:
+                pickle.dump(ss_dict, f)
     except Exception as e:
-        st.error(f"Error while writing to the file: {e}")
+        st.error(f"ファイルへの書き込み中にエラーが発生しました: {e}")
 
 
 def set_app():
@@ -118,15 +121,20 @@ def execute_app():
 
 def load_ss():
     try:
-        with open('/mount/src/hatake4911/☆Webアプリ/streamlit/pages/session_state.pkl', 'rb') as f:
-            ss_dict = pickle.load(f)
-            st.write('pickle.load(f)')
-            st.write(ss_dict)
-            for key in ss_dict:
-                st.session_state[key] = ss_dict[key]
+        # pickle ファイルのパスを修正
+        file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
+        with st.cache(allow_output_mutation=True):
+            with open(file_path, 'rb') as f:
+                ss_dict = pickle.load(f)
+                st.write('pickle.load(f)')
+                st.write(ss_dict)
+                for key in ss_dict:
+                    st.session_state[key] = ss_dict[key]
     except FileNotFoundError:
-        st.error("指定されたpickleファイルが見つかりませんでした。")
+        st.error("指定された pickle ファイルが見つかりませんでした。")
         return None
+    except Exception as e:
+        st.error(f"ファイルの読み込み中にエラーが発生しました: {e}")
 
     st.write('st.session_state')
     st.write(st.session_state)
