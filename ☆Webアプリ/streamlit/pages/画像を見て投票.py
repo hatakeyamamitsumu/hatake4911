@@ -138,17 +138,24 @@ def load_ss():
     try:
         # pickle ファイルのパスを修正
         file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
-        with st.cache(allow_output_mutation=True):
+        @st.cache(allow_output_mutation=True)
+        def load_pickle(file_path):
             with open(file_path, 'rb') as f:
-                ss_dict = pickle.load(f)
-                st.write('pickle.load(f)')
-                st.write(ss_dict)
-                for key in ss_dict:
-                    st.session_state[key] = ss_dict[key]
+                return pickle.load(f)
+
+        ss_dict = load_pickle(file_path)
+        st.write('pickle.load(f)')
+        st.write(ss_dict)
+        for key in ss_dict:
+            st.session_state[key] = ss_dict[key]
     except FileNotFoundError:
         st.error("指定された pickle ファイルが見つかりませんでした。")
         return None
+    except Exception as e:
+        st.error(f"ファイルの読み込み中にエラーが発生しました: {e}")
 
+    st.write('st.session_state')
+    st.write(st.session_state)
 def main():
     apps = {
         'appの実行': execute_app,
