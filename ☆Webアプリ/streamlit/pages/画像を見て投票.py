@@ -2,6 +2,8 @@ from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
 import sqlite3
+import streamlit as st
+from streamlit.caching import cache
 
 # データベースへの接続
 conn = sqlite3.connect('app_data.db')
