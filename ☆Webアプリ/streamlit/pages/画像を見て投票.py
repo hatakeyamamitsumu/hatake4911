@@ -7,7 +7,8 @@ import plotly.graph_objects as go
 import sqlite3
 
 # データベースへの接続
-conn = sqlite3.connect('app_data.db')
+db_path = 'app_data.db'
+conn = sqlite3.connect(db_path)
 c = conn.cursor()
 
 # テーブルが存在しない場合は作成
@@ -17,6 +18,7 @@ c.execute('''
         value TEXT
     )
 ''')
+conn.commit()
 
 st.set_page_config(page_title="投票", layout='wide')
 
@@ -36,7 +38,6 @@ def save_ss():
         conn.commit()
     except Exception as e:
         st.error(f"データベースへの書き込み中にエラーが発生しました: {e}")
-
 
 def set_app():
     def init_all():
@@ -127,49 +128,4 @@ def execute_app():
                     )])
 
             fig.update_layout(
-                showlegend=True,
-                height=290,
-                margin={"l": 20, "r": 60, "t": 0, "b": 0},
-            )
-            fig.update_traces(textposition='inside', textinfo='label+percent')
-            st.plotly_chart(fig, use_container_width=True)
-
-
-def load_ss():
-    try:
-        # データベースから読み込み
-        c.execute('SELECT key, value FROM session_data')
-        rows = c.fetchall()
-        
-        ss_dict = {}
-        for row in rows:
-            key, value = row
-            ss_dict[key] = value
-
-        st.write('データベースから読み込み成功')
-        st.write(ss_dict)
-
-        # st.session_state にセット
-        for key in ss_dict:
-            st.session_state[key] = ss_dict[key]
-    except Exception as e:
-        st.error(f"データベースからの読み込み中にエラーが発生しました: {e}")
-
-    st.write('st.session_state')
-    st.write(st.session_state)
-
-
-def main():
-    apps = {
-        'appの実行': execute_app,
-        'appの初期設定': set_app,
-        'データベースから読み込み': load_ss
-    }
-    selected_app_name = st.sidebar.selectbox(label='項目の選択', options=list(apps.keys()))
-    render_func = apps[selected_app_name]
-    render_func()
-
-
-if __name__ == '__main__':
-    main()
-
+                showlegend
