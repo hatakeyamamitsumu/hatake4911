@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import sqlite3
 import streamlit as st
 import pickle
-
+import os  # 追加
 # データベースへの接続
 db_path = 'app_data.db'
 conn = sqlite3.connect(db_path)
