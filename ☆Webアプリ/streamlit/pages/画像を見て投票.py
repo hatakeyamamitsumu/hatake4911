@@ -1,24 +1,9 @@
-from PIL import Image
-import pandas as pd
-import plotly.graph_objects as go
-import sqlite3
 import streamlit as st
 import pickle
 import os
-
-# データベースへの接続
-db_path = 'app_data.db'
-conn = sqlite3.connect(db_path)
-c = conn.cursor()
-
-# テーブルが存在しない場合は作成
-c.execute('''
-    CREATE TABLE IF NOT EXISTS session_data (
-        key TEXT PRIMARY KEY,
-        value TEXT
-    )
-''')
-conn.commit()
+from PIL import Image
+import pandas as pd
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="投票", layout='wide')
 
@@ -28,16 +13,14 @@ def save_ss():
         ss_dict[key] = st.session_state[key]
     
     try:
-        # データベースに保存
-        for key, value in ss_dict.items():
-            c.execute('''
-                INSERT OR REPLACE INTO session_data (key, value)
-                VALUES (?, ?)
-            ''', (key, str(value)))
-        
-        conn.commit()
+        # pickle ファイルのパスを修正
+        file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
+        with st.cache(allow_output_mutation=True):
+            with open(file_path, 'wb') as f:
+                pickle.dump(ss_dict, f)
     except Exception as e:
-        st.error(f"データベースへの書き込み中にエラーが発生しました: {e}")
+        st.error(f"ファイルへの書き込み中にエラーが発生しました: {e}")
+
 
 def set_app():
     def init_all():
@@ -71,6 +54,7 @@ def set_app():
             with open(f'/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img/{img_file.name}', 'wb') as f:
                 f.write(img_file.read())
             st.write(f'{img_file.name} uploaded')
+
 
 def execute_app():
     if 'title1' not in st.session_state:
@@ -134,20 +118,18 @@ def execute_app():
             fig.update_traces(textposition='inside', textinfo='label+percent')
             st.plotly_chart(fig, use_container_width=True)
 
+
 def load_ss():
     try:
         # pickle ファイルのパスを修正
         file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
-        @st.cache(allow_output_mutation=True)
-        def load_pickle(file_path):
+        with st.cache(allow_output_mutation=True):
             with open(file_path, 'rb') as f:
-                return pickle.load(f)
-
-        ss_dict = load_pickle(file_path)
-        st.write('pickle.load(f)')
-        st.write(ss_dict)
-        for key in ss_dict:
-            st.session_state[key] = ss_dict[key]
+                ss_dict = pickle.load(f)
+                st.write('pickle.load(f)')
+                st.write(ss_dict)
+                for key in ss_dict:
+                    st.session_state[key] = ss_dict[key]
     except FileNotFoundError:
         st.error("指定された pickle ファイルが見つかりませんでした。")
         return None
@@ -156,6 +138,8 @@ def load_ss():
 
     st.write('st.session_state')
     st.write(st.session_state)
+
+
 def main():
     apps = {
         'appの実行': execute_app,
@@ -165,6 +149,7 @@ def main():
     selected_app_name = st.sidebar.selectbox(label='項目の選択', options=list(apps.keys()))
     render_func = apps[selected_app_name]
     render_func()
+
 
 if __name__ == '__main__':
     main()
