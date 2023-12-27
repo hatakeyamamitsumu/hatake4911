@@ -10,3 +10,7 @@ st-clickable-images==0.0.3
 rembg==2.0.50
 numba==0.57
 numpy==1.23.0
+
+replicate
+requests
+streamlit-image-select
