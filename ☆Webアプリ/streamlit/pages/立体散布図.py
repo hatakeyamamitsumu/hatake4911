@@ -13,20 +13,20 @@ def plot_3d_scatter(data, x_col, y_col, z_col, index_col):
     st.plotly_chart(fig)
 
 def main():
-    st.title('3D Scatter Plot with Streamlit')
+    st.title('3D 散布図表示ページ')
     
-    uploaded_file_utf8 = st.file_uploader('Upload a CSV file (UTF-8)', type=['csv'])
-    uploaded_file_shiftjis = st.file_uploader('Upload a CSV file (Shift-JIS)', type=['csv'])
+    uploaded_file_utf8 = st.file_uploader('3列以上あるＣＳＶファイルをアップロードしてください (UTF-8)', type=['csv'])
+    uploaded_file_shiftjis = st.file_uploader('3列以上あるＣＳＶファイルをアップロードしてください  (Shift-JIS)', type=['csv'])
     
     if uploaded_file_utf8 is not None or uploaded_file_shiftjis is not None:
         st.write('### Loaded Data:')
         
         if uploaded_file_utf8 is not None:
             data_utf8 = load_data(uploaded_file_utf8, encoding='utf-8')
-            selected_columns_utf8 = st.multiselect('Select columns for 3D Scatter Plot', data_utf8.columns)
+            selected_columns_utf8 = st.multiselect('3D 散布図用の列を選んでください', data_utf8.columns)
             
             if len(selected_columns_utf8) == 3:
-                index_col_utf8 = st.selectbox('Select the index column for labels', data_utf8.columns)
+                index_col_utf8 = st.selectbox('見出し列を選んでください', data_utf8.columns)
                 st.write('### 3D Scatter Plot (UTF-8):')
                 plot_3d_scatter(data_utf8, selected_columns_utf8[0], selected_columns_utf8[1], selected_columns_utf8[2], index_col_utf8)
             else:
