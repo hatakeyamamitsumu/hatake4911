@@ -3,7 +3,7 @@ Pillow==9.5.0
 pandas==1.4.4
 matplotlib==3.5.2
 
-japanize-matplotlib==1.16.0
+japanize_matplotlib==1.16.0
 openpyxl==3.0.10
 
 plotly==5.9.0
