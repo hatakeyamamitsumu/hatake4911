@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import import japanize_matplotlib
+import japanize_matplotlib
 
 st.set_page_config(page_title='csvファイル', layout='centered')
 
