@@ -8,8 +8,8 @@ def load_data(file_path):
     data = pd.read_csv(file_path)
     return data
 
-def plot_3d_scatter(data, x_col, y_col, z_col):
-    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col)
+def plot_3d_scatter(data, x_col, y_col, z_col, index_col):
+    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col, text=index_col)
     st.plotly_chart(fig)
 
 def main():
@@ -25,11 +25,12 @@ def main():
         selected_columns = st.multiselect('Select columns for 3D Scatter Plot', data.columns)
         
         if len(selected_columns) == 3:
+            index_col = st.selectbox('Select the index column for labels', data.columns)
+            
             st.write('### 3D Scatter Plot:')
-            plot_3d_scatter(data, selected_columns[0], selected_columns[1], selected_columns[2])
+            plot_3d_scatter(data, selected_columns[0], selected_columns[1], selected_columns[2], index_col)
         else:
             st.warning('Please select exactly 3 columns for the 3D Scatter Plot.')
 
 if __name__ == '__main__':
     main()
-
