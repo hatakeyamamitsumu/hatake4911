@@ -4,8 +4,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-def load_data(file_path):
-    data = pd.read_csv(file_path)
+def load_data(file_path, encoding):
+    data = pd.read_csv(file_path, encoding=encoding)
     return data
 
 def plot_3d_scatter(data, x_col, y_col, z_col, index_col):
@@ -15,22 +15,34 @@ def plot_3d_scatter(data, x_col, y_col, z_col, index_col):
 def main():
     st.title('3D Scatter Plot with Streamlit')
     
-    uploaded_file = st.file_uploader('Upload a CSV file', type=['csv'])
+    uploaded_file_utf8 = st.file_uploader('Upload a CSV file (UTF-8)', type=['csv'], encoding='utf-8')
+    uploaded_file_shiftjis = st.file_uploader('Upload a CSV file (Shift-JIS)', type=['csv'], encoding='shift-jis')
     
-    if uploaded_file is not None:
+    if uploaded_file_utf8 is not None or uploaded_file_shiftjis is not None:
         st.write('### Loaded Data:')
         
-        data = load_data(uploaded_file)
-        
-        selected_columns = st.multiselect('Select columns for 3D Scatter Plot', data.columns)
-        
-        if len(selected_columns) == 3:
-            index_col = st.selectbox('Select the index column for labels', data.columns)
+        if uploaded_file_utf8 is not None:
+            data_utf8 = load_data(uploaded_file_utf8, encoding='utf-8')
+            selected_columns_utf8 = st.multiselect('Select columns for 3D Scatter Plot', data_utf8.columns)
             
-            st.write('### 3D Scatter Plot:')
-            plot_3d_scatter(data, selected_columns[0], selected_columns[1], selected_columns[2], index_col)
-        else:
-            st.warning('Please select exactly 3 columns for the 3D Scatter Plot.')
+            if len(selected_columns_utf8) == 3:
+                index_col_utf8 = st.selectbox('Select the index column for labels', data_utf8.columns)
+                st.write('### 3D Scatter Plot (UTF-8):')
+                plot_3d_scatter(data_utf8, selected_columns_utf8[0], selected_columns_utf8[1], selected_columns_utf8[2], index_col_utf8)
+            else:
+                st.warning('Please select exactly 3 columns for the 3D Scatter Plot.')
+
+        if uploaded_file_shiftjis is not None:
+            data_shiftjis = load_data(uploaded_file_shiftjis, encoding='shift-jis')
+            selected_columns_shiftjis = st.multiselect('Select columns for 3D Scatter Plot', data_shiftjis.columns)
+            
+            if len(selected_columns_shiftjis) == 3:
+                index_col_shiftjis = st.selectbox('Select the index column for labels', data_shiftjis.columns)
+                st.write('### 3D Scatter Plot (Shift-JIS):')
+                plot_3d_scatter(data_shiftjis, selected_columns_shiftjis[0], selected_columns_shiftjis[1], selected_columns_shiftjis[2], index_col_shiftjis)
+            else:
+                st.warning('Please select exactly 3 columns for the 3D Scatter Plot.')
 
 if __name__ == '__main__':
     main()
+
