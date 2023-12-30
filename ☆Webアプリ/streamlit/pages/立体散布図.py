@@ -15,8 +15,8 @@ def plot_3d_scatter(data, x_col, y_col, z_col, index_col):
 def main():
     st.title('3D 散布図表示ページ')
     
-    uploaded_file_utf8 = st.file_uploader('3列以上あるＣＳＶファイルをアップロードしてください (UTF-8)', type=['csv'])
-    uploaded_file_shiftjis = st.file_uploader('3列以上あるＣＳＶファイルをアップロードしてください  (Shift-JIS)', type=['csv'])
+    uploaded_file_utf8 = st.file_uploader('3列以上あるＣＳＶデータベースファイルをアップロードしてください (UTF-8)', type=['csv'])
+    uploaded_file_shiftjis = st.file_uploader('3列以上あるＣＳＶデータベースファイルをアップロードしてください  (Shift-JIS)', type=['csv'])
     
     if uploaded_file_utf8 is not None or uploaded_file_shiftjis is not None:
         st.write('### Loaded Data:')
