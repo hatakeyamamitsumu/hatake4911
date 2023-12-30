@@ -1,4 +1,8 @@
-# ...
+# scatter_plot_app.py
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
 
 def load_data(file_path, encoding):
     data = pd.read_csv(file_path, encoding=encoding)
@@ -24,4 +28,5 @@ def main():
             else:
                 st.warning('Please select exactly 3 columns for the 3D Scatter Plot.')
 
-        # ...
+if __name__ == '__main__':
+    main()
