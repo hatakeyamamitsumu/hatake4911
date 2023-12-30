@@ -9,7 +9,7 @@ def load_data(file_path):
     return data
 
 def plot_3d_scatter(data, x_col, y_col, z_col):
-    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col, size_max=5, marker=dict(size=2))
+    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col)
     st.plotly_chart(fig)
 
 def main():
@@ -32,3 +32,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
