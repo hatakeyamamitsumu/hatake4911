@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 import io
 
-def adjust_hsv(image, hue, saturation, value):
+def adjust_rgb_hsv(image, r_value, g_value, b_value, hue, saturation, value):
     # RGBをHSVに変換
     image_hsv = image.convert("HSV")
     image_hsv_array = np.array(image_hsv)
@@ -13,9 +13,17 @@ def adjust_hsv(image, hue, saturation, value):
     image_hsv_array[:, :, 1] = np.clip(image_hsv_array[:, :, 1] * saturation, 0, 255)
     image_hsv_array[:, :, 2] = np.clip(image_hsv_array[:, :, 2] * value, 0, 255)
 
-    # HSVをRGBに戻す
-    modified_image_array = np.array(Image.fromarray(image_hsv_array, "HSV").convert("RGB"))
-    return modified_image_array
+    # HSVをRGBに戻し、RGB値の調整
+    modified_image_array = np.stack([image_hsv_array[:, :, 0] * (r_value / 255),
+                                     image_hsv_array[:, :, 1] * (g_value / 255),
+                                     image_hsv_array[:, :, 2] * (b_value / 255)], axis=-1)
+
+    # HSVから戻ったRGBを0から255の範囲にクリッピング
+    modified_image_array = np.clip(modified_image_array, 0, 255)
+
+    # 画像をuint8型に変換してPIL Imageにする
+    modified_image = Image.fromarray(modified_image_array.astype(np.uint8), 'RGB')
+    return modified_image
 
 # Streamlit アプリのタイトル
 st.title("RGB・HSV調整アプリ")
@@ -33,35 +41,22 @@ if uploaded_file is not None:
     g_value = st.slider("G値", 0, 255, 128)
     b_value = st.slider("B値", 0, 255, 128)
 
-    # RGB値を変更して新しい画像を作成
-    image_array = np.array(image)
-    modified_image_array_rgb = np.stack([image_array[:, :, 0] * (r_value / 255),
-                                         image_array[:, :, 1] * (g_value / 255),
-                                         image_array[:, :, 2] * (b_value / 255)], axis=-1)
-
-    modified_image_rgb = Image.fromarray((modified_image_array_rgb).astype(np.uint8))
-
-    # 調整されたRGB画像を表示
-    st.image(modified_image_rgb, caption="RGB調整後の画像", use_column_width=True)
-
     # 色相、彩度、明度のスライダーを作成
     hue_value = st.slider("色相", -180, 180, 0)
     saturation_value = st.slider("彩度", 0.0, 2.0, 1.0)
     value_value = st.slider("明度", 0.0, 2.0, 1.0)
 
-    # HSV値を変更して新しい画像を作成
-    modified_image_array_hsv = adjust_hsv(image, hue_value, saturation_value, value_value)
-    modified_image_hsv = Image.fromarray(modified_image_array_hsv)
+    # RGBとHSVの値を同時に変更して新しい画像を作成
+    modified_image = adjust_rgb_hsv(image, r_value, g_value, b_value, hue_value, saturation_value, value_value)
 
-    # 調整されたHSV画像を表示
-    st.image(modified_image_hsv, caption="HSV調整後の画像", use_column_width=True)
+    # 調整された画像を表示
+    st.image(modified_image, caption="RGB・HSV調整後の画像", use_column_width=True)
 
     # 調整された画像をダウンロード
     if st.button("画像をダウンロード"):
         # Pillowで画像を作成し、バイトデータに変換
-        modified_image_pil = Image.fromarray((modified_image_array_hsv).astype(np.uint8))
         modified_image_bytes = io.BytesIO()
-        modified_image_pil.save(modified_image_bytes, format='JPEG')
+        modified_image.save(modified_image_bytes, format='JPEG')
 
         # ダウンロードボタンに渡す
         st.download_button("ダウンロード", modified_image_bytes.getvalue(), file_name="modified_image.jpg", key="download")
