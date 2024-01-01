@@ -31,3 +31,8 @@ if uploaded_file is not None:
     # 調整された画像を表示
     st.image(modified_image, caption="RGB調整後の画像", use_column_width=True)
 
+    # 調整された画像をダウンロード
+    if st.button("画像をダウンロード"):
+        st.image(modified_image, caption="ダウンロードされた画像", use_column_width=True, output_format="JPEG")
+        st.download_button("ダウンロード", modified_image_array, file_name="modified_image.jpg", key="download")
+
