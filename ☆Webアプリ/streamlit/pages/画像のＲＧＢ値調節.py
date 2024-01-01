@@ -46,7 +46,7 @@ if uploaded_file is not None:
     # アップロードされた画像を表示
     image = Image.open(uploaded_file)
     st.image(image, caption="アップロードされた画像", use_column_width=True)
-
+    st.write("加工された画像は画面下に出ます")
     # RGB値のスライダーを作成
     r_value = st.slider("R値", 0, 255, 128)
     g_value = st.slider("G値", 0, 255, 128)
