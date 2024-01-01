@@ -36,21 +36,38 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption="アップロードされた画像", use_column_width=True)
 
+    # 初期値
+    initial_r_value = 128
+    initial_g_value = 128
+    initial_b_value = 128
+    initial_hue_value = 0
+    initial_saturation_value = 1.0
+    initial_value_value = 1.0
+
     # RGB値のスライダーを作成
-    r_value = st.slider("R値", 0, 255, 128)
-    g_value = st.slider("G値", 0, 255, 128)
-    b_value = st.slider("B値", 0, 255, 128)
+    r_value = st.slider("R値", 0, 255, initial_r_value)
+    g_value = st.slider("G値", 0, 255, initial_g_value)
+    b_value = st.slider("B値", 0, 255, initial_b_value)
 
     # 色相、彩度、明度のスライダーを作成
-    hue_value = st.slider("色相", -180, 180, 0)
-    saturation_value = st.slider("彩度", 0.0, 2.0, 1.0)
-    value_value = st.slider("明度", 0.0, 2.0, 1.0)
+    hue_value = st.slider("色相", -180, 180, initial_hue_value)
+    saturation_value = st.slider("彩度", 0.0, 2.0, initial_saturation_value)
+    value_value = st.slider("明度", 0.0, 2.0, initial_value_value)
 
     # RGBとHSVの値を同時に変更して新しい画像を作成
     modified_image = adjust_rgb_hsv(image, r_value, g_value, b_value, hue_value, saturation_value, value_value)
 
     # 調整された画像を表示
     st.image(modified_image, caption="RGB・HSV調整後の画像", use_column_width=True)
+
+    # リセットボタン
+    if st.button("リセット"):
+        r_value = initial_r_value
+        g_value = initial_g_value
+        b_value = initial_b_value
+        hue_value = initial_hue_value
+        saturation_value = initial_saturation_value
+        value_value = initial_value_value
 
     # 調整された画像をダウンロード
     if st.button("画像をダウンロード"):
