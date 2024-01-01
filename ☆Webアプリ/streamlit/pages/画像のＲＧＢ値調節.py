@@ -42,46 +42,23 @@ st.title("画像調整アプリ")
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
-# 初期値
-initial_values = {
-    "r": 128,
-    "g": 128,
-    "b": 128,
-    "contrast": 1.0,
-    "brightness": 1.0,
-    "sharpness": 1.0,
-    "gamma": 1.0,
-    "blur": 0.0,
-    "hue": 0
-}
-
-# スライダーの初期値
-r_value = st.slider("R値", 0, 255, initial_values["r"])
-g_value = st.slider("G値", 0, 255, initial_values["g"])
-b_value = st.slider("B値", 0, 255, initial_values["b"])
-contrast = st.slider("コントラスト", 0.0, 2.0, initial_values["contrast"])
-brightness = st.slider("明るさ", 0.0, 2.0, initial_values["brightness"])
-sharpness = st.slider("シャープネス", 0.0, 10.0, initial_values["sharpness"])
-gamma = st.slider("ガンマ補正", 0.1, 2.0, initial_values["gamma"])
-blur = st.slider("ぼかし", 0.0, 10.0, initial_values["blur"])
-hue = st.slider("色相", -180, 180, initial_values["hue"])
-
 if uploaded_file is not None:
     # アップロードされた画像を表示
     image = Image.open(uploaded_file)
     st.image(image, caption="アップロードされた画像", use_column_width=True)
 
-    # リセットボタンが押されたら初期値にリセット
-    if st.button("リセット"):
-        r_value = initial_values["r"]
-        g_value = initial_values["g"]
-        b_value = initial_values["b"]
-        contrast = initial_values["contrast"]
-        brightness = initial_values["brightness"]
-        sharpness = initial_values["sharpness"]
-        gamma = initial_values["gamma"]
-        blur = initial_values["blur"]
-        hue = initial_values["hue"]
+    # RGB値のスライダーを作成
+    r_value = st.slider("R値", 0, 255, 128)
+    g_value = st.slider("G値", 0, 255, 128)
+    b_value = st.slider("B値", 0, 255, 128)
+
+    # コントラスト、明るさ、シャープネス、ガンマ補正、ぼかし、色相のスライダーを作成
+    contrast = st.slider("コントラスト", 0.0, 2.0, 1.0)
+    brightness = st.slider("明るさ", 0.0, 2.0, 1.0)
+    sharpness = st.slider("シャープネス", 0.0, 10.0, 1.0)
+    gamma = st.slider("ガンマ補正", 0.1, 2.0, 1.0)
+    blur = st.slider("ぼかし", 0.0, 10.0, 0.0)
+    hue = st.slider("色相", -180, 180, 0)
 
     # 画像の調整
     modified_image = adjust_image(image, r_value, g_value, b_value, contrast, brightness, sharpness, gamma, blur, hue)
@@ -97,4 +74,5 @@ if uploaded_file is not None:
 
         # ダウンロードボタンに渡す
         st.download_button("ダウンロード", modified_image_bytes.getvalue(), file_name="modified_image.jpg", key="download")
+
 
