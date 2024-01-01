@@ -33,7 +33,7 @@ if uploaded_file is not None:
     st.image(modified_image, caption="RGB調整後の画像", use_column_width=True)
 
     # 調整された画像をダウンロード
-    if st.button("画像をダウンロード"):
+    if st.button("画像をダウンロードしますか？"):
         # Pillowで画像を作成し、バイトデータに変換
         modified_image_pil = Image.fromarray((modified_image_array).astype(np.uint8))
         modified_image_bytes = io.BytesIO()
