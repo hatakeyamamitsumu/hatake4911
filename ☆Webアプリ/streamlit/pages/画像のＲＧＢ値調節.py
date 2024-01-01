@@ -34,9 +34,9 @@ if uploaded_file is not None:
     b_value = st.slider("B値", 0, 255, 128)
 
     # RGB値を変更して新しい画像を作成
-    modified_image_array_rgb = np.stack([image_array[:, :, 0] * (r_value / 255),
-                                         image_array[:, :, 1] * (g_value / 255),
-                                         image_array[:, :, 2] * (b_value / 255)], axis=-1)
+    modified_image_array_rgb = np.stack([img_array[:, :, 0] * (r_value / 255),
+                                         img_array[:, :, 1] * (g_value / 255),
+                                         img_array[:, :, 2] * (b_value / 255)], axis=-1)
 
     modified_image_rgb = Image.fromarray((modified_image_array_rgb).astype(np.uint8))
 
@@ -64,3 +64,4 @@ if uploaded_file is not None:
 
         # ダウンロードボタンに渡す
         st.download_button("ダウンロード", modified_image_bytes.getvalue(), file_name="modified_image.jpg", key="download")
+
