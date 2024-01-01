@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
+import io
 
 # Streamlit アプリのタイトル
 st.title("RGB調整アプリ")
@@ -33,8 +34,10 @@ if uploaded_file is not None:
 
     # 調整された画像をダウンロード
     if st.button("画像をダウンロード"):
-        # Pillowで画像を作成し、ダウンロード
+        # Pillowで画像を作成し、バイトデータに変換
         modified_image_pil = Image.fromarray((modified_image_array).astype(np.uint8))
-        st.download_button("ダウンロード", modified_image_pil, file_name="modified_image.jpg", key="download")
+        modified_image_bytes = io.BytesIO()
+        modified_image_pil.save(modified_image_bytes, format='JPEG')
 
-
+        # ダウンロードボタンに渡す
+        st.download_button("ダウンロード", modified_image_bytes.getvalue(), file_name="modified_image.jpg", key="download")
