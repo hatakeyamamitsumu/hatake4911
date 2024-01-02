@@ -13,4 +13,5 @@ rembg==2.0.50
 numba==0.57
 numpy==1.23.0
 
-tensorflow==2.2.0
+tensorflow==2.5.0
+
