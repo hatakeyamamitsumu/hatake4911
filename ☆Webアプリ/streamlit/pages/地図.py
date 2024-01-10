@@ -3,8 +3,10 @@ from streamlit_folium import folium_static
 import streamlit as st
 import pandas as pd
 
-# ------------------------CSVファイルアップロード------------------------
+# ------------------------CSVファイル読み込み------------------------
 file_path = "/mount/src/hatake4911/☆Webアプリ/☆Webアプリ/CSVファイル各種/町の緯度経度その他数値情報.csv"
+sales_office = pd.read_csv(file_path, index_col=0)
+
 # データを地図に渡す関数を作成する
 def AreaMarker(df, m):
     for index, r in df.iterrows():
@@ -29,16 +31,12 @@ def AreaMarker(df, m):
 
 st.title("サンプル地図")  # タイトル
 
-# CSVファイルがアップロードされた場合
-if uploaded_file is not None:
-    # CSVファイルを読み込む
-    sales_office = pd.read_csv(file_path + "/" + uploaded_file.name, index_col=0)
-
 rad = st.slider('拠点を中心とした円の半径（km）',
                 value=40, min_value=5, max_value=50)  # スライダーをつける
 st.subheader("各拠点からの距離{:,}km".format(rad))  # 半径の距離を表示
 m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
-AreaMarker(sales_office, m)  # データを地図渡す
+AreaMarker(sales_office, m)  # データを地図に渡す
 folium_static(m)  # 地図情報を表示
+
 
 
