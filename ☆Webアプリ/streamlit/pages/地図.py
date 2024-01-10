@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 
 # ------------------------CSVファイルアップロード------------------------
-file_path = "/mount/src/hatake4911/☆Webアプリ/☆Webアプリ/CSVファイル各種"
+file_path = "/mount/src/hatake4911/☆Webアプリ/☆Webアプリ/CSVファイル各種/町の緯度経度その他数値情報.csv"
 # データを地図に渡す関数を作成する
 def AreaMarker(df, m):
     for index, r in df.iterrows():
