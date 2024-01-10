@@ -14,7 +14,7 @@ def AreaMarker(df, m):
         # ピンをおく
         marker = folium.Marker(
             location=[r.緯度, r.経度],
-            popup=f"<div style='font-size: 16px; width: 200px;'>{index}: {r.情報.replace(',', '<br>')}</div>",  # ポップアップに情報列を表示
+            popup=f"<div style='font-size: 16px; width: 400px;'>{index}: {r.情報.replace(',', '<br>')}</div>",  # ポップアップに情報列を表示
         ).add_to(m)
         
         # 円を重ねる
