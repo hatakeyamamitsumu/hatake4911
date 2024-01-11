@@ -139,4 +139,4 @@ def main():
     apps = {
         'appの実行': execute_app,
         'appの初期設定': set_app,
-        'pickleファイルから読み込み
+        'pickleファイルから読み込み'
