@@ -14,14 +14,14 @@ def AreaMarker(df, m):
         # ピンをおく
         marker = folium.Marker(
             location=[r.緯度, r.経度],
-            popup=f"<div style='font-size: 16px; width: 400px;'>{index}: {r.情報.replace(',', '<br>')}</div>",  # ポップアップに情報列を表示
+            popup=folium.Popup(f"<div style='font-size: 16px; width: 400px;'>{index}: {r.情報.replace(',', '<br>')}</div>", parse_html=True),  # ポップアップに情報列を表示
         ).add_to(m)
         
         # 円を重ねる
         folium.Circle(
             radius=rad * 1000,
             location=[r.緯度, r.経度],
-            popup=f"{index}: {r.情報}",  # ポップアップに情報列を表示
+            popup=folium.Popup(f"{index}: {r.情報}", parse_html=True),  # ポップアップに情報列を表示
             color="yellow",
             fill=True,
             fill_opacity=0.07
@@ -37,6 +37,7 @@ st.subheader("各拠点からの距離{:,}km".format(rad))  # 半径の距離を
 m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
 AreaMarker(sales_office, m)  # データを地図に渡す
 folium_static(m)  # 地図情報を表示
+
 
 
 
