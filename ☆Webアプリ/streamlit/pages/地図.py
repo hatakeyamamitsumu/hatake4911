@@ -12,24 +12,16 @@ def AreaMarker(df, m):
     for index, r in df.iterrows():
 
         # ピンをおく
-        popup_content = f"<div style='font-size: 16px; width: 400px;'>{index}: {r.情報.replace(',', '<br>')}"
-
-        # URLが含まれている場合はハイパーリンクを追加
-        if 'https://' in r.情報:
-            popup_content += f'<br><a href="{r.情報}" target="_blank">詳細を見る</a></div>'
-        else:
-            popup_content += '</div>'
-
         marker = folium.Marker(
             location=[r.緯度, r.経度],
-            popup=folium.Popup(popup_content, parse_html=True),
+            popup=f"<div style='font-size: 16px; width: 400px;'>{index}: {r.情報.replace(',', '<br>')}</div>",  # ポップアップに情報列を表示
         ).add_to(m)
         
         # 円を重ねる
         folium.Circle(
             radius=rad * 1000,
             location=[r.緯度, r.経度],
-            popup=folium.Popup(f"{index}: {r.情報}", parse_html=True),  # ポップアップに情報列を表示
+            popup=f"{index}: {r.情報}",  # ポップアップに情報列を表示
             color="yellow",
             fill=True,
             fill_opacity=0.07
