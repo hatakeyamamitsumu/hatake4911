@@ -23,6 +23,8 @@ def main():
     # カメラ入力
     picture = st.camera_input("Take a picture")
 
+    processed_img = None  # Initialize processed_img with a default value
+
     if picture is not None:
         # Convert camera input to NumPy array
         img = np.frombuffer(picture.getvalue(), dtype=np.uint8)
@@ -56,7 +58,7 @@ def main():
                 if st.button("Apply Canny Edge"):
                     processed_img = apply_canny_edge(img, low_threshold, high_threshold)
 
-            if filter_option != "Binary Threshold":
+            if processed_img is not None:
                 # PIL形式に変換して表示
                 pil_processed_img = Image.fromarray(processed_img)
                 st.image(pil_processed_img, caption=f'{filter_option} Filter', use_column_width=True)
@@ -75,4 +77,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
