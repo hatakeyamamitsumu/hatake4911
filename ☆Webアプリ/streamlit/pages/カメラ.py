@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
+from io import BytesIO
 
 def apply_binary_threshold(image, threshold_value):
     # 二値化の処理
@@ -40,6 +41,14 @@ def main():
                 binary_img_path = "binary_threshold_image.png"
                 pil_binary_img.save(binary_img_path)
                 st.success(f"Binary image saved as {binary_img_path}")
+
+                # Download button
+                st.download_button(
+                    label="Download Binary Image",
+                    data=BytesIO(pil_binary_img.tobytes()),
+                    file_name="binary_threshold_image.png",
+                    key="download_button",
+                )
                 
 if __name__ == "__main__":
     main()
