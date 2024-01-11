@@ -13,14 +13,12 @@ def save_ss():
         ss_dict[key] = st.session_state[key]
     
     try:
-        # pickle ファイルのパスを修正
-        file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
+        file_path = 'session_state.pkl'
         with st.cache(allow_output_mutation=True):
             with open(file_path, 'wb') as f:
                 pickle.dump(ss_dict, f)
     except Exception as e:
         st.error(f"ファイルへの書き込み中にエラーが発生しました: {e}")
-
 
 def set_app():
     def init_all():
@@ -28,7 +26,7 @@ def set_app():
             del st.session_state[key]
             st.write(f'{key} deleted')
 
-        folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+        folder_path = 'img'
         files = os.listdir(folder_path)
 
         for file_name in files:
@@ -51,10 +49,9 @@ def set_app():
 
     if img_files is not None:
         for img_file in img_files:
-            with open(f'/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img/{img_file.name}', 'wb') as f:
+            with open(f'img/{img_file.name}', 'wb') as f:
                 f.write(img_file.read())
             st.write(f'{img_file.name} uploaded')
-
 
 def execute_app():
     if 'title1' not in st.session_state:
@@ -65,7 +62,7 @@ def execute_app():
 
     st.markdown('投票する画像を選んで下さい')
 
-    folder_path = '/mount/src/hatake4911/☆Webアプリ/streamlit/pages/img'
+    folder_path = 'img'
     files = os.listdir(folder_path)
 
     # 画像を選択するためのセレクトボックス
@@ -75,59 +72,61 @@ def execute_app():
     image = Image.open(image_path)
     st.image(image, caption=f'Image {selected_img_name}', use_column_width=True)
 
-    clicked = st.button('投票する')
+    if 'selected_img_name' not in st.session_state:
+        st.session_state['selected_img_name'] = None
 
-    if clicked:
-        # 選択された画像名を保存
-        st.session_state['selected_img_name'] = selected_img_name
+    if st.session_state['selected_img_name'] == selected_img_name:
+        st.warning("同じ画像に複数回投票することはできません。")
+    else:
+        clicked = st.button('投票する')
 
-        # 投票数を更新
-        if selected_img_name not in st.session_state:
-            st.session_state[selected_img_name] = 0
-        st.session_state[selected_img_name] += 1
+        if clicked:
+            # 選択された画像名を保存
+            st.session_state['selected_img_name'] = selected_img_name
 
-        st.write(f'{selected_img_name}に投票しました。')
+            # 投票数を更新
+            if selected_img_name not in st.session_state:
+                st.session_state[selected_img_name] = 0
+            st.session_state[selected_img_name] += 1
 
-        # 投票結果を表示
-        count_dict = {}
-        for img_name in files:
-            count_dict[img_name] = st.session_state.get(img_name, 0)
+            st.write(f'{selected_img_name}に投票しました。')
 
-        df = pd.DataFrame(count_dict, index=['投票数']).T
+    # 投票結果を表示
+    count_dict = {}
+    for img_name in files:
+        count_dict[img_name] = st.session_state.get(img_name, 0)
 
-        col1, col2 = st.columns(2)
+    df = pd.DataFrame(count_dict, index=['投票数']).T
 
-        with col1:
-            st.write('投票状況')
-            st.bar_chart(df)
+    col1, col2 = st.columns(2)
 
-        with col2:
-            st.write('構成比')
-            fig = go.Figure(
-                data=[
-                    go.Pie(
-                        labels=df.index,
-                        values=df["投票数"]
-                    )])
+    with col1:
+        st.write('投票状況')
+        st.bar_chart(df)
 
-            fig.update_layout(
-                showlegend=True,
-                height=290,
-                margin={"l": 20, "r": 60, "t": 0, "b": 0},
-            )
-            fig.update_traces(textposition='inside', textinfo='label+percent')
-            st.plotly_chart(fig, use_container_width=True)
+    with col2:
+        st.write('構成比')
+        fig = go.Figure(
+            data=[
+                go.Pie(
+                    labels=df.index,
+                    values=df["投票数"]
+                )])
 
+        fig.update_layout(
+            showlegend=True,
+            height=290,
+            margin={"l": 20, "r": 60, "t": 0, "b": 0},
+        )
+        fig.update_traces(textposition='inside', textinfo='label+percent')
+        st.plotly_chart(fig, use_container_width=True)
 
 def load_ss():
     try:
-        # pickle ファイルのパスを修正
-        file_path = 'https://raw.githubusercontent.com/hatakeyamamitsumu/hatake4911/main/session_state.pkl'
+        file_path = 'session_state.pkl'
         with st.cache(allow_output_mutation=True):
             with open(file_path, 'rb') as f:
                 ss_dict = pickle.load(f)
-                st.write('pickle.load(f)')
-                st.write(ss_dict)
                 for key in ss_dict:
                     st.session_state[key] = ss_dict[key]
     except FileNotFoundError:
@@ -136,20 +135,8 @@ def load_ss():
     except Exception as e:
         st.error(f"ファイルの読み込み中にエラーが発生しました: {e}")
 
-    st.write('st.session_state')
-    st.write(st.session_state)
-
-
 def main():
     apps = {
         'appの実行': execute_app,
         'appの初期設定': set_app,
-        'pickleファイルから読み込み': load_ss
-    }
-    selected_app_name = st.sidebar.selectbox(label='項目の選択', options=list(apps.keys()))
-    render_func = apps[selected_app_name]
-    render_func()
-
-
-if __name__ == '__main__':
-    main()
+        'pickleファイルから読み込み
