@@ -36,6 +36,10 @@ def main():
                 pil_binary_img = Image.fromarray(binary_img)
                 st.image(pil_binary_img, caption=f'Binary Threshold (Threshold Value: {threshold_value})', use_column_width=True)
 
+                # Save binary image
+                binary_img_path = "binary_threshold_image.png"
+                pil_binary_img.save(binary_img_path)
+                st.success(f"Binary image saved as {binary_img_path}")
+                
 if __name__ == "__main__":
     main()
-
