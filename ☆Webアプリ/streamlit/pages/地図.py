@@ -2,7 +2,7 @@ import folium
 from streamlit_folium import folium_static
 import streamlit as st
 import pandas as pd
-
+#popup=f"{index}: {r.情報}",  # ポップアップに情報列を表示
 # ------------------------CSVファイル読み込み------------------------
 file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV/町の緯度経度その他数値情報.csv"
 
@@ -22,7 +22,7 @@ def AreaMarker(df, m):
         folium.Circle(
             radius=rad * 1000,
             location=[r.緯度, r.経度],
-            popup=f"{index}: {r.情報}",  # ポップアップに情報列を表示
+            
             color="yellow",
             fill=True,
             fill_opacity=0.07
