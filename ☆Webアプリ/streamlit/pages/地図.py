@@ -54,11 +54,11 @@ rad = st.slider('拠点を中心とした円の半径（km）',
 
 # Check if a CSV file was selected
 if selected_file:
+    print("Selected file:", selected_file)  # Debugging statement
     st.subheader("各拠点からの距離{:,}km - CSVファイル: {}".format(selected_file))  # 半径の距離を表示
     m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
     AreaMarker(sales_office, m)  # データを地図に渡す
     folium_static(m)  # 地図情報を表示
-
-
-
+else:
+    st.warning("Please select a CSV file.")
 
