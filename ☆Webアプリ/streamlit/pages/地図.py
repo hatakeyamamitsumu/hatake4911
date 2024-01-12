@@ -2,11 +2,28 @@ import folium
 from streamlit_folium import folium_static
 import streamlit as st
 import pandas as pd
+import os
 
 # ------------------------CSVファイル読み込み------------------------
-file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV/町の緯度経度その他数値情報.csv"
 
-sales_office = pd.read_csv(file_path, index_col=0)
+# Specify the folder path
+folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV"
+
+# List all CSV files in the folder
+csv_files = [file for file in os.listdir(folder_path) if file.endswith('.csv')]
+
+# Allow the user to select a CSV file
+selected_file = st.selectbox("Select CSV file", csv_files)
+
+# Check if a file was selected
+if selected_file:
+    # Construct the full file path
+    file_path = os.path.join(folder_path, selected_file)
+    
+    # Read the selected CSV file
+    sales_office = pd.read_csv(file_path, index_col=0)
+else:
+    st.warning("Please select a CSV file.")
 
 # データを地図に渡す関数を作成する
 def AreaMarker(df, m):
@@ -34,10 +51,14 @@ st.title("サンプル地図")  # タイトル
 
 rad = st.slider('拠点を中心とした円の半径（km）',
                 value=40, min_value=5, max_value=50)  # スライダーをつける
-st.subheader("各拠点からの距離{:,}km".format(rad))  # 半径の距離を表示
-m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
-AreaMarker(sales_office, m)  # データを地図に渡す
-folium_static(m)  # 地図情報を表示
+
+# Check if a CSV file was selected
+if selected_file:
+    st.subheader(f"各拠点からの距離{:,}km - CSVファイル: {selected_file}")  # 半径の距離を表示
+    m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
+    AreaMarker(sales_office, m)  # データを地図に渡す
+    folium_static(m)  # 地図情報を表示
+
 
 
 
