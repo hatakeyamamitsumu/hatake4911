@@ -32,7 +32,7 @@ def AreaMarker(df, m):
         # ピンをおく
         marker = folium.Marker(
             location=[r.緯度, r.経度],
-            popup=f"<div style='font-size: 16px; width: 600px;'>{index}: {r.情報.replace(',', '<br>')}</div>",
+            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報.replace(',', '<br>')}</div>",
         ).add_to(m)
         
         # 円を重ねる
