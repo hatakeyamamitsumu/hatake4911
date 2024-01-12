@@ -4,7 +4,8 @@ import streamlit as st
 import pandas as pd
 
 # ------------------------CSVファイル読み込み------------------------
-file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/町の緯度経度その他数値情報.csv"
+file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV/町の緯度経度その他数値情報.csv"
+
 sales_office = pd.read_csv(file_path, index_col=0)
 
 # データを地図に渡す関数を作成する
