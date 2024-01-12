@@ -49,7 +49,7 @@ def AreaMarker(df, m):
 st.title("サンプル地図")  # タイトル
 
 rad = st.slider('拠点を中心とした円の半径（km）',
-                value=40, min_value=5, max_value=50)  # スライダーをつける
+                value=40, min_value=0.5, max_value=50)  # スライダーをつける
 
 # Check if a CSV file was selected
 if selected_file is not None:
