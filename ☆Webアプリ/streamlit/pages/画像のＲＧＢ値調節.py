@@ -79,4 +79,4 @@ if uploaded_file is not None:
         modified_image_bytes = io.BytesIO()
 
         if apply_canny:
-            # Convert Canny Edge NumPy array to PIL Image
+
