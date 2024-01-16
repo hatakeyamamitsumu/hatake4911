@@ -79,4 +79,12 @@ if uploaded_file is not None:
         modified_image_bytes = io.BytesIO()
 
         if apply_canny:
+            # Convert Canny Edge NumPy array to PIL Image
+            modified_image_canny = Image.fromarray(modified_image_rgb)
+            modified_image_canny.save(modified_image_bytes, format='JPEG')
+        else:
+            modified_image.save(modified_image_bytes, format='JPEG')
+
+        # ダウンロードボタンに渡す
+        st.download_button("ダウンロード", modified_image_bytes.getvalue(), file_name="modified_image.jpg", key="download")
 
