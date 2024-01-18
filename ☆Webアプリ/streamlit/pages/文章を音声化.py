@@ -1,24 +1,23 @@
 import streamlit as st
-import pyttsx3
+from gtts import gTTS
+import os
 
 def main():
     st.title("Text-to-Speech with Streamlit")
 
-    # Get user input
-    voice_text = st.text_area("Enter the text you want to convert to speech", "こんにちは、これはStreamlitを使用して文章を音声化するデモです。")
+    # ユーザーの入力を取得
+    voice_text = st.text_area("音声に変換したいテキストを入力してください", "こんにちは、これはStreamlitを使用して文章を音声化するデモです。")
 
-    # Initialize the text-to-speech engine with the 'sapi5' driver
-    engine = pyttsx3.init(driverName='sapi5')
+    # gTTSオブジェクトを作成
+    tts = gTTS(text=voice_text, lang='ja')
 
-    # Set engine properties
-    engine.setProperty('volume', 1.0)
-    voices = engine.getProperty('voices')
-    engine.setProperty('voice', voices[0].id)  # voices[0]は日本語。voices[1]は英語、らしい
-    engine.setProperty('rate', 180)
+    # 音声をファイルに保存
+    prefix = voice_text[:4]
+    output_file = f"{prefix}_output.mp3"
+    tts.save(output_file)
 
-    # Speak the entered text
-    engine.say(voice_text)
-    engine.runAndWait()
+    # 音声ファイルを表示
+    st.audio(output_file, format="audio/mp3", start_time=0)
 
 if __name__ == "__main__":
     main()
