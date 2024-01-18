@@ -16,6 +16,6 @@ numpy==1.23.0
 folium
 streamlit_folium
 
-gTTS-2.5.0
+
 
 
