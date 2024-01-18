@@ -7,8 +7,8 @@ def main():
     # Get user input
     voice_text = st.text_area("Enter the text you want to convert to speech", "こんにちは、これはStreamlitを使用して文章を音声化するデモです。")
 
-    # Initialize the text-to-speech engine
-    engine = pyttsx3.init()
+    # Initialize the text-to-speech engine with the 'sapi5' driver
+    engine = pyttsx3.init(driverName='sapi5')
 
     # Set engine properties
     engine.setProperty('volume', 1.0)
