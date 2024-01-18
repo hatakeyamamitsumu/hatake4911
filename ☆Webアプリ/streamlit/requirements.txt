@@ -17,6 +17,6 @@ folium
 streamlit_folium
 
 pyttsx3==2.90
-pydub==0.25.1
+comtypes==1.1.10
 
 
