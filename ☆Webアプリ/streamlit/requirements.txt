@@ -16,5 +16,7 @@ numpy==1.23.0
 folium
 streamlit_folium
 
+pyttsx3==2.90
+pydub==0.25.1
 
 
