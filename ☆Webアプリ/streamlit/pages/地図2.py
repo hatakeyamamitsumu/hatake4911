@@ -3,7 +3,7 @@ import pandas as pd
 import folium
 
 # CSVファイルを読み込む
-file_path = "/mount/src/hatake4911/☆Webアプリ/動画/東京到着.gif'  # ファイルのパスを適切に指定してください
+file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図2用CSV/標高.csv"  # ファイルのパスを適切に指定してください
 data = pd.read_csv(file_path)
 
 # Streamlitアプリのタイトル
