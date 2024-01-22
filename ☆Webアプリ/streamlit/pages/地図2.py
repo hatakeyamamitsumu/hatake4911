@@ -43,14 +43,13 @@ def AreaMarker(df, m):
             fill_opacity=0.07
         ).add_to(m)
 
-        # 縦棒グラフ風の円グラフを表示する
-        folium.CircleMarker(
+        # 縦棒グラフ風のFontAwesomeアイコンを表示する
+        icon = folium.Icon(color='blue', icon='bar-chart', prefix='fa')  # Use a bar chart icon
+        popup_html = f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>"
+        marker = folium.Marker(
             location=[r.緯度, r.経度],
-            radius=10,
-            color="blue",
-            fill=True,
-            fill_opacity=0.8,
-            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>",
+            icon=icon,
+            popup=folium.Popup(popup_html, max_width=300),
         ).add_to(m)
 
 # ------------------------画面作成------------------------
@@ -67,3 +66,4 @@ if selected_file is not None:
     folium_static(m)  # 地図情報を表示
 else:
     st.warning("Please select a CSV file.")
+
