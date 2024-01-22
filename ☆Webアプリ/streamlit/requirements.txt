@@ -16,5 +16,6 @@ numpy==1.23.0
 folium
 streamlit_folium
 
+qrcode[pil]==7.3
 
 
