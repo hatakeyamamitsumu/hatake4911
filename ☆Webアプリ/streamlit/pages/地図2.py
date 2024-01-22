@@ -13,10 +13,10 @@ def load_data():
         "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV/標高.csv",
         nrows=825,
         names=[
-            "lat",
-            "lon"
+            "緯度",
+            "経度"
         ],
-        skiprows=1, # コメント行をスキップ
+        
         usecols=[2, 3],  # 3、4列目を使用する
     )
     return data
