@@ -7,7 +7,7 @@ import os
 # ------------------------CSVファイル読み込み------------------------
 
 # Specify the folder path
-folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV"
+folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV/標高.csv"
 
 # List all CSV files in the folder
 csv_files = [file for file in os.listdir(folder_path) if file.endswith('.csv')]
