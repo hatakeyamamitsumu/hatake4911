@@ -60,5 +60,5 @@ data = load_data()
 
 # SETTING THE ZOOM LOCATIONS FOR THE AIRPORTS
 zoom_level = 12
-midpoint = mpoint(data["lat"], data["lon"])
+midpoint = mpoint(data["緯度], data["経度"])
 map(data, midpoint[0], midpoint[1], 8.5)
