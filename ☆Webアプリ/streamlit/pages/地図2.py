@@ -10,7 +10,7 @@ st.title('Osaka Precipitation')
 @st.experimental_singleton
 def load_data():
     data = pd.read_csv(
-        "./map_data.csv",
+        "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地図用CSV",
         nrows=825,
         names=[
             "lat",
