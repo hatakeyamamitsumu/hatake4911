@@ -43,10 +43,13 @@ def AreaMarker(df, m):
             fill_opacity=0.07
         ).add_to(m)
 
-        # 縦棒グラフを表示する
-        folium.Marker(
+        # 縦棒グラフ風の円グラフを表示する
+        folium.CircleMarker(
             location=[r.緯度, r.経度],
-            icon=folium.Icon(color='blue', icon='bar-chart', prefix='fa'),
+            radius=10,
+            color="blue",
+            fill=True,
+            fill_opacity=0.8,
             popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>",
         ).add_to(m)
 
