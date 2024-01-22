@@ -9,13 +9,13 @@ data = st.text_input("QRコードにしたい文字列を入力してくださ�
 # データが入力されていればQRコードを作成
 if data:
     # QRコードを作成
-    qr_img = qrcode.make(data)
-
-    # Streamlitで画像を表示
-    st.write(np.array(qr_img))
-
+    _qr_img = qrcode.make(data)
     # 画像をファイルとして保存
-    qr_img.save("QR.png")
+    _qr_img.save("QR.png")
+    img=Image.open("QR.png")
+    st.image(img)
+
+
 
     # ダウンロードボタンを表示
     st.download_button(
