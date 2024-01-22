@@ -21,18 +21,17 @@ if selected_file:
     file_path = os.path.join(folder_path, selected_file)
     
     # Read the selected CSV file
-    sales_office = pd.read_csv(file_path, index_col=0)
+    sales_office = pd.read_csv(file_path)
 else:
     st.warning("Please select a CSV file.")
 
 # データを地図に渡す関数を作成する
 def AreaMarker(df, m):
     for index, r in df.iterrows():
-
         # ピンをおく
-        marker = folium.Marker(
+        folium.Marker(
             location=[r.緯度, r.経度],
-            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報.replace(',', '<br>')}</div>",
+            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>",
         ).add_to(m)
         
         # 円を重ねる
@@ -45,27 +44,23 @@ def AreaMarker(df, m):
         ).add_to(m)
 
         # 縦棒グラフを表示する
-        icon = folium.Icon(color='blue', icon='bar-chart', prefix='fa')  # Use a bar chart icon
-        popup_html = f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>"
-        marker = folium.Marker(
+        folium.Marker(
             location=[r.緯度, r.経度],
-            icon=icon,
-            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.Icon(color='blue', icon='bar-chart', prefix='fa'),
+            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>",
         ).add_to(m)
 
 # ------------------------画面作成------------------------
 
 st.title("サンプル地図")  # タイトル
 
-rad = st.slider('拠点を中心とした円の半径（km）',
-                value=40, min_value=1, max_value=50)  # スライダーをつける
-
 # Check if a CSV file was selected
 if selected_file is not None:
-    st.subheader("各拠点からの距離{}km - CSVファイル: {}".format(rad, selected_file))  # 半径の距離を表示
+    st.subheader("各拠点からの距離 - CSVファイル: {}".format(selected_file))
     m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
+    rad = st.slider('拠点を中心とした円の半径（km）',
+                    value=40, min_value=1, max_value=50)  # スライダーをつける
     AreaMarker(sales_office, m)  # データを地図に渡す
     folium_static(m)  # 地図情報を表示
 else:
     st.warning("Please select a CSV file.")
-
