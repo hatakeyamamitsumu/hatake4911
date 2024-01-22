@@ -32,10 +32,12 @@ def AreaMarker(df, m):
         # ピンをおく
         marker = folium.Marker(
             location=[r.緯度, r.経度],
-            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報.replace(',', '<br>')}</div>",
+            popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報}</div>",
         ).add_to(m)
         
         # 円を重ねる
+        rad = st.slider('拠点を中心とした円の半径（km）',
+                value=40, min_value=1, max_value=50)  # スライダーをつける
         folium.Circle(
             radius=rad * 1000,
             location=[r.緯度, r.経度],
@@ -48,12 +50,9 @@ def AreaMarker(df, m):
 
 st.title("サンプル地図")  # タイトル
 
-rad = st.slider('拠点を中心とした円の半径（km）',
-                value=40, min_value=1, max_value=50)  # スライダーをつける
-
 # Check if a CSV file was selected
 if selected_file is not None:
-    st.subheader("各拠点からの距離{}km - CSVファイル: {}".format(rad, selected_file))  # 半径の距離を表示
+    st.subheader("各拠点からの距離 - CSVファイル: {}".format(selected_file))  # 半径の距離を表示
     m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
     AreaMarker(sales_office, m)  # データを地図に渡す
     folium_static(m)  # 地図情報を表示
