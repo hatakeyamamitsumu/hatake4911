@@ -1,6 +1,7 @@
 import streamlit as st
 import qrcode
 from PIL import Image
+import io
 
 # ユーザーにデータを入力させる
 data = st.text_input("QRコードにしたい文字列を入力してください:")
@@ -24,5 +25,6 @@ if data:
     )
 else:
     st.warning("データが入力されていません。QRコードにしたい文字列を入力してください。")
+
 
 
