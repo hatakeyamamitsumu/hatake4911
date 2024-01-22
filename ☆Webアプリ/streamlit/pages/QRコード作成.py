@@ -21,9 +21,11 @@ if data:
     # ダウンロードボタンを表示
     st.download_button(
         label="QRコードをダウンロード",
-        data="QR.png",  # ファイルパスを指定
-        key="download_qr_button"
+        data=qr_img.tobytes(),  # QRコードのバイナリデータを指定
+        key="download_qr_button",
+        file_name="QR.png",  # ダウンロード時のファイル名を指定
     )
 else:
     st.warning("データが入力されていません。QRコードにしたい文字列を入力してください。")
+
 
