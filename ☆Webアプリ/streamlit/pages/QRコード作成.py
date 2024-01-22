@@ -2,7 +2,7 @@ import streamlit as st
 import qrcode
 from PIL import Image
 import io
-import　numpy as np
+import numpy as np
 # ユーザーにデータを入力させる
 data = st.text_input("QRコードにしたい文字列を入力してください:")
 
