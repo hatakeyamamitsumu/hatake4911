@@ -20,7 +20,7 @@ if data:
     # ダウンロードボタンを表示
     st.download_button(
         label="QRコードをダウンロード",
-        data="QR.png",
+        data=img,
         key="download_qr_button"
     )
 else:
