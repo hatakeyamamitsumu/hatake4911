@@ -10,11 +10,8 @@ if data:
     # QRコードを作成
     qr_img = qrcode.make(data)
 
-    # PillowのImageオブジェクトに変換
-    image = Image.fromarray(qr_img)
-
     # Streamlitで画像を表示
-    st.image(image, caption='QR Code', use_column_width=True)
+    st.image(qr_img, caption='QR Code', use_column_width=True)
 
     # 画像をファイルとして保存
     qr_img.save("QR.png")
@@ -27,4 +24,5 @@ if data:
     )
 else:
     st.warning("データが入力されていません。QRコードにしたい文字列を入力してください。")
+
 
