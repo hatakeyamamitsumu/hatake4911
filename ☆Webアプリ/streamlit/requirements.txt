@@ -16,8 +16,8 @@ numpy==1.23.0
 folium
 streamlit_folium
 
-edge_tts==2.0.0
-os==3.10.0
+edge_tts
+
 asyncio==3.10.0
 speech_recognition==3.8.1
 
