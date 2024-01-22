@@ -12,7 +12,7 @@ if data:
     qr_img = qrcode.make(data)
 
     # Streamlitで画像を表示
-    st.write(np.arrray(qr_img))
+    st.write(np.array(qr_img))
 
     # 画像をファイルとして保存
     qr_img.save("QR.png")
