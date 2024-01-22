@@ -18,6 +18,6 @@ streamlit_folium
 
 edge_tts
 
-asyncio==3.10.0
-speech_recognition==3.8.1
+asyncio
+speech_recognition
 
