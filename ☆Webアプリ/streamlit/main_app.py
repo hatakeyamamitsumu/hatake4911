@@ -27,4 +27,9 @@ video_path = '/mount/src/hatake4911/☆Webアプリ/動画/東京到着.gif'
 #st.video(video_path)
 st.image(video_path)
 
+code='''
+
+'''
+st.code(code,language='python')
+
 
