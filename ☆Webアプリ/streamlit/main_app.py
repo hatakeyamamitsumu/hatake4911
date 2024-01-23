@@ -4,11 +4,7 @@ import datetime
 import pandas as pd
 import os
 
-code='''
-cwd = os.getcwd()
-st.text(cwd)#このコードによってgithub上のフルパスを確認
-'''
-st.code(code,language='python')
+
 
 
 
@@ -33,3 +29,9 @@ st.image(video_path)
 
 
 
+
+code='''
+cwd = os.getcwd()
+st.text(cwd)#このコードによってgithub上のフルパスを確認
+'''
+st.code(code,language='python')
