@@ -15,7 +15,7 @@ def generate_qr_code(data, size=500):
     return img
 
 # ユーザーにデータを入力させ、QRコードのサイズを調節可能にする
-data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
+data = st.text_input("文字列入力欄")
 qr_size = st.slider("QRコードのサイズを調整してください", min_value=100, max_value=1000, value=500)
 
 # データが入力されていればQRコードを作成
@@ -43,5 +43,5 @@ if data:
     except Exception as e:
         st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
 else:
-    st.warning("データが入力されていません。QRコードにしたい文字列を入力してください。")
+    st.warning("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
 
