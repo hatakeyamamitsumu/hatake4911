@@ -1,39 +1,39 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import seaborn as sns
-import matplotlib.pyplot as plt
-import io
 
 def read_file(file, encoding):
     try:
         content = file.read()
         decoded_content = content.decode(encoding)
-        df = pd.read_csv(io.StringIO(decoded_content))
+        df = pd.read_csv(pd.compat.StringIO(decoded_content))
         return df
     except Exception as e:
         st.error(f"ファイルを読み込む際にエラーが発生しました: {str(e)}")
         return None
 
-def generate_heatmap(df):
-    st.subheader("ヒートマップ")
+def generate_colored_table(df):
+    st.subheader("色付きテーブル")
 
-    # 各数値列の最小値と最大値を取得
-    min_values = df.select_dtypes(include=['number']).min()
-    max_values = df.select_dtypes(include=['number']).max()
+    # 数値の列を取得
+    numerical_columns = df.select_dtypes(include=[np.number]).columns
 
-    sns.set()
-    plt.figure(figsize=(10, 8))
+    # 色のスケールを設定
+    cmap = sns.color_palette("coolwarm", as_cmap=True)
 
-    # ヒートマップの作成
-    heatmap_data = df.select_dtypes(include=['number']).apply(lambda x: (x - min_values) / (max_values - min_values))
-    heatmap = sns.heatmap(heatmap_data, cmap="coolwarm", linewidths=.5, annot=True)
-    st.pyplot()
+    # テーブルのスタイルを設定
+    styles = []
+    for col in numerical_columns:
+        style = df[col].apply(lambda x: f"background-color: {sns.color_palette('coolwarm', as_cmap=True)(x)}", axis=0)
+        styles.append(style)
 
-    st.subheader("データの統計情報")
-    st.write(df.describe())
+    # スタイルを結合して表示
+    styled_df = df.style.apply(lambda x: np.concatenate(styles, axis=1), axis=None)
+    st.dataframe(styled_df, unsafe_allow_html=True)
 
 def main():
-    st.title("CSVファイル読み込み＆ヒートマップアプリ")
+    st.title("色付きテーブルアプリ")
 
     # UTF-8 ファイルアップロードウィジェット
     st.subheader("UTF-8 ファイルアップロード")
@@ -46,7 +46,7 @@ def main():
         if df_utf8 is not None:
             st.subheader("データの概要")
             st.write(df_utf8)
-            generate_heatmap(df_utf8)
+            generate_colored_table(df_utf8)
 
     # Shift-JIS ファイルアップロードウィジェット
     st.subheader("Shift-JIS ファイルアップロード")
@@ -59,7 +59,7 @@ def main():
         if df_sjis is not None:
             st.subheader("データの概要")
             st.write(df_sjis)
-            generate_heatmap(df_sjis)
+            generate_colored_table(df_sjis)
 
 if __name__ == "__main__":
     main()
