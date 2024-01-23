@@ -4,8 +4,7 @@ import datetime
 import pandas as pd
 import os
 
-cwd = os.getcwd()
-st.text(cwd)#このコードによってgithub上のフルパスを確認
+
 
 
 
@@ -28,7 +27,8 @@ video_path = '/mount/src/hatake4911/☆Webアプリ/動画/東京到着.gif'
 st.image(video_path)
 
 code='''
-
+cwd = os.getcwd()
+st.text(cwd)#このコードによってgithub上のフルパスを確認
 '''
 st.code(code,language='python')
 
