@@ -21,7 +21,7 @@ if data:
     # ダウンロードボタンを表示
     st.download_button(
         label="QRコードをダウンロード",
-        data=qr_img.tobytes(),  # QRコードのバイナリデータを指定
+        data=qr_img,  # QRコードのバイナリデータを指定
         key="download_qr_button",
         file_name="QR.png",  # ダウンロード時のファイル名を指定
     )
