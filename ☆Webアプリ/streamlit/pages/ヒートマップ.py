@@ -10,7 +10,7 @@ def read_csv_shift_jis(uploaded_file):
     return df
 
 # ページのタイトル
-st.title("CSVデータの最大値を赤色で強調表示")
+st.title("CSVデータの最大値を赤色で表示")
 
 # UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
