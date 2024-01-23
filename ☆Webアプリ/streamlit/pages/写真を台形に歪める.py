@@ -32,8 +32,8 @@ def main():
                                     [0, img.shape[0] * 0.8]], dtype=np.float32)
 
         # スライダーで調節する座標を取得
-        src_pts = st.slider("変換前の4点の座標", 0.0, img.shape[1], default_src_pts)
-        dst_pts = st.slider("変換後の4点の座標", 0.0, img.shape[1], default_dst_pts)
+        src_pts = st.slider("変換前の4点の座標", 0.0, float(img.shape[1]), default_src_pts)
+        dst_pts = st.slider("変換後の4点の座標", 0.0, float(img.shape[1]), default_dst_pts)
 
         # 画像を変換
         transformed_image = perspective_transform(img, src_pts, dst_pts)
@@ -47,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
