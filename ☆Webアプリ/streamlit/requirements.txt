@@ -18,4 +18,6 @@ streamlit_folium
 
 qrcode[pil]==7.3
 
+seaborn
+
 
