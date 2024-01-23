@@ -21,6 +21,9 @@ def main():
     uploaded_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
+        # アップロードされた画像を読み込み
+        img = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
+
         # デフォルトの座標を設定
         default_src_pts = np.array([[0, 0], [width, 0], [width, height], [0, height]], dtype=np.float32)
         default_dst_pts = np.array([[width * 0.25, width*0.2],
@@ -31,9 +34,6 @@ def main():
         # スライダーで調節する座標を取得
         src_pts = st.slider("変換前の4点の座標", 0.0, width, default_src_pts)
         dst_pts = st.slider("変換後の4点の座標", 0.0, width, default_dst_pts)
-
-        # アップロードされた画像を読み込み
-        img = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), cv2.IMREAD_COLOR)
 
         # 画像を変換
         transformed_image = perspective_transform(img, src_pts, dst_pts)
