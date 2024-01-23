@@ -12,16 +12,18 @@ if data:
     qr_img = qrcode.make(data)
     
     # 画像をファイルとして保存
-    qr_img.save("QR.png")
+    img_byte_array = io.BytesIO()
+    qr_img.save(img_byte_array, format='PNG')
+    img_byte_array = img_byte_array.getvalue()
     
     # Streamlitで画像を表示
-    img = Image.open("QR.png")
+    img = Image.open(io.BytesIO(img_byte_array))
     st.image(img)
 
     # ダウンロードボタンを表示
     st.download_button(
         label="QRコードをダウンロード",
-        data=qr_img,  # QRコードのバイナリデータを指定
+        data=img_byte_array,  # QRコードのバイナリデータを指定
         key="download_qr_button",
         file_name="QR.png",  # ダウンロード時のファイル名を指定
     )
