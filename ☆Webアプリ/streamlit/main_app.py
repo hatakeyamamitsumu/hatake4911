@@ -26,10 +26,5 @@ video_path = '/mount/src/hatake4911/☆Webアプリ/動画/東京到着.gif'
 #st.video(video_path)
 st.image(video_path)
 
-code='''
-cwd = os.getcwd()
-st.text(cwd)#このコードによってgithub上のフルパスを確認
-'''
-st.code(code,language='python')
 
 
