@@ -14,14 +14,15 @@ def generate_qr_code(data, size=500):
 
     return img
 
-# ユーザーにデータを入力させる
+# ユーザーにデータを入力させ、QRコードのサイズを調節可能にする
 data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
+qr_size = st.slider("QRコードのサイズを調整してください", min_value=100, max_value=1000, value=500)
 
 # データが入力されていればQRコードを作成
 if data:
     try:
         # QRコードを作成
-        qr_img = generate_qr_code(data)
+        qr_img = generate_qr_code(data, size=qr_size)
 
         # 画像をファイルとして保存
         img_byte_array = io.BytesIO()
