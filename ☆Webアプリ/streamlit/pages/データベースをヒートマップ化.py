@@ -1,47 +1,32 @@
 import streamlit as st
-import qrcode
-from PIL import Image, ImageDraw, ImageFont
-import io
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-def generate_qr_code(data, size=500):
-    # QRコードを作成
-    qr_img = qrcode.make(data)
+# ページのタイトルを設定
+st.title("CSVデータのヒートマップ表示")
 
-    # PIL Imageに変換
-    img = Image.new("RGB", (size, size), "white")
-    qr_img = qr_img.convert("RGB")
-    img.paste(qr_img)
+# ファイルアップロードのウィジェットを追加
+uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
 
-    return img
+# CSVファイルがアップロードされた場合の処理
+if uploaded_file is not None:
+    # アップロードされたファイルをDataFrameに読み込む
+    df = pd.read_csv(uploaded_file)
 
-# ユーザーにデータを入力させ、QRコードのサイズを調節可能にする
-data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
-qr_size = st.slider("QRコードのサイズを調整してください", min_value=100, max_value=1000, value=500)
+    # データの概要を表示
+    st.subheader("データの概要")
+    st.write(df)
 
-# データが入力されていればQRコードを作成
-if data:
-    try:
-        # QRコードを作成
-        qr_img = generate_qr_code(data, size=qr_size)
+    # ヒートマップを作成して表示
+    st.subheader("ヒートマップ")
+    sns.set()
+    plt.figure(figsize=(10, 8))
+    heatmap = sns.heatmap(df.corr(), annot=True, cmap="coolwarm", linewidths=.5)
+    st.pyplot()
 
-        # 画像をファイルとして保存
-        img_byte_array = io.BytesIO()
-        qr_img.save(img_byte_array, format='PNG')
-        img_byte_array = img_byte_array.getvalue()
-
-        # Streamlitで画像を表示
-        img = Image.open(io.BytesIO(img_byte_array))
-        st.image(img)
-
-        # ダウンロードボタンを表示
-        st.download_button(
-            label="QRコードをダウンロード",
-            data=img_byte_array,
-            key="download_qr_button",
-            file_name="QR.png",
-        )
-    except Exception as e:
-        st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
+    # データの統計情報を表示
+    st.subheader("データの統計情報")
+    st.write(df.describe())
 else:
-    st.warning("データが入力されていません。QRコードにしたい文字列を入力してください。")
-
+    st.warning("CSVファイルをアップロードしてください。")
