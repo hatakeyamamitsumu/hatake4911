@@ -15,7 +15,7 @@ def generate_qr_code(data, size=500):
     return img
 
 # ユーザーにデータを入力させる
-data = st.text_input("QRコードにしたい文字列を入力してください:")
+data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
 
 # データが入力されていればQRコードを作成
 if data:
