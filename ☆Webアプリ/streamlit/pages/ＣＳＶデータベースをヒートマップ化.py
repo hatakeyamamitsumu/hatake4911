@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 import io
 
 def read_file(file, encoding):
@@ -23,39 +24,66 @@ def read_file(file, encoding):
 def main():
     st.title("CSVファイル読み込み＆ヒートマップアプリ")
 
-    # ファイルアップロードウィジェットを追加
-    st.subheader("CSVファイルアップロード")
-    uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
+    # ファイルアップロードウィジェットを追加（UTF-8用）
+    st.subheader("UTF-8ファイルアップロード")
+    utf8_file = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 
-    # ファイルがアップロードされた場合の処理
-    if uploaded_file is not None:
-        # ファイルを読み込む
-        encoding = 'utf-8'  # デフォルトはUTF-8
-        df = read_file(uploaded_file, encoding)
-
-        # データが読み込まれた場合の処理
-        if df is not None:
+    # UTF-8ファイルがアップロードされた場合の処理
+    if utf8_file is not None:
+        st.write("UTF-8エンコーディングのデータ:")
+        df_utf8 = read_file(utf8_file, 'utf-8')
+        if df_utf8 is not None:
             # データの概要を表示
             st.subheader("データの概要")
-            st.write(df)
+            st.write(df_utf8)
 
             # 各列の最大値と最小値を取得
-            min_values = df.min()
-            max_values = df.max()
+            min_values_utf8 = df_utf8.min()
+            max_values_utf8 = df_utf8.max()
 
             # ヒートマップを作成して表示
-            st.subheader("ヒートマップ")
+            st.subheader("ヒートマップ (UTF-8)")
             sns.set()
             plt.figure(figsize=(10, 8))
             
             # ヒートマップの作成
-            heatmap_data = (df - min_values) / (max_values - min_values)
-            heatmap = sns.heatmap(heatmap_data, cmap="coolwarm", linewidths=.5, annot=True)
+            heatmap_data_utf8 = (df_utf8 - min_values_utf8) / (max_values_utf8 - min_values_utf8)
+            heatmap_utf8 = sns.heatmap(heatmap_data_utf8, cmap="coolwarm", linewidths=.5, annot=True)
             st.pyplot()
 
             # データの統計情報を表示
-            st.subheader("データの統計情報")
-            st.write(df.describe())
+            st.subheader("データの統計情報 (UTF-8)")
+            st.write(df_utf8.describe())
+
+    # ファイルアップロードウィジェットを追加（Shift-JIS用）
+    st.subheader("Shift-JISファイルアップロード")
+    sjis_file = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+
+    # Shift-JISファイルがアップロードされた場合の処理
+    if sjis_file is not None:
+        st.write("Shift-JISエンコーディングのデータ:")
+        df_sjis = read_file(sjis_file, 'shift-jis')
+        if df_sjis is not None:
+            # データの概要を表示
+            st.subheader("データの概要")
+            st.write(df_sjis)
+
+            # 各列の最大値と最小値を取得
+            min_values_sjis = df_sjis.min()
+            max_values_sjis = df_sjis.max()
+
+            # ヒートマップを作成して表示
+            st.subheader("ヒートマップ (Shift-JIS)")
+            plt.figure(figsize=(10, 8))
+            
+            # ヒートマップの作成
+            heatmap_data_sjis = (df_sjis - min_values_sjis) / (max_values_sjis - min_values_sjis)
+            heatmap_sjis = sns.heatmap(heatmap_data_sjis, cmap="coolwarm", linewidths=.5, annot=True)
+            st.pyplot()
+
+            # データの統計情報を表示
+            st.subheader("データの統計情報 (Shift-JIS)")
+            st.write(df_sjis.describe())
 
 if __name__ == "__main__":
     main()
