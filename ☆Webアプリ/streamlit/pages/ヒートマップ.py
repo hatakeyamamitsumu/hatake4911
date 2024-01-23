@@ -1,24 +1,31 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
+import io
 
-# CSVファイルのアップロード
-uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
+def read_csv_utf8(uploaded_file):
+    content = uploaded_file.read()
+    decoded_content = content.decode("utf-8")
+    df = pd.read_csv(io.StringIO(decoded_content))
+    return df
 
-if uploaded_file is not None:
-    # CSVデータを読み込む
-    df = pd.read_csv(uploaded_file)
+def read_csv_shift_jis(uploaded_file):
+    content = uploaded_file.read()
+    decoded_content = content.decode("shift-jis")
+    df = pd.read_csv(io.StringIO(decoded_content))
+    return df
 
-    # 各列のデータ型を確認し、数値列だけを取得
-    numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+st.title("CSVファイルアップローダー")
 
-    # 各列の最大値を取得
-    max_values = df[numeric_columns].max()
+# UTF-8用のアップローダー
+uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_utf8 is not None:
+    st.subheader("UTF-8データフレーム")
+    df_utf8 = read_csv_utf8(uploaded_file_utf8)
+    st.write(df_utf8)
 
-    # 各列の最大値に対応するセルにスタイルを適用する関数
-    def highlight_max(s):
-        is_max = s == max_values[s.name]
-        return ['background-color: red' if v else '' for v in is_max]
-
-    # 表示
-    st.dataframe(df.style.apply(highlight_max, axis=0))
+# Shift-JIS用のアップローダー
+uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_shift_jis is not None:
+    st.subheader("Shift-JISデータフレーム")
+    df_shift_jis = read_csv_shift_jis(uploaded_file_shift_jis)
+    st.write(df_shift_jis)
