@@ -47,7 +47,7 @@ def main():
             plt.figure(figsize=(10, 8))
             
             # ヒートマップの作成
-            heatmap_data_utf8 = (df_utf8 - min_values_utf8) / (max_values_utf8 - min_values_utf8)
+            heatmap_data_utf8 = ((df_utf8 - min_values_utf8) / (max_values_utf8 - min_values_utf8)).fillna(0)
             heatmap_utf8 = sns.heatmap(heatmap_data_utf8, cmap="coolwarm", linewidths=.5, annot=True)
             st.pyplot()
 
@@ -77,7 +77,7 @@ def main():
             plt.figure(figsize=(10, 8))
             
             # ヒートマップの作成
-            heatmap_data_sjis = (df_sjis - min_values_sjis) / (max_values_sjis - min_values_sjis)
+            heatmap_data_sjis = ((df_sjis - min_values_sjis) / (max_values_sjis - min_values_sjis)).fillna(0)
             heatmap_sjis = sns.heatmap(heatmap_data_sjis, cmap="coolwarm", linewidths=.5, annot=True)
             st.pyplot()
 
