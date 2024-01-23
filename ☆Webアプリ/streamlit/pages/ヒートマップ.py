@@ -1,31 +1,54 @@
 import streamlit as st
 import pandas as pd
-import io
 
 def read_csv_utf8(uploaded_file):
-    content = uploaded_file.read()
-    decoded_content = content.decode("utf-8")
-    df = pd.read_csv(io.StringIO(decoded_content))
+    df = pd.read_csv(uploaded_file)
     return df
 
 def read_csv_shift_jis(uploaded_file):
-    content = uploaded_file.read()
-    decoded_content = content.decode("shift-jis")
-    df = pd.read_csv(io.StringIO(decoded_content))
+    df = pd.read_csv(uploaded_file, encoding='shift-jis')
     return df
 
-st.title("CSVファイルアップローダー")
+# ページのタイトル
+st.title("CSVデータの最大値を赤色で強調表示")
 
-# UTF-8用のアップローダー
+# UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 if uploaded_file_utf8 is not None:
     st.subheader("UTF-8データフレーム")
     df_utf8 = read_csv_utf8(uploaded_file_utf8)
-    st.write(df_utf8)
 
-# Shift-JIS用のアップローダー
+    # 数値列だけを取得
+    numeric_columns_utf8 = df_utf8.select_dtypes(include='number').columns.tolist()
+
+    # 各列の最大値を取得
+    max_values_utf8 = df_utf8[numeric_columns_utf8].max()
+
+    # 各列の最大値に対応するセルにスタイルを適用する関数
+    def highlight_max_utf8(s):
+        is_max = s == max_values_utf8[s.name]
+        return ['background-color: red' if v else '' for v in is_max]
+
+    # 表示
+    st.dataframe(df_utf8.style.apply(highlight_max_utf8, axis=0))
+
+# Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 if uploaded_file_shift_jis is not None:
     st.subheader("Shift-JISデータフレーム")
     df_shift_jis = read_csv_shift_jis(uploaded_file_shift_jis)
-    st.write(df_shift_jis)
+
+    # 数値列だけを取得
+    numeric_columns_shift_jis = df_shift_jis.select_dtypes(include='number').columns.tolist()
+
+    # 各列の最大値を取得
+    max_values_shift_jis = df_shift_jis[numeric_columns_shift_jis].max()
+
+    # 各列の最大値に対応するセルにスタイルを適用する関数
+    def highlight_max_shift_jis(s):
+        is_max = s == max_values_shift_jis[s.name]
+        return ['background-color: red' if v else '' for v in is_max]
+
+    # 表示
+    st.dataframe(df_shift_jis.style.apply(highlight_max_shift_jis, axis=0))
+
