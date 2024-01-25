@@ -48,5 +48,4 @@ if uploaded_file_shift_jis is not None:
             df_shift_jis[col] = df_shift_jis[col].sort_values(ascending=False).rank(method='first', ascending=False) * 5
 
         # 着色
-        st.dataframe(df_shift_jis.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5))}, 0, 0)' if not pd.isna(x[i]) else '' for i in range(len(x))]))
-
+        st.dataframe(df_shift_jis.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5)))}, 0, 0)' if not pd.isna(x[i]) else '' for i in range(len(x))]))
