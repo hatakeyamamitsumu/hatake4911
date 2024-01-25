@@ -14,32 +14,26 @@ def colorize_column(df, col_idx):
         color_values = np.arange(255, -5, -5)
         for i, color in enumerate(color_values):
             threshold = min_val + i * 5
-            print(f"Processing column {col_name}, threshold: {threshold}")  # デバッグ用出力
-            df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
+            try:
+                df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
+            except Exception as e:
+                st.error(f"Error processing column {col_name}: {e}")
+                return df
     return df
-
-
-
-
-def process_dataframe(df):
-    for col_idx in range(df.shape[1]):
-        df = colorize_column(df, col_idx)
-    return df.style
 
 # ページのタイトル
 st.title("CSVデータの数値列を着色表示")
 
-# UTF-8用アップローダー
-uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_utf8 is not None:
-    st.subheader("UTF-8データフレーム")
-    df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
-    st.dataframe(process_dataframe(df_utf8))
+# アップローダー
+uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file is not None:
+    df = read_csv(uploaded_file)
 
-# Shift-JIS用アップローダー
-uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_shift_jis is not None:
-    st.subheader("Shift-JISデータフレーム")
-    df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
-    st.dataframe(process_dataframe(df_shift_jis))
+    # 列ごとに処理
+    for col_idx in range(1, df.shape[1]):  # 一番左の列を除外
+        df = colorize_column(df, col_idx)
+
+    # 表示
+    st.dataframe(df)
+
 
