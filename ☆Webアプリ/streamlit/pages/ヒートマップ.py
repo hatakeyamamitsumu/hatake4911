@@ -15,7 +15,7 @@ def colorize_column(df, col_idx):
         for i, color in enumerate(color_values):
             threshold = min_val + i * 5
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
-    return df
+    return df.style
 
 def process_dataframe(df):
     for col_idx in range(df.shape[1]):
@@ -30,13 +30,11 @@ uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファ
 if uploaded_file_utf8 is not None:
     st.subheader("UTF-8データフレーム")
     df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
-    df_utf8_processed = process_dataframe(df_utf8)
-    st.dataframe(df_utf8_processed.style.apply(lambda x: x))
+    st.dataframe(process_dataframe(df_utf8))
 
 # Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 if uploaded_file_shift_jis is not None:
     st.subheader("Shift-JISデータフレーム")
     df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
-    df_shift_jis_processed = process_dataframe(df_shift_jis)
-    st.dataframe(df_shift_jis_processed.style.apply(lambda x: x))
+    st.dataframe(process_dataframe(df_shift_jis))
