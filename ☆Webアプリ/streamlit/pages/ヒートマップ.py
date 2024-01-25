@@ -38,3 +38,4 @@ if uploaded_file_shift_jis is not None:
     st.subheader("Shift-JISデータフレーム")
     df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
     st.dataframe(process_dataframe(df_shift_jis))
+
