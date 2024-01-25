@@ -31,7 +31,11 @@ if uploaded_file_utf8 is not None:
 
     # 列ごとに処理
     for col_idx in range(1, df_utf8.shape[1]):  # 一番左の列を除外
-        df_utf8 = colorize_column(df_utf8, col_idx)
+        try:
+            df_utf8 = colorize_column(df_utf8, col_idx)
+        except KeyError as e:
+            st.error(f"Error processing column {df_utf8.columns[col_idx]}: {e}")
+            break
 
     # 表示
     st.dataframe(df_utf8)
@@ -43,7 +47,11 @@ if uploaded_file_shift_jis is not None:
 
     # 列ごとに処理
     for col_idx in range(1, df_shift_jis.shape[1]):  # 一番左の列を除外
-        df_shift_jis = colorize_column(df_shift_jis, col_idx)
+        try:
+            df_shift_jis = colorize_column(df_shift_jis, col_idx)
+        except KeyError as e:
+            st.error(f"Error processing column {df_shift_jis.columns[col_idx]}: {e}")
+            break
 
     # 表示
     st.dataframe(df_shift_jis)
