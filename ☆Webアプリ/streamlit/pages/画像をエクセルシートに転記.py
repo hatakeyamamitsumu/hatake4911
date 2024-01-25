@@ -1,11 +1,12 @@
 import streamlit as st
 from PIL import Image
+from io import BytesIO
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 
-def image_to_excel(image_path, output_filename):
+def image_to_excel(image_stream, output_filename):
     # 画像ファイルを開く
-    image = Image.open(image_path)
+    image = Image.open(image_stream)
 
     # 画像の幅と高さを取得
     width, height = image.size
@@ -41,7 +42,7 @@ if uploaded_file is not None:
         # Set the output file name
         output_excel_filename = "画像をエクセル化.xlsx"
         
-        # Call the conversion function
+        # Call the conversion function with the BytesIO object
         result_filename = image_to_excel(uploaded_file, output_excel_filename)
 
         # Display download link for the Excel file
