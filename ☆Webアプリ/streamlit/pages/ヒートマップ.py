@@ -11,10 +11,15 @@ def colorize_column(df, col_idx):
     if pd.api.types.is_numeric_dtype(df[col_name]):
         max_val = df[col_name].max()
         min_val = df[col_name].min()
-        color_values = np.arange(255, 0, 0)
+        color_values = np.arange(255, -5, -5)
         for i, color in enumerate(color_values):
             threshold = min_val + i * 5
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
+    return df
+
+def process_dataframe(df):
+    for col_idx in range(df.shape[1]):
+        df = colorize_column(df, col_idx)
     return df
 
 # ページのタイトル
@@ -25,24 +30,13 @@ uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファ
 if uploaded_file_utf8 is not None:
     st.subheader("UTF-8データフレーム")
     df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
-
-    # 列ごとに処理
-    for col_idx in range(df_utf8.shape[1]):
-        df_utf8 = colorize_column(df_utf8, col_idx)
-
-    # 表示
-    st.dataframe(df_utf8.style.apply(lambda x: x))
+    df_utf8_processed = process_dataframe(df_utf8)
+    st.dataframe(df_utf8_processed.style.apply(lambda x: x))
 
 # Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 if uploaded_file_shift_jis is not None:
     st.subheader("Shift-JISデータフレーム")
     df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
-
-    # 列ごとに処理
-    for col_idx in range(df_shift_jis.shape[1]):
-        df_shift_jis = colorize_column(df_shift_jis, col_idx)
-
-    # 表示
-    st.dataframe(df_shift_jis.style.apply(lambda x: x))
-
+    df_shift_jis_processed = process_dataframe(df_shift_jis)
+    st.dataframe(df_shift_jis_processed.style.apply(lambda x: x))
