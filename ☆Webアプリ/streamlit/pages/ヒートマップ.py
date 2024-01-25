@@ -12,12 +12,13 @@ def read_csv_shift_jis(uploaded_file):
 
 # RGB値を生成する関数
 def generate_color(value):
-    # 最大値を100として、0から100の範囲でRGB値を生成
-    normalized_value = min(value, 100) / 100
+    # Ensure that normalized_value is between 0 and 1
+    normalized_value = max(0, min(value, 100)) / 100
     red = int(255 - normalized_value * 255)
     green = 0
     blue = 0
-    return f'background-color: rgb({red}, {green}, {blue})'
+    return f'background-color: rgb({max(red, 0)}, {green}, {blue})'
+
 
 # ページのタイトル
 st.title("CSVデータの最大値を5刻みで着色表示")
