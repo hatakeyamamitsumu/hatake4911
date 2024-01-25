@@ -11,7 +11,7 @@ def colorize_column(df, col_idx):
     if pd.api.types.is_numeric_dtype(df[col_name]):
         max_val = df[col_name].max()
         min_val = df[col_name].min()
-        color_values = np.arange(255, -5, -5)
+        color_values = np.arange(255, 0, 0)
         for i, color in enumerate(color_values):
             threshold = min_val + i * 5
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
