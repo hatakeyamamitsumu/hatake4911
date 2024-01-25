@@ -50,7 +50,7 @@ if uploaded_file is not None:
         st.success(f"画像の色がExcelに保存されました: {result_filename}")
         st.download_button(
             label="Excelファイルをダウンロード",
-            data=result_filename,
+            data=BytesIO(open(result_filename, "rb").read()),
             key="download_button",
             on_click=None,
             args=None,
