@@ -6,8 +6,7 @@ def read_csv(uploaded_file, encoding=None):
     df = pd.read_csv(uploaded_file, encoding=encoding)
     return df
 
-def colorize_column(df, col_idx):
-    col_name = df.columns[col_idx]
+def colorize_column(df, col_name):
     if pd.api.types.is_numeric_dtype(df[col_name]):
         max_val = df[col_name].max()
         min_val = df[col_name].min()
@@ -17,6 +16,7 @@ def colorize_column(df, col_idx):
             print(f"Processing column {col_name}, threshold: {threshold}")  # デバッグ用出力
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
     return df
+
 
 # process_dataframe 関数内の変更なし
 
