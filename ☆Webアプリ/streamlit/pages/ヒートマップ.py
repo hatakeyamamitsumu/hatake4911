@@ -24,16 +24,28 @@ def colorize_column(df, col_idx):
 # ページのタイトル
 st.title("CSVデータの数値列を着色表示")
 
-# アップローダー
-uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file is not None:
-    df = read_csv(uploaded_file)
+# 1つ目のアップローダー
+uploaded_file_1 = st.file_uploader("1つ目のCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_1 is not None:
+    df_1 = read_csv(uploaded_file_1)
 
     # 列ごとに処理
-    for col_idx in range(1, df.shape[1]):  # 一番左の列を除外
-        df = colorize_column(df, col_idx)
+    for col_idx in range(1, df_1.shape[1]):  # 一番左の列を除外
+        df_1 = colorize_column(df_1, col_idx)
 
     # 表示
-    st.dataframe(df)
+    st.dataframe(df_1)
+
+# 2つ目のアップローダー
+uploaded_file_2 = st.file_uploader("2つ目のCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_2 is not None:
+    df_2 = read_csv(uploaded_file_2)
+
+    # 列ごとに処理
+    for col_idx in range(1, df_2.shape[1]):  # 一番左の列を除外
+        df_2 = colorize_column(df_2, col_idx)
+
+    # 表示
+    st.dataframe(df_2)
 
 
