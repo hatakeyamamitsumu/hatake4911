@@ -9,9 +9,8 @@ def colorize_column(df, col_idx, color_values):
     col_name = df.columns[col_idx]
     if pd.api.types.is_numeric_dtype(df[col_name]):
         for i, color in enumerate(color_values):
-            df[col_name] = df[col_name].sort_values(ascending=False).rank(method='first', ascending=False) * 5
+            rank_col = df[col_name].rank(method='first', ascending=False) * 5
             df = df.style.applymap(lambda x: f'background-color: rgb({max(0, 255 - color)}, 0, 0)', subset=pd.IndexSlice[0:i, col_name])
-
     return df
 
 # ページのタイトル
@@ -29,7 +28,7 @@ if uploaded_file_utf8 is not None:
         df_utf8 = colorize_column(df_utf8, col_idx, color_values)
 
     # 表示
-    st.dataframe(df_utf8)
+    st.dataframe(df_utf8.data)
 
 # Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -43,4 +42,5 @@ if uploaded_file_shift_jis is not None:
         df_shift_jis = colorize_column(df_shift_jis, col_idx, color_values)
 
     # 表示
-    st.dataframe(df_shift_jis)
+    st.dataframe(df_shift_jis.data)
+
