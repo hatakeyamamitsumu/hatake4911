@@ -10,10 +10,9 @@ def read_csv_shift_jis(uploaded_file):
     df = pd.read_csv(uploaded_file, encoding='shift-jis')
     return df
 
-# Gradient generation function
 def generate_gradient(value, max_value):
     normalized_value = min(value, max_value) / max_value
-    red = int(255 - normalized_value * 255)
+    red = max(0, int(255 - normalized_value * 255))
     green = 0
     blue = 0
     return f'background-color: rgb({red}, {green}, {blue})'
