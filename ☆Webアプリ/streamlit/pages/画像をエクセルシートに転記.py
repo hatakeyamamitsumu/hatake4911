@@ -30,7 +30,7 @@ def image_to_excel(image_path, output_filename):
 # アップローダーを作成
 uploaded_file = st.file_uploader('画像ファイルをアップロード', type='png')
 
-# 画像がアップロードされたら処理を実行
+# アップロードされた画像がなければ、処理をスキップする
 if uploaded_file is not None:
     image_path = uploaded_file.name
     output_excel_filename = st.text_input('出力ファイル名')
@@ -41,13 +41,3 @@ if uploaded_file is not None:
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image)
-
-# ダウンロードリンクを作成
-if uploaded_file is not None:
-    output_excel_file = f'{output_excel_filename}.xlsx'
-    st.download_button(
-        label='Excelファイルをダウンロード',
-        data=output_excel_file,
-        filename=output_excel_filename,
-        mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    )
