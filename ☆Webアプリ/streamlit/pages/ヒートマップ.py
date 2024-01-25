@@ -1,51 +1,29 @@
 import streamlit as st
 import pandas as pd
 
-def read_csv_utf8(uploaded_file):
-    df = pd.read_csv(uploaded_file)
+def read_csv(uploaded_file, encoding=None):
+    df = pd.read_csv(uploaded_file, encoding=encoding)
     return df
 
-def read_csv_shift_jis(uploaded_file):
-    df = pd.read_csv(uploaded_file, encoding='shift-jis')
-    return df
+def colorize_column(df, col_idx, color_values):
+    col_name = df.columns[col_idx]
+    if pd.api.types.is_numeric_dtype(df[col_name]):
+        df[col_name] = df[col_name].sort_values(ascending=False).rank(method='first', ascending=False) * 5
+        for i, color in enumerate(color_values):
+            df.style.applymap(lambda x: f'background-color: rgb({color}, 0, 0)', subset=pd.IndexSlice[0:i, col_name])
 
 # ページのタイトル
-st.title("CSVデータの数値列を降順に着色表示")
+st.title("CSVデータの数値列を着色表示")
 
-# UTF-8用アップローダー
-uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_utf8 is not None:
-    st.subheader("UTF-8データフレーム")
-    df_utf8 = read_csv_utf8(uploaded_file_utf8)
+# アップローダー
+uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file is not None:
+    df = read_csv(uploaded_file)
 
-    # 数値列だけを取得
-    numeric_columns_utf8 = df_utf8.select_dtypes(include='number').columns.tolist()
+    # 列ごとに処理
+    for col_idx in range(df.shape[1]):
+        color_values = range(255, -1, -5)
+        colorize_column(df, col_idx, color_values)
 
-    if not numeric_columns_utf8:
-        st.warning("数値列が見つかりませんでした。")
-    else:
-        # 数値列を降順にソートして、着色
-        for col in numeric_columns_utf8:
-            df_utf8[col] = df_utf8[col].sort_values(ascending=False).rank(method='first', ascending=False) * 5
-
-        # 着色
-        st.dataframe(df_utf8.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5))}, 0, 0)' if not pd.isna(x[i]) else '' for i in range(len(x))]))
-
-# Shift-JIS用アップローダー
-uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_shift_jis is not None:
-    st.subheader("Shift-JISデータフレーム")
-    df_shift_jis = read_csv_shift_jis(uploaded_file_shift_jis)
-
-    # 数値列だけを取得
-    numeric_columns_shift_jis = df_shift_jis.select_dtypes(include='number').columns.tolist()
-
-    if not numeric_columns_shift_jis:
-        st.warning("数値列が見つかりませんでした。")
-    else:
-        # 数値列を降順にソートして、着色
-        for col in numeric_columns_shift_jis:
-            df_shift_jis[col] = df_shift_jis[col].sort_values(ascending=False).rank(method='first', ascending=False) * 5
-
-        # 着色
-        st.dataframe(df_shift_jis.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5)))}, 0, 0)' if not pd.isna(x[i]) else '' for i in range(len(x))]))
+    # 表示
+    st.dataframe(df)
