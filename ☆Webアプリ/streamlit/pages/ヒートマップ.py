@@ -15,16 +15,30 @@ def colorize_column(df, col_idx, color_values):
 # ページのタイトル
 st.title("CSVデータの数値列を着色表示")
 
-# アップローダー
-uploaded_file = st.file_uploader("CSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file is not None:
-    df = read_csv(uploaded_file)
+# UTF-8用アップローダー
+uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_utf8 is not None:
+    st.subheader("UTF-8データフレーム")
+    df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
 
     # 列ごとに処理
-    for col_idx in range(df.shape[1]):
+    for col_idx in range(df_utf8.shape[1]):
         color_values = range(255, -1, -5)
-        colorize_column(df, col_idx, color_values)
+        colorize_column(df_utf8, col_idx, color_values)
 
     # 表示
-    st.dataframe(df)
+    st.dataframe(df_utf8)
 
+# Shift-JIS用アップローダー
+uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_shift_jis is not None:
+    st.subheader("Shift-JISデータフレーム")
+    df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
+
+    # 列ごとに処理
+    for col_idx in range(df_shift_jis.shape[1]):
+        color_values = range(255, -1, -5)
+        colorize_column(df_shift_jis, col_idx, color_values)
+
+    # 表示
+    st.dataframe(df_shift_jis)
