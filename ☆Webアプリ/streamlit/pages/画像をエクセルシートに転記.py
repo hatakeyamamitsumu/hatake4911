@@ -33,9 +33,12 @@ uploaded_file = st.file_uploader('画像ファイルをアップロード', type
 # アップロードされた画像がなければ、処理をスキップする
 if uploaded_file is not None:
     image_path = uploaded_file.name
+
+    # 出力ファイル名を入力する
     output_excel_filename = st.text_input('出力ファイル名')
+
+    # 画像を処理する
     image_to_excel(image_path, output_excel_filename)
-    st.success('画像の色をExcelシートに保存しました。')
 
 # アップロードされた画像をプレビュー
 if uploaded_file is not None:
