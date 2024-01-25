@@ -1,16 +1,20 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 def read_csv(uploaded_file, encoding=None):
     df = pd.read_csv(uploaded_file, encoding=encoding)
     return df
 
-def colorize_column(df, col_idx, color_values):
+def colorize_column(df, col_idx):
     col_name = df.columns[col_idx]
     if pd.api.types.is_numeric_dtype(df[col_name]):
-        rank_col = df[col_name].rank(method='first', ascending=False) * 5
+        max_val = df[col_name].max()
+        min_val = df[col_name].min()
+        color_values = np.arange(255, -5, -5)
         for i, color in enumerate(color_values):
-            df[rank_col <= i] = df.style.applymap(lambda x: f'background-color: rgb({max(0, 255 - color)}, 0, 0)', subset=pd.IndexSlice[:, col_name])
+            threshold = min_val + i * 5
+            df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
     return df
 
 # ページのタイトル
@@ -24,11 +28,10 @@ if uploaded_file_utf8 is not None:
 
     # 列ごとに処理
     for col_idx in range(df_utf8.shape[1]):
-        color_values = range(255, -1, -5)
-        df_utf8 = colorize_column(df_utf8, col_idx, color_values)
+        df_utf8 = colorize_column(df_utf8, col_idx)
 
     # 表示
-    st.dataframe(df_utf8)
+    st.dataframe(df_utf8.style.apply(lambda x: x))
 
 # Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -38,9 +41,8 @@ if uploaded_file_shift_jis is not None:
 
     # 列ごとに処理
     for col_idx in range(df_shift_jis.shape[1]):
-        color_values = range(255, -1, -5)
-        df_shift_jis = colorize_column(df_shift_jis, col_idx, color_values)
+        df_shift_jis = colorize_column(df_shift_jis, col_idx)
 
     # 表示
-    st.dataframe(df_shift_jis)
+    st.dataframe(df_shift_jis.style.apply(lambda x: x))
 
