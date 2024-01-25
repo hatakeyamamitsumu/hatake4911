@@ -18,6 +18,9 @@ def colorize_column(df, col_idx):
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
     return df
 
+# process_dataframe 関数内の変更なし
+
+
 
 def process_dataframe(df):
     for col_idx in range(df.shape[1]):
