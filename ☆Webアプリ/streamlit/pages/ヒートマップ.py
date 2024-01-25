@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 
 def read_csv_utf8(uploaded_file):
     df = pd.read_csv(uploaded_file)
@@ -30,7 +29,7 @@ if uploaded_file_utf8 is not None:
             df_utf8[col] = df_utf8[col].sort_values(ascending=False).rank(method='first', ascending=False) * 5
 
         # 着色
-        st.dataframe(df_utf8.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5))}, 0, 0)' for i in range(len(x))]))
+        st.dataframe(df_utf8.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5)))}, 0, 0)' if not pd.isna(x[i]) else '' for i in range(len(x))]))
 
 # Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -49,4 +48,4 @@ if uploaded_file_shift_jis is not None:
             df_shift_jis[col] = df_shift_jis[col].sort_values(ascending=False).rank(method='first', ascending=False) * 5
 
         # 着色
-        st.dataframe(df_shift_jis.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5))}, 0, 0)' for i in range(len(x))]))
+        st.dataframe(df_shift_jis.style.apply(lambda x: [f'background-color: rgb({255 - int(min(255, x[i] * 5)))}, 0, 0)' if not pd.isna(x[i]) else '' for i in range(len(x))]))
