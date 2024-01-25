@@ -15,12 +15,12 @@ def colorize_column(df, col_idx):
         for i, color in enumerate(color_values):
             threshold = min_val + i * 5
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
-    return df.style
+    return df
 
 def process_dataframe(df):
     for col_idx in range(df.shape[1]):
         df = colorize_column(df, col_idx)
-    return df
+    return df.style
 
 # ページのタイトル
 st.title("CSVデータの数値列を着色表示")
