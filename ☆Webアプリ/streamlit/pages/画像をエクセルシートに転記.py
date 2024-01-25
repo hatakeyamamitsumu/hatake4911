@@ -38,11 +38,11 @@ if uploaded_file is not None:
 
     # Convert image to Excel when button is clicked
     if st.button("Convert to Excel"):
-        # Temporary file to save the output Excel file
-        temp_excel_filename = "temp_output_colors.xlsx"
+        # Set the output file name
+        output_excel_filename = "画像をエクセル化.xlsx"
         
         # Call the conversion function
-        result_filename = image_to_excel(uploaded_file, temp_excel_filename)
+        result_filename = image_to_excel(uploaded_file, output_excel_filename)
 
         # Display download link for the Excel file
         st.success(f"Image colors saved in Excel: {result_filename}")
