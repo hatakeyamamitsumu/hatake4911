@@ -31,7 +31,7 @@ if uploaded_file_utf8 is not None:
         def highlight_max_utf8(s):
             if s.name in max_values_utf8:
                 is_max = s == max_values_utf8[s.name]
-                return ['background-color: red' if v else '' for v in is_max]
+                return ['background-color: (255,0,0)' if v else '' for v in is_max]
             else:
                 return [''] * len(s)
 
