@@ -24,28 +24,29 @@ def colorize_column(df, col_idx):
 # ページのタイトル
 st.title("CSVデータの数値列を着色表示")
 
-# 1つ目のアップローダー
-uploaded_file_1 = st.file_uploader("1つ目のCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_1 is not None:
-    df_1 = read_csv(uploaded_file_1)
+# UTF-8のアップローダー
+uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_utf8 is not None:
+    df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
 
     # 列ごとに処理
-    for col_idx in range(1, df_1.shape[1]):  # 一番左の列を除外
-        df_1 = colorize_column(df_1, col_idx)
+    for col_idx in range(1, df_utf8.shape[1]):  # 一番左の列を除外
+        df_utf8 = colorize_column(df_utf8, col_idx)
 
     # 表示
-    st.dataframe(df_1)
+    st.dataframe(df_utf8)
 
-# 2つ目のアップローダー
-uploaded_file_2 = st.file_uploader("2つ目のCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_2 is not None:
-    df_2 = read_csv(uploaded_file_2)
+# Shift-JISのアップローダー
+uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+if uploaded_file_shift_jis is not None:
+    df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
 
     # 列ごとに処理
-    for col_idx in range(1, df_2.shape[1]):  # 一番左の列を除外
-        df_2 = colorize_column(df_2, col_idx)
+    for col_idx in range(1, df_shift_jis.shape[1]):  # 一番左の列を除外
+        df_shift_jis = colorize_column(df_shift_jis, col_idx)
 
     # 表示
-    st.dataframe(df_2)
+    st.dataframe(df_shift_jis)
+
 
 
