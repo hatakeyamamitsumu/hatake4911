@@ -28,14 +28,12 @@ if uploaded_file_utf8 is not None:
         max_values_utf8 = df_utf8[numeric_columns_utf8].max()
 
         # 各列の最大値に対応するセルにスタイルを適用する関数
-def highlight_max_utf8(s):
-    if s.name in max_values_utf8:
-        is_max = s == max_values_utf8[s.name]
-        color_values = [255 - i * 5 for i in range(len(is_max))]
-        colors = [(color, 0, 0) for color in color_values]
-        return [f'background-color: rgb{color}' if v else '' for v, color in zip(is_max, colors)]
-    else:
-        return [''] * len(s)
+    def highlight_max_utf8(s):
+            if s.name in max_values_utf8:
+                is_max = s == max_values_utf8[s.name]
+                return ['background-color: (255,0,0)' if v else '' for v in is_max]
+            else:
+                return [''] * len(s)
 
 
         # 表示
