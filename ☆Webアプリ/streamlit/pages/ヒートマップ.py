@@ -14,8 +14,10 @@ def colorize_column(df, col_idx):
         color_values = np.arange(255, -5, -5)
         for i, color in enumerate(color_values):
             threshold = min_val + i * 5
+            print(f"Processing column {col_name}, threshold: {threshold}")  # デバッグ用出力
             df.loc[df[col_name] >= threshold, col_name] = f'background-color: rgb({max(0, 255 - color)}, 0, 0)'
     return df
+
 
 def process_dataframe(df):
     for col_idx in range(df.shape[1]):
