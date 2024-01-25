@@ -29,29 +29,30 @@ def image_to_excel(image_stream, output_filename):
     return output_filename
 
 # Streamlit UI
-st.title("Image to Excel Converter")
+st.title("画像をエクセルに変換するアプリ")
 
-uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Display the uploaded image
-    st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+    # アップロードされた画像を表示
+    st.image(uploaded_file, caption="アップロードされた画像", use_column_width=True)
 
-    # Convert image to Excel when button is clicked
-    if st.button("Convert to Excel"):
-        # Set the output file name
+    # ボタンがクリックされたときに画像をExcelに変換
+    if st.button("Excelに変換"):
+        # 出力ファイル名を設定
         output_excel_filename = "画像をエクセル化.xlsx"
         
-        # Call the conversion function with the BytesIO object
-        result_filename = image_to_excel(uploaded_file, output_excel_filename)
+        # BytesIOオブジェクトを使って変換関数を呼び出す
+        image_stream = BytesIO(uploaded_file.read())
+        result_filename = image_to_excel(image_stream, output_excel_filename)
 
-        # Display download link for the Excel file
-        st.success(f"Image colors saved in Excel: {result_filename}")
+        # Excelファイルのダウンロードリンクを表示
+        st.success(f"画像の色がExcelに保存されました: {result_filename}")
         st.download_button(
-            label="Download Excel File",
+            label="Excelファイルをダウンロード",
             data=result_filename,
             key="download_button",
             on_click=None,
             args=None,
-            help="Click to download the Excel file.",
+            help="Excelファイルをダウンロードするにはクリックしてください。",
         )
