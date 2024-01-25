@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 
 def read_csv_utf8(uploaded_file):
     df = pd.read_csv(uploaded_file)
@@ -10,18 +9,8 @@ def read_csv_shift_jis(uploaded_file):
     df = pd.read_csv(uploaded_file, encoding='shift-jis')
     return df
 
-# RGB値を生成する関数
-def generate_color(value):
-    # Ensure that normalized_value is between 0 and 1
-    normalized_value = max(0, min(value, 100)) / 100
-    red = int(255 - normalized_value * 255)
-    green = 0
-    blue = 0
-    return f'background-color: rgb({max(red, 0)}, {green}, {blue})'
-
-
 # ページのタイトル
-st.title("CSVデータの最大値を5刻みで着色表示")
+st.title("CSVデータの最大値を赤色で強調表示")
 
 # UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -41,7 +30,8 @@ if uploaded_file_utf8 is not None:
         # 各列の最大値に対応するセルにスタイルを適用する関数
         def highlight_max_utf8(s):
             if s.name in max_values_utf8:
-                return [generate_color(v) for v in s]
+                is_max = s == max_values_utf8[s.name]
+                return ['background-color: red' if v else '' for v in is_max]
             else:
                 return [''] * len(s)
 
@@ -66,7 +56,8 @@ if uploaded_file_shift_jis is not None:
         # 各列の最大値に対応するセルにスタイルを適用する関数
         def highlight_max_shift_jis(s):
             if s.name in max_values_shift_jis:
-                return [generate_color(v) for v in s]
+                is_max = s == max_values_shift_jis[s.name]
+                return ['background-color: red' if v else '' for v in is_max]
             else:
                 return [''] * len(s)
 
