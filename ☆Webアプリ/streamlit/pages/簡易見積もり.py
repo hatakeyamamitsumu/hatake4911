@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
+import base64  # 追加
 
 st.set_page_config(page_title='簡易見積app')
 st.title('簡易見積app')
@@ -66,5 +67,5 @@ if estimates:
         st.markdown(href, unsafe_allow_html=True)
 
     # 見積もりをリセット
-    if st.button('見積をリセット'):
+    if st.button('見積もりをリセット'):
         estimates = []
