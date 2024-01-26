@@ -71,4 +71,5 @@ if estimates:
 
     # 見積もりをリセット
     if st.button('見積もりをリセット'):
-        estimates = []
+        estimates.clear()  # 修正: clear()メソッドを使用してリストをクリア
+
