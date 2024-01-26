@@ -12,7 +12,7 @@ def colorize_max_value(df, col_idx):
         max_value = df[col_name].max()
         st.write(f"### {col_name} - Max Value: {max_value}")
         max_idx = df[col_name].idxmax()
-        st.dataframe(df.style.apply(lambda x: ['background: red' if i == max_idx else '' for i in range(len(x))], subset=col_name))
+        st.dataframe(df.style.apply(lambda x: ['background: red' if i == max_idx else '' for i in range(len(x))], subset=col_name, axis=0))
 
 # ページのタイトル
 st.title("CSVデータの数値列で最大値を赤く塗る")
@@ -23,7 +23,7 @@ if uploaded_file_utf8 is not None:
     df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
 
     # 見出し以外の数値列で最大値を赤く塗る
-    for col_idx in range(1, df_utf8.shape[1]):  # 一番左の列を除外
+    for col_idx in range(df_utf8.shape[1]):
         colorize_max_value(df_utf8, col_idx)
 
 # Shift-JISのアップローダー
@@ -32,9 +32,5 @@ if uploaded_file_shift_jis is not None:
     df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
 
     # 見出し以外の数値列で最大値を赤く塗る
-    for col_idx in range(1, df_shift_jis.shape[1]):  # 一番左の列を除外
+    for col_idx in range(df_shift_jis.shape[1]):
         colorize_max_value(df_shift_jis, col_idx)
-
-
-
-
