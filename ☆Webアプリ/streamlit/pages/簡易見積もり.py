@@ -21,7 +21,7 @@ df = pd.DataFrame(
     ]
 )
 
-with st.expander('df', expanded=False):
+with st.expander('カタログを開く', expanded=False):
     st.dataframe(df)
 
 def calculate_subtotal(item, quantity):
