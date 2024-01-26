@@ -27,15 +27,17 @@ def highlight_cells(df):
 # ページのタイトル
 st.title("CSVデータベースのセルを着色で強調表示")
 
-# ファイルアップローダー
+# UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+
+# Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 
 # UTF-8データベースの処理
 if uploaded_file_utf8 is not None:
     st.subheader("UTF-8データベース")
     df_utf8 = read_csv(uploaded_file_utf8, 'utf-8')
-    
+
     # Matplotlib colormap
     matplot_color = df_utf8.style.background_gradient(cmap='viridis')
     st.write(matplot_color)
@@ -66,3 +68,4 @@ if uploaded_file_shift_jis is not None:
     # Seaborn colorpalette + nanを黒にする
     sns_color_nan = df_shift_jis.style.background_gradient(cmap=cm).highlight_null('black')
     st.write(sns_color_nan)
+
