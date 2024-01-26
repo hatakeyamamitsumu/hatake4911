@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 def read_csv_utf8(uploaded_file):
     df = pd.read_csv(uploaded_file)
@@ -9,11 +10,12 @@ def read_csv_shift_jis(uploaded_file):
     df = pd.read_csv(uploaded_file, encoding='shift-jis')
     return df
 
-# Custom color scheme
-custom_colors = [(250, 0, 0), (245, 0, 0), (240, 0, 0), (235, 0, 0)]
-
 # ページのタイトル
 st.title("CSVデータの最大値を着色で強調表示")
+
+# RGBの色の定義
+max_value_color = (255, 0, 0)
+other_value_color = (250, 0, 0)
 
 # UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -30,11 +32,11 @@ if uploaded_file_utf8 is not None:
         # 各列の最大値を取得
         max_values_utf8 = df_utf8[numeric_columns_utf8].max()
 
-        # 各列の最大値に対応するセルにスタイルを適用する関数
+        # 各列の最大値とそれに続く値に対応するセルにスタイルを適用する関数
         def highlight_max_utf8(s):
             if s.name in max_values_utf8:
                 is_max = s == max_values_utf8[s.name]
-                return [f'background-color: rgb{color}' if v else '' for v, color in zip(is_max, custom_colors)]
+                return [f'background-color: rgb{max_value_color}' if v else f'background-color: rgb{other_value_color}' for v in is_max]
             else:
                 return [''] * len(s)
 
@@ -56,13 +58,14 @@ if uploaded_file_shift_jis is not None:
         # 各列の最大値を取得
         max_values_shift_jis = df_shift_jis[numeric_columns_shift_jis].max()
 
-        # 各列の最大値に対応するセルにスタイルを適用する関数
+        # 各列の最大値とそれに続く値に対応するセルにスタイルを適用する関数
         def highlight_max_shift_jis(s):
             if s.name in max_values_shift_jis:
                 is_max = s == max_values_shift_jis[s.name]
-                return [f'background-color: rgb{color}' if v else '' for v, color in zip(is_max, custom_colors)]
+                return [f'background-color: rgb{max_value_color}' if v else f'background-color: rgb{other_value_color}' for v in is_max]
             else:
                 return [''] * len(s)
 
         # 表示
         st.dataframe(df_shift_jis.style.apply(highlight_max_shift_jis, axis=0))
+
