@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import io
 
 st.set_page_config(page_title='簡易見積app')
 st.title('簡易見積app')
@@ -57,10 +58,12 @@ if estimates:
     total_price = total_estimate['小計'].sum()
     st.markdown(f'**合計金額:** {total_price} 円')
 
-    # 見積もりをExcelファイルに保存
-    if st.button('見積を保存'):
-        with pd.ExcelWriter('estimate.xlsx', engine='openpyxl', mode='a') as writer:
-            total_estimate.to_excel(writer, sheet_name=f'estimate_{len(writer.sheets)+1}', index=False)
+    # 見積もりをCSVファイルに保存
+    if st.button('見積をCSVファイルでダウンロード'):
+        csv_file = total_estimate.to_csv(index=False, encoding='utf-8-sig')
+        b64 = base64.b64encode(csv_file.encode()).decode()
+        href = f'<a href="data:file/csv;base64,{b64}" download="estimate.csv">Download CSV File</a>'
+        st.markdown(href, unsafe_allow_html=True)
 
     # 見積もりをリセット
     if st.button('見積をリセット'):
