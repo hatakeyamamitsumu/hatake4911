@@ -1,9 +1,5 @@
 import streamlit as st
 import pandas as pd
-import io
-import openpyxl
-
-# pip install streamlit pandas openpyxl
 
 st.set_page_config(page_title='簡易見積app')
 st.title('簡易見積app')
@@ -26,22 +22,46 @@ df = pd.DataFrame(
 with st.expander('df', expanded=False):
     st.dataframe(df)
 
-#商品名リストの作成
+def calculate_subtotal(item, quantity):
+    selected_df = df[df['商品名'] == item]
+    selected_df['数量'] = quantity
+    selected_df['小計'] = selected_df['単価'] * selected_df['数量']
+    return selected_df
+
+# 商品名リストの作成
 items = df['商品名'].unique()
 items = sorted(items)
-
-#リストに1行目を挿入　すぐに見積もりが始まらないように
 items.insert(0, '--商品名を選択--')
 
-####################1行目
-# 商品名選択
-st.sidebar.markdown('#### 見積1')
-selected_item = st.sidebar.selectbox('商品名:',items, key='selected_item1')
+# 複数の見積もりを処理
+estimates = []
+for i in range(1, 6):  # 最大で5つの見積もりを許可（必要に応じて調整してください）
+    st.sidebar.markdown(f'#### 見積{i}')
+    selected_item = st.sidebar.selectbox(f'商品名{i}:', items, key=f'selected_item{i}')
 
-df1 = df[df['商品名']==selected_item]
+    if selected_item == '--商品名を選択--':
+        break  # 商品が選択されていない場合は終了
 
-# 数量入力
-cnt1 = st.sidebar.number_input('数量入力', min_value=0, max_value=10, key='cnt1')
+    cnt = st.sidebar.number_input(f'数量入力{i}', min_value=0, max_value=10, key=f'cnt{i}')
 
-df1['数量'] = cnt1
-df1['小計'] = df1['単価'] * df1['数量']
+    df_estimate = calculate_subtotal(selected_item, cnt)
+    estimates.append(df_estimate)
+
+# 見積もりを表示
+if estimates:
+    st.subheader('見積詳細')
+    total_estimate = pd.concat(estimates, ignore_index=True)
+    st.dataframe(total_estimate)
+
+    # 合計金額を計算して表示
+    total_price = total_estimate['小計'].sum()
+    st.markdown(f'**合計金額:** {total_price} 円')
+
+    # 見積もりをExcelファイルに保存
+    if st.button('見積を保存'):
+        with pd.ExcelWriter('estimate.xlsx', engine='openpyxl', mode='a') as writer:
+            total_estimate.to_excel(writer, sheet_name=f'estimate_{len(writer.sheets)+1}', index=False)
+
+    # 見積もりをリセット
+    if st.button('見積をリセット'):
+        estimates = []
