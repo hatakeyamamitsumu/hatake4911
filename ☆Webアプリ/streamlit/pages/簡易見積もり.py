@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
-import base64  # 追加
+import base64
 
 st.set_page_config(page_title='簡易見積app')
 st.title('簡易見積app')
@@ -58,6 +58,9 @@ if estimates:
     # 合計金額を計算して表示
     total_price = total_estimate['小計'].sum()
     st.markdown(f'**合計金額:** {total_price} 円')
+
+    # 合計金額をtotal_estimateに追加
+    total_estimate.loc[len(total_estimate.index)] = ['合計', '', '', total_price]
 
     # 見積もりをCSVファイルに保存
     if st.button('見積をCSVファイルでダウンロード'):
