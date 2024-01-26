@@ -37,7 +37,7 @@ items.insert(0, '--商品名を選択--')
 
 # 複数の見積もりを処理
 estimates = []
-for i in range(1, 6):  # 最大で5つの見積もりを許可（必要に応じて調整してください）
+for i in range(1, 20):  # 最大で20の見積もりを許可（必要に応じて調整してください）
     st.sidebar.markdown(f'#### 見積{i}')
     selected_item = st.sidebar.selectbox(f'商品名{i}:', items, key=f'selected_item{i}')
 
@@ -69,7 +69,5 @@ if estimates:
         href = f'<a href="data:file/csv;base64,{b64}" download="estimate.csv">Download CSV File</a>'
         st.markdown(href, unsafe_allow_html=True)
 
-    # 見積もりをリセット
-    if st.button('見積もりをリセット'):
-        estimates.clear()  # 修正: clear()メソッドを使用してリストをクリア
+
 
