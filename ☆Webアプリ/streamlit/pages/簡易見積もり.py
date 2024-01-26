@@ -63,10 +63,10 @@ if estimates:
     total_estimate.loc[len(total_estimate.index)] = ['合計', '', '', total_price]
 
     # 見積もりをCSVファイルに保存
-    if st.button('見積をCSVファイルでダウンロード'):
+    if st.button('見積をCSVファイルでダウンロードしますか？'):
         csv_file = total_estimate.to_csv(index=False, encoding='utf-8-sig')
         b64 = base64.b64encode(csv_file.encode()).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="estimate.csv">Download CSV File</a>'
+        href = f'<a href="data:file/csv;base64,{b64}" download="estimate.csv">ここをクリックしてダウンロードしてください</a>'
         st.markdown(href, unsafe_allow_html=True)
 
 
