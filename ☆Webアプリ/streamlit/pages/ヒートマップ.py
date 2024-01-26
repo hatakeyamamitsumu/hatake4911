@@ -15,7 +15,7 @@ st.title("CSVデータの最大値を着色で強調表示")
 
 # RGBの色の定義
 max_value_color = (255, 0, 0)
-other_value_color = (250, 0, 0)
+other_value_color = (245, 0, 0)
 
 # UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
