@@ -18,7 +18,7 @@ def highlight_cells(df):
 
             color = f'rgb({255 - j * 10}, 0, 0)'
             idx_to_highlight = selected_col.index[j - 1]
-            styled_df.at[idx_to_highlight, i] = f'background-color: {color}'
+            styled_df.at[idx_to_highlight, i] = f'<mark style="background-color: {color}">{styled_df.at[idx_to_highlight, i]}</mark>'
 
     return styled_df
 
@@ -33,11 +33,13 @@ uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングの
 if uploaded_file_utf8 is not None:
     st.subheader("UTF-8データベース")
     df_utf8 = read_csv(uploaded_file_utf8, 'utf-8')
-    st.dataframe(highlight_cells(df_utf8))
+    styled_df_utf8 = highlight_cells(df_utf8)
+    st.write(styled_df_utf8, unsafe_allow_html=True)
 
 # Shift-JISデータベースの処理
 if uploaded_file_shift_jis is not None:
     st.subheader("Shift-JISデータベース")
     df_shift_jis = read_csv(uploaded_file_shift_jis, 'shift-jis')
-    st.dataframe(highlight_cells(df_shift_jis))
+    styled_df_shift_jis = highlight_cells(df_shift_jis)
+    st.write(styled_df_shift_jis, unsafe_allow_html=True)
 
