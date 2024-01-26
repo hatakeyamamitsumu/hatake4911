@@ -15,15 +15,16 @@ uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングの
 
 def highlight_cells(df):
     styled_df = df.copy()
-    num_cols = len(df.columns)
+    num_rows, num_cols = df.shape
 
     for i in range(1, 26):
         if i == 25:
             break
 
-        color = (255 - i * 10, 0, 0)
+        color = f'rgb({255 - i * 10}, 0, 0)'
         for col_idx in range(num_cols):
-            styled_df.iloc[:, col_idx] = np.where(df.iloc[:, col_idx].rank(ascending=False, method='min') == i, f'background-color: rgb{color}', styled_df.iloc[:, col_idx])
+            rank_series = df.iloc[:, col_idx].rank(ascending=False, method='min')
+            styled_df.iloc[:, col_idx] = np.where(rank_series == i, f'background-color: {color}', styled_df.iloc[:, col_idx])
 
     return styled_df
 
