@@ -1,58 +1,44 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
-def read_csv_utf8(uploaded_file):
-    df = pd.read_csv(uploaded_file)
-    return df
-
-def read_csv_shift_jis(uploaded_file):
-    df = pd.read_csv(uploaded_file, encoding='shift-jis')
+def read_csv(uploaded_file, encoding):
+    df = pd.read_csv(uploaded_file, encoding=encoding)
     return df
 
 # ページのタイトル
-st.title("CSVデータの列を降順にソートし、上位i番目のセルを着色")
+st.title("CSVデータベースのセルを着色で強調表示")
 
-# RGBの色の定義
-def get_color(i):
-    return f'rgb({255 - min(i, 25) * 10}, 0, 0)'
-
-# UTF-8用アップローダー
+# ファイルアップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
-if uploaded_file_utf8 is not None:
-    st.subheader("UTF-8データフレーム")
-    df_utf8 = read_csv_utf8(uploaded_file_utf8)
-
-    # 列ごとに処理
-    for i, column in enumerate(df_utf8.columns):
-        st.subheader(f"列: {column}")
-
-        # 列を降順にソート
-        sorted_df = df_utf8.sort_values(by=column, ascending=False)
-
-        # 上からi番目のセルに色を付ける
-        sorted_column_color = sorted_df.style.apply(lambda x: f'background-color: {get_color(i)}' if x.name == column else '', axis=0)
-        
-        # 表示
-        st.dataframe(sorted_column_color)
-
-# Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
+
+def highlight_cells(df):
+    styled_df = df.copy()
+    num_cols = len(df.columns)
+
+    for i in range(1, 26):
+        if i == 25:
+            break
+
+        color = (255 - i * 10, 0, 0)
+        for col_idx in range(num_cols):
+            styled_df.iloc[:, col_idx] = np.where(styled_df.iloc[:, col_idx].rank() == i, f'background-color: rgb{color}', '')
+
+    return styled_df
+
+# UTF-8データベースの処理
+if uploaded_file_utf8 is not None:
+    st.subheader("UTF-8データベース")
+    df_utf8 = read_csv(uploaded_file_utf8, 'utf-8')
+    st.dataframe(highlight_cells(df_utf8))
+
+# Shift-JISデータベースの処理
 if uploaded_file_shift_jis is not None:
-    st.subheader("Shift-JISデータフレーム")
-    df_shift_jis = read_csv_shift_jis(uploaded_file_shift_jis)
+    st.subheader("Shift-JISデータベース")
+    df_shift_jis = read_csv(uploaded_file_shift_jis, 'shift-jis')
+    st.dataframe(highlight_cells(df_shift_jis))
 
-    # 列ごとに処理
-    for i, column in enumerate(df_shift_jis.columns):
-        st.subheader(f"列: {column}")
-
-        # 列を降順にソート
-        sorted_df = df_shift_jis.sort_values(by=column, ascending=False)
-
-        # 上からi番目のセルに色を付ける
-        sorted_column_color = sorted_df.style.apply(lambda x: f'background-color: {get_color(i)}' if x.name == column else '', axis=0)
-        
-        # 表示
-        st.dataframe(sorted_column_color)
 
 
 
