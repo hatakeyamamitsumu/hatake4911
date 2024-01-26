@@ -15,7 +15,10 @@ st.title("CSVデータの最大値を着色で強調表示")
 
 # RGBの色の定義
 max_value_color = (255, 0, 0)
-other_value_color = (200, 0, 0)
+second_value_color = (245, 0, 0)
+third_value_color = (235, 0, 0)
+fourth_value_color = (225, 0, 0)
+fifth_value_color = (215, 0, 0)
 
 # UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -33,15 +36,22 @@ if uploaded_file_utf8 is not None:
         max_values_utf8 = df_utf8[numeric_columns_utf8].max()
 
         # 各列の最大値とそれに続く値に対応するセルにスタイルを適用する関数
-        def highlight_max_utf8(s):
+        def highlight_max_values_utf8(s):
             if s.name in max_values_utf8:
                 is_max = s == max_values_utf8[s.name]
-                return [f'background-color: rgb{max_value_color}' if v else f'background-color: rgb{other_value_color}' for v in is_max]
+                color_mapping = {
+                    max_values_utf8[s.name]: max_value_color,
+                    sorted(max_values_utf8, reverse=True)[1]: second_value_color,
+                    sorted(max_values_utf8, reverse=True)[2]: third_value_color,
+                    sorted(max_values_utf8, reverse=True)[3]: fourth_value_color,
+                    sorted(max_values_utf8, reverse=True)[4]: fifth_value_color
+                }
+                return [f'background-color: rgb{color_mapping[v]}' if v else '' for v in s]
             else:
                 return [''] * len(s)
 
         # 表示
-        st.dataframe(df_utf8.style.apply(highlight_max_utf8, axis=0))
+        st.dataframe(df_utf8.style.apply(highlight_max_values_utf8, axis=0))
 
 # Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -59,13 +69,19 @@ if uploaded_file_shift_jis is not None:
         max_values_shift_jis = df_shift_jis[numeric_columns_shift_jis].max()
 
         # 各列の最大値とそれに続く値に対応するセルにスタイルを適用する関数
-        def highlight_max_shift_jis(s):
+        def highlight_max_values_shift_jis(s):
             if s.name in max_values_shift_jis:
                 is_max = s == max_values_shift_jis[s.name]
-                return [f'background-color: rgb{max_value_color}' if v else f'background-color: rgb{other_value_color}' for v in is_max]
+                color_mapping = {
+                    max_values_shift_jis[s.name]: max_value_color,
+                    sorted(max_values_shift_jis, reverse=True)[1]: second_value_color,
+                    sorted(max_values_shift_jis, reverse=True)[2]: third_value_color,
+                    sorted(max_values_shift_jis, reverse=True)[3]: fourth_value_color,
+                    sorted(max_values_shift_jis, reverse=True)[4]: fifth_value_color
+                }
+                return [f'background-color: rgb{color_mapping[v]}' if v else '' for v in s]
             else:
                 return [''] * len(s)
 
         # 表示
-        st.dataframe(df_shift_jis.style.apply(highlight_max_shift_jis, axis=0))
-
+        st.dataframe(df_shift_jis.style.apply(highlight_max_values_shift_jis, axis=0))
