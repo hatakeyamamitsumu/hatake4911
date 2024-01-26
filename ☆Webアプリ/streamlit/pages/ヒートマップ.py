@@ -1,36 +1,43 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 
-def read_csv(uploaded_file, encoding=None):
-    df = pd.read_csv(uploaded_file, encoding=encoding)
+def read_csv_utf8(uploaded_file):
+    df = pd.read_csv(uploaded_file)
     return df
 
-def colorize_max_value(df, col_idx):
-    col_name = df.columns[col_idx]
-    if pd.api.types.is_numeric_dtype(df[col_name]):
-        max_value = df[col_name].max()
-        st.write(f"### {col_name} - Max Value: {max_value}")
-        max_idx = df[col_name].idxmax()
-        st.dataframe(df.style.apply(lambda x: ['background: red' if i == max_idx else '' for i in range(len(x))], subset=col_name, axis=0))
+def read_csv_shift_jis(uploaded_file):
+    df = pd.read_csv(uploaded_file, encoding='shift-jis')
+    return df
 
 # ページのタイトル
-st.title("CSVデータの数値列で最大値を赤く塗る")
+st.title("CSVデータの最大値を赤色で強調表示")
 
-# UTF-8のアップローダー
+# UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 if uploaded_file_utf8 is not None:
-    df_utf8 = read_csv(uploaded_file_utf8, encoding='utf-8')
+    st.subheader("UTF-8データフレーム")
+    df_utf8 = read_csv_utf8(uploaded_file_utf8)
 
-    # 見出し以外の数値列で最大値を赤く塗る
-    for col_idx in range(df_utf8.shape[1]):
-        colorize_max_value(df_utf8, col_idx)
+    # 数値列だけを取得
+    numeric_columns_utf8 = df_utf8.select_dtypes(include='number').columns.tolist()
 
-# Shift-JISのアップローダー
+    if not numeric_columns_utf8:
+        st.warning("数値列が見つかりませんでした。")
+    else:
+        # 各列の最大値を取得
+        max_values_utf8 = df_utf8[numeric_columns_utf8].max()
+
+        # 各列の最大値に対応するセルにスタイルを適用する関数
+        def highlight_max_utf8(s):
+            if s.name in max_values_utf8:
+                is_max = s == max_values_utf8[s.name]
+                return ['background-color: red' if v else '' for v in is_max]
+            else:
+                return [''] * len(s)
+
+        # 表示
+        st.dataframe(df_utf8.style.apply(highlight_max_utf8, axis=0))
+
+# Shift-JIS用アップローダー
 uploaded_file_shift_jis = st.file_uploader("Shift-JISエンコーディングのCSVファイルをアップロードしてください", type=["csv"])
 if uploaded_file_shift_jis is not None:
-    df_shift_jis = read_csv(uploaded_file_shift_jis, encoding='shift-jis')
-
-    # 見出し以外の数値列で最大値を赤く塗る
-    for col_idx in range(df_shift_jis.shape[1]):
-        colorize_max_value(df_shift_jis, col_idx)
