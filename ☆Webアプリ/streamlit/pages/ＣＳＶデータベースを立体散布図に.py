@@ -26,7 +26,7 @@ def main():
             selected_columns_utf8 = st.multiselect('3D 散布図用の列を選んでください', data_utf8.columns)
             
             if len(selected_columns_utf8) == 3:
-                index_col_utf8 = st.selectbox('見出し列を選んでください', data_utf8.columns)
+                index_col_utf8 = st.selectbox('見出し列を選んでください（見出し数が10程度の表がおすすめです）', data_utf8.columns)
                 st.write('### 3D Scatter Plot (UTF-8):')
                 plot_3d_scatter(data_utf8, selected_columns_utf8[0], selected_columns_utf8[1], selected_columns_utf8[2], index_col_utf8)
             else:
