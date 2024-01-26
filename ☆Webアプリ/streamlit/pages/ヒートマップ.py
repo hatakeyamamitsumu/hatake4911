@@ -9,8 +9,11 @@ def read_csv_shift_jis(uploaded_file):
     df = pd.read_csv(uploaded_file, encoding='shift-jis')
     return df
 
+# Custom color scheme
+custom_colors = [(250, 0, 0), (245, 0, 0), (240, 0, 0), (235, 0, 0)]
+
 # ページのタイトル
-st.title("CSVデータの最大値を赤色で強調表示")
+st.title("CSVデータの最大値を着色で強調表示")
 
 # UTF-8用アップローダー
 uploaded_file_utf8 = st.file_uploader("UTF-8エンコーディングのCSVファイルをアップロードしてください", type=["csv"])
@@ -31,7 +34,7 @@ if uploaded_file_utf8 is not None:
         def highlight_max_utf8(s):
             if s.name in max_values_utf8:
                 is_max = s == max_values_utf8[s.name]
-                return ['background-color: red' if v else '' for v in is_max]
+                return [f'background-color: rgb{color}' if v else '' for v, color in zip(is_max, custom_colors)]
             else:
                 return [''] * len(s)
 
@@ -57,7 +60,7 @@ if uploaded_file_shift_jis is not None:
         def highlight_max_shift_jis(s):
             if s.name in max_values_shift_jis:
                 is_max = s == max_values_shift_jis[s.name]
-                return ['background-color: red' if v else '' for v in is_max]
+                return [f'background-color: rgb{color}' if v else '' for v, color in zip(is_max, custom_colors)]
             else:
                 return [''] * len(s)
 
