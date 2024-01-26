@@ -24,7 +24,7 @@ def highlight_cells(df):
         color = f'rgb({255 - i * 10}, 0, 0)'
         for col_idx in range(num_cols):
             rank_series = df.iloc[:, col_idx].rank(ascending=False, method='min')
-            styled_df.iloc[:, col_idx] = np.where(rank_series == i, f'background-color: {color}', styled_df.iloc[:, col_idx])
+            styled_df.iloc[:, col_idx] = np.where(rank_series == i, f'background-color: {color}', '')
 
     return styled_df
 
