@@ -11,8 +11,8 @@ def read_csv_shift_jis(uploaded_file):
     return df
 
 def highlight_gradient(s, cmap='Reds'):
-    # Normalize the values in the column
-    normalized_values = (s - s.min()) / (s.max() - s.min())
+    # Normalize the values in the column, ignoring NaN
+    normalized_values = (s - np.nanmin(s)) / (np.nanmax(s) - np.nanmin(s))
     
     # Map the normalized values to a color gradient
     color_gradient = st.color_gradient(np.nan_to_num(normalized_values), cmap=cmap)
