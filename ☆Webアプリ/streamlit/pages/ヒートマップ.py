@@ -18,12 +18,8 @@ def highlight_cells(df):
     num_cols = len(df.columns)
 
     for i in range(1, 26):
-        if i == 25:
-            break
-
         color = (255 - i * 10, 0, 0)
-        for col_idx in range(num_cols):
-            styled_df.iloc[:, col_idx] = np.where(styled_df.iloc[:, col_idx].rank() == i, f'background-color: rgb{color}', '')
+        styled_df.iloc[:, i - 1] = styled_df.iloc[:, i - 1].apply(lambda x: f'background-color: rgb{color}' if x == x else '')
 
     return styled_df
 
@@ -38,6 +34,7 @@ if uploaded_file_shift_jis is not None:
     st.subheader("Shift-JISデータベース")
     df_shift_jis = read_csv(uploaded_file_shift_jis, 'shift-jis')
     st.dataframe(highlight_cells(df_shift_jis))
+
 
 
 
