@@ -2,7 +2,9 @@ import streamlit as st
 from PIL import Image
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
-import io
+import os
+import shutil
+import tempfile
 
 def image_to_excel(image, output_filename):
     # 画像の幅と高さを取得
@@ -21,9 +23,11 @@ def image_to_excel(image, output_filename):
             cell = sheet.cell(row=y + 1, column=x + 1)
             cell.fill = fill
 
-    # Excelファイルを保存
-    workbook.save(output_filename)
-    return output_filename
+    # 一時フォルダに保存
+    temp_folder = tempfile.mkdtemp()
+    temp_filepath = os.path.join(temp_folder, output_filename)
+    workbook.save(temp_filepath)
+    return temp_filepath
 
 def main():
     st.title("Image to Excel Color Converter")
@@ -43,15 +47,20 @@ def main():
 
         # 変換ボタン
         if st.button("Convert and Save to Excel"):
-            output_filename = image_to_excel(image, output_excel_filename)
-            st.success(f'Image colors saved in Excel: {output_filename}')
+            output_filepath = image_to_excel(image, output_excel_filename)
+            st.success(f'Image colors saved in Excel: {output_filepath}')
 
             # エクセルシートをダウンロードするボタン
             download_button = st.download_button(
                 label="Download Excel File",
-                data=open(output_filename, "rb"),
+                data=open(output_filepath, "rb").read(),
+                file_name=output_excel_filename,
                 key="download_button",
             )
 
+            # 一時フォルダをクリーンアップ
+            shutil.rmtree(os.path.dirname(output_filepath))
+
 if __name__ == "__main__":
     main()
+
