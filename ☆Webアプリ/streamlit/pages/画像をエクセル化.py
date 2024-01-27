@@ -3,6 +3,7 @@ from PIL import Image
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 import io
+from base64 import b64encode  # 追加
 
 def image_to_excel(image, output_filename):
     # 画像の幅と高さを取得
@@ -48,12 +49,5 @@ def main():
 
         # 変換ボタン
         if st.button("Convert and Save to Excel"):
-            output_filename = image_to_excel(image, output_excel_filename)
-            st.success(f'Image colors saved in Excel: {output_filename}')
-
-            # ダウンロードリンク
-            create_download_link(output_filename, "Download Excel File")
-
-if __name__ == "__main__":
-    main()
+            output_filename = image_to_excel(image, output_excel_filename
 
