@@ -23,7 +23,7 @@ def image_to_excel(image, output_filename):
 
     # Excelファイルを保存
     workbook.save(output_filename)
-    st.success(f'Image colors saved in Excel: {output_filename}')
+    return output_filename
 
 def main():
     st.title("Image to Excel Color Converter")
@@ -43,7 +43,16 @@ def main():
 
         # 変換ボタン
         if st.button("Convert and Save to Excel"):
-            image_to_excel(image, output_excel_filename)
+            output_filename = image_to_excel(image, output_excel_filename)
+            st.success(f'Image colors saved in Excel: {output_filename}')
+
+            # ダウンロードボタン
+            download_button = st.download_button(
+                label="Download Excel File",
+                data=io.BytesIO(),
+                file_name=output_filename,
+                key="download_button",
+            )
 
 if __name__ == "__main__":
     main()
