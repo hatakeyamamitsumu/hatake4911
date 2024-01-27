@@ -25,6 +25,11 @@ def image_to_excel(image, output_filename):
     workbook.save(output_filename)
     return output_filename
 
+def create_download_link(filename, text):
+    with open(filename, "rb") as file:
+        data = file.read()
+    st.markdown(f'<a href="data:application/octet-stream;base64,{b64encode(data).decode()}" download="{filename}">{text}</a>', unsafe_allow_html=True)
+
 def main():
     st.title("Image to Excel Color Converter")
 
@@ -46,13 +51,9 @@ def main():
             output_filename = image_to_excel(image, output_excel_filename)
             st.success(f'Image colors saved in Excel: {output_filename}')
 
-            # ダウンロードボタン
-            download_button = st.download_button(
-                label="Download Excel File",
-                data=io.BytesIO(),
-                file_name=output_filename,
-                key="download_button",
-            )
+            # ダウンロードリンク
+            create_download_link(output_filename, "Download Excel File")
 
 if __name__ == "__main__":
     main()
+
