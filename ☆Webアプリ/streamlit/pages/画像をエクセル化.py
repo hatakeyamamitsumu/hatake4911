@@ -30,7 +30,8 @@ def image_to_excel(image, output_filename):
     return temp_filepath
 
 def main():
-    st.title("画像をエクセルに「セル情報として」転記")
+    st.title("画像を「セル情報として」エクセルに転記")
+    st.text("とても時間がかかるので、10kb程度の画像がおすすめです")
 
     # 画像ファイルをアップロード
     image_file = st.file_uploader("Upload Image File", type=["jpg", "jpeg", "png"])
