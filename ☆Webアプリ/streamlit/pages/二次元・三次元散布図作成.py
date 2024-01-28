@@ -1,5 +1,3 @@
-# scatter_plot_app.py
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -9,11 +7,11 @@ def load_data(file_path, encoding):
     return data
 
 def plot_3d_scatter(data, x_col, y_col, z_col, index_col):
-    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col, text=index_col)
+    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col, text=index_col, trendline="ols")
     st.plotly_chart(fig)
 
 def plot_2d_scatter(data, x_col, y_col, index_col):
-    fig = px.scatter(data, x=x_col, y=y_col, text=index_col)
+    fig = px.scatter(data, x=x_col, y=y_col, text=index_col, trendline="ols")
     st.plotly_chart(fig)
 
 def plot_scatter(data, selected_columns, index_col, dimensions):
@@ -58,3 +56,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
