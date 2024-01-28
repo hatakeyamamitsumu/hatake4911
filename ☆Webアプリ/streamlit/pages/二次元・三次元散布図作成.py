@@ -13,10 +13,7 @@ def plot_scatter(data, selected_columns, index_col, dimensions):
         st.plotly_chart(fig)
     elif dimensions == 3:
         # 3D Scatter Plot with Regression Plane
-        fig = px.scatter_3d(data, x=selected_columns[0], y=selected_columns[1], z=selected_columns[2], text=index_col)
-        fig.update_traces(marker=dict(size=5), selector=dict(mode='markers'))
-        fig.update_layout(scene=dict(zaxis=dict(range=[min(data[selected_columns[2]]), max(data[selected_columns[2]])])))
-        fig.add_trace(px.scatter(data, x=selected_columns[0], y=selected_columns[1], text=index_col, marginal_y='ols', marginal_x='ols').data[1])
+        fig = px.scatter_3d(data, x=selected_columns[0], y=selected_columns[1], z=selected_columns[2], text=index_col, trendline="ols")
         st.plotly_chart(fig)
 
 def main():
