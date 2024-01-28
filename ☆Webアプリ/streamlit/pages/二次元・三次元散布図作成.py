@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import statsmodels
 
 def load_data(file_path, encoding):
     data = pd.read_csv(file_path, encoding=encoding)
