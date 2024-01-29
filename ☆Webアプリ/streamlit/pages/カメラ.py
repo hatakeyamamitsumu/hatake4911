@@ -39,11 +39,11 @@ def main():
         contrast = st.slider("Contrast", min_value=0.5, max_value=2.0, value=1.0, step=0.1)
         saturation = st.slider("Saturation", min_value=0.5, max_value=2.0, value=1.0, step=0.1)
 
-        # Apply camera settings
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        img[..., 1] = img[..., 1] * contrast
-        img[..., 2] = img[..., 2] * saturation
-        img = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
+# Apply camera settings
+img = cv2.convertScaleAbs(img, alpha=brightness, beta=int((brightness - 1) * 255))
+img = np.clip(img * contrast, 0, 255).astype(np.uint8)
+img = np.clip(img * saturation, 0, 255).astype(np.uint8)
+
 
         # Apply brightness
         img = cv2.convertScaleAbs(img, alpha=1, beta=int((brightness - 1) * 255))
