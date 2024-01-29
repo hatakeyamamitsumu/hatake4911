@@ -26,7 +26,7 @@ def add_text_to_qr(img, text, font_size):
 data = st.text_input("QRコードにする文字列を入力してください")
 qr_size = st.slider("QRコードのサイズを調整してください", min_value=100, max_value=1000, value=500)
 custom_text = st.text_input("QRコードに追加するテキストを入力してください")
-font_size = st.slider("テキストのフォントサイズを調整してください", min_value=10, max_value=50, value=20)
+font_size = 30
 # データが入力されていればQRコードを作成
 if data:
     try:
