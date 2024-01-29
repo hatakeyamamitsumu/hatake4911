@@ -1,5 +1,7 @@
-import streamlit
+import streamlit as st
 
-link = '[<span class="hljs-string">Chemesim</span>](<span class="hljs-link">https://williammer.github.io/works/shodo/</span>)'
-st.sidebar.markdown(link, unsafe<span class="hljs-emphasis">_allow_</span>html=True)
-st.sidebar.write('書道ツールです')
+# ハイパーリンクを表示するMarkdown文字列
+link_str = "[書道ツールです](https://williammer.github.io/works/shodo/)"
+# Markdownを表示
+st.markdown(link_str, unsafe_allow_html=True)
+
