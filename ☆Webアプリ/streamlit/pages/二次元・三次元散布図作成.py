@@ -39,7 +39,7 @@ def main():
             if len(selected_columns_utf8) >= 2 and len(selected_columns_utf8) <= 3:
                 index_col_utf8 = st.selectbox('見出し列を選んでください（見出し数が10程度の表がおすすめです）', data_utf8.columns)
                 dimensions_utf8 = len(selected_columns_utf8)
-                st.write(f'### {dimensions_utf8}D Scatter Plot (UTF-8):')
+                st.write(f'### {dimensions_utf8}次元散布図 (UTF-8):')
                 plot_scatter(data_utf8, selected_columns_utf8, index_col_utf8, dimensions_utf8)
             else:
                 st.warning('2列または３列のみ選択してください。.')
@@ -51,7 +51,7 @@ def main():
             if len(selected_columns_shiftjis) >= 2 and len(selected_columns_shiftjis) <= 3:
                 index_col_shiftjis = st.selectbox('見出し列を選んでください（見出し数が10程度の表がおすすめです）', data_shiftjis.columns)
                 dimensions_shiftjis = len(selected_columns_shiftjis)
-                st.write(f'### {dimensions_shiftjis}D Scatter Plot (Shift-JIS):')
+                st.write(f'### {dimensions_shiftjis}次元散布図 (Shift-JIS):')
                 plot_scatter(data_shiftjis, selected_columns_shiftjis, index_col_shiftjis, dimensions_shiftjis)
             else:
                 st.warning('Please select 2 or 3 columns for the Scatter Plot.')
