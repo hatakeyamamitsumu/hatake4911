@@ -42,7 +42,7 @@ def main():
                 st.write(f'### {dimensions_utf8}D Scatter Plot (UTF-8):')
                 plot_scatter(data_utf8, selected_columns_utf8, index_col_utf8, dimensions_utf8)
             else:
-                st.warning('Please select 2 or 3 columns for the Scatter Plot.')
+                st.warning('2列または３列のみ選択してください。.')
 
         if uploaded_file_shiftjis is not None:
             data_shiftjis = load_data(uploaded_file_shiftjis, encoding='shift-jis')
