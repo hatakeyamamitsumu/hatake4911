@@ -14,12 +14,15 @@ def generate_qr_code(data, size=500):
 
     return img
 
-def add_text_to_qr(img, text, font_size):
+def add_text_to_qr(img, text, font_size, position=(10, 10), text_color="black"):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
-    font = ImageFont.load_default()
-    draw.text((10, 10), text, font=font, font_size,fill="black")
-
+    
+    # ユーザーが指定したフォントサイズを適用
+    font = ImageFont.load_default().font_variant(size=font_size)
+    
+    # テキストを指定された位置に描画
+    draw.text(position, text, font=font, fill=text_color)
     return img
 
 # ユーザーにデータを入力させ、QRコードのサイズとテキストを調節可能にする
