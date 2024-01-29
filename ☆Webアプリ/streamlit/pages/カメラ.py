@@ -20,65 +20,60 @@ def apply_canny_edge(image, low_threshold, high_threshold):
 def main():
     st.title("Real-time Image Processing")
 
-    # Image input options
+    # カメラ入力
     picture = st.camera_input("Take a picture")
-    uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
-    if uploaded_image is not None:
-        picture = Image.open(uploaded_image)
-
-    processed_img = None
+    processed_img = None  # Initialize processed_img with a default value
 
     if picture is not None:
-        img = np.array(picture)
+        # Convert camera input to NumPy array
+        img = np.frombuffer(picture.getvalue(), dtype=np.uint8)
+        img = cv2.imdecode(img, 1)
 
-        st.image(picture, caption='Input Image', use_column_width=True)
+        if img is not None:
+            # PIL形式に変換
+            pil_img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-        # Camera settings
-        brightness = st.slider("Brightness", min_value=0.5, max_value=2.0, value=1.0, step=0.1)
-        contrast = st.slider("Contrast", min_value=0.5, max_value=2.0, value=1.0, step=0.1)
-        saturation = st.slider("Saturation", min_value=0.5, max_value=2.0, value=1.0, step=0.1)
+            # 画像を表示
+            st.image(pil_img, caption='Captured Image', use_column_width=True)
 
-        # Apply camera settings
-        img = cv2.convertScaleAbs(img, alpha=brightness, beta=int((brightness - 1) * 255))
-        img = np.clip(img * contrast, 0, 255).astype(np.uint8)
-        img = np.clip(img * saturation, 0, 255).astype(np.uint8)
-
-
-        # Apply brightness
-        img = cv2.convertScaleAbs(img, alpha=1, beta=int((brightness - 1) * 255))
-
-        # Filter options
-        filter_options = st.multiselect("Select Filters", ["Binary Threshold", "Grayscale", "Blur", "Canny Edge"])
-
-        for filter_option in filter_options:
+            # フィルタと処理オプション
+            filter_option = st.selectbox("Select Filter", ["Binary Threshold", "Grayscale", "Blur", "Canny Edge"])
             if filter_option == "Binary Threshold":
+                # ボタンで二値化を適用
                 threshold_value = st.slider("Threshold Value", min_value=0, max_value=255, value=127, step=1)
-                img = apply_binary_threshold(img, threshold_value)
+                if st.button("Apply Binary Threshold"):
+                    processed_img = apply_binary_threshold(img, threshold_value)
             elif filter_option == "Grayscale":
-                img = apply_grayscale(img)
+                processed_img = apply_grayscale(img)
             elif filter_option == "Blur":
+                # ボタンでぼかしを適用
                 kernel_size = st.slider("Kernel Size", min_value=1, max_value=31, value=5, step=2)
-                img = apply_blur(img, kernel_size)
+                if st.button("Apply Blur"):
+                    processed_img = apply_blur(img, kernel_size)
             elif filter_option == "Canny Edge":
+                # ボタンでCannyエッジ検出を適用
                 low_threshold = st.slider("Low Threshold", min_value=0, max_value=255, value=50, step=1)
                 high_threshold = st.slider("High Threshold", min_value=0, max_value=255, value=150, step=1)
-                img = apply_canny_edge(img, low_threshold, high_threshold)
+                if st.button("Apply Canny Edge"):
+                    processed_img = apply_canny_edge(img, low_threshold, high_threshold)
 
-        st.image(img, caption='Processed Image', use_column_width=True)
+            if processed_img is not None:
+                # PIL形式に変換して表示
+                pil_processed_img = Image.fromarray(processed_img)
+                st.image(pil_processed_img, caption=f'{filter_option} Filter', use_column_width=True)
 
-        # Save processed image to BytesIO
-        processed_img_io = BytesIO()
-        pil_processed_img = Image.fromarray(img)
-        pil_processed_img.save(processed_img_io, format='PNG')
+                # Save processed image to BytesIO
+                processed_img_io = BytesIO()
+                pil_processed_img.save(processed_img_io, format='PNG')
 
-        # Download button
-        st.download_button(
-            label="Download Processed Image",
-            data=processed_img_io.getvalue(),
-            file_name="processed_image.png",
-            key="download_button",
-        )
+                # Download button
+                st.download_button(
+                    label=f"Download {filter_option} Image",
+                    data=processed_img_io.getvalue(),
+                    file_name=f"{filter_option.lower().replace(' ', '_')}_image.png",
+                    key="download_button",
+                )
 
 if __name__ == "__main__":
     main()
