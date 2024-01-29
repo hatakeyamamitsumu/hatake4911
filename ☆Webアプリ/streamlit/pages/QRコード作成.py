@@ -14,7 +14,7 @@ def generate_qr_code(data, size=500):
 
     return img
 
-def add_text_to_qr(img, text, font_size=20):
+def add_text_to_qr(img, text, font_size):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
     font = ImageFont.load_default()
