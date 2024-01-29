@@ -2,7 +2,7 @@ import streamlit as st
 import qrcode
 from PIL import Image, ImageDraw, ImageFont
 import io
-
+st.title('QRコード作成')
 def generate_qr_code(data, size=500):
     # QRコードを作成
     qr_img = qrcode.make(data)
