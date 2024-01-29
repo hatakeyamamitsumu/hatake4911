@@ -20,7 +20,8 @@ def add_text_to_qr(img, text, position=(10, 10), text_color="black"):
     
     # フォントサイズを30に固定
     font_size = 30
-    font = ImageFont.load_default().font_variant(size=font_size)
+    font_path = ImageFont.load_default().getpath()
+    font = ImageFont.truetype(font_path, font_size)
     
     # テキストを指定された位置に描画
     draw.text(position, text, font=font, fill=text_color)
