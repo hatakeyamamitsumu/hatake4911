@@ -14,26 +14,18 @@ def generate_qr_code(data, size=500):
 
     return img
 
-def add_text_to_qr(img, text, position=(10, 10), text_color="black"):
+def add_text_to_qr(img, text):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
-    
-    # フォントサイズを30に固定
-    font_size = 30
-    
-    # フォントの指定方法を変更（UTF-8エンコーディングが可能なフォントを使用）
-    font_path = st._get_report_ctx().get("font_path", ImageFont.load_default().getpath())
-    font = ImageFont.truetype(font_path, font_size)
-    
-    # テキストを指定された位置に描画
-    draw.text(position, text, font=font, fill=text_color)
-    
+    font = ImageFont.load_default()
+    draw.text((10, 10), text, font=font, fill="black")
+
     return img
 
-# ユーザーにデータを入力させ、QRコードのサイズを調節可能にする
+# ユーザーにデータを入力させ、QRコードのサイズとテキストを調節可能にする
 data = st.text_input("QRコードにする文字列を入力してください")
 qr_size = st.slider("QRコードのサイズを調整してください", min_value=100, max_value=1000, value=500)
-custom_text = st.text_input("QRコードに追加するテキストを入力してください")
+custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
 
 # データが入力されていればQRコードを作成
 if data:
@@ -65,5 +57,3 @@ if data:
         st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
 else:
     st.warning("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
-
-
