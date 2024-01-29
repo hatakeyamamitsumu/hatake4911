@@ -17,13 +17,8 @@ def apply_blur(image, kernel_size):
 def apply_canny_edge(image, low_threshold, high_threshold):
     return cv2.Canny(image, low_threshold, high_threshold)
 
-def read_qr_code(image):
-    detector = cv2.QRCodeDetector()
-    retval, decoded_info, _ = detector.detectAndDecode(image)
-    return decoded_info if retval else None
-
 def main():
-    st.title("Real-time Image Processing with QR Code Reader")
+    st.title("Real-time Image Processing")
 
     # カメラ入力
     picture = st.camera_input("Take a picture")
@@ -41,11 +36,6 @@ def main():
 
             # 画像を表示
             st.image(pil_img, caption='Captured Image', use_column_width=True)
-
-            # QRコード読み取り
-            qr_code_info = read_qr_code(img)
-            if qr_code_info:
-                st.info(f"QR Code Detected: {qr_code_info}")
 
             # フィルタと処理オプション
             filter_option = st.selectbox("Select Filter", ["Binary Threshold", "Grayscale", "Blur", "Canny Edge"])
