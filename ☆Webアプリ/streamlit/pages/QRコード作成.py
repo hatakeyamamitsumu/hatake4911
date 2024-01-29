@@ -18,7 +18,7 @@ def add_text_to_qr(img, text, font_size):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
     font = ImageFont.load_default()
-    draw.text((10, 10), text, font=font, fill="black")
+    draw.text((10, 10), text, font=font, fill="black",font_size)
 
     return img
 
