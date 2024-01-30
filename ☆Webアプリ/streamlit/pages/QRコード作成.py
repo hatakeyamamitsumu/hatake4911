@@ -2,7 +2,9 @@ import streamlit as st
 import qrcode
 from PIL import Image, ImageDraw, ImageFont
 import io
+
 st.title('QRコード作成')
+
 def generate_qr_code(data, size=500):
     # QRコードを作成
     qr_img = qrcode.make(data)
@@ -18,6 +20,7 @@ def add_text_to_qr(img, text):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
     font = ImageFont.load_default()
+    font_size = 20
     draw.text((10, 10), text, font=font, fill="black")
 
     return img
@@ -35,7 +38,7 @@ if data:
 
         # ユーザーがテキストを入力していれば、QRコードにテキストを追加
         if custom_text:
-            qr_img = add_text_to_qr(qr_img, custom_text)
+            qr_img = add_text_to_qr(qr_img, custom_text, font_size=20)
 
         # 画像をファイルとして保存
         img_byte_array = io.BytesIO()
@@ -57,3 +60,4 @@ if data:
         st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
 else:
     st.warning("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
+
