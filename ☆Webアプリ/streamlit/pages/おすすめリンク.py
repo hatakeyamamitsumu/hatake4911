@@ -17,3 +17,9 @@ link_str = "[自分のエクセルブック](https://1drv.ms/x/c/25c3642a3103cdc
 # Markdownを表示。
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('自分のエクセルブックです。')
+
+# ハイパーリンクを表示するMarkdown文字列
+link_str = "[単なる画像](https://1drv.ms/i/c/25c3642a3103cdcb/ESUfVrKV98pMihCCcOKMNrEB2opQfkq5ltLreB2u7Xj96A?e=NdBHk3)"
+# Markdownを表示。
+st.markdown(link_str, unsafe_allow_html=True)
+st.text('パンダの画像です。。')
