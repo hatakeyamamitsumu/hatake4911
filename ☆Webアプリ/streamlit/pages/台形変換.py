@@ -24,8 +24,8 @@ def main():
         # Allow users to interactively adjust destination points
         st.subheader("Adjust Destination Points:")
         for i in range(4):
-            row = st.slider(f"Point {i + 1} X", 0.1, 1.0, default_values[i * 2], 0.05)
-            col = st.slider(f"Point {i + 1} Y", 0.1, 1.0, default_values[i * 2 + 1], 0.05)
+            row = st.slider(f"Point {i + 1} X", 0.0, 1.0, default_values[i * 2], 0.01)
+            col = st.slider(f"Point {i + 1} Y", 0.0, 1.0, default_values[i * 2 + 1], 0.01)
             dst_pts[i] = [row * image.shape[1], col * image.shape[0]]
 
         # Apply perspective transformation
@@ -40,5 +40,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
