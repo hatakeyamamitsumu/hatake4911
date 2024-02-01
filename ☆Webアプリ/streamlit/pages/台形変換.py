@@ -1,6 +1,5 @@
 import streamlit as st
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 
 def perspective_transform(img, dst_pts):
@@ -15,25 +14,25 @@ def main():
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
+        # Load the image
         image = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), 1)
 
-        # Display uploaded image
-        st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
+        # Initialize destination points with default values
+        default_values = [0.25, 0.2, 0.75, 0.1, 1.0, 0.5, 0.0, 0.8]
+        dst_pts = np.array([[image.shape[1] * default_values[i], image.shape[0] * default_values[i + 1]] for i in range(0, len(default_values), 2)], dtype=np.float32)
 
-        # Allow user to input destination points
+        # Allow users to interactively adjust destination points
         st.subheader("Adjust Destination Points:")
-        dst_pts = []
         for i in range(4):
-            row = st.slider(f"Point {i + 1}", 0.0, float(image.shape[1]), float(image.shape[1] * 0.5))
-            col = st.slider(f"    ", 0.0, float(image.shape[0]), float(image.shape[0] * 0.5))
-            dst_pts.append([row, col])
-        
-        dst_pts = np.array(dst_pts, dtype=np.float32)
+            row = st.slider(f"Point {i + 1} X", 0.1, 1.0, default_values[i * 2], 0.05)
+            col = st.slider(f"Point {i + 1} Y", 0.1, 1.0, default_values[i * 2 + 1], 0.05)
+            dst_pts[i] = [row * image.shape[1], col * image.shape[0]]
 
         # Apply perspective transformation
         result = perspective_transform(image, dst_pts)
 
-        # Display transformed image
+        # Display original and transformed images
+        st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
         st.image(cv2.cvtColor(result, cv2.COLOR_BGR2RGB), caption='Perspective Transformed Image', use_column_width=True)
 
         # Save transformed image
@@ -41,3 +40,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
