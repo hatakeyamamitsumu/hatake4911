@@ -23,7 +23,7 @@ def main():
 
         # Allow users to interactively adjust destination points
         st.subheader("Adjust Destination Points:")
-        st.text("デフォルト値は1x=0.00,1y=0.00,2x=1.00,2y=0.00,3x=1.00,3y=1.00,4x=0.00,4y=1.00です。")
+        st.text("デフォルト値は1X=0.00,1Y=0.00,2X=1.00,2Y=0.00,3X=1.00,3Y=1.00,4X=0.00,4Y=1.00です。")
         for i in range(4):
             row = st.slider(f"Point {i + 1} X", 0.0, 1.0, default_values[i * 2], 0.01)
             col = st.slider(f"Point {i + 1} Y", 0.0, 1.0, default_values[i * 2 + 1], 0.01)
