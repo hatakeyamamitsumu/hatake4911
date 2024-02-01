@@ -1,5 +1,6 @@
 import streamlit as st
-
+st.title("おすすめリンク")
+st.text('一部スマホではご利用いただけません。')
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "[The Shodo](https://williammer.github.io/works/shodo/)"
 # Markdownを表示。
