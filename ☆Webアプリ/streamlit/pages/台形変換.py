@@ -9,7 +9,7 @@ def perspective_transform(img, dst_pts):
     return result
 
 def main():
-    st.title("Perspective Transformation App")
+    st.title("画像をひし形に歪めるアプリ")
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
