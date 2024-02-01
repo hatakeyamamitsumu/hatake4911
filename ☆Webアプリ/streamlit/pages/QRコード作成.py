@@ -19,7 +19,7 @@ def generate_qr_code(data, size=500):
 def add_text_to_qr(img, text):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
-    font =　ImageFont.truetype("arial.ttf", font_size)
+    font = ImageFont.load_default()
     draw.text((10, 10), text, font=font, fill="black")
 
     return img
@@ -59,4 +59,3 @@ if data:
         st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
 else:
     st.warning("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
-
