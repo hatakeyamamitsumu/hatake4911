@@ -15,24 +15,30 @@ def main():
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
-        # 画像の読み込み
         image = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), 1)
 
-        # 変換前、変換後の4点の座標を設定する
-        dst_pts = np.array([[image.shape[1] * 0.25, image.shape[1] * 0.2],
-                            [image.shape[1] * 0.75, image.shape[1] * 0.1],
-                            [image.shape[1], image.shape[0] * 0.5],
-                            [0, image.shape[0] * 0.8]], dtype=np.float32)
+        # Display uploaded image
+        st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
 
-        # 台形変換を適用
+        # Allow user to input destination points
+        st.subheader("Adjust Destination Points:")
+        dst_pts = []
+        for i in range(4):
+            row = st.slider(f"Point {i + 1}", 0.0, image.shape[1], image.shape[1] * 0.5)
+            col = st.slider(f"    ", 0.0, image.shape[0], image.shape[0] * 0.5)
+            dst_pts.append([row, col])
+        
+        dst_pts = np.array(dst_pts, dtype=np.float32)
+
+        # Apply perspective transformation
         result = perspective_transform(image, dst_pts)
 
-        # オリジナルと変換後の画像を表示
-        st.image(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), caption='Original Image', use_column_width=True)
+        # Display transformed image
         st.image(cv2.cvtColor(result, cv2.COLOR_BGR2RGB), caption='Perspective Transformed Image', use_column_width=True)
 
-        # 変換後の画像をファイルとして保存
-        st.download_button(label="Download Transformed Image", data= cv2.imencode('.jpg', cv2.cvtColor(result, cv2.COLOR_BGR2RGB))[1].tobytes(), file_name='Perspective_Transformed_Image.jpg', mime='image/jpg')
+        # Save transformed image
+        st.download_button(label="Download Transformed Image", data=cv2.imencode('.jpg', cv2.cvtColor(result, cv2.COLOR_BGR2RGB))[1].tobytes(), file_name='Perspective_Transformed_Image.jpg', mime='image/jpg')
 
 if __name__ == '__main__':
     main()
+
