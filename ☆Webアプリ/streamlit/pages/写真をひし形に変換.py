@@ -10,6 +10,7 @@ def perspective_transform(img, dst_pts):
 
 def main():
     st.title("写真をひし形に変換")
+    st.text("デフォルト値は1X=0.00,1Y=0.00,2X=1.00,2Y=0.00,3X=1.00,3Y=1.00,4X=0.00,4Y=1.00です。")
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
