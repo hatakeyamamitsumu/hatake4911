@@ -24,8 +24,8 @@ def main():
         st.subheader("Adjust Destination Points:")
         dst_pts = []
         for i in range(4):
-            row = st.slider(f"Point {i + 1}", 0.0, image.shape[1], image.shape[1] * 0.5)
-            col = st.slider(f"    ", 0.0, image.shape[0], image.shape[0] * 0.5)
+            row = st.slider(f"Point {i + 1}", 0.0, float(image.shape[1]), float(image.shape[1] * 0.5))
+            col = st.slider(f"    ", 0.0, float(image.shape[0]), float(image.shape[0] * 0.5))
             dst_pts.append([row, col])
         
         dst_pts = np.array(dst_pts, dtype=np.float32)
@@ -41,4 +41,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
