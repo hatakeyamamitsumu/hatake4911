@@ -31,8 +31,11 @@ def GetYahooWeather(AreaCode):
 def main():
     st.title("Yahoo天気予報取得アプリ")
 
-    # Streamlitのサイドバーにエリアコードの入力フィールドを追加
-    area_code = st.text_input("エリアコードを入力してください", "4410")
+    # 選択可能なエリアコードのリスト
+    area_codes = ["4410", "1200", "1300", "1400", "1500"]  # ここに必要なエリアコードを追加
+
+    # Streamlitのサイドバーにエリアコードの選択ボックスを追加
+    area_code = st.sidebar.selectbox("エリアコードを選択してください", area_codes)
 
     # エリアコードを使用して天気情報を取得
     weather_info = GetYahooWeather(area_code)
@@ -44,4 +47,3 @@ def main():
 # Streamlitアプリの実行
 if __name__ == "__main__":
     main()
-
