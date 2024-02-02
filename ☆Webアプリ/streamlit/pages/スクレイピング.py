@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 def GetYahooWeather(AreaCode):
     """
@@ -27,6 +28,10 @@ def GetYahooWeather(AreaCode):
 def main():
     st.title("Yahoo天気予報取得アプリ")
 
+    # CSVファイルからデータを読み込む
+    csv_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/天気用CSV/地域コード.csv"
+    df = pd.read_csv(csv_path)
+
     # Streamlitのサイドバーにエリアコードの入力フィールドを追加
     area_code = st.sidebar.text_input("エリアコードを入力してください", "4410")
 
@@ -37,6 +42,11 @@ def main():
     st.write(f"エリアコード {area_code} の天気情報:")
     st.write(weather_info)
 
+    # CSVファイルから読み込んだデータを表示
+    st.sidebar.write("都道府県・地域・エリアコード:")
+    st.sidebar.write(df)
+
 # Streamlitアプリの実行
 if __name__ == "__main__":
     main()
+
