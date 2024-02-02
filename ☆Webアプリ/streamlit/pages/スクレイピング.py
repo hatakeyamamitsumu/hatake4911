@@ -1,21 +1,16 @@
 import streamlit as st
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-def GetYahooWeather(AreaCode):
-    """
-    Yahoo天気予報をスクレイピングする関数。
+# CSVファイルからエリアコードを取得する関数
+def get_area_codes(csv_path):
+    df = pd.read_csv(csv_path)
+    return df["コード"].tolist()
 
-    Parameters
-    ----------
-    AreaCode : str
-        対象となる数値を指定。
-    
-    Returns
-    -------
-    str
-    """
-    url = "https://weather.yahoo.co.jp/weather/jp/13/" + str(AreaCode) + ".html"
+# Yahoo天気予報をスクレイピングする関数
+def GetYahooWeather(area_code):
+    url = f"https://weather.yahoo.co.jp/weather/jp/13/{area_code}.html"
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
     rs = soup.find(class_='forecastCity')
@@ -27,14 +22,18 @@ def GetYahooWeather(AreaCode):
 def main():
     st.title("Yahoo天気予報取得アプリ")
 
-    # Streamlitのサイドバーにエリアコードの入力フィールドを追加
-    area_code = st.sidebar.text_input("エリアコードを入力してください", "4410")
+    # CSVファイルからエリアコードを取得
+    csv_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/天気用CSV/地域コード.csv"
+    area_codes = get_area_codes(csv_path)
+
+    # Streamlitのサイドバーにエリアコードの選択ボックスを追加
+    selected_area_code = st.sidebar.selectbox("エリアコードを選択してください", area_codes)
 
     # エリアコードを使用して天気情報を取得
-    weather_info = GetYahooWeather(area_code)
+    weather_info = GetYahooWeather(selected_area_code)
 
     # 取得した天気情報を表示
-    st.write(f"エリアコード {area_code} の天気情報:")
+    st.write(f"エリアコード {selected_area_code} の天気情報:")
     st.write(weather_info)
 
 # Streamlitアプリの実行
