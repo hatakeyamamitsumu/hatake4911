@@ -15,16 +15,16 @@ def GetYahooWeather(AreaCode):
     -------
     str
     """
-    url = "https://weather.yahoo.co.jp/weather/jp/13/" + str(AreaCode) + ".html"
+    url = f"https://weather.yahoo.co.jp/weather/jp/13/{AreaCode}.html"
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    rs = soup.find(class_='forecastCity')
 
-    if rs is not None:
+    try:
+        rs = soup.find(class_='forecastCity')
         rs = [i.strip() for i in rs.text.splitlines()]
         rs = [i for i in rs if i != ""]
         return rs[0] + "の天気は" + rs[1] + "、明日の天気は" + rs[19] + "です。"
-    else:
+    except (AttributeError, IndexError):
         return "天気情報が取得できませんでした。"
 
 # Streamlitアプリの本体
@@ -44,3 +44,4 @@ def main():
 # Streamlitアプリの実行
 if __name__ == "__main__":
     main()
+
