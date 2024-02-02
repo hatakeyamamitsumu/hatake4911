@@ -33,7 +33,7 @@ def main():
     df = pd.read_csv(csv_path)
 
     # Streamlitのサイドバーにエリアコードの入力フィールドを追加
-    area_code = st.sidebar.text_input("エリアコードを入力してください", "4410")
+    area_code = st.sidebar.text_input("エリアコードを入力してください")
 
     # エリアコードを使用して天気情報を取得
     weather_info = GetYahooWeather(area_code)
