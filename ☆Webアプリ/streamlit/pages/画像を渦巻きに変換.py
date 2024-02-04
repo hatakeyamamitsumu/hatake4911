@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
+import io
 
 # Function to swirl the image
 def swirl_image(image_array, strength=10, radius=1000):
@@ -69,9 +70,9 @@ if uploaded_file is not None:
     # Function to handle the download
     def download_image():
         output_image = Image.fromarray(processed_image_array)
-        output_path = "swirled_image.jpg"  # You can customize the file name and format here
-        output_image.save(output_path)
-        st.success(f"Downloaded: {output_path}")
+        output_bytes = io.BytesIO()
+        output_image.save(output_bytes, format='JPEG')
+        st.download_button("Download", label="Download Swirled Image", key="download", on_click=lambda: st.markdown(download_image(), unsafe_allow_html=True), args=(output_bytes,))
 
     # Download button
-    st.download_button("Download", on_click=download_image)
+    download_image()
