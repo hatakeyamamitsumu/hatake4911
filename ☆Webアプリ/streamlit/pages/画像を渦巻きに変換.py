@@ -65,5 +65,13 @@ if uploaded_file is not None:
 
     # Save the processed image
     st.markdown("### Download Swirled Image")
-    st.button("Download", on_click=lambda: st.image(processed_image_array, caption='Swirled Image', use_container_width=True, output_format='JPEG'))
 
+    # Function to handle the download
+    def download_image():
+        output_image = Image.fromarray(processed_image_array)
+        output_path = "swirled_image.jpg"  # You can customize the file name and format here
+        output_image.save(output_path)
+        st.success(f"Downloaded: {output_path}")
+
+    # Download button
+    st.download_button("Download", on_click=download_image)
