@@ -75,4 +75,5 @@ if uploaded_file is not None:
         return output_bytes
 
     # Download button
-    st.download_button("Download", label="Download Swirled Image", key="download", on_click=download_image)
+    if st.button("Download"):
+        st.download_button("Download Swirled Image", on_click=download_image)
