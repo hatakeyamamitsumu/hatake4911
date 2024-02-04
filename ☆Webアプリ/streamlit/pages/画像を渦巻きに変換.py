@@ -72,7 +72,7 @@ if uploaded_file is not None:
         output_image = Image.fromarray(processed_image_array)
         output_bytes = io.BytesIO()
         output_image.save(output_bytes, format='JPEG')
-        st.download_button("Download", label="Download Swirled Image", key="download", on_click=lambda: st.markdown(download_image(), unsafe_allow_html=True), args=(output_bytes,))
+        return output_bytes
 
     # Download button
-    download_image()
+    st.download_button("Download", label="Download Swirled Image", key="download", on_click=download_image)
