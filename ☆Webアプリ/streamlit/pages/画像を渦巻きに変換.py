@@ -54,11 +54,11 @@ if uploaded_file is not None:
     image_array = np.array(image)
 
     # Swirl parameters
-    strength = st.slider("Swirl Strength", min_value=1, max_value=20, value=10)
-    radius = st.slider("Swirl Radius", min_value=100, max_value=2000, value=1000)
+    strength = st.slider("渦の強さ", min_value=1, max_value=20, value=10)
+    radius = st.slider("渦の半径サイズ", min_value=100, max_value=2000, value=1000)
 
     # Image display width slider
-    display_width = st.slider("Image Display Width", min_value=100, max_value=1000, value=600)
+    display_width = st.slider("画像サイズ", min_value=100, max_value=1000, value=600)
 
     # Process the image
     processed_image_array = swirl_image(image_array, strength, radius)
