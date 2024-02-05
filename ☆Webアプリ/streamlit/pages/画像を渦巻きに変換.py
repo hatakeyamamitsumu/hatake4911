@@ -57,9 +57,12 @@ if uploaded_file is not None:
     strength = st.slider("Swirl Strength", min_value=1, max_value=20, value=10)
     radius = st.slider("Swirl Radius", min_value=100, max_value=2000, value=1000)
 
+    # Image display width slider
+    display_width = st.slider("Image Display Width", min_value=100, max_value=1000, value=600)
+
     # Process the image
     processed_image_array = swirl_image(image_array, strength, radius)
 
-    # Display the original and processed images with larger size
-    st.image([image, Image.fromarray(processed_image_array)], caption=["Original Image", "Swirled Image"], width=600)
+    # Display the original and processed images with adjustable width
+    st.image([image, Image.fromarray(processed_image_array)], caption=["Original Image", "Swirled Image"], width=display_width)
 
