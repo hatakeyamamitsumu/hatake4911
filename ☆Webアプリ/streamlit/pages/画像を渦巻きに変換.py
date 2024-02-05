@@ -60,5 +60,6 @@ if uploaded_file is not None:
     # Process the image
     processed_image_array = swirl_image(image_array, strength, radius)
 
-    # Display the original and processed images
-    st.image([image, Image.fromarray(processed_image_array)], caption=["Original Image", "Swirled Image"], width=300)
+    # Display the original and processed images with larger size
+    st.image([image, Image.fromarray(processed_image_array)], caption=["Original Image", "Swirled Image"], width=600)
+
