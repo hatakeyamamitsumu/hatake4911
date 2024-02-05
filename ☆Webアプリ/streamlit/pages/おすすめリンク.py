@@ -1,6 +1,6 @@
 import streamlit as st
 st.title("おすすめリンク")
-st.text('※OneDrive同期はスタートウインドウから入っておこなうこと。')
+st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
 st.text('一部スマホではご利用いただけません。')
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://williammer.github.io/works/shodo/)"
