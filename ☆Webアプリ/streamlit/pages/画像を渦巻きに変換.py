@@ -43,10 +43,11 @@ def swirl_image(image_array, strength=10, radius=1000):
     return output_array
 
 # Streamlit app
-st.title("Image Swirl App")
+st.title("写真を渦巻に変換")
+st.text("ダウンロード機能がありません。お手数ですがスクリーンショットしてください")
 
 # File uploader
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # Read the image
