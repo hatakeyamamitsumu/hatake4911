@@ -76,4 +76,5 @@ if uploaded_file is not None:
 
     # Download button
     if st.button("Download Swirled Image"):
-        st.download_button("Download", on_click=download_image)
+        # 引数なしで呼び出す
+        download_image()
