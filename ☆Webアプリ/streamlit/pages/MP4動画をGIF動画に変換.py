@@ -36,7 +36,10 @@ def main():
 
             # 生成されたGIFの表示
             st.subheader("Converted GIF:")
-            st.image(output_gif_path, use_column_width=True, format="GIF")
+            st.markdown(
+                f'<img src="data:image/gif;base64,{base64.b64encode(st.session_state["converted_gif"]).decode()}" alt="gif">',
+                unsafe_allow_html=True,
+            )
 
             # ダウンロードボタンの追加
             st.subheader("Download Converted GIF:")
@@ -50,3 +53,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
