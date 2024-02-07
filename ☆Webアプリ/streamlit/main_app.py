@@ -1,37 +1,31 @@
 import streamlit as st
 from PIL import Image
-import datetime
-import pandas as pd
 import os
-
-
-
-
-
+import random
 
 st.title('Hat')
 st.caption('こんにちは！Hatです。')
 st.subheader('説明')
-st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\n'
-       'よろしくお願いします。')
+st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\nよろしくお願いします。')
 
-#フォルダ変更　　../images/my_image.jpg
-#写真
+# フォルダのパス
+image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像'
+
+# フォルダ内の画像ファイルのリストを取得
+image_files = [f for f in os.listdir(image_folder_path) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
+
+# ランダムに一つの画像を選択
+selected_image = random.choice(image_files)
+
+# 選択された画像のフルパス
+selected_image_path = os.path.join(image_folder_path, selected_image)
+
+# 選択された画像を表示
 st.text('こちらは2022年に東京に旅行した際の写真、動画です。')
-#image=Image.open('skytree.png')
-st.image('/mount/src/hatake4911/☆Webアプリ/画像/skytree.png',use_column_width=True)
+st.image(selected_image_path, use_column_width=True)
 
-# ローカルのGIFファイルのパスを指定
-video_path = '/mount/src/hatake4911/☆Webアプリ/動画/東京到着.gif'
-# 動画を表示
-#st.video(video_path)
-st.image(video_path)
-
-
-
-
-code='''
+code = '''
 cwd = os.getcwd()
-st.text(cwd)#このコードによってgithub上のフルパスを確認
+st.text(cwd)  # このコードによってgithub上のフルパスを確認
 '''
-st.code(code,language='python')
+st.code(code, language='python')
