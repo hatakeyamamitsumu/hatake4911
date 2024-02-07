@@ -2,26 +2,9 @@ import streamlit as st
 from moviepy.editor import VideoFileClip
 from io import BytesIO
 
-def convert_to_gif(video_file, fps=10):
-    # .mp4 ファイルかどうか確認
-    if video_file.name.endswith('.mp4'):
-        # ファイルを一時的に保存
-        with st.spinner("Converting..."):
-            with open("temp.mp4", "wb") as temp_file:
-                temp_file.write(video_file.read())
-        
-        # 動画をGIFに変換
-        clip = VideoFileClip("temp.mp4")
-        gif_buffer = BytesIO()
-        clip.write_gif(gif_buffer, fps=fps)
-        
-        # 一時的に作成したファイルを削除
-        st.experimental_rerun()
-        return gif_buffer
-
-    else:
-        st.error("Please upload a valid .mp4 file.")
-        return None
+def convert_to_gif(input_video, output_gif, fps=10):
+    clip = VideoFileClip(input_video)
+    clip.write_gif(output_gif, fps=fps)
 
 def main():
     st.title("MP4 to GIF Converter")
@@ -36,23 +19,32 @@ def main():
         st.subheader("Conversion:")
         st.write("Click the button below to convert the MP4 file to GIF.")
         if st.button("Convert to GIF"):
-            # ファイルの変換
-            gif_buffer = convert_to_gif(uploaded_file, fps)
+            # アップロードされたファイルの変換
+            input_video_path = "temp.mp4"
+            output_gif_path = "output.gif"
+            uploaded_file.seek(0)  # ファイルの先頭に移動
+            with open(input_video_path, "wb") as temp_file:
+                temp_file.write(uploaded_file.read())
 
-            if gif_buffer is not None:
-                # 生成されたGIFの表示
-                st.subheader("Converted GIF:")
-                st.image(gif_buffer, use_column_width=True, format="GIF")
+            convert_to_gif(input_video_path, output_gif_path, fps)
 
-                # ダウンロードボタンの追加
-                st.subheader("Download Converted GIF:")
-                st.download_button(
-                    label="Download",
-                    data=gif_buffer.getvalue(),
-                    file_name="converted.gif",
-                    mime="image/gif",
-                )
+            # 生成されたGIFの表示
+            st.subheader("Converted GIF:")
+            st.image(output_gif_path, use_column_width=True, format="GIF")
+
+            # ダウンロードボタンの追加
+            st.subheader("Download Converted GIF:")
+            gif_buffer = BytesIO()
+            with open(output_gif_path, "rb") as gif_file:
+                gif_buffer.write(gif_file.read())
+            st.download_button(
+                label="Download",
+                data=gif_buffer.getvalue(),
+                file_name="converted.gif",
+                mime="image/gif",
+            )
 
 if __name__ == "__main__":
     main()
+
 
