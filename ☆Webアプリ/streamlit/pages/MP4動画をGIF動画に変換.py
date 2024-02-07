@@ -2,14 +2,9 @@ import streamlit as st
 from moviepy.editor import VideoFileClip
 from io import BytesIO
 
-def convert_to_gif(video_path, fps=10):
-    clip = VideoFileClip(video_path)
-    
-    # GIFをメモリに書き込む
-    gif_buffer = BytesIO()
-    clip.write_gif(gif_buffer, fps=fps)
-
-    return gif_buffer
+def convert_to_gif(input_video, output_gif, fps=10):
+    clip = VideoFileClip(input_video)
+    clip.write_gif(output_gif, fps=fps)
 
 def main():
     st.title("MP4 to GIF Converter")
@@ -24,21 +19,34 @@ def main():
         st.subheader("Conversion:")
         st.write("Click the button below to convert the MP4 file to GIF.")
         if st.button("Convert to GIF"):
-            # ファイルの変換
-            gif_buffer = convert_to_gif(uploaded_file, fps)
+            # アップロードされたファイルの変換
+            input_video_path = "temp.mp4"
+            output_gif_path = "output.gif"
+            uploaded_file.seek(0)  # ファイルの先頭に移動
+            with open(input_video_path, "wb") as temp_file:
+                temp_file.write(uploaded_file.read())
+
+            convert_to_gif(input_video_path, output_gif_path, fps)
+
+            # セッションストレージにGIFデータを保存
+            gif_buffer = BytesIO()
+            with open(output_gif_path, "rb") as gif_file:
+                gif_buffer.write(gif_file.read())
+            st.session_state["converted_gif"] = gif_buffer.getvalue()
 
             # 生成されたGIFの表示
             st.subheader("Converted GIF:")
-            st.image(gif_buffer, use_column_width=True, format="GIF")
+            st.image(output_gif_path, use_column_width=True, format="GIF")
 
             # ダウンロードボタンの追加
             st.subheader("Download Converted GIF:")
-            st.download_button(
-                label="Download",
-                data=gif_buffer.getvalue(),
-                file_name="converted.gif",
-                mime="image/gif",
-            )
+            if "converted_gif" in st.session_state:
+                st.download_button(
+                    label="Download",
+                    data=st.session_state["converted_gif"],
+                    file_name="converted.gif",
+                    mime="image/gif",
+                )
 
 if __name__ == "__main__":
     main()
