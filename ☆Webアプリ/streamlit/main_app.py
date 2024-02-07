@@ -1,37 +1,57 @@
 import streamlit as st
-from PIL import Image
-import datetime
-import pandas as pd
-import os
+from moviepy.editor import VideoFileClip
+from io import BytesIO
 
+def convert_to_gif(video_file, fps=10):
+    # .mp4 ファイルかどうか確認
+    if video_file.name.endswith('.mp4'):
+        # ファイルを一時的に保存
+        with st.spinner("Converting..."):
+            with open("temp.mp4", "wb") as temp_file:
+                temp_file.write(video_file.read())
+        
+        # 動画をGIFに変換
+        clip = VideoFileClip("temp.mp4")
+        gif_buffer = BytesIO()
+        clip.write_gif(gif_buffer, fps=fps)
+        
+        # 一時的に作成したファイルを削除
+        st.experimental_rerun()
+        return gif_buffer
 
+    else:
+        st.error("Please upload a valid .mp4 file.")
+        return None
 
+def main():
+    st.title("MP4 to GIF Converter")
 
+    # ファイルアップロード
+    uploaded_file = st.file_uploader("Choose a MP4 file", type=["mp4"])
 
+    if uploaded_file is not None:
+        st.subheader("Options:")
+        fps = st.slider("Select frames per second (FPS)", 1, 30, 10)
 
-st.title('Hat')
-st.caption('こんにちは！Hatです。')
-st.subheader('説明')
-st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\n'
-       'よろしくお願いします。')
+        st.subheader("Conversion:")
+        st.write("Click the button below to convert the MP4 file to GIF.")
+        if st.button("Convert to GIF"):
+            # ファイルの変換
+            gif_buffer = convert_to_gif(uploaded_file, fps)
 
-#フォルダ変更　　../images/my_image.jpg
-#写真
-st.text('こちらは2022年に東京に旅行した際の写真、動画です。')
-#image=Image.open('skytree.png')
-st.image('/mount/src/hatake4911/☆Webアプリ/画像/skytree.png',use_column_width=True)
+            if gif_buffer is not None:
+                # 生成されたGIFの表示
+                st.subheader("Converted GIF:")
+                st.image(gif_buffer, use_column_width=True, format="GIF")
 
-# ローカルのGIFファイルのパスを指定
-video_path = '/mount/src/hatake4911/☆Webアプリ/動画/東京到着.gif'
-# 動画を表示
-#st.video(video_path)
-st.image(video_path)
+                # ダウンロードボタンの追加
+                st.subheader("Download Converted GIF:")
+                st.download_button(
+                    label="Download",
+                    data=gif_buffer.getvalue(),
+                    file_name="converted.gif",
+                    mime="image/gif",
+                )
 
-
-
-
-code='''
-cwd = os.getcwd()
-st.text(cwd)#このコードによってgithub上のフルパスを確認
-'''
-st.code(code,language='python')
+if __name__ == "__main__":
+    main()
