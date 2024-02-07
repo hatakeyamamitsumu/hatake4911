@@ -23,4 +23,5 @@ seaborn
 requests
 bs4
 
+moviepy
 
