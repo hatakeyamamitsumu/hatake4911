@@ -1,6 +1,7 @@
 import streamlit as st
 from moviepy.editor import VideoFileClip
 from io import BytesIO
+import base64  # 追加
 
 def convert_to_gif(input_video, output_gif, fps=10):
     clip = VideoFileClip(input_video)
