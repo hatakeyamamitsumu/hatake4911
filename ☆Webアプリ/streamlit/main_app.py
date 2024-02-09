@@ -21,7 +21,7 @@ selected_image = random.choice(image_files)
 selected_image_path = os.path.join(image_folder_path, selected_image)
 
 # 選択された画像を表示
-st.text('こちらは2022年に東京に旅行した際の写真、動画です。')
+st.text('こちらは2022年に東京に旅行した際の写真です。ランダムに表示されます。')
 st.image(selected_image_path, use_column_width=True)
 
 code = '''
