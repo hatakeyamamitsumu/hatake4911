@@ -2,11 +2,6 @@ import streamlit as st
 import pandas as pd
 from collections import Counter
 from io import StringIO
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-# Streamlitのテーマ設定
-sns.set_theme()
 
 def count_words(text):
     # テキストから単語を抽出してカウント
@@ -14,18 +9,11 @@ def count_words(text):
     word_counts = Counter(words)
     return word_counts
 
-def plot_word_frequency(word_counts):
-    # 単語の出現回数をグラフ表示
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x=list(word_counts.values()), y=list(word_counts.keys()), palette="viridis")
-    plt.title("単語出現回数グラフ")
-    plt.xlabel("出現回数")
-    plt.ylabel("単語")
-    st.pyplot()
-
-def search_word(word_counts, search_term):
-    # 特定の単語の出現回数を表示
-    st.write(f"単語 '{search_term}' の出現回数: {word_counts.get(search_term, 0)} 回")
+def search_word_count(text, search_term):
+    # テキスト中で検索した単語の出現回数を数える
+    words = text.split()
+    search_count = Counter(words)[search_term]
+    return search_count
 
 def main():
     st.title("単語出現回数カウンター")
@@ -47,13 +35,11 @@ def main():
         st.write("### 単語出現回数リスト")
         st.dataframe(result_df)
 
-        # 単語出現回数のグラフ表示
-        plot_word_frequency(word_counts)
-
         # 単語の検索
         search_term = st.text_input("検索する単語を入力してください:")
         if search_term:
-            search_word(word_counts, search_term)
+            search_count = search_word_count(text, search_term)
+            st.write(f"単語 '{search_term}' の出現回数: {search_count} 回")
 
 if __name__ == "__main__":
     main()
