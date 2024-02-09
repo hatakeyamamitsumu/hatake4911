@@ -9,6 +9,25 @@ def count_words(text):
     word_counts = Counter(words)
     return word_counts
 
+def filter_and_download(text, filter_word):
+    # 特定の単語が含まれる行をフィルタリング
+    lines_with_word = [line for line in text.split('\n') if filter_word.lower() in line.lower()]
+
+    if lines_with_word:
+        # 結果をデータフレームに変換
+        result_df = pd.DataFrame({"行": lines_with_word})
+
+        # 結果を表示
+        st.write(f"### '{filter_word}' を含む行のリスト")
+        st.dataframe(result_df)
+
+        # 結果をCSVファイルとしてダウンロード
+        csv_data = StringIO()
+        result_df.to_csv(csv_data, index=False)
+        st.download_button(label="CSVファイルとしてダウンロード", data=csv_data.getvalue(), file_name="filtered_data.csv", key="download_button")
+    else:
+        st.write(f"テキストに '{filter_word}' を含む行は見つかりませんでした。")
+
 def main():
     st.title("単語出現回数カウンター")
 
@@ -28,6 +47,11 @@ def main():
         # 結果を表示
         st.write("### 単語出現回数リスト")
         st.dataframe(result_df)
+
+        # フィルタリングする単語を入力
+        filter_word = st.text_input("フィルタリングする単語を入力してください:")
+        if filter_word:
+            filter_and_download(text, filter_word)
 
 if __name__ == "__main__":
     main()
