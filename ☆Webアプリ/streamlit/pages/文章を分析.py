@@ -25,7 +25,6 @@ def main():
 
         # フィルタリングする単語を入力
         filter_word = st.text_input("フィルタリングする単語を入力してください:")
-
         if filter_word:
             filter_and_display(text, filter_word)
 
