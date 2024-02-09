@@ -45,7 +45,7 @@ def main():
         result_df = pd.DataFrame(list(word_counts.items()), columns=['単語', '出現回数'])
 
         # 結果を表示
-        st.write("### 単語出現回数リスト")
+        st.write("### 原本")
         st.dataframe(result_df)
 
         # フィルタリングする単語を入力
