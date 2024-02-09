@@ -6,7 +6,7 @@ import base64
 
 st.set_page_config(layout="wide", page_title="Image Background Remover")
 
-st.write("## 写真の背景を切り抜き")
+st.write("## 写真の背景をぼかす")
 st.write(
     "背景を切り抜きたい写真を、左のウインドウからアップロードしてください＜＜"
 )
@@ -21,44 +21,41 @@ def convert_image(img):
     byte_im = buf.getvalue()
     return byte_im
 
-def fix_and_blend_images(original, cutout, blur_radius):
+def fix_and_blend_images(original, cutout):
     # 元の画像をぼかす
-    original_blurred = original.filter(ImageFilter.GaussianBlur(blur_radius))
+    original_blurred = original.filter(ImageFilter.BLUR)
 
     # 切り抜いた画像をもとの画像の上に合成
     original_blurred.paste(cutout, (0, 0), cutout)
 
     return original_blurred
 
-def fix_image(upload, blur_radius):
+def fix_image(upload):
     image = Image.open(upload)
     col1.write("Original Image :camera:")
     col1.image(image)
 
     # ぼかし効果を適用した元の画像を作成
-    original_blurred = image.filter(ImageFilter.GaussianBlur(blur_radius))
+    original_blurred = image.filter(ImageFilter.BLUR)
 
     # 切り抜き処理
     cutout = remove(image)
 
     # 合成してぼかし効果を適用
-    blended_image = fix_and_blend_images(original_blurred, cutout, blur_radius)
+    blended_image = fix_and_blend_images(original_blurred, cutout)
 
     col2.write("Fixed and Blurred Image :wrench:")
     col2.image(blended_image)
     st.sidebar.markdown("\n")
-    st.sidebar.download_button("Download fixed and blurred image", convert_image(blended_image), "blended_image.png", "image/png")
+    st.sidebar.download_button("ダウンロードボタン", convert_image(blended_image), "blended_image.png", "image/png")
 
 col1, col2 = st.columns(2)
-my_upload = st.sidebar.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+my_upload = st.sidebar.file_uploader("ここからアップロードしてください", type=["png", "jpg", "jpeg"])
 
 if my_upload is not None:
     if my_upload.size > MAX_FILE_SIZE:
         st.error("The uploaded file is too large. Please upload an image smaller than 5MB.")
     else:
-        blur_radius = st.sidebar.slider("Blur Radius", 0.1, 10.0, 2.0)
-        fix_image(upload=my_upload, blur_radius=blur_radius)
+        fix_image(upload=my_upload)
 else:
-    blur_radius = st.sidebar.slider("Blur Radius", 0.1, 10.0, 2.0)
-    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/skytree.png", blur_radius=blur_radius)
-
+    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/skytree.png")
