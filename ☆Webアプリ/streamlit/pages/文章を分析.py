@@ -17,7 +17,7 @@ def main():
     st.title("テキスト行フィルター")
 
     # テキストファイルアップロード
-    uploaded_file = st.file_uploader("テキストファイルをアップロードしてください", type=["txt"])
+    uploaded_file = st.file_uploader("文章テキストファイルをアップロードしてください", type=["txt"])
 
     if uploaded_file is not None:
         # アップロードされたファイルを読み込む
