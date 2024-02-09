@@ -1,12 +1,20 @@
 import streamlit as st
 import pandas as pd
 from io import StringIO
+from docx import Document
 
 def count_words(text):
     # テキストから単語を抽出してカウント
     words = text.split()
     word_counts = dict(pd.Series(words).value_counts())
     return word_counts
+
+def read_word_file(file):
+    doc = Document(file)
+    text = ""
+    for paragraph in doc.paragraphs:
+        text += paragraph.text + "\n"
+    return text
 
 def filter_and_download(text, filter_words, filter_condition):
     # 行のフィルタリング
@@ -37,11 +45,14 @@ def main():
     st.title("文章フィルター")
 
     # ファイルアップロード
-    uploaded_file = st.file_uploader("テキストファイルをアップロードしてください", type=["txt"])
+    uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
 
     if uploaded_file is not None:
         # アップロードされたファイルを読み込む
-        text = uploaded_file.read().decode("utf-8")
+        if uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            text = read_word_file(uploaded_file)
+        else:
+            text = uploaded_file.read().decode("utf-8")
 
         # 単語出現回数をカウント
         word_counts = count_words(text)
