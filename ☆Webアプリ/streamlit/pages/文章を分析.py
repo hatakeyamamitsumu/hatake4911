@@ -14,7 +14,7 @@ def filter_and_display(text, filter_word):
         st.write(f"テキストに '{filter_word}' を含む行は見つかりませんでした。")
 
 def main():
-    st.title("テキスト行フィルター")
+    st.title("")
 
     # テキストファイルアップロード
     uploaded_file = st.file_uploader("テキストファイルをアップロードしてください", type=["txt"])
