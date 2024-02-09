@@ -8,16 +8,22 @@ def count_words(text):
     word_counts = dict(pd.Series(words).value_counts())
     return word_counts
 
-def filter_and_download(text, filter_words):
-    # 複数の単語が含まれる行をフィルタリング
-    lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
+def filter_and_download(text, filter_words, filter_condition):
+    # 行のフィルタリング
+    if filter_condition == 'and':
+        lines_with_words = [line for line in text.split('\n') if all(word.lower() in line.lower() for word in filter_words)]
+    elif filter_condition == 'or':
+        lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
+    else:
+        st.error("無効な条件が選択されました。'and' または 'or' を選択してください。")
+        return
 
     if lines_with_words:
         # 結果をデータフレームに変換
         result_df = pd.DataFrame({"行": lines_with_words})
 
         # 結果を表示
-        st.write(f"### '{', '.join(filter_words)}' を含む行のリスト")
+        st.write(f"### '{', '.join(filter_words)}' を含む行のリスト ({filter_condition} 条件)")
         st.dataframe(result_df)
 
         # 結果をCSVファイルとしてダウンロード
@@ -49,9 +55,14 @@ def main():
 
         # フィルタリングする単語を入力
         filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
+        
+        # 条件を選択
+        filter_condition = st.radio("条件を選択してください:", ['and', 'or'])
+
         if filter_words:
             filter_words = filter_words.split()
-            filter_and_download(text, filter_words)
+            filter_and_download(text, filter_words, filter_condition)
 
 if __name__ == "__main__":
     main()
+
