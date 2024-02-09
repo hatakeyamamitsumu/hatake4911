@@ -9,12 +9,6 @@ def count_words(text):
     word_counts = Counter(words)
     return word_counts
 
-def search_word_count(text, search_term):
-    # テキスト中で検索した単語の出現回数を数える
-    words = text.split()
-    search_count = Counter(words)[search_term]
-    return search_count
-
 def main():
     st.title("単語出現回数カウンター")
 
@@ -34,12 +28,6 @@ def main():
         # 結果を表示
         st.write("### 単語出現回数リスト")
         st.dataframe(result_df)
-
-        # 単語の検索
-        search_term = st.text_input("検索する単語を入力してください:")
-        if search_term:
-            search_count = search_word_count(text, search_term)
-            st.write(f"単語 '{search_term}' の出現回数: {search_count} 回")
 
 if __name__ == "__main__":
     main()
