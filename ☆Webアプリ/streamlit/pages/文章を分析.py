@@ -29,7 +29,7 @@ def filter_and_download(text, filter_word):
         st.write(f"テキストに '{filter_word}' を含む行は見つかりませんでした。")
 
 def main():
-    st.title("単語出現回数カウンター")
+    st.title("文章フィルター")
 
     # ファイルアップロード
     uploaded_file = st.file_uploader("テキストファイルをアップロードしてください", type=["txt"])
