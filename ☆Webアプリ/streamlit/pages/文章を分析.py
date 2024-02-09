@@ -17,7 +17,7 @@ def main():
     st.title("テキスト行フィルター")
 
     # テキストファイルアップロード
-    uploaded_file = st.file_uploader("文章テキストファイルをアップロードしてください", type=["txt"])
+    uploaded_file = st.file_uploader("テキストファイルをアップロードしてください", type=["txt"])
 
     if uploaded_file is not None:
         # アップロードされたファイルを読み込む
@@ -25,9 +25,9 @@ def main():
 
         # フィルタリングする単語を入力
         filter_word = st.text_input("フィルタリングする単語を入力してください:")
+
         if filter_word:
             filter_and_display(text, filter_word)
 
 if __name__ == "__main__":
     main()
-
