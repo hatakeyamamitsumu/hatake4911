@@ -6,7 +6,7 @@ import base64
 
 st.set_page_config(layout="wide", page_title="Image Background Remover")
 
-st.write("## 写真の背景を切り抜き")
+st.write("## 写真の背景をぼかす")
 st.write(
     "背景を切り抜きたい写真を、左のウインドウからアップロードしてください＜＜"
 )
@@ -47,10 +47,10 @@ def fix_image(upload):
     col2.write("Fixed and Blurred Image :wrench:")
     col2.image(blended_image)
     st.sidebar.markdown("\n")
-    st.sidebar.download_button("Download fixed and blurred image", convert_image(blended_image), "blended_image.png", "image/png")
+    st.sidebar.download_button("ダウンロードボタン", convert_image(blended_image), "blended_image.png", "image/png")
 
 col1, col2 = st.columns(2)
-my_upload = st.sidebar.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+my_upload = st.sidebar.file_uploader("ここからアップロードしてください", type=["png", "jpg", "jpeg"])
 
 if my_upload is not None:
     if my_upload.size > MAX_FILE_SIZE:
