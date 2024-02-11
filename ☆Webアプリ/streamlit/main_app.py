@@ -1,78 +1,31 @@
 import streamlit as st
-import pandas as pd
-from io import StringIO
-from docx import Document
+from PIL import Image
+import os
+import random
 
-def count_words(text):
-  words = text.split()
-  word_counts = dict(pd.Series(words).value_counts())
-  return word_counts
+st.title('Hat')
+st.caption('こんにちは！Hatです。')
+st.subheader('説明')
+st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\nよろしくお願いします。')
 
-def read_word_file(file):
-  doc = Document(file)
-  text = ""
-  for paragraph in doc.paragraphs:
-    text += paragraph.text + "\n"
-  return text
+# フォルダのパス
+image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像'
 
-def filter_and_download(text, filter_words, filter_condition, filename):
-  # 行のフィルタリング
-  if filter_condition == 'and':
-    lines_with_words = [line for line in text.split('\n') if all(word.lower() in line.lower() for word in filter_words)]
-  elif filter_condition == 'or':
-    lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
-  else:
-    st.error("無効な条件が選択されました。'and' または 'or' を選択してください。")
-    return
+# フォルダ内の画像ファイルのリストを取得
+image_files = [f for f in os.listdir(image_folder_path) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
 
-  if lines_with_words:
-    # 結果をデータフレームに変換
-    result_df = pd.DataFrame({"行": lines_with_words, "ファイル名": filename})
+# ランダムに一つの画像を選択
+selected_image = random.choice(image_files)
 
-    # 結果を表示
-    st.write(f"### '{', '.join(filter_words)}' を含む行のリスト ({filter_condition} 条件)")
-    st.dataframe(result_df)
+# 選択された画像のフルパス
+selected_image_path = os.path.join(image_folder_path, selected_image)
 
-    # 結果をCSVファイルとしてダウンロード
-    csv_data = StringIO()
-    result_df.to_csv(csv_data, index=False)
-    st.download_button(label="CSVファイルとしてダウンロード", data=csv_data.getvalue(), file_name="filtered_data.csv", key="download_button")
-  else:
-    st.write(f"テキストに '{', '.join(filter_words)}' を含む行は見つかりませんでした。")
+# 選択された画像を表示
+st.text('こちらは2022年に東京に旅行した際の写真です。ランダムに表示されます。')
+st.image(selected_image_path, use_column_width=True)
 
-def main():
-  st.title("文章フィルター")
-
-  # ファイルアップロード
-  uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
-
-  if uploaded_file is not None:
-    # アップロードされたファイルを読み込む
-    if uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-      text = read_word_file(uploaded_file)
-    else:
-      text = uploaded_file.read().decode("utf-8")
-
-    # 単語出現回数をカウント
-    word_counts = count_words(text)
-
-    # 結果をデータフレームに変換
-    result_df = pd.DataFrame(list(word_counts.items()), columns=['単語', '出現回数'])
-
-    # 結果を表示
-    st.write("### 原本")
-    st.dataframe(result_df)
-
-    # フィルタリングする単語を入力
-    filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
-     
-    # 条件を選択
-    filter_condition = st.radio("条件を選択してください:", ['and', 'or'])
-
-    if filter_words:
-      filter_words = filter_words.split()
-      filter_and_download(text, filter_words, filter_condition, uploaded_file.name)
-
-if __name__ == "__main__":
-  main()
-
+code = '''
+cwd = os.getcwd()
+st.text(cwd)  # このコードによってgithub上のフルパスを確認
+'''
+st.code(code, language='python')
