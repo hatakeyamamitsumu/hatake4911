@@ -6,10 +6,10 @@ import plotly.express as px
 data = pd.read_csv('都道府県別の博物館の数(2018).csv', index_col=0)
 
 # 最大の博物館の数を取得
-max_museums = data['博物館の数'].max()
+max_museums = data['データ'].max()
 
 # 都道府県ごとの色データを作成
-color_data = {prefecture: int(255 * (1 - museums / max_museums)) for prefecture, museums in zip(data.index, data['博物館の数'])}
+color_data = {prefecture: int(255 * (1 - museums / max_museums)) for prefecture, museums in zip(data.index, data['データ'])}
 
 # グラフのサイズを設定
 fig = px.choropleth(data, 
