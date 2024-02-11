@@ -4,7 +4,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 
 # CSVファイルの読み込み
-data = pd.read_csv('都道府県別の博物館の数(2018).csv', index_col=0)
+data = pd.read_csv('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/都道府県別の博物館の数.CSV', index_col=0)
 
 # GeoJSON ファイルの読み込み
 geojson_url = 'https://raw.githubusercontent.com/niiyz/Japan-Geojson/master/geojson/prefectures.geojson'
