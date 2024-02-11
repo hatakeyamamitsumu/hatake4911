@@ -9,7 +9,7 @@ data = pd.read_csv('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/
 max_museums = data['データ'].max()
 
 # 都道府県ごとの色データを作成
-color_data = {prefecture: (255, int(255 * (1 - museums / max_museums)), 0) for prefecture, museums in zip(data.index, data['博物館の数'])}
+color_data = {prefecture: (255, int(255 * (1 - museums / max_museums)), 0) for prefecture, museums in zip(data.index, data['データ'])}
 
 # Streamlitアプリの構築
 st.title("都道府県ごとの博物館の数に基づく色付け")
