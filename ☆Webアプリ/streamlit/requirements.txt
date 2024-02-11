@@ -28,4 +28,4 @@ moviepy
 python-docx
 japanmap
 opencv-python-headless
-
+geopandas
