@@ -6,7 +6,7 @@ from japanmap import picture
 data = pd.read_csv('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/都道府県別の博物館の数.CSV', index_col=0)  # ファイルのパスを実際のデータに合わせて変更
 
 # 最大の博物館の数を取得
-max_museums = data['博物館の数'].max()
+max_museums = data['データ'].max()
 
 # 都道府県ごとの色データを作成
 color_data = {prefecture: (255, int(255 * (1 - museums / max_museums)), 0) for prefecture, museums in zip(data.index, data['博物館の数'])}
