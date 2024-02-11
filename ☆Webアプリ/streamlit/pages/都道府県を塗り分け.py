@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from japanmap import picture
-
+import cv2
 # CSVファイルの読み込み
 data = pd.read_csv('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/都道府県別の博物館の数.CSV', index_col=0)  # ファイルのパスを実際のデータに合わせて変更
 
