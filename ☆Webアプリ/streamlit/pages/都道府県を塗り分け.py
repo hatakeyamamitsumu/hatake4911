@@ -36,7 +36,7 @@ def main():
         # CSVファイルを表示
         csv_path = os.path.join(folder_path, selected_subfolder, selected_csv)
         df = pd.read_csv(csv_path)
-        st.dataframe(df)
+        st.dataframe(df, use_container_width=True)
 
         # 選択されたCSVファイルに対応する画像一覧を取得
         image_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder))
@@ -47,13 +47,9 @@ def main():
             st.warning(f"{selected_csv}に対応する画像ファイルが見つかりません。")
             continue
 
-        # すべての画像を表示
-        for selected_image in image_files:
-            st.write(f"選択された画像: {selected_image}")
-            image_path = os.path.join(folder_path, selected_subfolder, selected_image)
-            image = Image.open(image_path)
-            st.image(image, caption=f"{selected_image}", use_column_width=True)
+        # すべての画像を横に表示
+        images = [Image.open(os.path.join(folder_path, selected_subfolder, selected_image)) for selected_image in image_files]
+        st.image(images, caption=image_files, use_column_width=True)
 
 if __name__ == "__main__":
     main()
-
