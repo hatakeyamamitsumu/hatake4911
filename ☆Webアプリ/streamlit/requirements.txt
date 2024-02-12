@@ -26,6 +26,3 @@ bs4
 moviepy
 
 python-docx
-
-
-opencv-python
