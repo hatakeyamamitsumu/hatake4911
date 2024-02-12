@@ -4,7 +4,7 @@ import pandas as pd
 from PIL import Image
 
 def main():
-    st.title("都道府県を塗り分け用CSVファイルと画像の表示")
+    st.title("都道府県を塗り分け用CSVファイルと対応する画像の表示")
 
     # 指定されたフォルダパス
     folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/"
@@ -29,29 +29,30 @@ def main():
         return
 
     # すべてのCSVファイルを表示
-    st.subheader("CSVファイル一覧:")
+    st.subheader("CSVファイルと画像の対応表示:")
     for selected_csv in csv_files:
         st.write(f"選択されたCSVファイル: {selected_csv}")
+
+        # CSVファイルを表示
         csv_path = os.path.join(folder_path, selected_subfolder, selected_csv)
         df = pd.read_csv(csv_path)
         st.dataframe(df)
 
-    # 選択されたサブフォルダ内のすべての画像ファイル一覧を取得
-    image_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder))
-                   if file.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+        # 選択されたCSVファイルに対応する画像一覧を取得
+        image_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder))
+                       if file.startswith(selected_csv.split('.')[0]) and file.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
-    # 画像が存在するか確認
-    if not image_files:
-        st.warning("選択されたサブフォルダ内に画像ファイルが見つかりません。")
-        return
+        # 画像が存在するか確認
+        if not image_files:
+            st.warning(f"{selected_csv}に対応する画像ファイルが見つかりません。")
+            continue
 
-    # すべての画像を表示
-    st.subheader("画像ファイル一覧:")
-    for selected_image in image_files:
-        st.write(f"選択された画像: {selected_image}")
-        image_path = os.path.join(folder_path, selected_subfolder, selected_image)
-        image = Image.open(image_path)
-        st.image(image, caption=f"{selected_image}", use_column_width=True)
+        # すべての画像を表示
+        for selected_image in image_files:
+            st.write(f"選択された画像: {selected_image}")
+            image_path = os.path.join(folder_path, selected_subfolder, selected_image)
+            image = Image.open(image_path)
+            st.image(image, caption=f"{selected_image}", use_column_width=True)
 
 if __name__ == "__main__":
     main()
