@@ -6,7 +6,7 @@ from PIL import Image
 def main():
     st.title("複数のサブフォルダ内のCSVファイルと画像の表示")
 
-    # 'a' フォルダ内のサブフォルダ一覧を取得
+    # 'a' フォルダ内のサブフォルダ一覧を取得　/mount/src/hatake4911/☆Webアプリ/画像
     subfolders = [folder for folder in os.listdir('a') if os.path.isdir(os.path.join('a', folder))]
 
     # サブフォルダが存在するか確認
