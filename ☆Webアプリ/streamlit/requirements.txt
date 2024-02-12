@@ -26,6 +26,6 @@ bs4
 moviepy
 
 python-docx
-japanmap
 
-geopandas
+
+opencv-python
