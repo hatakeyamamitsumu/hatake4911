@@ -57,4 +57,4 @@ if my_upload is not None:
     else:
         fix_image(upload=my_upload, blur_radius=blur_radius)
 else:
-    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/skytree.png", blur_radius=blur_radius)
+    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/スカイツリー.jpg", blur_radius=blur_radius)
