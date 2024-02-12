@@ -4,9 +4,10 @@ import pandas as pd
 from PIL import Image
 
 def main():
-    st.title("都道府県を塗り分け用CSVファイルと画像の表示")
+    st.title("都道府県を塗り分け")
+    st.text('画像とCSVファイルの表示')
 
-    # 指定されたフォルダパス
+    # 指定されたフォルダパス　CSVファイルと画像の表示
     folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/"
 
     # 指定されたフォルダ内のサブフォルダ一覧を取得
