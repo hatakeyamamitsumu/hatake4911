@@ -49,7 +49,7 @@ def main():
     # すべての画像を表示
     st.subheader("画像:")
     for selected_image in image_files:
-        st.write(f"選択された画像: {selected_image}")
+        st.write(selected_image)
         image_path = os.path.join(folder_path, selected_subfolder, selected_image)
         image = Image.open(image_path)
         st.image(image, caption=f"{selected_image}", use_column_width=True)
