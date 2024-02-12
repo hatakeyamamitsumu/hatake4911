@@ -1,37 +1,56 @@
+import os
 import streamlit as st
 import pandas as pd
-from japanmap import picture
-import cv2
-# CSVファイルの読み込み
-data = pd.read_csv('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/都道府県別の博物館の数.CSV', index_col=0)  # ファイルのパスを実際のデータに合わせて変更
+from PIL import Image
 
-# 最大の博物館の数を取得
-max_museums = data['データ'].max()
+def main():
+    st.title("複数のサブフォルダ内のCSVファイルと画像の表示")
 
-# 都道府県ごとの色データを作成
-color_data = {prefecture: (255, int(255 * (1 - museums / max_museums)), 0) for prefecture, museums in zip(data.index, data['データ'])}
+    # 'a' フォルダ内のサブフォルダ一覧を取得
+    subfolders = [folder for folder in os.listdir('a') if os.path.isdir(os.path.join('a', folder))]
 
-# Streamlitアプリの構築
-st.title("都道府県ごとの博物館の数に基づく色付け")
+    # サブフォルダが存在するか確認
+    if not subfolders:
+        st.warning("指定されたフォルダ内にサブフォルダが見つかりません。")
+        return
 
-# 日本地図を表示
-st.image(picture(color_data), caption="日本地図", use_column_width=True)
+    # サブフォルダの選択
+    selected_subfolder = st.selectbox("サブフォルダを選択してください", subfolders)
 
-# カラーバーを表示（博物館の数が多いほど赤くなる）
-st.write("博物館の数に基づくカラーバー")
-st.image([[255, 0, 0], [255, 255, 0], [0, 255, 0]], caption='Colorbar', use_column_width=False)
+    # 選択されたサブフォルダ内のCSVファイル一覧を取得
+    csv_files = [file for file in os.listdir(os.path.join('a', selected_subfolder)) if file.endswith('.csv')]
 
-# グラフの詳細情報
-st.write("都道府県ごとの博物館の数:")
-st.write(data)
+    # CSVファイルが存在するか確認
+    if not csv_files:
+        st.warning("選択されたサブフォルダ内にCSVファイルが見つかりません。")
+        return
 
-# データの統計情報
-st.write("データの統計情報:")
-st.write(data.describe())
+    # CSVファイルの選択
+    selected_csv = st.selectbox("CSVファイルを選択してください", csv_files)
 
-# カラーバーの説明
-st.write("カラーバーの説明:")
-st.write("赤色が最大の博物館数を示し、黄色、緑色へと減少します。")
+    # 選択されたCSVファイルを表示
+    st.subheader(f"選択されたCSVファイル: {selected_csv}")
+    csv_path = os.path.join('a', selected_subfolder, selected_csv)
+    df = pd.read_csv(csv_path)
+    st.dataframe(df)
 
-# Streamlitアプリを起動
-st.show()
+    # 選択されたサブフォルダ内の画像ファイル一覧を取得
+    image_files = [file for file in os.listdir(os.path.join('a', selected_subfolder))
+                   if file.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+
+    # 画像が存在するか確認
+    if not image_files:
+        st.warning("選択されたサブフォルダ内に画像ファイルが見つかりません。")
+        return
+
+    # 画像の選択
+    selected_image = st.selectbox("画像を選択してください", image_files)
+
+    # 選択された画像を表示
+    st.subheader(f"選択された画像: {selected_image}")
+    image_path = os.path.join('a', selected_subfolder, selected_image)
+    image = Image.open(image_path)
+    st.image(image, caption=f"{selected_image}", use_column_width=True)
+
+if __name__ == "__main__":
+    main()
