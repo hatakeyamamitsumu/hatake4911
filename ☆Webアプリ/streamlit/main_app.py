@@ -26,7 +26,7 @@ selected_image_path = os.path.join(image_folder_path, selected_image)
 st.text('こちらは2022年に東京に旅行した際の写真です。ランダムに表示されます。')
 # 選択された画像のファイル名を表示
 st.text(selected_image)
-st.image(selected_image_path, use_column_width=True)
+st.image(selected_image_path)
 
 code = '''
 cwd = os.getcwd()
