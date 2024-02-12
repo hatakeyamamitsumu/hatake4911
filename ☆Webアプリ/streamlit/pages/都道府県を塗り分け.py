@@ -20,6 +20,22 @@ def main():
 
     # サブフォルダの選択
     selected_subfolder = st.selectbox("フォルダを選択してください", subfolders)
+        # 選択されたサブフォルダ内のすべての画像ファイル一覧を取得
+    image_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder))
+                   if file.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
+
+    # 画像が存在するか確認
+    if not image_files:
+        st.warning("選択されたサブフォルダ内に画像ファイルが見つかりません。")
+        return
+
+    # すべての画像を表示
+    st.subheader("画像:")
+    for selected_image in image_files:
+        st.write(selected_image)
+        image_path = os.path.join(folder_path, selected_subfolder, selected_image)
+        image = Image.open(image_path)
+        st.image(image, caption=f"{selected_image}", use_column_width=True)
 
     # 選択されたサブフォルダ内のすべてのCSVファイル一覧を取得
     csv_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder)) if file.endswith('.csv')]
@@ -37,22 +53,7 @@ def main():
         df = pd.read_csv(csv_path)
         st.dataframe(df)
 
-    # 選択されたサブフォルダ内のすべての画像ファイル一覧を取得
-    image_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder))
-                   if file.endswith(('.jpg', '.jpeg', '.png', '.gif'))]
 
-    # 画像が存在するか確認
-    if not image_files:
-        st.warning("選択されたサブフォルダ内に画像ファイルが見つかりません。")
-        return
-
-    # すべての画像を表示
-    st.subheader("画像:")
-    for selected_image in image_files:
-        st.write(selected_image)
-        image_path = os.path.join(folder_path, selected_subfolder, selected_image)
-        image = Image.open(image_path)
-        st.image(image, caption=f"{selected_image}", use_column_width=True)
 
 if __name__ == "__main__":
     main()
