@@ -93,9 +93,11 @@ def main():
         # 条件を選択
         filter_condition = st.radio("条件を選択してください:", ['and', 'or'])
 
-        if filter_words:
-            filter_words = filter_words.split()
-            filter_and_download(text, filter_words, filter_condition)
+        # フィルタリングボタン
+        if st.button("フィルタリング実行"):
+            if filter_words:
+                filter_words = filter_words.split()
+                filter_and_download(text, filter_words, filter_condition)
 
 if __name__ == "__main__":
     main()
