@@ -88,16 +88,5 @@ def main():
         st.dataframe(result_df)
 
         # フィルタリングする単語を入力
-        filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
-        
-        # 条件を選択
-        filter_condition = st.radio("条件を選択してください:", ['and', 'or'])
+       
 
-        # フィルタリングボタン
-        if st.button("フィルタリング実行"):
-            if filter_words:
-                filter_words = filter_words.split()
-                filter_and_download(text, filter_words, filter_condition)
-
-if __name__ == "__main__":
-    main()
