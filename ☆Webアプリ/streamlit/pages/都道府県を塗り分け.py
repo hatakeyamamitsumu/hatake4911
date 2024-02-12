@@ -5,9 +5,8 @@ from PIL import Image
 
 def main():
     st.title("複数のサブフォルダ内のCSVファイルと画像の表示")
-
-    # 'a' フォルダ内のサブフォルダ一覧を取得　/mount/src/hatake4911/☆Webアプリ/画像
-    subfolders = [folder for folder in os.listdir('a') if os.path.isdir(os.path.join('a', folder))]
+    # 'a' フォルダ内のサブフォルダ一覧を取得　/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/博物館の数
+    subfolders = [folder for folder in os.listdir('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ') if os.path.isdir(os.path.join('/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ', folder))]
 
     # サブフォルダが存在するか確認
     if not subfolders:
