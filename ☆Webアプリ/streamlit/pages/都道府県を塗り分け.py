@@ -7,7 +7,7 @@ def main():
     st.title("都道府県を塗り分け用CSVファイルと画像の表示")
 
     # 指定されたフォルダパス
-    folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/a"
+    folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/"
 
     # 指定されたフォルダ内のサブフォルダ一覧を取得
     subfolders = [folder for folder in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, folder))]
