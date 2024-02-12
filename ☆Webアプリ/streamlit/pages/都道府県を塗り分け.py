@@ -18,7 +18,7 @@ def main():
         return
 
     # サブフォルダの選択
-    selected_subfolder = st.selectbox("サブフォルダを選択してください", subfolders)
+    selected_subfolder = st.selectbox("フォルダを選択してください", subfolders)
 
     # 選択されたサブフォルダ内のすべてのCSVファイル一覧を取得
     csv_files = [file for file in os.listdir(os.path.join(folder_path, selected_subfolder)) if file.endswith('.csv')]
@@ -29,9 +29,9 @@ def main():
         return
 
     # すべてのCSVファイルを表示
-    st.subheader("CSVファイル一覧:")
+    st.subheader("CSVファイル:")
     for selected_csv in csv_files:
-        st.write(f"選択されたCSVファイル: {selected_csv}")
+        st.write(selected_csv)
         csv_path = os.path.join(folder_path, selected_subfolder, selected_csv)
         df = pd.read_csv(csv_path)
         st.dataframe(df)
@@ -46,7 +46,7 @@ def main():
         return
 
     # すべての画像を表示
-    st.subheader("画像ファイル一覧:")
+    st.subheader("画像:")
     for selected_image in image_files:
         st.write(f"選択された画像: {selected_image}")
         image_path = os.path.join(folder_path, selected_subfolder, selected_image)
