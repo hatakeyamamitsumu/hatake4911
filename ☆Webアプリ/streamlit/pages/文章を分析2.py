@@ -61,7 +61,8 @@ def filter_and_download(text, filter_words, filter_condition):
         # 結果をCSVファイルとしてダウンロード
         csv_data = StringIO()
         result_df.to_csv(csv_data, index=False)
-        st.download_button(label="CSVファイルとしてダウンロード", data=csv_data.getvalue(), file_name="filtered_data.csv", key="download_button")
+        st.download_button(label="CSVファイルとしてダウンロード", data=csv_data.getvalue(), file_name="filtered_data.csv", key="download_button_unique_id")
+
     else:
         st.write(f"テキストに '{', '.join(filter_words)}' を含む行は見つかりませんでした。")
 
