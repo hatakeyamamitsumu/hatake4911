@@ -26,4 +26,4 @@ bs4
 moviepy
 
 python-docx
-google-search-python==3.1.2
+
