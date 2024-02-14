@@ -26,8 +26,15 @@ def filter_numbers(text):
     return number_lines
 
 def filter_alphabets(text):
-    alphabet_lines = [line for line in text.split('\n') if any(char.isalpha() for char in line)]
+    # 英字を半角と全角で列挙
+    alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
+    
+    # アルファベットを含む行を抽出
+    alphabet_lines = [line for line in text.split('\n') if any(char in alphabet_characters for char in line)]
+    
     return alphabet_lines
+
+
 
 
 def filter_and_download(text, filter_type):
