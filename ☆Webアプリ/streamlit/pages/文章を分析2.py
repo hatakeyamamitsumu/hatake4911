@@ -29,6 +29,7 @@ def filter_alphabets(text):
     alphabet_lines = [line for line in text.split('\n') if any(char.isalpha() for char in line)]
     return alphabet_lines
 
+
 def filter_and_download(text, filter_type):
     if filter_type == 'katakana':
         filtered_lines = filter_katakana(text)
