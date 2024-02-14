@@ -22,7 +22,7 @@ def filter_katakana(text):
 import re
 
 def filter_numbers(text):
-    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零一二三四五六七八九十百千万億兆]', char) for char in line)]
+    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零壱弐参一二三四五六七八九十百千万億兆]', char) for char in line)]
     return number_lines
 
 
