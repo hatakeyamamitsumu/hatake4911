@@ -71,7 +71,7 @@ def main():
             filter_and_download(text, 'katakana')
 
         # 数字をフィルタリングするボタン
-        if st.button("数字をフィルタリングする"):
+        if st.button("数字（漢数字を含む）をフィルタリングする"):
             filter_and_download(text, 'numbers')
 
 if __name__ == "__main__":
