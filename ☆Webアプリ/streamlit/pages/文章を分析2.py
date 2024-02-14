@@ -25,6 +25,9 @@ def filter_numbers(text):
     number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零壱弐参伍拾一二三四五六七八九十百千万億兆]', char) for char in line)]
     return number_lines
 
+def filter_alphabets(text):
+    alphabet_lines = [line for line in text.split('\n') if any(char.isalpha() for char in line)]
+    return alphabet_lines
 
 def filter_and_download(text, filter_type):
     if filter_type == 'katakana':
@@ -33,8 +36,12 @@ def filter_and_download(text, filter_type):
         file_name = "katakana_data.csv"
     elif filter_type == 'numbers':
         filtered_lines = filter_numbers(text)
-        result_label = "### 数字を含む行のリスト"
+        result_label = "### 数字（漢数字を含む）を含む行のリスト"
         file_name = "number_data.csv"
+    elif filter_type == 'alphabets':
+        filtered_lines = filter_alphabets(text)
+        result_label = "### アルファベットを含む行のリスト"
+        file_name = "alphabet_data.csv"
     else:
         st.error("無効なフィルタータイプが選択されました。")
         return
@@ -74,6 +81,9 @@ def main():
         if st.button("数字（漢数字を含む）をフィルタリングする"):
             filter_and_download(text, 'numbers')
 
+        # アルファベットをフィルタリングするボタン
+        if st.button("アルファベットをフィルタリングする"):
+            filter_and_download(text, 'alphabets')
+
 if __name__ == "__main__":
     main()
-
