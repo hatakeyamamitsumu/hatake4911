@@ -19,9 +19,12 @@ def filter_katakana(text):
     katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' for char in line)]
     return katakana_lines
 
+import re
+
 def filter_numbers(text):
-    number_lines = [line for line in text.split('\n') if any(char.isdigit() for char in line)]
+    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[一二三四五六七八九十百千万億兆]', char) for char in line)]
     return number_lines
+
 
 def filter_and_download(text, filter_type):
     if filter_type == 'katakana':
