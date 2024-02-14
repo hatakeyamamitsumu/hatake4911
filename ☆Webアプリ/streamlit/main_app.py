@@ -28,8 +28,8 @@ st.text('こちらは2022年に東京に旅行した際の写真です。ラン�
 st.text(selected_image)
 st.image(selected_image_path)
 
-code = '''
-cwd = os.getcwd()
-st.text(cwd)  # このコードによってgithub上のフルパスを確認
-'''
-st.code(code, language='python')
+#code = '''
+#cwd = os.getcwd()
+#st.text(cwd)  # このコードによってgithub上のフルパスを確認
+#'''
+#st.code(code, language='python')
