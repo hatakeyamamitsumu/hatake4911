@@ -20,10 +20,10 @@ def main():
     st.title("写真を検索")
 
     folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"  # ご自身のフォルダのパスに変更してください
-    st.sidebar.header("Search Settings")
-    keyword = st.sidebar.text_input("Enter keyword to filter images")
+    st.sidebar.header("入力欄")
+    keyword = st.sidebar.text_input("単語を入力してください")
 
-    if st.button("Search"):
+    if st.button("検索開始"):
         if keyword:
             matching_images = filter_images(folder_path, keyword)
             if matching_images:
