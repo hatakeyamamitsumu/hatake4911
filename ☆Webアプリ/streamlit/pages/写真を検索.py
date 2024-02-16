@@ -11,6 +11,7 @@ def filter_images(folder_path, keyword):
     return matching_images
 
 def display_matching_images(folder_path, matching_images):
+    columns = st.columns(3)
     for filename in matching_images:
         image_path = os.path.join(folder_path, filename)
         image = Image.open(image_path)
