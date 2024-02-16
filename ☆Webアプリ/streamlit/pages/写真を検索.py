@@ -17,7 +17,7 @@ def display_matching_images(folder_path, matching_images):
         st.image(image, caption=filename)
 
 def main():
-    st.title("Image Viewer")
+    st.title("写真を検索")
 
     folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"  # ご自身のフォルダのパスに変更してください
     st.sidebar.header("Search Settings")
