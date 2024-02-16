@@ -18,7 +18,7 @@ def display_matching_images(folder_path, matching_images):
 def main():
     st.title("Image Viewer")
 
-    folder_path = "a"  # ご自身のフォルダのパスに変更してください
+    folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"  # ご自身のフォルダのパスに変更してください
     st.sidebar.header("Search Settings")
     keyword = st.sidebar.text_input("Enter keyword to filter images")
 
