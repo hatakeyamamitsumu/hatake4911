@@ -9,7 +9,7 @@ st.subheader('説明')
 st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\nよろしくお願いします。')
 
 # フォルダのパス
-image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像'
+image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像/東京画像'
 
 # フォルダ内の画像ファイルのリストを取得
 image_files = [f for f in os.listdir(image_folder_path) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
