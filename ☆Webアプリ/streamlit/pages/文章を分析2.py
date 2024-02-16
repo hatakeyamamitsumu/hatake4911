@@ -82,15 +82,15 @@ def main():
         st.dataframe(result_df)
 
         # カタカナをフィルタリングするボタン
-        if st.button("カタカナをフィルタリングする"):
+        if st.button("カタカナを含む文を抽出"):
             filter_and_download(text, 'katakana')
 
         # 数字をフィルタリングするボタン
-        if st.button("数字（漢数字を含む）をフィルタリングする"):
+        if st.button("数字（漢数字を含む）を含む文を抽出"):
             filter_and_download(text, 'numbers')
 
         # アルファベットをフィルタリングするボタン
-        if st.button("アルファベットをフィルタリングする"):
+        if st.button("アルファベットを含む文を抽出"):
             filter_and_download(text, 'alphabets')
 
 if __name__ == "__main__":
