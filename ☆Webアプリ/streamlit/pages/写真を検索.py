@@ -1,4 +1,3 @@
-
 import os
 import streamlit as st
 from PIL import Image
@@ -19,9 +18,12 @@ def display_matching_images(folder_path, matching_images):
 def main():
     st.title("写真を検索")
 
-    folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"  # ご自身のフォルダのパスに変更してください
-    st.sidebar.header("入力欄")
-    keyword = st.sidebar.text_input("単語を入力してください")
+    base_folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"
+    subfolders = [f for f in os.listdir(base_folder_path) if os.path.isdir(os.path.join(base_folder_path, f))]
+    selected_subfolder = st.sidebar.selectbox("検索対象のサブフォルダを選択してください", subfolders, index=0)
+    
+    folder_path = os.path.join(base_folder_path, selected_subfolder)
+    keyword = st.sidebar.text_input("検索する単語を入力してください")
 
     if st.button("検索開始"):
         if keyword:
@@ -29,9 +31,9 @@ def main():
             if matching_images:
                 display_matching_images(folder_path, matching_images)
             else:
-                st.warning("No matching images found.")
+                st.warning("一致する写真が見つかりませんでした。")
         else:
-            st.warning("Please enter a keyword to search.")
+            st.warning("検索する単語を入力してください。")
 
 if __name__ == "__main__":
     main()
