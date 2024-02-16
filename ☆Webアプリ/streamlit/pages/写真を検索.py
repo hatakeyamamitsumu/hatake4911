@@ -15,7 +15,7 @@ def display_matching_images(folder_path, matching_images):
     for filename in matching_images:
         image_path = os.path.join(folder_path, filename)
         image = Image.open(image_path)
-        st.image(image, caption=filename, use_column_width=True)
+        st.image(image, caption=filename)
 
 def main():
     st.title("Image Viewer")
