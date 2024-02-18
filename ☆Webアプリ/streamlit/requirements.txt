@@ -22,7 +22,6 @@ seaborn
 
 requests
 bs4
-datetime
 
 python-docx
 
