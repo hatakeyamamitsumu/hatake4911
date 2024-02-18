@@ -6,7 +6,7 @@ import datetime
 
 # YahooニュースのWebページを解析する関数
 def parse_yahoo_news():
-    url = 'https://news.yahoo.co.jp/'
+    url = 'https://www.tamiya.com/japan/event/index.html?genre_item=event_rc,event_type,kinki&sortkey=sa'
     html = requests.get(url)
     soup = BeautifulSoup(html.content, 'html.parser')
     
