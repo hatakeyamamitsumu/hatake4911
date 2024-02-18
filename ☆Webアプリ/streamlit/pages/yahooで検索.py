@@ -19,7 +19,7 @@ def parse_yahoo_news():
     return news_text, news_link
 
 # Streamlitアプリケーションの開始
-st.title('Yahooニュース解析アプリ')
+st.title('Yahooニュース見出し')
 
 # Yahooニュースを解析してデータを取得
 news_text, news_link = parse_yahoo_news()
