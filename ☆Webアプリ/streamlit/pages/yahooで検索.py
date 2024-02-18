@@ -36,14 +36,18 @@ news_text, news_link = parse_yahoo_news()
 data = {'主要ニュース': news_text, 'リンク': news_link}
 df = pd.DataFrame(data)
 
-# データを表示する
+# ハイパーリンクを表示する
 st.write('## ニュース一覧')
-st.write(df)
+df_display = df.copy()
+df_display['リンク'] = df_display['リンク'].apply(lambda x: f'[リンク]({x})')
+st.write(df_display)
 
 # Excelファイルに保存してダウンロードするボタン
 if st.button('Excelファイルに保存してダウンロード'):
     file_name = save_and_download_excel(df)
-    st.success(f'ファイル "{file_name}" を保存し、ダウンロードできます。')
+    st.success(f'ファイル "{file_name}" を保存し、[こちらをクリックしてダウンロード](sandbox:/mnt/data/{file_name})できます。')
+
+
 
 
 
