@@ -35,33 +35,9 @@ st.write(df)
 
 
 
-# NHKニュースWebページを解析する関数
-def parse_NHK_news():
-    NHK_url = 'https://www3.nhk.or.jp/news/catnew.html'
-    NHK_html = requests.get(NHK_url)
-    NHK_soup = BeautifulSoup(NHK_html.content, 'html.parser')
 
-    # NHKニュースの内容をclass属性で検索（都度変更が必要）
-    NHK_topic = NHK_soup.find(class_='content-inner')
 
-    NHK_news_text = [i.text for i in NHK_topic.find_all(class_='title')]
-    NHK_news_link = [i.get('href') for i in topic.find_all('a')]
 
-    return NHK_news_text, NHK_news_link
-
-# Streamlitアプリケーションの開始
-st.title('NHKニュース見出し')
-
-# NHKニュースを解析してデータを取得
-NHK_news_text, NHK_news_link = parse_NHK_news()
-
-# 取得したデータをDataFrameに格納
-NHK_data = {'主要ニュース': NHK_news_text, 'リンク': NHK_news_link}
-NHK_df = pd.DataFrame(NHK_data)
-
-# データを表示する
-st.write('## ニュース一覧')
-st.write(NHK_df)
 
 
 
