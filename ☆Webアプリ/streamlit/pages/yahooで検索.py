@@ -13,8 +13,8 @@ def parse_yahoo_news():
     # Yahooニュース内の最新トピックスをclass属性で検索（都度変更が必要）
     topic = soup.find(class_='sc-jnrPYG eYSvJf')
     
-    news_text = [i.text for i in topic.find_all('title')]
-    news_link = [i.get('href') for i in topic.find_all('title')]
+    news_text = [i.text for i in topic.find_all('a')]
+    news_link = [i.get('href') for i in topic.find_all('a')]
     
     return news_text, news_link
 
