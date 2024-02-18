@@ -28,22 +28,10 @@ news_text, news_link = parse_yahoo_news()
 data = {'主要ニュース': news_text, 'リンク': news_link}
 df = pd.DataFrame(data)
 
-# Excelファイルに保存する関数
-def save_to_excel(df):
-    d = datetime.datetime.now()
-    ymd_hm = d.strftime('%Y%m%d_%H%M_')
-    file_name = f'ニュース一覧_{ymd_hm}.xlsx'
-    df.to_excel(file_name, index=False)
-    return file_name
-
 # データを表示する
 st.write('## ニュース一覧')
 st.write(df)
 
-# Excelファイルに保存するボタン
-if st.button('Excelファイルに保存'):
-    file_name = save_to_excel(df)
-    st.success(f'ファイル "{file_name}" に保存しました。')
 
 
 
