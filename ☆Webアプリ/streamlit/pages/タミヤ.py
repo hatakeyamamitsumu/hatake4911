@@ -5,7 +5,7 @@ import pandas as pd
 import datetime
 
 # YahooニュースのWebページを解析する関数
-def parse_yahoo_news():
+def parse_tamiya_news():
     url = 'https://www.tamiya.com/japan/event/index.html?genre_item=event_rc,event_type,kinki&sortkey=sa'
     html = requests.get(url)
     soup = BeautifulSoup(html.content, 'html.parser')
@@ -19,10 +19,10 @@ def parse_yahoo_news():
     return news_text, news_link
 
 # Streamlitアプリケーションの開始
-st.title('Yahooニュース見出し')
+st.title('タミヤサイト見出し')
 
 # Yahooニュースを解析してデータを取得
-news_text, news_link = parse_yahoo_news()
+news_text, news_link = parse_tamiya_news()
 
 # 取得したデータをDataFrameに格納
 data = {'主要ニュース': news_text, 'リンク': news_link}
