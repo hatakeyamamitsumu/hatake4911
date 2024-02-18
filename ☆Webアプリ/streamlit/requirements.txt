@@ -22,6 +22,8 @@ seaborn
 
 requests
 bs4
+moviepy
+
 
 python-docx
 
