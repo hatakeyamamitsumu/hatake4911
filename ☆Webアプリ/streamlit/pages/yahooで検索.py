@@ -44,7 +44,7 @@ def parse_NHK_news():
     # NHKニュースの内容をclass属性で検索（都度変更が必要）
     NHK_topic = tamiya_soup.find(class_='category_event_ event_calendar_')
     
-    NHK_news_text = [i.text for i in NHK_topic.find_all('a')]
+    NHK_news_text = [i.text for i in NHK_topic.find_all('em')]
     NHK_news_link = [i.get('href') for i in NHK_topic.find_all('a')]
     
     return NHK_news_text, NHK_news_link
