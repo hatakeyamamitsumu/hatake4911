@@ -6,28 +6,28 @@ import datetime
 
 # タミヤニュースレースイベントのWebページを解析する関数
 def parse_tamiya_news():
-    url = 'https://www.tamiya.com/japan/event/index.html?genre_item=event_rc,event_type,kinki&sortkey=sa'
-    html = requests.get(url)
-    soup = BeautifulSoup(html.content, 'html.parser')
+    tamiya_url = 'https://www.tamiya.com/japan/event/index.html?genre_item=event_rc,event_type,kinki&sortkey=sa'
+    tamiya_html = requests.get(url)
+    tamiya_oup = BeautifulSoup(tamiya_html.content, 'html.parser')
     
     # タミヤニュースレースイベントの内容をclass属性で検索（都度変更が必要）
-    topic = soup.find(class_='category_event_ event_calendar_')
+    tamiya_topic = tamiya_soup.find(class_='category_event_ event_calendar_')
     
-    news_text = [i.text for i in topic.find_all('a')]
-    news_link = [i.get('href') for i in topic.find_all('a')]
+    tamiya_news_text = [i.text for i in tamiya_topic.find_all('a')]
+    tamiya_news_link = [i.get('href') for i in tamiya_topic.find_all('a')]
     
-    return news_text, news_link
+    return tamiya_news_text, tamiya_news_link
 
 # Streamlitアプリケーションの開始
 st.title('タミヤレースサイト見出し')
 
 # Yahooニュースを解析してデータを取得
-news_text, news_link = parse_tamiya_news()
+tamiya_news_text, tamiya_news_link = parse_tamiya_news()
 
 # 取得したデータをDataFrameに格納
-data = {'主要ニュース': news_text, 'リンク': news_link}
-df = pd.DataFrame(data)
+tamiya_data = {'主要ニュース': tamiya_news_text, 'リンク': tamiya_news_link}
+tamiya_df = pd.DataFrame(tamiya_data)
 
 # データを表示する
 st.write('## ニュース一覧')
-st.write(df)
+st.write(tamiya_df)
