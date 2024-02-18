@@ -72,30 +72,4 @@ st.write(tamiya_df)
 
 
 
-# kyoshoニュースレースイベントのWebページを解析する関数
-def parse_kyosho_news():
-    kyosho_url = 'https://www.kyosho.com/rc/ja/race/2024/kyosho_cup/index.html'
-    kyosho_html = requests.get(kyosho_url)
-    kyosho_soup = BeautifulSoup(kyosho_html.content, 'html.parser')
-    
-    # タミヤニュースレースイベントの内容をclass属性で検索（都度変更が必要）
-    kyosho_topic = kyosho_soup.find(class_='contentsarea contentsarea2 ')
-    
-    kyosho_news_text = [i.text for i in kyosho_topic.find_all('place')]
-    
-    
-    return kyosho_news_text, kyosho_news_link
 
-# Streamlitアプリケーションの開始
-st.title('京商レースサイト見出し')
-
-# Yahooニュースを解析してデータを取得
-kyosho_news_text, kyosho_news_link = parse_kyosho_news()
-
-# 取得したデータをDataFrameに格納
-kyosho_data = {'主要ニュース': kyosho_news_text, 'リンク': kyosho_news_link}
-kyosho_df = pd.DataFrame(kyosho_data)
-
-# データを表示する
-st.write('## ニュース一覧')
-st.write(kyosho_df)
