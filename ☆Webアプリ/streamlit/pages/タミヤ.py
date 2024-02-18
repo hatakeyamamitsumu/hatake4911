@@ -7,7 +7,7 @@ import datetime
 # タミヤニュースレースイベントのWebページを解析する関数
 def parse_tamiya_news():
     tamiya_url = 'https://www.tamiya.com/japan/event/index.html?genre_item=event_rc,event_type,kinki&sortkey=sa'
-    tamiya_html = requests.get(tamiya_urlurl)
+    tamiya_html = requests.get(tamiya_url)
     tamiya_soup = BeautifulSoup(tamiya_html.content, 'html.parser')
     
     # タミヤニュースレースイベントの内容をclass属性で検索（都度変更が必要）
