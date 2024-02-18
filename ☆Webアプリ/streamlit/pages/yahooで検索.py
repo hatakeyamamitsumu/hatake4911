@@ -40,13 +40,13 @@ def parse_NHK_news():
     NHK_url = 'https://www3.nhk.or.jp/news/catnew.html'
     NHK_html = requests.get(NHK_url)
     NHK_soup = BeautifulSoup(NHK_html.content, 'html.parser')
-    
+
     # NHKニュースの内容をclass属性で検索（都度変更が必要）
     NHK_topic = NHK_soup.find(class_='module module--list-items')
-    
-    NHK_news_text = [i.text for i in NHK_topic.find_all('title')]
-    NHK_news_link = [i.get('href') for i in NHK_topic.find_all('a')]
-    
+
+    NHK_news_text = [i.text for i in NHK_topic.find_all('p', class_='title__text')]
+    NHK_news_link = [i.find('a')['href'] for i in NHK_topic.find_all('p', class_='title__text')]
+
     return NHK_news_text, NHK_news_link
 
 # Streamlitアプリケーションの開始
@@ -62,7 +62,6 @@ NHK_df = pd.DataFrame(NHK_data)
 # データを表示する
 st.write('## ニュース一覧')
 st.write(NHK_df)
-
 
 
 
