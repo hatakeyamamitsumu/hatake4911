@@ -18,14 +18,6 @@ def parse_yahoo_news():
     
     return news_text, news_link
 
-# データをExcelファイルに保存してダウンロードする関数
-def save_and_download_excel(df):
-    d = datetime.datetime.now()
-    ymd_hm = d.strftime('%Y%m%d_%H%M_')
-    file_name = f'ニュース一覧_{ymd_hm}.xlsx'
-    df.to_excel(file_name, index=False, engine='openpyxl')
-    return file_name
-
 # Streamlitアプリケーションの開始
 st.title('Yahooニュース解析アプリ')
 
@@ -36,16 +28,22 @@ news_text, news_link = parse_yahoo_news()
 data = {'主要ニュース': news_text, 'リンク': news_link}
 df = pd.DataFrame(data)
 
-# ハイパーリンクを表示する
-st.write('## ニュース一覧')
-df_display = df.copy()
-df_display['リンク'] = df_display['リンク'].apply(lambda x: f'[リンク]({x})')
-st.write(df_display)
+# Excelファイルに保存する関数
+def save_to_excel(df):
+    d = datetime.datetime.now()
+    ymd_hm = d.strftime('%Y%m%d_%H%M_')
+    file_name = f'ニュース一覧_{ymd_hm}.xlsx'
+    df.to_excel(file_name, index=False)
+    return file_name
 
-# Excelファイルに保存してダウンロードするボタン
-if st.button('Excelファイルに保存してダウンロード'):
-    file_name = save_and_download_excel(df)
-    st.success(f'ファイル "{file_name}" を保存し、[こちらをクリックしてダウンロード](sandbox:/mnt/data/{file_name})できます。')
+# データを表示する
+st.write('## ニュース一覧')
+st.write(df)
+
+# Excelファイルに保存するボタン
+if st.button('Excelファイルに保存'):
+    file_name = save_to_excel(df)
+    st.success(f'ファイル "{file_name}" に保存しました。')
 
 
 
