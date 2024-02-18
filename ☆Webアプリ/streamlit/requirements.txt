@@ -22,8 +22,7 @@ seaborn
 
 requests
 bs4
-
-moviepy
+datetime
 
 python-docx
 
