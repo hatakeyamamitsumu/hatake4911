@@ -45,7 +45,7 @@ def parse_NHK_news():
     NHK_topic = NHK_soup.find(class_='module module--list-items')
 
     NHK_news_text = [i.text for i in NHK_topic.find_all(class_='a')]
-    NHK_news_link = [i.get('href') for i in topic.find_all('title')]
+    NHK_news_link = [i.get('href') for i in topic.find_all('a')]
 
     return NHK_news_text, NHK_news_link
 
