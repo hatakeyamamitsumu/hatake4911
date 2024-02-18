@@ -32,6 +32,41 @@ df = pd.DataFrame(data)
 st.write('## ニュース一覧')
 st.write(df)
 
+
+
+
+# NHKニュースWebページを解析する関数
+def parse_NHK_news():
+    NHK_url = 'https://www3.nhk.or.jp/news/catnew.html'
+    NHK_html = requests.get(NHK_url)
+    NHK_soup = BeautifulSoup(NHK_html.content, 'html.parser')
+    
+    # NHKニュースの内容をclass属性で検索（都度変更が必要）
+    NHK_topic = tamiya_soup.find(class_='category_event_ event_calendar_')
+    
+    NHK_news_text = [i.text for i in NHK_topic.find_all('a')]
+    NHK_news_link = [i.get('href') for i in NHK_topic.find_all('a')]
+    
+    return NHK_news_text, NHK_news_link
+
+# Streamlitアプリケーションの開始
+st.title('NHKニュース見出し')
+
+# NHKニュースを解析してデータを取得
+NHK_news_text, NHK_news_link = parse_NHK_news()
+
+# 取得したデータをDataFrameに格納
+NHK_data = {'主要ニュース': NHK_news_text, 'リンク': NHK_news_link}
+NHK_df = pd.DataFrame(NHK_data)
+
+# データを表示する
+st.write('## ニュース一覧')
+st.write(NHK_df)
+
+
+
+
+
 # タミヤニュースレースイベントのWebページを解析する関数
 def parse_tamiya_news():
     tamiya_url = 'https://www.tamiya.com/japan/event/index.html?genre_item=event_rc,event_type,kinki&sortkey=sa'
