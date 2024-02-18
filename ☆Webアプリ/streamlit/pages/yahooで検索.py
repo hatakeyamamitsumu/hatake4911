@@ -81,8 +81,8 @@ def parse_kyosho_news():
     # タミヤニュースレースイベントの内容をclass属性で検索（都度変更が必要）
     kyosho_topic = kyosho_soup.find(class_='contentsarea contentsarea2 ')
     
-    kyosho_news_text = [i.text for i in kyosho_topic.find_all('a')]
-    kyosho_news_link = [i.get('href') for i in kyosho_topic.find_all('a')]
+    kyosho_news_text = [i.text for i in kyosho_topic.find_all('place')]
+    
     
     return kyosho_news_text, kyosho_news_link
 
