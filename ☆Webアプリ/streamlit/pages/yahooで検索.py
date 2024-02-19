@@ -93,8 +93,8 @@ st.title('京商レースサイト見出し')
 kyosyo_topic = parse_kyosyo_news()
 
 # 取得したデータをDataFrameに格納
-kyosyo_data = {'主要ニュース': kyosyo_news_text, 'リンク': kyosyo_news_link}
-kyosyo_df = pd.DataFrame(kyosyo_data)
+
+kyosyo_df = pd.DataFrame(kyosyo_topic)
 
 # データを表示する
 st.write('## ニュース一覧')
