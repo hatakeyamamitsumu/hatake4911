@@ -66,7 +66,7 @@ tamiya_data = {'主要ニュース': tamiya_news_text, 'リンク': tamiya_news_
 tamiya_df = pd.DataFrame(tamiya_data)
 
 # データを表示する
-st.write('## ニュース一覧')
+st.write('## イベント一覧')
 st.write(tamiya_df)
 
 
