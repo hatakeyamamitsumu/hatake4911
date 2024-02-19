@@ -98,7 +98,7 @@ def main():
     st.title("レーススケジュール")
 
     # 対象のHTMLページのURLを入力
-    url = st.text_input("HTMLページのURLを入力してください")
+    url = 'https://www.kyosho.com/rc/ja/race/2024/kyosho_cup/index.html'
 
     if st.button("スケジュール取得"):
         # HTMLを取得
