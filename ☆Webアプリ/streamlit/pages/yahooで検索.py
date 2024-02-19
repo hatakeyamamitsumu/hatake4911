@@ -74,25 +74,44 @@ st.write(tamiya_df)
 
 
 
-# 京商
-def parse_kyosyo_news():
-    kyosyo_url = 'https://www.kyosho.com/rc/ja/race/2024/kyosho_cup/index.html'
-    kyosyo_html = requests.get(kyosyo_url)
-    kyosyo_soup = BeautifulSoup(kyosyo_html.content, 'html.parser')
-    
-    # HTML構造を確認して正しい要素を取得する
-    kyosyo_topic = kyosyo_soup.find('tbody', class_='kcup_list')
-    
-    return kyosyo_topic
 
-# Streamlitアプリのタイトル
-st.title('京商レースサイト見出し')
 
-# 京商のトピックを取得
-kyosyo_topic = parse_kyosyo_news()
+def extract_race_info(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    race_info_list = []
 
-# 取得したデータをそのまま表示
-if kyosyo_topic:
-    st.write(kyosyo_topic.prettify())
-else:
-    st.write("データが見つかりませんでした。")
+    for race_line in soup.select('.kcup_list .line'):
+        block = race_line.select_one('.block div').text.strip()
+        place = race_line.select_one('.place div p:nth-child(2)').text.strip()
+        days = race_line.select_one('.days div').get_text(separator=' ').strip()
+
+        race_info = {
+            "ブロック": block,
+            "会場": place,
+            "日程": days
+        }
+        race_info_list.append(race_info)
+
+    return race_info_list
+
+def main():
+    st.title("レーススケジュール")
+
+    # 対象のHTMLページのURLを入力
+    url = st.text_input("HTMLページのURLを入力してください")
+
+    if st.button("スケジュール取得"):
+        # HTMLを取得
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            # レース情報を取得
+            race_info_list = extract_race_info(response.text)
+
+            # テーブルで表示
+            st.table(race_info_list)
+        else:
+            st.error("ページの取得に失敗しました。URLを確認してください。")
+
+if __name__ == "__main__":
+    main()
