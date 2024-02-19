@@ -11,7 +11,7 @@ def text_to_image(text, output_path):
 
     # 使用するフォントとテキストの設定
     font_size = 20
-    font = ImageFont.truetype("arial.ttf", font_size)  # フォントは適切なものを指定
+    font = ImageFont.truetype("/mount/src/hatake4911/☆Webアプリ/", font_size)  # フォントは適切なものを指定
     text_color = "black"
 
     # テキストを中央に配置
