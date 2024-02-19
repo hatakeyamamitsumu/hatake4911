@@ -3,9 +3,10 @@ from PIL import Image, ImageDraw, ImageFont
 import base64
 import io
 
-def text_to_image(text, output_path):
+# 画像生成の関数をキャッシュする
+@st.cache
+def text_to_image(text, width, height, font_path, font_size):
     # 画像サイズと背景色を設定
-    width, height = 100, 20  # 任意のサイズ
     background_color = "white"
 
     # 画像を作成
@@ -13,8 +14,6 @@ def text_to_image(text, output_path):
     draw = ImageDraw.Draw(image)
 
     # 使用するフォントとテキストの設定
-    font_size = 15
-    font_path="/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRGM.TTC"
     font = ImageFont.truetype(font_path, font_size)  # フォントは適切なものを指定
     text_color = "black"
 
@@ -34,12 +33,17 @@ def text_to_image(text, output_path):
 # Streamlitアプリ
 st.title("文字を画像化")
 
+# 画像生成に必要なパラメータ
+width, height = 100, 20  # 任意のサイズ
+font_path = "/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRGM.TTC"
+font_size = 15
+
 # ダウンロードボタンが押されたかどうかの状態変数
 download_button = st.button("画像をダウンロード")
 
 if download_button:
     # 画像を作成
-    image_bytes = text_to_image("山という文字", "mountain.png")
+    image_bytes = text_to_image("山という文字", width, height, font_path, font_size)
 
     # 画像をダウンロード
     st.download_button(
