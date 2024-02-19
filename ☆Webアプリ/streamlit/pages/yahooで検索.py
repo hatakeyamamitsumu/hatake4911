@@ -105,6 +105,7 @@ def main():
         response = requests.get(url)
 
         if response.status_code == 200:
+            response.encoding = 'utf-8'
             # レース情報を取得
             race_info_list = extract_race_info(response.text)
 
