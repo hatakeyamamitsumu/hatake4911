@@ -81,7 +81,7 @@ def parse_kyosyo_news():
     kyosyo_soup = BeautifulSoup(kyosyo_html.content, 'html.parser')
     
     # 
-    kyosyo_topic = kyosyo_soup.find(class_='contentsarea contentsarea2 ')
+    kyosyo_topic = kyosyo_soup.find(class_='contentsarea contentsarea2')
     
     kyosyo_news_text = [i.text for i in kyosyo_topic.find_all('block')]
     kyosyo_news_link = [i.get('href') for i in kyosyo_topic.find_all('days')]
