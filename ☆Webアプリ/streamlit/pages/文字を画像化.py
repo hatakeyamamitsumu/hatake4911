@@ -4,7 +4,7 @@ import base64
 
 def text_to_image(text, output_path):
     # 画像サイズと背景色を設定
-    width, height = 100, 100  # 任意のサイズ
+    width, height = 100, 20  # 任意のサイズ
     background_color = "white"
 
     # 画像を作成
@@ -12,7 +12,7 @@ def text_to_image(text, output_path):
     draw = ImageDraw.Draw(image)
 
     # 使用するフォントとテキストの設定
-    font_size = 20
+    font_size = 15
     font = ImageFont.truetype("/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRPRE.TTC", font_size)  # フォントは適切なものを指定
     text_color = "black"
 
