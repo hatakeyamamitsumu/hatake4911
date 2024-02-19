@@ -36,7 +36,7 @@ download_button = st.button("画像をダウンロード")
 
 if download_button:
     # 画像を作成
-    text_to_image("山", "mountain.png")
+    text_to_image("山という文字", "mountain.png")
 
     # 画像を読み込み
     image = Image.open("mountain.png")
