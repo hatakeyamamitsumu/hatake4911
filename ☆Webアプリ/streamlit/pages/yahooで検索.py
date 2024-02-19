@@ -93,11 +93,11 @@ kyosyo_topic = parse_kyosyo_news()
 
 # 取得したデータをDataFrameに格納
 if kyosyo_topic:
-    kyosyo_rows = kyosyo_topic.find_all('tr')
+    kyosyo_rows = kyosyo_topic.find_all('block')
     kyosyo_data = []
 
     for row in kyosyo_rows:
-        columns = row.find_all('td')
+        columns = row.find_all('place')
         row_data = [col.text.strip() for col in columns]
         kyosyo_data.append(row_data)
 
