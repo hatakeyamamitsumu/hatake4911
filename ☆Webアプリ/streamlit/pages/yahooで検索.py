@@ -33,7 +33,33 @@ st.write('## ニュース一覧')
 st.write(df)
 
 
+# 京商
+def parse_kyosyo_news():
+    kyosyo_url = 'https://www.kyosho.com/rc/ja/race/2024/kyosho_cup/index.html'
+    kyosyo_html = requests.get(kyosyo_url)
+    kyosyo_soup = BeautifulSoup(kyosyo_html.content, 'html.parser')
+    
+    # 
+    kyosyo_topic = kyosyo_soup.find(class_='kyosho_cup ')
+    
+    kyosyo_news_text = [i.text for i in kyosyo_topic.find_all('a')]
+    kyosyo_news_link = [i.get('href') for i in kyosyo_topic.find_all('a')]
+    
+    return kyosyo_news_text, kyosyo_news_link
 
+# 
+st.title('タミヤレースサイト見出し')
+
+# 
+kyosyo_news_text, kyosyo_news_link = parse_kyosyo_news()
+
+# 取得したデータをDataFrameに格納
+kyosyo_data = {'主要ニュース': kyosyo_news_text, 'リンク': kyosyo_news_link}
+kyosyo_df = pd.DataFrame(kyosyo_data)
+
+# データを表示する
+st.write('## ニュース一覧')
+st.write(kyosyo_df)
 
 
 
