@@ -80,24 +80,28 @@ def parse_kyosyo_news():
     kyosyo_html = requests.get(kyosyo_url)
     kyosyo_soup = BeautifulSoup(kyosyo_html.content, 'html.parser')
     
-    # 
-    kyosyo_topic = kyosyo_soup.find(class_='kcup_list tbody')
-    
+    # HTML構造を確認して正しい要素を取得する
+    kyosyo_topic = kyosyo_soup.find('tbody', class_='kcup_list')
     
     return kyosyo_topic
 
-# 
+# Streamlitアプリのタイトル
 st.title('京商レースサイト見出し')
 
-# 
+# 京商のトピックを取得
 kyosyo_topic = parse_kyosyo_news()
 
 # 取得したデータをDataFrameに格納
+if kyosyo_topic:
+    kyosyo_rows = kyosyo_topic.find_all('tr')
+    kyosyo_data = []
 
-kyosyo_df = pd.DataFrame(kyosyo_topic)
+    for row in kyosyo_rows:
+        columns = row.find_all('td')
+        row_data = [col.text.strip() for col in columns]
+        kyosyo_data.append(row_data)
 
-# データを表示する
-st.write('## ニュース一覧')
-st.write(kyosyo_df)
-
-
+    kyosyo_df = pd.DataFrame(kyosyo_data, columns=['列1', '列2', '列3'])  # 列の名前を適切に指定
+    st.write(kyosyo_df)
+else:
+    st.write("データが見つかりませんでした。")
