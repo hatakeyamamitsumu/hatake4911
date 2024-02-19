@@ -13,7 +13,7 @@ def text_to_image(text, output_path):
 
     # 使用するフォントとテキストの設定
     font_size = 15
-    font = ImageFont.truetype("/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRPRE.TTC", font_size)  # フォントは適切なものを指定
+    font = ImageFont.truetype("/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRGM.TTC", font_size)  # フォントは適切なものを指定
     text_color = "black"
 
     # テキストを中央に配置
