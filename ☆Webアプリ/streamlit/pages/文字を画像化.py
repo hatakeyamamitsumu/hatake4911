@@ -50,4 +50,4 @@ if download_button:
     )
 
     # 画像を表示
-    st.image(image, caption="山", use_column_width=True)
+    st.image(image, caption="山という文字", use_column_width=True)
