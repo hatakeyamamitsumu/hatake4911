@@ -81,7 +81,7 @@ def parse_kyosyo_news():
     kyosyo_soup = BeautifulSoup(kyosyo_html.content, 'html.parser')
     
     # HTML構造を確認して正しい要素を取得する
-    kyosyo_topic = kyosyo_soup.find('tbody', class_='kcup_list')
+    kyosyo_topic = kyosyo_soup.find(class_='kcup_list')
     
     return kyosyo_topic
 
