@@ -43,7 +43,7 @@ download_button = st.button("画像をダウンロード")
 
 if download_button:
     # 画像を作成
-    image_bytes = text_to_image("山という文字", width, height, font_path, font_size)
+    image_bytes = text_to_image("a", width, height, font_path, font_size)
 
     # 画像をダウンロード
     st.download_button(
