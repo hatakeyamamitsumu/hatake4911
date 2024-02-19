@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import base64
+import io
 
 def text_to_image(text, output_path):
     # 画像サイズと背景色を設定
@@ -25,8 +26,10 @@ def text_to_image(text, output_path):
     # テキストを描画
     draw.text((x, y), text, font=font, fill=text_color)
 
-    # 画像を保存
-    image.save(output_path)
+    # 画像をメモリに保存
+    image_bytes = io.BytesIO()
+    image.save(image_bytes, format="PNG")
+    return image_bytes
 
 # Streamlitアプリ
 st.title("文字を画像化")
@@ -36,18 +39,15 @@ download_button = st.button("画像をダウンロード")
 
 if download_button:
     # 画像を作成
-    text_to_image("山という文字", "mountain.png")
+    image_bytes = text_to_image("山という文字", "mountain.png")
 
-    # 画像を読み込み
-    image = Image.open("mountain.png")
-
-    # ダウンロードボタンを作成
-    download_btn = st.download_button(
+    # 画像をダウンロード
+    st.download_button(
         label="画像をダウンロード",
-        data=base64.b64encode(image.tobytes()).decode(),
+        data=base64.b64encode(image_bytes.getvalue()).decode(),
         file_name="mountain.png",
         key="download_button"
     )
 
     # 画像を表示
-    st.image(image, caption="山という文字", use_column_width=True)
+    st.image(Image.open(io.BytesIO(image_bytes.getvalue())), caption="山という文字", use_column_width=True)
