@@ -35,16 +35,16 @@ download_button = st.button("画像をダウンロード")
 
 if download_button:
     # 画像を作成
-    text_to_image("山", "mountain.jpg")
+    text_to_image("山", "mountain.png")
 
     # 画像を読み込み
-    image = Image.open("mountain.jpg")
+    image = Image.open("mountain.png")
 
     # ダウンロードボタンを作成
     download_btn = st.download_button(
         label="画像をダウンロード",
         data=base64.b64encode(image.tobytes()).decode(),
-        file_name="mountain.jpg",
+        file_name="mountain.png",
         key="download_button"
     )
 
