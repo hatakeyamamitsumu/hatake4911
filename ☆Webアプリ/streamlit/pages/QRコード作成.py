@@ -20,8 +20,8 @@ def add_text_to_qr(img, text):
     # 画像にテキストを追加
     draw = ImageDraw.Draw(img)
     #
-    #font = ImageFont.load_default()
-    font = '/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRGM.TTC'
+    font = ImageFont.load_default()
+    #font = '/mount/src/hatake4911/☆Webアプリ/フォントファイル/HGRGM.TTC'
     draw.text((10, 10), text, font=font, fill="black")
 
     return img
