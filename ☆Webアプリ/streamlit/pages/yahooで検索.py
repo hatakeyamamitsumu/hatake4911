@@ -56,13 +56,13 @@ def parse_tamiya_news():
     return tamiya_news_text, tamiya_news_link
 
 # Streamlitアプリケーションの開始
-st.title('タミヤレースサイト見出し')
+st.title('タミヤレーススケジュール')
 
 # Yahooニュースを解析してデータを取得
 tamiya_news_text, tamiya_news_link = parse_tamiya_news()
 
 # 取得したデータをDataFrameに格納
-tamiya_data = {'主要ニュース': tamiya_news_text, 'リンク': tamiya_news_link}
+tamiya_data = {'レース': tamiya_news_text, 'リンク': tamiya_news_link}
 tamiya_df = pd.DataFrame(tamiya_data)
 
 # データを表示する
@@ -95,7 +95,7 @@ def extract_race_info(html_content):
     return race_info_list
 
 def main():
-    st.title("レーススケジュール")
+    st.title("京商レーススケジュール")
 
     # 対象のHTMLページのURLを入力
     url = 'https://www.kyosho.com/rc/ja/race/2024/kyosho_cup/index.html'
