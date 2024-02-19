@@ -56,7 +56,7 @@ def parse_tamiya_news():
     return tamiya_news_text, tamiya_news_link
 
 # Streamlitアプリケーションの開始
-st.title('タミヤレースサイト見出し')
+st.title('京商レースサイト見出し')
 
 # Yahooニュースを解析してデータを取得
 tamiya_news_text, tamiya_news_link = parse_tamiya_news()
