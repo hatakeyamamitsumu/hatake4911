@@ -83,16 +83,14 @@ def parse_kyosyo_news():
     # 
     kyosyo_topic = kyosyo_soup.find(class_='kcup_list tbody')
     
-    kyosyo_news_text = [i.text for i in kyosyo_topic.find_all('block')]
-    kyosyo_news_link = [i.get('href') for i in kyosyo_topic.find_all('days')]
     
-    return kyosyo_news_text, kyosyo_news_link
+    return kyosyo_topic
 
 # 
 st.title('京商レースサイト見出し')
 
 # 
-kyosyo_news_text, kyosyo_news_link = parse_kyosyo_news()
+kyosyo_topic = parse_kyosyo_news()
 
 # 取得したデータをDataFrameに格納
 kyosyo_data = {'主要ニュース': kyosyo_news_text, 'リンク': kyosyo_news_link}
