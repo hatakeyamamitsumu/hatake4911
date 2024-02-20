@@ -33,7 +33,7 @@ def AreaMarker(df, m):
         marker = folium.Marker(
             location=[r.緯度, r.経度],
             popup=f"<div style='font-size: 16px; width: 800px;'>{index}: {r.情報.replace(',', '<br>')}</div>",
-            icon=folium.Icon(color='green')  # ピンの色を赤に設定
+            icon=folium.Icon(color='red')  # ピンの色を赤に設定
         ).add_to(m)
         
         # 円を重ねる
