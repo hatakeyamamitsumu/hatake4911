@@ -7,7 +7,7 @@ from folium import plugins
 center = [32, 131]
 
 # ベースの地図作成
-m = folium.Map(center, zoom_start=12)
+m = folium.Map(center, zoom_start=6)
 
 # ヒートマップ層を地図に追加
 folium.plugins.HeatMap(
