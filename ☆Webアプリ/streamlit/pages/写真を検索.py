@@ -26,7 +26,7 @@ def main():
 
     base_folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"
     subfolders = [f for f in os.listdir(base_folder_path) if os.path.isdir(os.path.join(base_folder_path, f))]
-    selected_subfolder = st.sidebar.selectbox("検索対象のサブフォルダを選択してください", subfolders, index=0)
+    selected_subfolder = st.sidebar.selectbox("検索対象のフォルダを選択してください", subfolders, index=0)
     
     folder_path = os.path.join(base_folder_path, selected_subfolder)
     keyword1 = st.sidebar.text_input("検索条件1を入力してください")
