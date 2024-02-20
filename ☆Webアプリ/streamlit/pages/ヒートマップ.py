@@ -2,11 +2,9 @@ import folium
 import pandas as pd
 import streamlit as st
 
-# データの準備 ☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv
-df = pd.read_csv("緯度,経度
-35.652832,139.839478
-35.658581,139.840439
-35.660333,139.836389")
+# データの準備 
+#/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv
+df = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv")
 
 # サイドバーで半径の値を選択できるようにする
 radius = st.sidebar.slider('熱マップの半径', 10, 50, 15)
