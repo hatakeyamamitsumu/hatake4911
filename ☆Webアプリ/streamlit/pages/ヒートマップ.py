@@ -2,7 +2,7 @@ import folium
 import pandas as pd
 import streamlit as st
 
-# データの準備
+# データの準備 ☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv
 df = pd.read_csv("緯度,経度
 35.652832,139.839478
 35.658581,139.840439
