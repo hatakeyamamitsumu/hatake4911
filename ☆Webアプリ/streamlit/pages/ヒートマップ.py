@@ -4,7 +4,7 @@ import streamlit as st
 
 # データの準備 main/☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv
 #/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv
-df = pd.read_csv("/mount/src/hatake4911/main/☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv")
+df = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/ヒートマップ用CSV/ヒートマップ用緯度経度情報.csv")
 
 # サイドバーで半径の値を選択できるようにする
 radius = st.sidebar.slider('熱マップの半径', 10, 50, 15)
