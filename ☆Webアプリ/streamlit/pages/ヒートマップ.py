@@ -1,8 +1,9 @@
 import streamlit as st
+from streamlit_folium import folium_static
 import folium
 from folium import plugins
 
-# 中心座標(適当
+# 中心座標(適当)
 center = [32, 131]
 
 # ベースの地図作成
@@ -15,4 +16,5 @@ folium.plugins.HeatMap(
 
 # Streamlit で地図を表示
 st.header("ヒートマップの例")
-st.pydeck_chart(m)
+folium_static(m)
+
