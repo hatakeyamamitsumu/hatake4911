@@ -71,9 +71,9 @@ def main():
         st.write("### 原本")
         st.dataframe(result_df)
 
-        filter_condition_katakana = st.radio("カタカナの条件を選択してください:", ['and', 'or', 'not'])
-        filter_condition_numbers = st.radio("数字（漢数字を含む）の条件を選択してください:", ['and', 'or', 'not'])
-        filter_condition_alphabets = st.radio("アルファベットの条件を選択してください:", ['and', 'or', 'not'])
+        filter_condition_katakana = st.selectbox("カタカナの条件を選択してください:", ['含む', '含まない'])
+        filter_condition_numbers = st.selectbox("数字（漢数字を含む）の条件を選択してください:", ['含む', '含まない'])
+        filter_condition_alphabets = st.selectbox("アルファベットの条件を選択してください:", ['含む', '含まない'])
 
         if st.button("条件に一致する行を抽出"):
             filter_and_download(text, filter_condition_katakana, filter_condition_numbers, filter_condition_alphabets)
