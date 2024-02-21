@@ -5,7 +5,7 @@ import folium
 from folium import plugins
 
 # Read data from CSV file
-data = pd.read_csv("a.csv")
+data = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/標高情報.csv")
 
 # Center of the map (you may adjust this based on your data)
 center = [data['緯度'].mean(), data['経度'].mean()]
