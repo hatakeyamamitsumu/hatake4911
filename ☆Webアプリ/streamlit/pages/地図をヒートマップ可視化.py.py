@@ -8,8 +8,8 @@ from folium import plugins
 csv_file_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV/標高情報.csv"
 data = pd.read_csv(csv_file_path)
 
-# Check if the data has latitude, longitude, and elevation columns
-required_columns = ['緯度', '経度', '標高']
+# Check if the data has latitude, longitude, and any third column
+required_columns = ['緯度', '経度']
 missing_columns = [col for col in required_columns if col not in data.columns]
 
 # Display a warning if any required columns are missing
@@ -22,22 +22,25 @@ else:
     # Create a base map
     m = folium.Map(center, zoom_start=6)
 
-    # Add a heatmap layer to the map using the latitude, longitude, and elevation data from the CSV
+    # Add a heatmap layer to the map using the latitude, longitude, and any third column data from the CSV
+    # Assuming the third column is the first column that is not latitude or longitude
+    third_column = next(col for col in data.columns if col not in required_columns)
+    
     heat_map = folium.plugins.HeatMap(
-        data=data[['緯度', '経度', '標高']].values,  # Use the latitude, longitude, and elevation columns
-        radius=15  # You can adjust the radius of the heatmap points
+        data=data[['緯度', '経度', third_column]].values,
+        radius=15
     ).add_to(m)
 
     # Add markers with popups for each point, and customize the icon size
-    #icon='flag','map-marker','flag','star','circle'
     for index, row in data.iterrows():
-        popup_text = f"標高: {row['標高']} m"
+        popup_text = f"{third_column}: {row[third_column]}"
         folium.Marker(
             location=[row['緯度'], row['経度']],
             popup=popup_text,
-            icon=folium.Icon(icon='circle', color='blue', prefix='fa', icon_size=(15, 15))  # Adjust the icon_size
+            icon=folium.Icon(icon='circle', color='blue', prefix='fa', icon_size=(15, 15))
         ).add_to(m)
 
     # Display the map using Streamlit
-    st.header("ヒートマップの例")
+    st.header("ヒートマップ")
     folium_static(m)
+
