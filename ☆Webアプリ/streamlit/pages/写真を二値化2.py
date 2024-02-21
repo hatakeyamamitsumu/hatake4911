@@ -16,10 +16,10 @@ def pil2cv(image):
         new_image = cv2.cvtColor(new_image, cv2.COLOR_RGBA2BGRA)
     return new_image
 
-def adjust_rgb(image, r_value, g_value, b_value):
-    image[:, :, 0] = np.clip(image[:, :, 0] + b_value, 0, 255)
-    image[:, :, 1] = np.clip(image[:, :, 1] + g_value, 0, 255)
-    image[:, :, 2] = np.clip(image[:, :, 2] + r_value, 0, 255)
+def adjust_pixel_rgb(image, pixel_coords, r_value, g_value, b_value):
+    image[pixel_coords[1], pixel_coords[0], 0] = np.clip(image[pixel_coords[1], pixel_coords[0], 0] + b_value, 0, 255)
+    image[pixel_coords[1], pixel_coords[0], 1] = np.clip(image[pixel_coords[1], pixel_coords[0], 1] + g_value, 0, 255)
+    image[pixel_coords[1], pixel_coords[0], 2] = np.clip(image[pixel_coords[1], pixel_coords[0], 2] + r_value, 0, 255)
     return image
 
 def main():
@@ -38,7 +38,7 @@ def main():
         radio = st.radio(
             "Choose a binary method",
             ("Threshold", "Adaptive threshold mean", "Adaptive threshold Gaussian",
-            "Otsu' thresholding", "Otsu's thresholding + Gaussian filter")
+             "Otsu' thresholding", "Otsu's thresholding + Gaussian filter")
         )
 
     st.title('画像2値化アプリ')
@@ -71,20 +71,25 @@ def main():
     # binary画像表示、保存
     if uploaded_image is not None:
         if radio == "Threshold":
-            col2.image(adjust_rgb(th1, r_value, g_value, b_value))
-            cv2.imwrite('./data/image.png', th1)
+            adjusted_image = adjust_pixel_rgb(th1, (0, 0), r_value, g_value, b_value)
+            col2.image(adjusted_image)
+            cv2.imwrite('./data/image.png', adjusted_image)
         elif radio == "Adaptive threshold mean":
-            col2.image(adjust_rgb(th2, r_value, g_value, b_value))
-            cv2.imwrite('./data/image.png', th2)
+            adjusted_image = adjust_pixel_rgb(th2, (0, 0), r_value, g_value, b_value)
+            col2.image(adjusted_image)
+            cv2.imwrite('./data/image.png', adjusted_image)
         elif radio == "Adaptive threshold Gaussian":
-            col2.image(adjust_rgb(th3, r_value, g_value, b_value))
-            cv2.imwrite('./data/image.png', th3)
+            adjusted_image = adjust_pixel_rgb(th3, (0, 0), r_value, g_value, b_value)
+            col2.image(adjusted_image)
+            cv2.imwrite('./data/image.png', adjusted_image)
         elif radio == "Otsu' thresholding":
-            col2.image(adjust_rgb(th4, r_value, g_value, b_value))
-            cv2.imwrite('./data/image.png', th4)
+            adjusted_image = adjust_pixel_rgb(th4, (0, 0), r_value, g_value, b_value)
+            col2.image(adjusted_image)
+            cv2.imwrite('./data/image.png', adjusted_image)
         elif radio == "Otsu's thresholding + Gaussian filter":
-            col2.image(adjust_rgb(th5, r_value, g_value, b_value))
-            cv2.imwrite('./data/image.png', th5)
+            adjusted_image = adjust_pixel_rgb(th5, (0, 0), r_value, g_value, b_value)
+            col2.image(adjusted_image)
+            cv2.imwrite('./data/image.png', adjusted_image)
 
     # ダウンロードボタン作成
     if uploaded_image is not None:
