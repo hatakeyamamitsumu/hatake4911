@@ -4,8 +4,8 @@ from streamlit_folium import folium_static
 import folium
 from folium import plugins
 
-# Read data from CSV file
-data = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/標高情報.csv")
+# Read data from CSV file CSVファイル各種/ヒートマップ地図用CSV/標高情報.csv
+data = pd.read_csv("/mount/src/hatake4911/☆Webアプリ/ヒートマップ地図用CSV/標高情報.csv")
 
 # Center of the map (you may adjust this based on your data)
 center = [data['緯度'].mean(), data['経度'].mean()]
