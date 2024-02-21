@@ -1,5 +1,4 @@
 import os
-
 import streamlit as st
 import numpy as np
 from PIL import Image
@@ -18,9 +17,9 @@ def pil2cv(image):
     return new_image
 
 def adjust_rgb(image, r_value, g_value, b_value):
-    image[:,:,0] = np.clip(image[:,:,0] + b_value, 0, 255)
-    image[:,:,1] = np.clip(image[:,:,1] + g_value, 0, 255)
-    image[:,:,2] = np.clip(image[:,:,2] + r_value, 0, 255)
+    image[:, :, 0] = np.clip(image[:, :, 0] + b_value, 0, 255)
+    image[:, :, 1] = np.clip(image[:, :, 1] + g_value, 0, 255)
+    image[:, :, 2] = np.clip(image[:, :, 2] + r_value, 0, 255)
     return image
 
 def main():
@@ -45,7 +44,7 @@ def main():
     st.title('画像2値化アプリ')
 
     # アップローダー
-    uploaded_image = st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
+    uploaded_image = st.file_uploader("以下からファイルアップロード", type=['jpg', 'png'])
     # カラム設定
     col1, col2 = st.columns(2)
 
@@ -65,33 +64,27 @@ def main():
                                         cv2.THRESH_BINARY, 11, 2)
             th3 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                         cv2.THRESH_BINARY, 11, 2)
-            ret2, th4 = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+            ret2, th4 = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             blur = cv2.GaussianBlur(gray, (5, 5), 0)
-            ret3, th5 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-
-            # Adjust RGB values after binarization
-            th1 = adjust_rgb(th1, r_value, g_value, b_value)
-            th2 = adjust_rgb(th2, r_value, g_value, b_value)
-            th3 = adjust_rgb(th3, r_value, g_value, b_value)
-            th4 = adjust_rgb(th4, r_value, g_value, b_value)
-            th5 = adjust_rgb(th5, r_value, g_value, b_value)
+            ret3, th5 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # binary画像表示、保存
-    if radio == "Threshold" and uploaded_image is not None:
-        col2.image(th1)
-        cv2.imwrite('./data/image.png', th1)
-    elif radio == "Adaptive threshold mean" and uploaded_image is not None:
-        col2.image(th2)
-        cv2.imwrite('./data/image.png', th2)
-    elif radio == "Adaptive threshold Gaussian" and uploaded_image is not None:
-        col2.image(th3)
-        cv2.imwrite('./data/image.png', th3)
-    elif radio == "Otsu' thresholding" and uploaded_image is not None:
-        col2.image(th4)
-        cv2.imwrite('./data/image.png', th4)
-    elif radio == "Otsu's thresholding + Gaussian filter" and uploaded_image is not None:
-        col2.image(th5)
-        cv2.imwrite('./data/image.png', th5)
+    if uploaded_image is not None:
+        if radio == "Threshold":
+            col2.image(adjust_rgb(th1, r_value, g_value, b_value))
+            cv2.imwrite('./data/image.png', th1)
+        elif radio == "Adaptive threshold mean":
+            col2.image(adjust_rgb(th2, r_value, g_value, b_value))
+            cv2.imwrite('./data/image.png', th2)
+        elif radio == "Adaptive threshold Gaussian":
+            col2.image(adjust_rgb(th3, r_value, g_value, b_value))
+            cv2.imwrite('./data/image.png', th3)
+        elif radio == "Otsu' thresholding":
+            col2.image(adjust_rgb(th4, r_value, g_value, b_value))
+            cv2.imwrite('./data/image.png', th4)
+        elif radio == "Otsu's thresholding + Gaussian filter":
+            col2.image(adjust_rgb(th5, r_value, g_value, b_value))
+            cv2.imwrite('./data/image.png', th5)
 
     # ダウンロードボタン作成
     if uploaded_image is not None:
