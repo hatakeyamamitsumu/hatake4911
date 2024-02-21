@@ -28,10 +28,14 @@ else:
         radius=15  # You can adjust the radius of the heatmap points
     ).add_to(m)
 
-    # Add markers with popups for each point
+    # Add markers with popups for each point, and customize the icon size
     for index, row in data.iterrows():
         popup_text = f"標高: {row['標高']} m"
-        folium.Marker([row['緯度'], row['経度']], popup=popup_text).add_to(m)
+        folium.Marker(
+            location=[row['緯度'], row['経度']],
+            popup=popup_text,
+            icon=folium.Icon(icon='flag', color='blue', prefix='fa', icon_size=(15, 15))  # Adjust the icon_size
+        ).add_to(m)
 
     # Display the map using Streamlit
     st.header("ヒートマップの例")
