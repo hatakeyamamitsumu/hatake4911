@@ -36,6 +36,6 @@ for index, row in data.iterrows():
     ).add_to(m)
 
 # Display the map using Streamlit
-st.header("ヒートマップの例")
+st.header("ヒートマップ")
 folium_static(m)
 
