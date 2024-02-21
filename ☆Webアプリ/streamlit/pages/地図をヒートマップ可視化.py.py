@@ -8,38 +8,34 @@ from folium import plugins
 csv_file_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV/標高情報.csv"
 data = pd.read_csv(csv_file_path)
 
-# Check if the data has latitude, longitude, and any third column
-required_columns = ['緯度', '経度']
-missing_columns = [col for col in required_columns if col not in data.columns]
+# Check if the data has latitude, longitude, and elevation columns
+latitude_column = data.columns[0]
+longitude_column = data.columns[1]
+elevation_column = data.columns[2]
 
-# Display a warning if any required columns are missing
-if missing_columns:
-    st.warning(f"CSVファイルに必要な列が不足しています。不足している列: {', '.join(missing_columns)}")
-else:
-    # Center of the map (you may adjust this based on your data)
-    center = [data['緯度'].mean(), data['経度'].mean()]
+# Center of the map (you may adjust this based on your data)
+center = [data[latitude_column].mean(), data[longitude_column].mean()]
 
-    # Create a base map
-    m = folium.Map(center, zoom_start=6)
+# Create a base map
+m = folium.Map(center, zoom_start=6)
 
-    # Add a heatmap layer to the map using the latitude, longitude, and any third column data from the CSV
-    # Assuming the third column is the first column that is not latitude or longitude
-    third_column = next(col for col in data.columns if col not in required_columns)
-    
-    heat_map = folium.plugins.HeatMap(
-        data=data[['緯度', '経度', third_column]].values,
-        radius=15
+# Add a heatmap layer to the map using the latitude, longitude, and elevation data from the CSV
+heat_map = folium.plugins.HeatMap(
+    data=data[[latitude_column, longitude_column, elevation_column]].values,  # Use the latitude, longitude, and elevation columns
+    radius=15  # You can adjust the radius of the heatmap points
+).add_to(m)
+
+# Add markers with popups for each point, and customize the icon size
+# icon='flag', 'map-marker', 'flag', 'star', 'circle'
+for index, row in data.iterrows():
+    popup_text = f"{elevation_column}: {row[elevation_column]} m"
+    folium.Marker(
+        location=[row[latitude_column], row[longitude_column]],
+        popup=popup_text,
+        icon=folium.Icon(icon='circle', color='blue', prefix='fa', icon_size=(15, 15))  # Adjust the icon_size
     ).add_to(m)
 
-    # Add markers with popups for each point, and customize the icon size
-    for index, row in data.iterrows():
-        popup_text = f"{third_column}: {row[third_column]}"
-        folium.Marker(
-            location=[row['緯度'], row['経度']],
-            popup=popup_text,
-            icon=folium.Icon(icon='circle', color='blue', prefix='fa', icon_size=(15, 15))
-        ).add_to(m)
+# Display the map using Streamlit
+st.header("ヒートマップの例")
+folium_static(m)
 
-    # Display the map using Streamlit
-    st.header("ヒートマップ")
-    folium_static(m)
