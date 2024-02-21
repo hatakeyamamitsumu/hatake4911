@@ -28,7 +28,7 @@ heat_map = folium.plugins.HeatMap(
 # Add markers with popups for each point, and customize the icon size
 # icon='flag', 'map-marker', 'flag', 'star', 'circle'
 for index, row in data.iterrows():
-    popup_text = f"{elevation_column}: {row[elevation_column]} m"
+    popup_text = f"{elevation_column}: {row[elevation_column]} "
     folium.Marker(
         location=[row[latitude_column], row[longitude_column]],
         popup=popup_text,
