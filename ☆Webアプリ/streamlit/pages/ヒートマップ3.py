@@ -29,6 +29,7 @@ else:
     ).add_to(m)
 
     # Add markers with popups for each point, and customize the icon size
+    #icon='flag','map-marker','flag','star','circle'
     for index, row in data.iterrows():
         popup_text = f"標高: {row['標高']} m"
         folium.Marker(
