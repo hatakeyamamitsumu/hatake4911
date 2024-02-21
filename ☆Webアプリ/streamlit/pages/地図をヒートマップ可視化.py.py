@@ -43,4 +43,3 @@ else:
     # Display the map using Streamlit
     st.header("ヒートマップ")
     folium_static(m)
-
