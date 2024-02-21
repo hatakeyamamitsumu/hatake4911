@@ -35,7 +35,7 @@ else:
         folium.Marker(
             location=[row['緯度'], row['経度']],
             popup=popup_text,
-            icon=folium.Icon(icon='flag', color='blue', prefix='fa', icon_size=(15, 15))  # Adjust the icon_size
+            icon=folium.Icon(icon='circle', color='blue', prefix='fa', icon_size=(15, 15))  # Adjust the icon_size
         ).add_to(m)
 
     # Display the map using Streamlit
