@@ -45,7 +45,7 @@ def main():
     st.title('画像2値化アプリ')
 
     # アップローダー
-    uploaded_image=st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
+    uploaded_image = st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
     # カラム設定
     col1, col2 = st.columns(2)
 
@@ -55,12 +55,10 @@ def main():
     # original画像表示、2値化処理
     with col1:
         if uploaded_image is not None:
-            image=Image.open(uploaded_image,)
+            image = Image.open(uploaded_image,)
             img_array = np.array(image)
             st.image(img_array, use_column_width=None)
-            img=pil2cv(image)
-            img = adjust_rgb(img, r_value, g_value, b_value)  # Adjust RGB values
-
+            img = pil2cv(image)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             ret, th1 = cv2.threshold(gray, th, 255, cv2.THRESH_BINARY)
             th2 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
@@ -70,6 +68,13 @@ def main():
             ret2, th4 = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
             blur = cv2.GaussianBlur(gray, (5, 5), 0)
             ret3, th5 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+            # Adjust RGB values after binarization
+            th1 = adjust_rgb(th1, r_value, g_value, b_value)
+            th2 = adjust_rgb(th2, r_value, g_value, b_value)
+            th3 = adjust_rgb(th3, r_value, g_value, b_value)
+            th4 = adjust_rgb(th4, r_value, g_value, b_value)
+            th5 = adjust_rgb(th5, r_value, g_value, b_value)
 
     # binary画像表示、保存
     if radio == "Threshold" and uploaded_image is not None:
