@@ -20,6 +20,9 @@ link_str = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPB
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑マクロ等の挙動テスト用エクセルブック')
 st.text('')
+link_str = "(https://gigafile.nu/)"
+st.text('↑ギガファイルサービス')
+st.text('')
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=dy53br)"
 # Markdownを表示。
