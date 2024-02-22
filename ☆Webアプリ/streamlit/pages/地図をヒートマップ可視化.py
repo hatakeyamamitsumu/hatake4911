@@ -5,7 +5,7 @@ import folium
 from folium import plugins
 
 # Read data from CSV file
-csv_file_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV/標高情報.csv"
+csv_file_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV/標高情報(国土地理院より取得).csv"
 data = pd.read_csv(csv_file_path)
 
 # Check if the data has latitude, longitude, and elevation columns
