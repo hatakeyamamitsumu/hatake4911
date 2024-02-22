@@ -21,6 +21,7 @@ st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑マクロ等の挙動テスト用エクセルブック')
 st.text('')
 link_str = "(https://gigafile.nu/)"
+st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑ギガファイルサービス')
 st.text('')
 # ハイパーリンクを表示するMarkdown文字列
