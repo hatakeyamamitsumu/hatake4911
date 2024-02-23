@@ -20,10 +20,6 @@ def filter_katakana(text):
     katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' for char in line)]
     return katakana_lines
 
-def filter_numbers(text):
-    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零壱弐参伍拾一二三四五六七八九十百千万億兆]', char) for char in line)]
-    return number_lines
-
 def filter_alphabets(text):
     alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
     alphabet_lines = [line for line in text.split('\n') if any(char in alphabet_characters for char in line)]
@@ -37,10 +33,6 @@ def filter_and_download(text, filter_type):
     if filter_type == 'katakana':
         filtered_lines = filter_katakana(text)
         result_label = "### カタカナを含む行のリスト"
-        file_extension = "txt"
-    elif filter_type == 'numbers':
-        filtered_lines = filter_numbers(text)
-        result_label = "### 数字（漢数字を含む）を含む行のリスト"
         file_extension = "txt"
     elif filter_type == 'alphabets':
         filtered_lines = filter_alphabets(text)
@@ -87,9 +79,6 @@ def main():
         if st.button("カタカナを含む文を抽出"):
             filter_and_download(text, 'katakana')
 
-        if st.button("数字（漢数字を含む）を含む文を抽出"):
-            filter_and_download(text, 'numbers')
-
         if st.button("アルファベットを含む文を抽出"):
             filter_and_download(text, 'alphabets')
 
@@ -98,3 +87,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
