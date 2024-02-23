@@ -1,15 +1,31 @@
+
 # scatter_plot_app.py
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import statsmodels.api as sm
 
 def load_data(file_path, encoding):
     data = pd.read_csv(file_path, encoding=encoding)
     return data
 
 def plot_3d_scatter_with_trendline(data, x_col, y_col, z_col, index_col):
-    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col, text=index_col, trendline="ols")
+    fig = px.scatter_3d(data, x=x_col, y=y_col, z=z_col, text=index_col)
+
+    # 回帰分析
+    X = sm.add_constant(data[[x_col, y_col]])
+    model = sm.OLS(data[z_col], X).fit()
+
+    # 回帰平面を追加
+    min_x, max_x = data[x_col].min(), data[x_col].max()
+    min_y, max_y = data[y_col].min(), data[y_col].max()
+    X_surf = pd.DataFrame({x_col: [min_x, max_x], y_col: [min_y, max_y]})
+    X_surf = sm.add_constant(X_surf)
+    Z_surf = model.predict(X_surf)
+
+    fig.add_trace(px.scatter_3d(x=X_surf[x_col], y=X_surf[y_col], z=Z_surf).data[0])
+
     st.plotly_chart(fig)
 
 def plot_2d_scatter_with_trendline(data, x_col, y_col, index_col):
@@ -52,9 +68,3 @@ def main():
                 index_col_shiftjis = st.selectbox('見出し列を選んでください（見出し数が10程度の表がおすすめです）', data_shiftjis.columns)
                 dimensions_shiftjis = len(selected_columns_shiftjis)
                 st.write(f'### {dimensions_shiftjis}次元散布図 (Shift-JIS):')
-                plot_scatter_with_trendline(data_shiftjis, selected_columns_shiftjis, index_col_shiftjis, dimensions_shiftjis)
-            else:
-                st.warning('Please select 2 or 3 columns for the Scatter Plot.')
-
-if __name__ == '__main__':
-    main()
