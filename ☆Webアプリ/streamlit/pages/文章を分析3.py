@@ -16,53 +16,55 @@ def read_word_file(file):
         text += paragraph.text + "\n"
     return text
 
-def filter_all_katakana(text):
-    all_katakana_lines = [line for line in text.split('\n') if all('\u30A1' <= char <= '\u30F6' for char in line)]
-    return all_katakana_lines
+def filter_katakana(text):
+    katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' for char in line)]
+    return katakana_lines
 
-def filter_all_alphabets(text):
-    all_alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
-    all_alphabet_lines = [line for line in text.split('\n') if all(char in all_alphabet_characters for char in line)]
-    return all_alphabet_lines
+def filter_numbers(text):
+    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零壱弐参伍拾一二三四五六七八九十百千万億兆]', char) for char in line)]
+    return number_lines
 
-def filter_and_download(text, filter_type):
-    if filter_type == 'all_katakana':
-        filtered_lines = filter_all_katakana(text)
-        result_label = "### 全てのカタカナを含む行のリスト"
-        file_extension = "txt"
-    elif filter_type == 'all_alphabets':
-        filtered_lines = filter_all_alphabets(text)
-        result_label = "### 全てのアルファベットを含む行のリスト"
-        file_extension = "txt"
-    elif filter_type == 'katakana_or_alphabets':
-        katakana_lines = filter_all_katakana(text)
-        alphabet_lines = filter_all_alphabets(text)
-        filtered_lines = katakana_lines + alphabet_lines
-        result_label = "### 全てのカタカナ or 全てのアルファベットを含む行のリスト"
-        file_extension = "txt"
-    elif filter_type == 'katakana_and_alphabets':
-        katakana_lines = filter_all_katakana(text)
-        alphabet_lines = filter_all_alphabets(text)
-        filtered_lines = list(set(katakana_lines) & set(alphabet_lines))
-        result_label = "### 全てのカタカナ and 全てのアルファベットを含む行のリスト"
-        file_extension = "txt"
-    else:
-        st.error("無効なフィルタータイプが選択されました。")
-        return
+def filter_alphabets(text):
+    alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
+    alphabet_lines = [line for line in text.split('\n') if any(char in alphabet_characters for char in line)]
+    return alphabet_lines
 
-    if filtered_lines:
-        result_text = "\n".join(filtered_lines)
+def apply_condition(lines, condition):
+    if condition == 'and':
+        return list(set(lines[0]) & set(lines[1]))
+    elif condition == 'or':
+        return list(set(lines[0]) | set(lines[1]))
+    elif condition == 'not':
+        return list(set(lines[0]) - set(lines[1]))
+
+def filter_and_download(text, conditions):
+    filtered_lines = []
+
+    if 'katakana' in conditions:
+        filtered_lines.append(filter_katakana(text))
+    if 'numbers' in conditions:
+        filtered_lines.append(filter_numbers(text))
+    if 'alphabets' in conditions:
+        filtered_lines.append(filter_alphabets(text))
+
+    if len(filtered_lines) >= 2:
+        condition = st.selectbox("条件を選択してください", ['and', 'or', 'not'])
+        result_lines = apply_condition(filtered_lines, condition)
+
+        result_label = "### 結果"
+        result_text = "\n".join(result_lines)
+
         st.write(result_label)
         st.text(result_text)
 
         # Save the filtered lines to a text file
-        file_name = f"{filter_type}_data.{file_extension}"
+        file_name = f"filtered_data.txt"
         with open(file_name, 'w', encoding='utf-8') as file:
             file.write(result_text)
 
-        st.download_button(label="テキストファイルとしてダウンロード", data=result_text, file_name=file_name, key=f"{filter_type}_download_button")
+        st.download_button(label="テキストファイルとしてダウンロード", data=result_text, file_name=file_name, key=f"filtered_download_button")
     else:
-        st.write(f"テキストに対象の行は見つかりませんでした。")
+        st.write(f"条件に合致する行が見つかりませんでした。")
 
 def main():
     st.title("文章フィルター")
@@ -80,17 +82,10 @@ def main():
         st.write("### 原本")
         st.dataframe(result_df)
 
-        if st.button("全てのカタカナを含む文を抽出"):
-            filter_and_download(text, 'all_katakana')
+        selected_conditions = st.multiselect("条件を選択してください", ['katakana', 'numbers', 'alphabets'])
 
-        if st.button("全てのアルファベットを含む文を抽出"):
-            filter_and_download(text, 'all_alphabets')
-
-        if st.button("全てのカタカナ or 全てのアルファベットを含む文を抽出"):
-            filter_and_download(text, 'katakana_or_alphabets')
-
-        if st.button("全てのカタカナ and 全てのアルファベットを含む文を抽出"):
-            filter_and_download(text, 'katakana_and_alphabets')
+        if st.button("フィルターを適用して文を抽出"):
+            filter_and_download(text, selected_conditions)
 
 if __name__ == "__main__":
     main()
