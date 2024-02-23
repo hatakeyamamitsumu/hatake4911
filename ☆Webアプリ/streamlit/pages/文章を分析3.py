@@ -31,40 +31,43 @@ def filter_alphabets(text):
 
 def apply_condition(lines, condition):
     if condition == 'and':
-        return list(set(lines[0]) & set(lines[1]))
+        return list(set.intersection(*map(set, lines)))
     elif condition == 'or':
-        return list(set(lines[0]) | set(lines[1]))
+        return list(set.union(*map(set, lines)))
     elif condition == 'not':
-        return list(set(lines[0]) - set(lines[1]))
+        return list(set(lines[0]) - set.intersection(*map(set, lines[1:])))
 
-def filter_and_download(text, conditions):
+def filter_and_download(text, selected_conditions, condition_type):
     filtered_lines = []
 
-    if 'katakana' in conditions:
-        filtered_lines.append(filter_katakana(text))
-    if 'numbers' in conditions:
-        filtered_lines.append(filter_numbers(text))
-    if 'alphabets' in conditions:
-        filtered_lines.append(filter_alphabets(text))
+    for condition in selected_conditions:
+        if condition == 'katakana':
+            filtered_lines.append(filter_katakana(text))
+        elif condition == 'numbers':
+            filtered_lines.append(filter_numbers(text))
+        elif condition == 'alphabets':
+            filtered_lines.append(filter_alphabets(text))
 
-    if len(filtered_lines) >= 2:
-        condition = st.selectbox("条件を選択してください", ['and', 'or', 'not'])
-        result_lines = apply_condition(filtered_lines, condition)
+    if filtered_lines:
+        result_lines = apply_condition(filtered_lines, condition_type)
 
-        result_label = "### 結果"
-        result_text = "\n".join(result_lines)
+        if result_lines:
+            result_label = "### 結果"
+            result_text = "\n".join(result_lines)
 
-        st.write(result_label)
-        st.text(result_text)
+            st.write(result_label)
+            st.text(result_text)
 
-        # Save the filtered lines to a text file
-        file_name = f"filtered_data.txt"
-        with open(file_name, 'w', encoding='utf-8') as file:
-            file.write(result_text)
+            # Save the filtered lines to a text file
+            file_name = f"filtered_data.txt"
+            with open(file_name, 'w', encoding='utf-8') as file:
+                file.write(result_text)
 
-        st.download_button(label="テキストファイルとしてダウンロード", data=result_text, file_name=file_name, key=f"filtered_download_button")
+            st.download_button(label="テキストファイルとしてダウンロード", data=result_text, file_name=file_name, key=f"filtered_download_button")
+        else:
+            st.write(f"条件に合致する行が見つかりませんでした。")
     else:
-        st.write(f"条件に合致する行が見つかりませんでした。")
+        st.write("無効な条件が選択されました。")
 
 def main():
     st.title("文章フィルター")
@@ -83,9 +86,10 @@ def main():
         st.dataframe(result_df)
 
         selected_conditions = st.multiselect("条件を選択してください", ['katakana', 'numbers', 'alphabets'])
+        selected_condition_type = st.selectbox("条件の種類を選択してください", ['and', 'or', 'not'])
 
         if st.button("フィルターを適用して文を抽出"):
-            filter_and_download(text, selected_conditions)
+            filter_and_download(text, selected_conditions, selected_condition_type)
 
 if __name__ == "__main__":
     main()
