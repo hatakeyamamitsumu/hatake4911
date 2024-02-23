@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from io import StringIO
 from docx import Document
 import re
 
@@ -34,23 +33,6 @@ def apply_condition(lines, condition):
         return list(set.intersection(*map(set, lines)))
     elif condition == 'or':
         return list(set.union(*map(set, lines)))
-    elif condition == 'not':
-        return list(set(lines[0]) - set.intersection(*map(set, lines[1:])))
-
-def filter_not_selected_conditions(text, selected_conditions):
-    all_conditions = ['katakana', 'numbers', 'alphabets']
-    conditions_to_exclude = set(all_conditions) - set(selected_conditions)
-
-    excluded_lines = []
-    for condition in conditions_to_exclude:
-        if condition == 'katakana':
-            excluded_lines.extend(filter_katakana(text))
-        elif condition == 'numbers':
-            excluded_lines.extend(filter_numbers(text))
-        elif condition == 'alphabets':
-            excluded_lines.extend(filter_alphabets(text))
-
-    return list(set(text.split('\n')) - set(excluded_lines))
 
 def filter_and_download(text, selected_conditions, condition_type):
     filtered_lines = []
@@ -64,15 +46,7 @@ def filter_and_download(text, selected_conditions, condition_type):
             filtered_lines.append(filter_alphabets(text))
 
     if filtered_lines:
-        if condition_type == 'and':
-            result_lines = apply_condition(filtered_lines, condition_type)
-        elif condition_type == 'or':
-            result_lines = apply_condition(filtered_lines, condition_type)
-        elif condition_type == 'not':
-            result_lines = filter_not_selected_conditions(text, selected_conditions)
-        else:
-            st.error("無効な条件の種類が選択されました。")
-            return
+        result_lines = apply_condition(filtered_lines, condition_type)
 
         if result_lines:
             result_label = "### 結果"
@@ -110,10 +84,11 @@ def main():
 
         selected_conditions = st.multiselect("条件を選択してください", ['katakana', 'numbers', 'alphabets'])
 
-        condition_type = st.selectbox("条件の種類を選択してください", ['and', 'or', 'not'])
+        if selected_conditions:
+            condition_type = st.selectbox("条件の種類を選択してください", ['and', 'or'])
 
-        if st.button("条件に基づいて文を抽出"):
-            filter_and_download(text, selected_conditions, condition_type)
+            if st.button("条件に合致する文を抽出"):
+                filter_and_download(text, selected_conditions, condition_type)
 
 if __name__ == "__main__":
     main()
