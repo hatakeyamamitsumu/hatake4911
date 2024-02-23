@@ -16,31 +16,14 @@ def read_word_file(file):
         text += paragraph.text + "\n"
     return text
 
-def filter_katakana(text):
-    katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' for char in line)]
-    return katakana_lines
+def filter_keywords(text, keywords):
+    keyword_lines = [line for line in text.split('\n') if any(keyword in line for keyword in keywords)]
+    return keyword_lines
 
-def filter_alphabets(text):
-    alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
-    alphabet_lines = [line for line in text.split('\n') if any(char in alphabet_characters for char in line)]
-    return alphabet_lines
-
-def filter_katakana_and_alphabets(text):
-    katakana_and_alphabet_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' or char.isalpha() for char in line)]
-    return katakana_and_alphabet_lines
-
-def filter_and_download(text, filter_type):
-    if filter_type == 'katakana':
-        filtered_lines = filter_katakana(text)
-        result_label = "### カタカナを含む行のリスト"
-        file_extension = "txt"
-    elif filter_type == 'alphabets':
-        filtered_lines = filter_alphabets(text)
-        result_label = "### アルファベットを含む行のリスト"
-        file_extension = "txt"
-    elif filter_type == 'katakana_and_alphabets':
-        filtered_lines = filter_katakana_and_alphabets(text)
-        result_label = "### カタカナとアルファベットを含む行のリスト"
+def filter_and_download(text, filter_type, keywords):
+    if filter_type == 'custom':
+        filtered_lines = filter_keywords(text, keywords)
+        result_label = "### カスタム条件を満たす行のリスト"
         file_extension = "txt"
     else:
         st.error("無効なフィルタータイプが選択されました。")
@@ -76,15 +59,10 @@ def main():
         st.write("### 原本")
         st.dataframe(result_df)
 
-        if st.button("カタカナを含む文を抽出"):
-            filter_and_download(text, 'katakana')
+        keywords = ['すべてのカタカナ', 'すべてのアルファベット', 'すべての数字']
 
-        if st.button("アルファベットを含む文を抽出"):
-            filter_and_download(text, 'alphabets')
-
-        if st.button("カタカナとアルファベットを含む文を抽出"):
-            filter_and_download(text, 'katakana_and_alphabets')
+        if st.button("カスタム条件を満たす文を抽出"):
+            filter_and_download(text, 'custom', keywords)
 
 if __name__ == "__main__":
     main()
-
