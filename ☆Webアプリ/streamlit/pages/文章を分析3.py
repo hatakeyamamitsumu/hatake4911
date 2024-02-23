@@ -29,39 +29,38 @@ def filter_alphabets(text):
     alphabet_lines = [line for line in text.split('\n') if any(char in alphabet_characters for char in line)]
     return alphabet_lines
 
-def apply_conditions(lines, conditions):
-    filtered_lines = lines.copy()
+def filter_katakana_and_alphabets(text):
+    katakana_and_alphabet_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' or char.isalpha() for char in line)]
+    return katakana_and_alphabet_lines
 
-    for condition in conditions:
-        if condition['type'] == 'and':
-            filtered_lines = [line for line in filtered_lines if all(keyword in line for keyword in condition['keywords'])]
-        elif condition['type'] == 'or':
-            filtered_lines = [line for line in filtered_lines if any(keyword in line for keyword in condition['keywords'])]
-        elif condition['type'] == 'not':
-            filtered_lines = [line for line in filtered_lines if all(keyword not in line for keyword in condition['keywords'])]
-
-    return filtered_lines
-
-def filter_and_download(text, filter_type, conditions):
+def filter_and_download(text, filter_type):
     if filter_type == 'katakana':
         filtered_lines = filter_katakana(text)
+        result_label = "### カタカナを含む行のリスト"
+        file_extension = "txt"
     elif filter_type == 'numbers':
         filtered_lines = filter_numbers(text)
+        result_label = "### 数字（漢数字を含む）を含む行のリスト"
+        file_extension = "txt"
     elif filter_type == 'alphabets':
         filtered_lines = filter_alphabets(text)
+        result_label = "### アルファベットを含む行のリスト"
+        file_extension = "txt"
+    elif filter_type == 'katakana_and_alphabets':
+        filtered_lines = filter_katakana_and_alphabets(text)
+        result_label = "### カタカナとアルファベットを含む行のリスト"
+        file_extension = "txt"
     else:
         st.error("無効なフィルタータイプが選択されました。")
         return
 
-    filtered_lines = apply_conditions(filtered_lines, conditions)
-
     if filtered_lines:
         result_text = "\n".join(filtered_lines)
-        st.write("### 結果")
+        st.write(result_label)
         st.text(result_text)
 
         # Save the filtered lines to a text file
-        file_name = f"{filter_type}_data.txt"
+        file_name = f"{filter_type}_data.{file_extension}"
         with open(file_name, 'w', encoding='utf-8') as file:
             file.write(result_text)
 
@@ -85,26 +84,17 @@ def main():
         st.write("### 原本")
         st.dataframe(result_df)
 
-        conditions = []
+        if st.button("カタカナを含む文を抽出"):
+            filter_and_download(text, 'katakana')
 
-        if st.checkbox("カタカナ条件を追加"):
-            katakana_keywords = st.text_input("カタカナのキーワードを入力（スペースで区切ってください）")
-            if katakana_keywords:
-                conditions.append({'type': 'or', 'keywords': katakana_keywords.split()})
+        if st.button("数字（漢数字を含む）を含む文を抽出"):
+            filter_and_download(text, 'numbers')
 
-        if st.checkbox("数字条件を追加"):
-            numbers_keywords = st.text_input("数字のキーワードを入力（スペースで区切ってください）")
-            if numbers_keywords:
-                conditions.append({'type': 'or', 'keywords': numbers_keywords.split()})
+        if st.button("アルファベットを含む文を抽出"):
+            filter_and_download(text, 'alphabets')
 
-        if st.checkbox("アルファベット条件を追加"):
-            alphabets_keywords = st.text_input("アルファベットのキーワードを入力（スペースで区切ってください）")
-            if alphabets_keywords:
-                conditions.append({'type': 'or', 'keywords': alphabets_keywords.split()})
-
-        if conditions:
-            if st.button("選択した条件でフィルタリング"):
-                filter_and_download(text, 'custom', conditions)
+        if st.button("カタカナとアルファベットを含む文を抽出"):
+            filter_and_download(text, 'katakana_and_alphabets')
 
 if __name__ == "__main__":
     main()
