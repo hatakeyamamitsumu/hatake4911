@@ -16,8 +16,12 @@ def read_word_file(file):
     return text
 
 def filter_katakana(text):
-    katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' or '\uFF65' <= char <= '\uFF9F' for char in line)]
+    katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' for char in line)]
     return katakana_lines
+
+def filter_numbers(text):
+    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零壱弐参伍拾一二三四五六七八九十百千万億兆]', char) for char in line)]
+    return number_lines
 
 def filter_alphabets(text):
     alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
@@ -37,8 +41,7 @@ def filter_and_download(text, selected_conditions, condition_type):
         if condition == 'katakana':
             filtered_lines.append(filter_katakana(text))
         elif condition == 'numbers':
-            # Note: filter_numbers is not defined in the provided code, using filter_alphabets as a placeholder
-            filtered_lines.append(filter_alphabets(text))
+            filtered_lines.append(filter_numbers(text))
         elif condition == 'alphabets':
             filtered_lines.append(filter_alphabets(text))
 
@@ -89,3 +92,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
