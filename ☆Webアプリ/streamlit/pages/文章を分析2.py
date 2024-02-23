@@ -19,9 +19,9 @@ def filter_katakana(text):
     katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' for char in line)]
     return katakana_lines
 
-def filter_numbers(text):
-    number_lines = [line for line in text.split('\n') if any(char.isdigit() or re.search('[零壱弐参伍拾一二三四五六七八九十百千万億兆]', char) for char in line)]
-    return number_lines
+def filter_katakana(text):
+    katakana_lines = [line for line in text.split('\n') if any('\u30A1' <= char <= '\u30F6' or '\uFF65' <= char <= '\uFF9F' for char in line)]
+    return katakana_lines
 
 def filter_alphabets(text):
     alphabet_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ")
