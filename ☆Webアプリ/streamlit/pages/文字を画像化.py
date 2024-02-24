@@ -10,7 +10,7 @@ def text_to_image(text, font_size, output_path):
   draw = ImageDraw.Draw(image)
 
   # フォントの設定
-  font = ImageFont.truetype("arial.ttf", font_size)
+  font =  ImageFont.load_default()
 
   # テキストを画像に描画
   draw.text((10, 10), text, font=font, fill='black')
