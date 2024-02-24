@@ -1,10 +1,15 @@
 import streamlit as st
 from moviepy.editor import VideoFileClip
 from io import BytesIO
+import os
 
-def resize_and_change_framerate(input_path, new_fps, scale_factor):
+def resize_and_change_framerate(input_file, new_fps, scale_factor):
+    # ファイルを一時的に保存
+    with open("temp_video.mp4", "wb") as temp_file:
+        temp_file.write(input_file.read())
+
     # 入力動画の読み込み
-    clip = VideoFileClip(input_path)
+    clip = VideoFileClip("temp_video.mp4")
     
     # フレームレートを変更
     clip = clip.set_fps(new_fps)
@@ -13,6 +18,9 @@ def resize_and_change_framerate(input_path, new_fps, scale_factor):
     new_size = tuple(int(dim * scale_factor) for dim in clip.size)
     clip = clip.resize(new_size)
     
+    # 一時ファイルを削除
+    os.remove("temp_video.mp4")
+
     return clip
 
 def main():
