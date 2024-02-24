@@ -18,7 +18,7 @@ def main():
     st.title("動画をGIFに変換するアプリ")
 
     # 動画ファイルのアップロード
-    uploaded_file = st.file_uploader("動画ファイルをアップロードしてください", type=["mp4", "avi", "mov"])
+    uploaded_file = st.file_uploader("動画ファイルをアップロードしてください", type=["mp4", "avi", "mov", "gif"])
 
     if uploaded_file is not None:
         # 出力GIFファイル名の入力
@@ -41,4 +41,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
