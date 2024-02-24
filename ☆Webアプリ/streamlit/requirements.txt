@@ -27,3 +27,8 @@ imageio
 
 python-docx
 
+
+edge_tts
+os
+asyncio
+speech_recognition
