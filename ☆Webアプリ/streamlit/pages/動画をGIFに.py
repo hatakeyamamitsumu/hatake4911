@@ -1,8 +1,13 @@
 import streamlit as st
 from moviepy.editor import VideoFileClip
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 def convert_video_to_gif(input_file, output_file, fps=10, resize_percentage=None):
-    if input_file.name.endswith(('.mp4', '.avi', '.mov')):
+    if input_file.name.endswith('.gif'):
+        # GIFの場合は直接表示
+        st.image(input_file, use_column_width=True)
+    elif input_file.name.endswith(('.mp4', '.avi', '.mov')):
+        # GIF以外の動画の場合
         clip = VideoFileClip(input_file)
 
         # 動画サイズ変更
@@ -11,6 +16,7 @@ def convert_video_to_gif(input_file, output_file, fps=10, resize_percentage=None
             clip = clip.resize(resize_factor)
 
         clip.write_gif(output_file, fps=fps)
+        st.image(output_file, use_column_width=True)
     else:
         st.error("サポートされていない動画ファイル形式です。対応する形式をアップロードしてください。")
 
@@ -35,9 +41,6 @@ def main():
             # 変換処理
             convert_video_to_gif(uploaded_file, output_gif_name, fps, resize_percentage)
             st.success("変換が完了しました！")
-
-            # 変換後のGIFを表示
-            st.image(output_gif_name, use_column_width=True)
 
 if __name__ == "__main__":
     main()
