@@ -23,7 +23,10 @@ def main():
     if uploaded_file is not None:
         # 動画ファイルかどうかを確認
         if uploaded_file.type.startswith('video'):
-            clip = VideoFileClip(uploaded_file)
+            # 動画ファイルをメモリに読み込む
+            video_bytes = uploaded_file.read()
+            clip = VideoFileClip(video_bytes, codec="libx264", audio_codec="aac")
+
             duration = clip.duration
             st.write(f"動画の長さ: {duration}秒")
 
