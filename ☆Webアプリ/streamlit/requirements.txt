@@ -23,7 +23,7 @@ seaborn
 requests
 bs4
 moviepy
-
+imageio
 
 python-docx
 
