@@ -1,6 +1,5 @@
 import streamlit as st
 from moviepy.editor import VideoFileClip
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 def convert_video_to_gif(input_file, output_file, fps=10, resize_percentage=None):
     if input_file.name.endswith('.gif'):
