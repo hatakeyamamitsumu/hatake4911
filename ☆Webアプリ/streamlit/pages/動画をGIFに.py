@@ -27,4 +27,3 @@ if uploaded_video is not None:
 
     # ダウンロードボタンを追加
     st.markdown(f'<a href="{vid}" download>Download GIF</a>', unsafe_allow_html=True)
-
