@@ -1,5 +1,4 @@
 import os
-
 import streamlit as st
 import numpy as np
 from PIL import Image
@@ -16,18 +15,15 @@ def pil2cv(image):
         new_image = cv2.cvtColor(new_image, cv2.COLOR_RGBA2BGRA)
     return new_image
 
-def adjust_pixel_color(image, color_adjustment):
-    adjusted_image = image.copy()
-    mask = (image == [0, 0, 0]).all(axis=-1)  # 黒いピクセルを見つける
+def adjust_pixel_color(binary_image, color_adjustment):
+    # 二値化画像を元にRGB画像を作成
+    colored_image = cv2.cvtColor(binary_image, cv2.COLOR_GRAY2RGB)
 
-    # カラーアジャストメントをグレースケール値に変換
-    gray_value = int(0.299 * color_adjustment[0] + 0.587 * color_adjustment[1] + 0.114 * color_adjustment[2])
+    # 黒い部分（値が0のピクセル）に対して色の調整を行う
+    mask = (binary_image == 0)
+    colored_image[mask] = color_adjustment
 
-    # 黒いピクセルにグレースケール値を割り当て
-    adjusted_image[mask] = [gray_value, gray_value, gray_value]
-    return adjusted_image
-
-
+    return colored_image
 
 def main():
     os.makedirs('./data', exist_ok=True)
@@ -44,13 +40,10 @@ def main():
             "Otsu' thresholding", "Otsu's thresholding + Gaussian fileter")
         )
 
-    with st.sidebar:
-        color_adjustment = st.color_picker("Adjust Color", "#ff0000")  # Default color is red
-
     st.title('画像2値化アプリ')
 
     # アップローダー
-    uploaded_image = st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
+    uploaded_image=st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
     # カラム設定
     col1, col2 = st.columns(2)
 
@@ -58,48 +51,33 @@ def main():
     col2.header("Binary image")
 
     # original画像表示、2値化処理
-# original画像表示、2値化処理
-with col1:
-    if uploaded_image is not None:
-        image = Image.open(uploaded_image)
-        img_array = np.array(image)
-        st.image(img_array, use_column_width=None)
-        img = pil2cv(image)
+    with col1:
+        if uploaded_image is not None:
+            image=Image.open(uploaded_image,)
+            img_array = np.array(image)
+            st.image(img_array,use_column_width = None)
+            img=pil2cv(image) 
 
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        ret, th1 = cv2.threshold(gray, th, 255, cv2.THRESH_BINARY)
-        th2 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
-                                     cv2.THRESH_BINARY, 11, 2)
-        th3 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                     cv2.THRESH_BINARY, 11, 2)
-        ret2, th4 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
-        blur = cv2.GaussianBlur(gray, (5, 5), 0)
-        ret3, th5 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
+            gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+            ret,th1 = cv2.threshold(gray,th,255,cv2.THRESH_BINARY)
+            th2 = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,
+            cv2.THRESH_BINARY,11,2)
+            th3 = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+            cv2.THRESH_BINARY,11,2)
+            ret2,th4 = cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+            blur = cv2.GaussianBlur(gray,(5,5),0)
+            ret3,th5 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)   
 
     # binary画像表示、保存
-    if radio == "Threshold" and uploaded_image is not None:
-        col2.image(adjust_pixel_color(th1, color_adjustment))
-        cv2.imwrite('./data/image.png', th1)
-    elif radio == "Adaptive threshold mean" and uploaded_image is not None:
-        col2.image(adjust_pixel_color(th2, color_adjustment))
-        cv2.imwrite('./data/image.png', th2)
-    elif radio == "Adaptive threshold Gaussian" and uploaded_image is not None:
-        col2.image(adjust_pixel_color(th3, color_adjustment))
-        cv2.imwrite('./data/image.png', th3)
-    elif radio == "Otsu' thresholding" and uploaded_image is not None:
-        col2.image(adjust_pixel_color(th4, color_adjustment))
-        cv2.imwrite('./data/image.png', th4)
-    elif radio == "Otsu's thresholding + Gaussian fileter" and uploaded_image is not None:
-        col2.image(adjust_pixel_color(th5, color_adjustment))
-        cv2.imwrite('./data/image.png', th5)
-
-    # ダウンロードボタン作成
-    if uploaded_image is not None:
-        col2.download_button('Download',
-                             open('./data/image.png', 'br'),
-                             file_name='image.png')
-
-
-if __name__ == '__main__':
-    main()
+    if radio=="Threshold" and uploaded_image is not None:
+        col2.image(adjust_pixel_color(th1, (0, 0, 255)))
+        cv2.imwrite('./data/image.png', adjust_pixel_color(th1, (0, 0, 255)))
+    elif radio=="Adaptive threshold mean" and uploaded_image is not None:
+        col2.image(adjust_pixel_color(th2, (0, 0, 255)))
+        cv2.imwrite('./data/image.png', adjust_pixel_color(th2, (0, 0, 255)))
+    elif radio=="Adaptive threshold Gaussian" and uploaded_image is not None:
+        col2.image(adjust_pixel_color(th3, (0, 0, 255)))
+        cv2.imwrite('./data/image.png', adjust_pixel_color(th3, (0, 0, 255)))
+    elif radio=="Otsu' thresholding" and uploaded_image is not None:
+        col2.image(adjust_pixel_color(th4, (0, 0, 255)))
+        cv2.imwrite('./data/image.png', adjust_pixel_color(th4, (0, 0, 255)))
