@@ -3,10 +3,10 @@ from moviepy.editor import VideoFileClip
 from io import BytesIO
 import os
 
-def resize_and_change_framerate(input_file, new_fps, scale_factor):
+def resize_and_change_framerate(uploaded_file, new_fps, scale_factor):
     # ファイルを一時的に保存
     with open("temp_video.mp4", "wb") as temp_file:
-        temp_file.write(input_file.read())
+        temp_file.write(uploaded_file.read())
 
     # 入力動画の読み込み
     clip = VideoFileClip("temp_video.mp4")
