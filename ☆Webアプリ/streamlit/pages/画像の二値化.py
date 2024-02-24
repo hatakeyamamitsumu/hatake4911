@@ -18,14 +18,15 @@ def pil2cv(image):
 
 def adjust_pixel_color(image, color_adjustment):
     adjusted_image = image.copy()
-    mask = np.all(adjusted_image == [0, 0, 0], axis=-1)  # Find black pixels
+    mask = (image == [0, 0, 0]).all(axis=-1)  # 黒いピクセルを見つける
 
-    # Convert color_adjustment to grayscale
+    # カラーアジャストメントをグレースケール値に変換
     gray_value = int(0.299 * color_adjustment[0] + 0.587 * color_adjustment[1] + 0.114 * color_adjustment[2])
 
-    # Assign the grayscale value to the black pixels
+    # 黒いピクセルにグレースケール値を割り当て
     adjusted_image[mask] = [gray_value, gray_value, gray_value]
     return adjusted_image
+
 
 
 def main():
