@@ -2,20 +2,20 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 
 def text_to_image(text, font_size, output_path):
-  # 画像サイズ
+ 
   width, height = 300, 100
    
-  # 画像を白色で初期化
+
   image = Image.new('RGB', (width, height), 'white')
   draw = ImageDraw.Draw(image)
    
-  # フォントの設定
+
   font = ImageFont.truetype("arial.ttf", font_size)
    
-  # テキストを画像に描画
+
   draw.text((10, 10), text, font=font, fill='black')
    
-  # 画像を保存
+
   image.save(output_path)
 
 def main():
