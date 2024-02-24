@@ -1,45 +1,26 @@
 import streamlit as st
-from moviepy.editor import VideoFileClip
+import cv2
+from PIL import Image
 
-def convert_video_to_gif(input_file, output_file, fps=10, resize_percentage=None):
-    if input_file.name.endswith('.gif'):
-        # GIFの場合は直接表示
-        st.image(input_file, use_column_width=True)
-    elif input_file.name.endswith(('.mp4', '.avi', '.mov')):
-        # GIF以外の動画の場合
-        clip = VideoFileClip(input_file)
+uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
+frame_skip = 300  # 300フレームごとに表示
 
-        # 動画サイズ変更
-        if resize_percentage:
-            resize_factor = resize_percentage / 100.0
-            clip = clip.resize(resize_factor)
+if uploaded_video is not None:
+    # ユーザーがビデオをアップロードした場合のみ実行
+    vid = uploaded_video.name
+    with open(vid, mode="wb") as f:
+        f.write(uploaded_video.read())  # ビデオをディスクに保存
 
-        clip.write_gif(output_file, fps=fps)
-        st.image(output_file, use_column_width=True)
-    else:
-        st.error("サポートされていない動画ファイル形式です。対応する形式をアップロードしてください。")
+    st.markdown(f"### Files - {vid}", unsafe_allow_html=True)  # ファイル名を表示
 
-def main():
-    st.title("動画をGIFに変換するアプリ")
+    vidcap = cv2.VideoCapture(vid)  # ディスクからビデオを読み込む
+    cur_frame = 0
+    success = True
 
-    # 動画ファイルのアップロード
-    uploaded_file = st.file_uploader("動画ファイルをアップロードしてください", type=["mp4", "avi", "mov", "gif"])
-
-    if uploaded_file is not None:
-        # 出力GIFファイル名の入力
-        output_gif_name = st.text_input("出力GIFファイル名を入力してください", "output_animation.gif")
-
-        # FPSの入力
-        fps = st.slider("変換するGIFのフレームレートを選択してください", min_value=1, max_value=30, value=10)
-
-        # サイズ変更のスライダー
-        resize_percentage = st.slider("動画のサイズを変更する（元の大きさの何％か）", min_value=1, max_value=100, value=100)
-
-        # 変換ボタン
-        if st.button("動画をGIFに変換"):
-            # 変換処理
-            convert_video_to_gif(uploaded_file, output_gif_name, fps, resize_percentage)
-            st.success("変換が完了しました！")
-
-if __name__ == "__main__":
-    main()
+    while success:
+        success, frame = vidcap.read()  # 次のフレームを取得
+        if cur_frame % frame_skip == 0:
+            # 300フレームごとにのみ分析
+            pil_img = Image.fromarray(frame)  # OpenCVフレームをPILイメージに変換
+            st.image(pil_img)  # 画像を表示
+        cur_frame += 1
