@@ -28,6 +28,7 @@ def adjust_pixel_color(binary_image, color_adjustment):
 def main():
     os.makedirs('./data', exist_ok=True)
     st.set_page_config(page_icon="📷", page_title="画像2値化アプリ")
+    st.write("Debug Mode:", st._is_debug())
 
     with st.sidebar:
         th = st.slider('Threshold value', 0, 255, 125)
