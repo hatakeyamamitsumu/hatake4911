@@ -58,22 +58,24 @@ def main():
     col2.header("Binary image")
 
     # original画像表示、2値化処理
-    with col1:
-        if uploaded_image is not None:
-            image = Image.open(uploaded_image)
-            img_array = np.array(image)
-            st.image(img_array, use_column_width=None)
-            img = pil2cv(image)
+# original画像表示、2値化処理
+with col1:
+    if uploaded_image is not None:
+        image = Image.open(uploaded_image)
+        img_array = np.array(image)
+        st.image(img_array, use_column_width=None)
+        img = pil2cv(image)
 
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            ret, th1 = cv2.threshold(gray, th, 255, cv2.THRESH_BINARY)
-            th2 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
-                                         cv2.THRESH_BINARY, 11, 2)
-            th3 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                         cv2.THRESH_BINARY, 11, 2)
-            ret2, th4 = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-            blur = cv2.GaussianBlur(gray, (5, 5), 0)
-            ret3, th5 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        ret, th1 = cv2.threshold(gray, th, 255, cv2.THRESH_BINARY)
+        th2 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
+                                     cv2.THRESH_BINARY, 11, 2)
+        th3 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                     cv2.THRESH_BINARY, 11, 2)
+        ret2, th4 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
+        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        ret3, th5 = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
 
     # binary画像表示、保存
     if radio == "Threshold" and uploaded_image is not None:
