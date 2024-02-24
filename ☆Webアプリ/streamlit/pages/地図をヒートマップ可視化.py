@@ -37,20 +37,7 @@ heat_map = folium.plugins.HeatMap(
     radius=15  # You can adjust the radius of the heatmap points
 ).add_to(m)
 
-# Add markers with popups for each point, and customize the icon size
-# icon='flag', 'map-marker', 'flag', 'star', 'circle'
-for index, row in data.iterrows():
-    popup_text = f"{elevation_column}: {row[elevation_column]} "
-    folium.Marker(
-        location=[row[latitude_column], row[longitude_column]],
-        popup=popup_text,
-        icon=folium.Icon(icon='circle', color='blue', prefix='fa', icon_size=(15, 15))  # Adjust the icon_size
-    ).add_to(m)
-
 # Display the map using Streamlit
 st.header("ヒートマップ")
 folium_static(m)
-
-
-
 
