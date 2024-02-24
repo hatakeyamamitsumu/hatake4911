@@ -24,3 +24,7 @@ if uploaded_video is not None:
             pil_img = Image.fromarray(frame)  # OpenCVフレームをPILイメージに変換
             st.image(pil_img)  # 画像を表示
         cur_frame += 1
+
+    # ダウンロードボタンを追加
+    st.markdown(f'<a href="{vid}" download>Download GIF</a>', unsafe_allow_html=True)
+
