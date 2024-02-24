@@ -18,9 +18,15 @@ def pil2cv(image):
 
 def adjust_pixel_color(image, color_adjustment):
     adjusted_image = image.copy()
-    mask = image == [0, 0, 0]  # Find black pixels
-    adjusted_image[mask] = color_adjustment  # Adjust color of black pixels
+    mask = np.all(adjusted_image == [0, 0, 0], axis=-1)  # Find black pixels
+
+    # Convert color_adjustment to grayscale
+    gray_value = int(0.299 * color_adjustment[0] + 0.587 * color_adjustment[1] + 0.114 * color_adjustment[2])
+
+    # Assign the grayscale value to the black pixels
+    adjusted_image[mask] = [gray_value, gray_value, gray_value]
     return adjusted_image
+
 
 def main():
     os.makedirs('./data', exist_ok=True)
