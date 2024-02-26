@@ -1,8 +1,10 @@
+
+#/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV
 import streamlit as st
 import pandas as pd
 from io import StringIO
 from docx import Document
-#/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV
+
 def count_words(text):
     words = text.split()
     word_counts = dict(pd.Series(words).value_counts())
@@ -15,8 +17,12 @@ def read_word_file(file):
         text += paragraph.text + "\n"
     return text
 
-def filter_and_download(text, filter_words, filter_condition, additional_words=[]):  # 追加: 追加の単語リスト
-    # 各条件に対して検索を実行
+def read_additional_words_from_csv(file_path):  # 追加: CSVファイルから単語リストを取得
+    additional_words_df = pd.read_csv(file_path)
+    additional_words = additional_words_df['単語'].tolist()
+    return additional_words
+
+def filter_and_download(text, filter_words, filter_condition, additional_words=[]):
     if filter_condition == 'and':
         lines_with_words = [line for line in text.split('\n') if all(word.lower() in line.lower() for word in filter_words)]
     elif filter_condition == 'or':
@@ -27,7 +33,6 @@ def filter_and_download(text, filter_words, filter_condition, additional_words=[
         st.error("無効な条件が選択されました。'and', 'or', または 'not' を選択してください。")
         return
 
-    # 追加の単語が指定されている場合、それらも含めて検索
     if additional_words:
         lines_with_words = [line for line in lines_with_words if any(add_word.lower() in line.lower() for add_word in additional_words)]
 
@@ -63,12 +68,9 @@ def main():
 
         filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
         
-        # a.csvから単語を読み込んで追加
-        additional_words_file = st.file_uploader("追加の単語を含むCSVファイルをアップロードしてください", type=["csv"])
-        additional_words = []
-        if additional_words_file is not None:
-            additional_words_df = pd.read_csv(additional_words_file)
-            additional_words = additional_words_df['単語'].tolist()
+        # CSVファイルから単語を読み込んで追加
+        additional_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/a.csv"
+        additional_words = read_additional_words_from_csv(additional_words_file_path)
 
         filter_condition = st.radio("条件を選択してください:", ['and', 'or', 'not'])
 
