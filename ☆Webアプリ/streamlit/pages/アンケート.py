@@ -1,3 +1,4 @@
+import streamlit as st
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
 # Markdownを表示。
