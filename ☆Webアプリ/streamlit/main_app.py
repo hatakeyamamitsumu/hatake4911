@@ -7,13 +7,7 @@ st.title('Hat')
 st.caption('こんにちは！Hatです。')
 st.subheader('説明')
 st.text('簡易なWEBアプリ「streamlit」を使って何かやろうと考えています。\nよろしくお願いします。')
-st.text('')
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑アンケートにお答えください。')
-st.text('')
+
 # フォルダのパス
 image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像/東京画像'
 
