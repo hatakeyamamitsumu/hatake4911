@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 from docx import Document
-
+#/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV
 def count_words(text):
     words = text.split()
     word_counts = dict(pd.Series(words).value_counts())
