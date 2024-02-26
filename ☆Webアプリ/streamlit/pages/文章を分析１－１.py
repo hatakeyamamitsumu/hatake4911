@@ -69,7 +69,7 @@ def main():
         filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
         
         # CSVファイルから単語を読み込んで追加
-        additional_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/a.csv"
+        additional_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV/自然.csv"
         additional_words = read_additional_words_from_csv(additional_words_file_path)
 
         filter_condition = st.radio("条件を選択してください:", ['and', 'or', 'not'])
