@@ -17,7 +17,7 @@ def read_word_file(file):
         text += paragraph.text + "\n"
     return text
 
-def read_additional_words_from_csv(file_path):  # 追加: CSVファイルから単語リストを取得
+def read_additional_words_from_csv(file_path):
     additional_words_df = pd.read_csv(file_path)
     additional_words = additional_words_df['単語'].tolist()
     return additional_words
@@ -66,17 +66,13 @@ def main():
         st.write("### 原本")
         st.dataframe(result_df)
 
-        filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
-        
-        # CSVファイルから単語を読み込んで追加
         additional_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV/自然.csv"
         additional_words = read_additional_words_from_csv(additional_words_file_path)
 
         filter_condition = st.radio("条件を選択してください:", ['and', 'or', 'not'])
 
-        if filter_words:
-            filter_words = filter_words.split()
-            filter_and_download(text, filter_words, filter_condition, additional_words)
+        if additional_words:
+            filter_and_download(text, additional_words, filter_condition, additional_words)
 
 if __name__ == "__main__":
     main()
