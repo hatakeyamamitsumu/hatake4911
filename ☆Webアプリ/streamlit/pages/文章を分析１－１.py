@@ -1,4 +1,3 @@
-
 #/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV
 import streamlit as st
 import pandas as pd
@@ -23,14 +22,10 @@ def read_additional_words_from_csv(file_path):
     return additional_words
 
 def filter_and_download(text, filter_words, filter_condition, additional_words=[]):
-    if filter_condition == 'and':
-        lines_with_words = [line for line in text.split('\n') if all(word.lower() in line.lower() for word in filter_words)]
-    elif filter_condition == 'or':
+    if filter_condition == 'or':
         lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
-    elif filter_condition == 'not':
-        lines_with_words = [line for line in text.split('\n') if all(word.lower() not in line.lower() for word in filter_words)]
     else:
-        st.error("無効な条件が選択されました。'and', 'or', または 'not' を選択してください。")
+        st.error("無効な条件が選択されました。'or' を選択してください。")
         return
 
     if additional_words:
@@ -69,7 +64,7 @@ def main():
         additional_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV/自然.csv"
         additional_words = read_additional_words_from_csv(additional_words_file_path)
 
-        filter_condition = st.radio("条件を選択してください:", ['and', 'or', 'not'])
+        filter_condition = 'or'  # 'or' 条件のみに変更
 
         if additional_words:
             filter_and_download(text, additional_words, filter_condition, additional_words)
