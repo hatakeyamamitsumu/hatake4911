@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from docx import Document
+import os
 
 def read_word_file(file):
     doc = Document(file)
