@@ -23,11 +23,14 @@ def filter_and_download(text, filter_words, filter_condition, additional_words=[
         st.error("無効な条件が選択されました。'or' を選択してください。")
         return
 
-    lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
+    lines_with_words = [line for line in text.split('\n') if all(word.lower() in line.lower() for word in filter_words)]
+
+    if additional_words:
+        lines_with_words = [line for line in lines_with_words if any(add_word.lower() in line.lower() for add_word in additional_words)]
 
     if lines_with_words:
         result_df = pd.DataFrame({"行": lines_with_words})
-        st.write(f"### '{', '.join(filter_words + additional_words)}' を含む行のリスト ({filter_condition} 条件)")
+        st.write(f"### '{', '.join(filter_words)}' のみを含む行のリスト ({filter_condition} 条件)")
         st.dataframe(result_df)
 
         result_text = "\n".join(lines_with_words)
@@ -37,7 +40,7 @@ def filter_and_download(text, filter_words, filter_condition, additional_words=[
 
         st.download_button(label="テキストファイルとしてダウンロード", data=result_text, file_name=file_name, key="download_button")
     else:
-        st.write(f"テキストに '{', '.join(filter_words + additional_words)}' を含む行は見つかりませんでした。")
+        st.write(f"テキストに '{', '.join(filter_words)}' のみを含む行は見つかりませんでした。")
 
 def main():
     st.title("文章フィルター")
