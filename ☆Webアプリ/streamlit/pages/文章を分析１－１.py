@@ -8,22 +8,17 @@ def read_word_file(file):
     text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
     return text
 
-def read_additional_words_from_csv(file_path):
-    additional_words_df = pd.read_csv(file_path)
-    additional_words = additional_words_df['単語'].tolist()
-    return additional_words
+def read_filter_words_from_csv(file_path):
+    filter_words_df = pd.read_csv(file_path)
+    filter_words = filter_words_df['単語'].tolist()
+    return filter_words
 
-def filter_and_display(text, filter_words, additional_words=[]):
+def filter_and_display(text, filter_words):
     lines_with_filter_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
 
-    if additional_words:
-        lines_with_both_words = [line for line in lines_with_filter_words if any(add_word.lower() in line.lower() for add_word in additional_words)]
-    else:
-        lines_with_both_words = lines_with_filter_words
-
-    if lines_with_both_words:
-        result_df = pd.DataFrame({"行": lines_with_both_words})
-        st.write(f"### '{', '.join(filter_words)}' を含む行のリスト (or 条件)")
+    if lines_with_filter_words:
+        result_df = pd.DataFrame({"行": lines_with_filter_words})
+        st.write(f"### '{', '.join(filter_words)}' を含む行のリスト")
         st.dataframe(result_df)
     else:
         st.write(f"テキストに '{', '.join(filter_words)}' を含む行は見つかりませんでした。")
@@ -39,16 +34,11 @@ def main():
         else:
             text = uploaded_file.read().decode("utf-8")
 
-        filter_words = ["example"]  # ここに抽出したい単語を指定
-        additional_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV/自然.csv"
-        additional_words = read_additional_words_from_csv(additional_words_file_path)
-
-        filter_condition = 'or'  # 'or' 条件に変更
+        filter_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/ヒートマップ地図用CSV/your_filter_words.csv"
+        filter_words = read_filter_words_from_csv(filter_words_file_path)
 
         if filter_words:
-            filter_and_display(text, filter_words, additional_words)
+            filter_and_display(text, filter_words)
 
 if __name__ == "__main__":
     main()
-
-
