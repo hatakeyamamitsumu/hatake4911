@@ -34,7 +34,7 @@ def main():
         else:
             text = uploaded_file.read().decode("utf-8")
 
-        filter_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/ヒートマップ地図用CSV/your_filter_words.csv"
+        filter_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV/自然.csv"
         filter_words = read_filter_words_from_csv(filter_words_file_path)
 
         if filter_words:
