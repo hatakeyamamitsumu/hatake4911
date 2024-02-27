@@ -4,8 +4,9 @@ link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
 # Markdownを表示。
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑アンケートにお答えください。')
-#st.image(QR_path)main/☆Webアプリ/画像/QRコード
-/mount/src/hatake4911/☆Webアプリ/画像/東京画像/小伝馬町からのスカイツリー_昼_.jpg
+QR_path=mount/src/hatake4911/☆Webアプリ/画像/QRコード/アンケート用グーグルフォームのQRコード.png
+st.image(QR_path)
+
 
 
 
