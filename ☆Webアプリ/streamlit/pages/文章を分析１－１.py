@@ -18,10 +18,10 @@ def filter_and_display(text, filter_words):
 
     if lines_with_filter_words:
         result_df = pd.DataFrame({"行": lines_with_filter_words})
-        st.write(f"### '{', '.join(filter_words)}' を含む行のリスト")
+        st.write("ＣＳＶファイル内の単語を含む行のリスト")
         st.dataframe(result_df)
     else:
-        st.write(f"テキストに '{', '.join(filter_words)}' を含む行は見つかりませんでした。")
+        st.write(f"テキストにＣＳＶファイル内の単語を含む行は見つかりませんでした。")
 
 def main():
     st.title("文章フィルター")
