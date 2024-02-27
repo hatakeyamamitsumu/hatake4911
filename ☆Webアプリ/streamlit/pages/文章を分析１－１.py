@@ -1,4 +1,3 @@
-#/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV
 import streamlit as st
 import pandas as pd
 from docx import Document
@@ -28,17 +27,22 @@ def main():
 
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
 
+    filter_folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV"
+    filter_file_name = st.selectbox("CSV ファイルを選択してください", sorted(os.listdir(filter_folder_path)))
+
+    filter_file_path = os.path.join(filter_folder_path, filter_file_name)
+
     if uploaded_file is not None:
         if uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             text = read_word_file(uploaded_file)
         else:
             text = uploaded_file.read().decode("utf-8")
 
-        filter_words_file_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV/自然.csv"
-        filter_words = read_filter_words_from_csv(filter_words_file_path)
+        filter_words = read_filter_words_from_csv(filter_file_path)
 
         if filter_words:
             filter_and_display(text, filter_words)
 
 if __name__ == "__main__":
     main()
+
