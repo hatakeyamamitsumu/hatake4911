@@ -5,15 +5,12 @@ from io import StringIO
 from docx import Document
 
 def count_words(text):
-    words = text.split()
-    word_counts = dict(pd.Series(words).value_counts())
+    word_counts = dict(pd.value_counts(text.split()))
     return word_counts
 
 def read_word_file(file):
     doc = Document(file)
-    text = ""
-    for paragraph in doc.paragraphs:
-        text += paragraph.text + "\n"
+    text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
     return text
 
 def read_additional_words_from_csv(file_path):
@@ -22,14 +19,11 @@ def read_additional_words_from_csv(file_path):
     return additional_words
 
 def filter_and_download(text, filter_words, filter_condition, additional_words=[]):
-    if filter_condition == 'or':
-        lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
-    else:
+    if filter_condition != 'or':
         st.error("無効な条件が選択されました。'or' を選択してください。")
         return
 
-    if additional_words:
-        lines_with_words = [line for line in lines_with_words if any(add_word.lower() in line.lower() for add_word in additional_words)]
+    lines_with_words = [line for line in text.split('\n') if any(word.lower() in line.lower() for word in filter_words)]
 
     if lines_with_words:
         result_df = pd.DataFrame({"行": lines_with_words})
@@ -71,3 +65,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
