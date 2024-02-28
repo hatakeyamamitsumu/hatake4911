@@ -29,7 +29,7 @@ def filter_and_display(text, filter_words):
 
         # テキストファイルのダウンロードボタン
         st.write(f"テキストファイルとしてダウンロード:")
-        st.download_button(label="Download Text File", data=filtered_text, file_name="filtered_data.txt", key="text_file")
+        st.download_button(label="ダウンロードボタン", data=filtered_text, file_name="filtered_data.txt", key="text_file")
 
     else:
         st.write(f"テキストにＣＳＶファイル内の単語を含む行は見つかりませんでした.")
