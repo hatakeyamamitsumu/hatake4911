@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from docx import Document
 import os
+import base64
 
 def read_word_file(file):
     doc = Document(file)
@@ -20,8 +21,18 @@ def filter_and_display(text, filter_words):
         result_df = pd.DataFrame({"行": lines_with_filter_words})
         st.write("ＣＳＶファイル内の単語を含む行のリスト")
         st.dataframe(result_df)
+
+        # フィルターされた行をテキストファイルに保存
+        filtered_text = "\n".join(lines_with_filter_words)
+        with open("filtered_data.txt", "w", encoding="utf-8") as f:
+            f.write(filtered_text)
+
+        # テキストファイルのダウンロードボタン
+        st.write(f"テキストファイルとしてダウンロード:")
+        st.download_button(label="Download Text File", data=filtered_text, file_name="filtered_data.txt", key="text_file")
+
     else:
-        st.write(f"テキストにＣＳＶファイル内の単語を含む行は見つかりませんでした。")
+        st.write(f"テキストにＣＳＶファイル内の単語を含む行は見つかりませんでした.")
 
 def main():
     st.title("文章フィルター")
@@ -46,4 +57,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
