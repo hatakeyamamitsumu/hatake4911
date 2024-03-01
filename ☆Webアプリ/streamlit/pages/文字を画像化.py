@@ -8,8 +8,8 @@ def text_to_image(text, font_size=20):
     background_color = (255, 255, 255)  # 白色
 
     # フォントの設定
-    font_path = "arial.ttf"  # フォントファイルのパスを指定
-    font = ImageFont.load_default(font_path, font_size)
+    
+    font = ImageFont.load_default(font_size)
     # 画像の作成と描画
     image = Image.new('RGB', (width, height), background_color)
     draw = ImageDraw.Draw(image)
