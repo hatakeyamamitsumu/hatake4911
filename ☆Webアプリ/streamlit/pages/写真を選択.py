@@ -12,7 +12,7 @@ def resize_image(image_path, scale_factor=0.1):
 
 def main():
     st.title('画像表示とダウンロード')
-
+#umu/hatake4911/tree/main/☆Webアプリ/画像/東京画像
     # 画像が格納されているフォルダのパス
     folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"
 
