@@ -23,7 +23,7 @@ def main():
         st.warning("指定されたフォルダ内に画像ファイルが見つかりません。")
         return
 
-    # 画像を3列で表示
+    # 画像を4列で表示
     columns = st.columns(4)
 
     for i, image_file in enumerate(image_files):
