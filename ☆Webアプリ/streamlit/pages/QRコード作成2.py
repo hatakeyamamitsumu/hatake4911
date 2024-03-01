@@ -18,12 +18,12 @@ def add_text_to_qr(img, text):
     draw.text((10, 10), text, font=font, fill="black")
     return img
 
-data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
+data = st.text_input("QRコードにしたい文字列を入力してエンターキーを押してください。URL以外の文字列でも大丈夫です")
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
 custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
 
 # Add file name input field
-file_name = st.text_input("QRコードのファイル名を入力してください", value="QR_code")
+file_name = st.text_input("QRコードのファイル名を入力してエンターキーを押してください。", value="QR_code")
 
 if data:
     try:
@@ -48,4 +48,4 @@ if data:
     except Exception as e:
         st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
 else:
-    st.warning("文字列を入力してください。")
+    st.warning("文字列を入力してエンターキーを押してください。。")
