@@ -1,0 +1,42 @@
+import os
+import streamlit as st
+from PIL import Image
+
+def resize_image(image_path, scale_factor=0.1):
+    original_image = Image.open(image_path)
+    width, height = original_image.size
+    new_width = int(width * scale_factor)
+    new_height = int(height * scale_factor)
+    resized_image = original_image.resize((new_width, new_height))
+    return resized_image
+
+def main():
+    st.title('画像表示とダウンロード')
+
+    # 画像が格納されているフォルダのパス
+    folder_path = "aフォルダ"
+
+    # フォルダ内の画像ファイルの一覧を取得
+    image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+
+    if not image_files:
+        st.warning("指定されたフォルダ内に画像ファイルが見つかりません。")
+        return
+
+    # 画像を３列で表示
+    columns = st.beta_columns(3)
+    for image_file in image_files:
+        image_path = os.path.join(folder_path, image_file)
+        resized_image = resize_image(image_path)
+        with columns[0]:
+            st.image(resized_image, caption=image_file, use_column_width=True)
+
+    # 画像の選択とダウンロード
+    selected_image = st.selectbox("画像を選択してください:", image_files)
+    selected_image_path = os.path.join(folder_path, selected_image)
+
+    # 選択された画像をダウンロード可能にする
+    st.markdown(f"[**ダウンロード**]({selected_image_path})", unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    main()
