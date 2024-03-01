@@ -18,13 +18,16 @@ def add_text_to_qr(img, text):
     draw.text((10, 10), text, font=font, fill="black")
     return img
 
-def overlay_images(background_img, overlay_img):
-    # Resize overlay image to match the background image
-    overlay_img = overlay_img.resize(background_img.size)
+def concatenate_images(left_img, right_img):
+    min_height = min(left_img.size[1], right_img.size[1])
+    left_img = left_img.resize((left_img.size[0], min_height))
+    right_img = right_img.resize((right_img.size[0], min_height))
 
-    # Overlay images
-    overlaid_img = Image.alpha_composite(background_img.convert("RGBA"), overlay_img.convert("RGBA"))
-    return overlaid_img
+    concatenated_img = Image.new('RGB', (left_img.width + right_img.width, min_height))
+    concatenated_img.paste(left_img, (0, 0))
+    concatenated_img.paste(right_img, (left_img.width, 0))
+
+    return concatenated_img
 
 data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
@@ -43,10 +46,9 @@ if data:
             qr_img = add_text_to_qr(qr_img, custom_text)
 
         if uploaded_image is not None:
-            # Open the uploaded image
             uploaded_img = Image.open(uploaded_image)
-            # Overlay images
-            final_img = overlay_images(uploaded_img, qr_img)
+            # Concatenate images horizontally
+            final_img = concatenate_images(qr_img, uploaded_img)
         else:
             final_img = qr_img
 
@@ -64,6 +66,6 @@ if data:
             file_name=f"{file_name}.png",  # Use the provided file name
         )
     except Exception as e:
-        st.error(f"QRコードの生成中または画像の重ね合わせ中にエラーが発生しました: {str(e)}")
+        st.error(f"QRコードの生成中または画像の結合中にエラーが発生しました: {str(e)}")
 else:
     st.warning("文字列を入力してください。")
