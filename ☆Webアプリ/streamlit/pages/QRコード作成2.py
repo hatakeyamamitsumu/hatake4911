@@ -48,4 +48,4 @@ if data:
     except Exception as e:
         st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
 else:
-    st.warning("文字列を入力してエンターキーを押してください。。")
+    st.warning("文字列を入力してエンターキーを押してください。")
