@@ -19,15 +19,13 @@ def add_text_to_qr(img, text):
     return img
 
 def concatenate_images(left_img, right_img):
-    # Resize images while preserving aspect ratio
-    width, height = left_img.size
-    aspect_ratio = right_img.width / right_img.height
-    new_width = int(height * aspect_ratio)
-    
-    left_img = left_img.resize((new_width, height))
-    right_img = right_img.resize((new_width, height))
+    max_width = max(left_img.width, right_img.width)
+    max_height = max(left_img.height, right_img.height)
 
-    concatenated_img = Image.new('RGB', (left_img.width + right_img.width, height))
+    left_img = left_img.resize((max_width, max_height))
+    right_img = right_img.resize((max_width, max_height))
+
+    concatenated_img = Image.new('RGB', (left_img.width + right_img.width, max_height))
     concatenated_img.paste(left_img, (0, 0))
     concatenated_img.paste(right_img, (left_img.width, 0))
 
@@ -51,7 +49,7 @@ if data:
 
         if uploaded_image is not None:
             uploaded_img = Image.open(uploaded_image)
-            # Concatenate images while preserving aspect ratio
+            # Concatenate images preserving the aspect ratio
             final_img = concatenate_images(qr_img, uploaded_img)
         else:
             final_img = qr_img
@@ -73,4 +71,3 @@ if data:
         st.error(f"QRコードの生成中または画像の結合中にエラーが発生しました: {str(e)}")
 else:
     st.warning("文字列を入力してください。")
-
