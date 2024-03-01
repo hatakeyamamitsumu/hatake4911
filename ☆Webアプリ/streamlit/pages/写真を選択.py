@@ -14,7 +14,7 @@ def main():
     st.title('画像表示とダウンロード')
 #umu/hatake4911/tree/main/☆Webアプリ/画像/東京画像
     # 画像が格納されているフォルダのパス
-    folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"
+    folder_path = "/mount/src/hatake4911/☆Webアプリ/画像/東京画像"
 
     # フォルダ内の画像ファイルの一覧を取得
     image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
