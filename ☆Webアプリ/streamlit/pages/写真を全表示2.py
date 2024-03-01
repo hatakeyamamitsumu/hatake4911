@@ -2,6 +2,7 @@ import os
 import streamlit as st
 from PIL import Image
 import base64
+from io import BytesIO  # Add this import statement
 
 def resize_image(image_path, scale_factor=1):
     original_image = Image.open(image_path)
@@ -57,3 +58,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
