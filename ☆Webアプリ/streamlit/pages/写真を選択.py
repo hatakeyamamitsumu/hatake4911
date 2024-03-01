@@ -14,7 +14,7 @@ def main():
     st.title('画像表示とダウンロード')
 
     # 画像が格納されているフォルダのパス
-    folder_path = "aフォルダ"
+    folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"
 
     # フォルダ内の画像ファイルの一覧を取得
     image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
