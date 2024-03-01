@@ -23,14 +23,14 @@ def main():
         st.warning("指定されたフォルダ内に画像ファイルが見つかりません。")
         return
 
-    # 画像を4列で表示
-    columns = st.columns(4)
+    # 画像を5列で表示
+    columns = st.columns(5)
 
     for i, image_file in enumerate(image_files):
         image_path = os.path.join(folder_path, image_file)
         resized_image = resize_image(image_path)
 
-        with columns[i % 4]:
+        with columns[i % 5]:
             st.image(resized_image, caption=image_file, use_column_width=True)
 
 if __name__ == "__main__":
