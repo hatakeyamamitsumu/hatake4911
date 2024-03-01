@@ -1,6 +1,12 @@
-
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
+import requests
+from io import BytesIO
+
+def download_font(font_url, font_path):
+    response = requests.get(font_url)
+    with open(font_path, 'wb') as f:
+        f.write(response.content)
 
 def text_to_image(text, font_size=20):
     # 画像サイズと背景色
@@ -8,8 +14,11 @@ def text_to_image(text, font_size=20):
     background_color = (255, 255, 255)  # 白色
 
     # フォントの設定
-    
-    font = ImageFont.load_default(font_size)
+    font_url = "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxM.woff2"
+    font_path = "roboto.woff2"
+    download_font(font_url, font_path)
+    font = ImageFont.truetype(font_path, font_size)
+
     # 画像の作成と描画
     image = Image.new('RGB', (width, height), background_color)
     draw = ImageDraw.Draw(image)
