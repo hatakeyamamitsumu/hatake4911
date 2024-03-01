@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 
-# 画像を渦巻きに変換する関数
+# 画像を渦巻きに変換する関数。
 def swirl_image(image_array, strength=10, radius=1000):
     height, width, _ = image_array.shape
     center_x, center_y = width // 2, height // 2
