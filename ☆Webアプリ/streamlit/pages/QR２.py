@@ -19,13 +19,25 @@ def add_text_to_qr(img, text):
     return img
 
 def concatenate_images(left_img, right_img):
-    min_height = min(left_img.size[1], right_img.size[1])
-    left_img = left_img.resize((left_img.size[0], min_height))
-    right_img = right_img.resize((right_img.size[0], min_height))
+    # Resize images while preserving aspect ratios
+    left_width, left_height = left_img.size
+    right_width, right_height = right_img.size
 
-    concatenated_img = Image.new('RGB', (left_img.width + right_img.width, min_height))
+    # Calculate the aspect ratios
+    left_aspect_ratio = left_width / left_height
+    right_aspect_ratio = right_width / right_height
+
+    # Determine the new height based on the width of the left image
+    new_height = int(left_width / right_aspect_ratio)
+
+    # Resize the images
+    left_img = left_img.resize((left_width, new_height))
+    right_img = right_img.resize((left_width, new_height))
+
+    # Concatenate images horizontally
+    concatenated_img = Image.new('RGB', (left_width + right_width, new_height))
     concatenated_img.paste(left_img, (0, 0))
-    concatenated_img.paste(right_img, (left_img.width, 0))
+    concatenated_img.paste(right_img, (left_width, 0))
 
     return concatenated_img
 
@@ -47,7 +59,7 @@ if data:
 
         if uploaded_image is not None:
             uploaded_img = Image.open(uploaded_image)
-            # Concatenate images horizontally
+            # Concatenate images while preserving aspect ratios
             final_img = concatenate_images(qr_img, uploaded_img)
         else:
             final_img = qr_img
