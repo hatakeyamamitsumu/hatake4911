@@ -24,21 +24,14 @@ def main():
         return
 
     # 画像を1/10サイズにして3列で表示
-    container1, container2, container3 = st.beta_columns(3)
+    columns = st.columns(3)
 
     for i, image_file in enumerate(image_files):
         image_path = os.path.join(folder_path, image_file)
         resized_image = resize_image(image_path)
 
-        if i % 3 == 0:
-            with container1:
-                st.image(resized_image, caption=image_file, use_column_width=True)
-        elif i % 3 == 1:
-            with container2:
-                st.image(resized_image, caption=image_file, use_column_width=True)
-        else:
-            with container3:
-                st.image(resized_image, caption=image_file, use_column_width=True)
+        with columns[i % 3]:
+            st.image(resized_image, caption=image_file, use_column_width=True)
 
 if __name__ == "__main__":
     main()
