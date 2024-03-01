@@ -18,11 +18,13 @@ def add_text_to_qr(img, text):
     draw.text((10, 10), text, font=font, fill="black")
     return img
 
-def merge_images(background, overlay):
-    background = background.convert("RGBA")
-    overlay = overlay.convert("RGBA")
-    merged = Image.alpha_composite(background, overlay)
-    return merged
+def merge_images(background_img, overlay_img):
+    # Resize overlay image to match the size of the background image
+    overlay_img = overlay_img.resize(background_img.size)
+
+    # Merge images
+    merged_img = Image.alpha_composite(background_img.convert("RGBA"), overlay_img.convert("RGBA"))
+    return merged_img
 
 data = st.text_input("QRコードにしたい文字列を入力してエンターキーを押してください。URL以外の文字列でも大丈夫です")
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
@@ -31,40 +33,33 @@ custom_text = st.text_input("QRコードに添える説明書き(アルファベ
 # Add file name input field
 file_name = st.text_input("QRコードのファイル名を入力してエンターキーを押してください。", value="QR_code")
 
-# Add image upload functionality
-uploaded_image = st.file_uploader("アップロードする画像を選択してください", type=["jpg", "jpeg", "png"])
+# Image upload
+uploaded_image = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
-if data and uploaded_image:
+if data:
     try:
-        # Generate QR code
         qr_img = generate_qr_code(data, size=qr_size)
-        
-        # Add custom text to QR code
         if custom_text:
             qr_img = add_text_to_qr(qr_img, custom_text)
 
-        # Open and resize the uploaded image
-        uploaded_img = Image.open(uploaded_image).resize((qr_size, qr_size))
-        
-        # Merge the QR code and the uploaded image
-        merged_img = merge_images(uploaded_img, qr_img)
+        if uploaded_image is not None:
+            # Open the uploaded image
+            uploaded_img = Image.open(uploaded_image)
+            # Merge images
+            final_img = merge_images(qr_img, uploaded_img)
+        else:
+            final_img = qr_img
 
-        # Display the merged image
-        st.image(merged_img)
+        st.image(final_img)
 
-        # Save the merged image
-        img_byte_array = io.BytesIO()
-        merged_img.save(img_byte_array, format='PNG')
-        img_byte_array = img_byte_array.getvalue()
-
-        # Download button with the provided file name
+        # Use the provided file name input field
         st.download_button(
             label="QRコードをダウンロード",
-            data=img_byte_array,
+            data=final_img,
             key="download_qr_button",
             file_name=f"{file_name}.png",  # Use the provided file name
         )
     except Exception as e:
-        st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
+        st.error(f"QRコードの生成中または画像の結合中にエラーが発生しました: {str(e)}")
 else:
-    st.warning("文字列を入力し、画像をアップロードしてエンターキーを押してください。")
+    st.warning("文字列を入力してエンターキーを押してください。")
