@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from PIL import Image
 
-def resize_image(image_path, scale_factor=0.1):
+def resize_image(image_path, scale_factor=1):
     original_image = Image.open(image_path)
     width, height = original_image.size
     new_width = int(width * scale_factor)
