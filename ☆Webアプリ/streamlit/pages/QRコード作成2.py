@@ -1,64 +1,51 @@
-import os
 import streamlit as st
-from PIL import Image
-import base64
-from io import BytesIO
+import qrcode
+from PIL import Image, ImageDraw, ImageFont
+import io
 
-def resize_image(image_path, scale_factor=1):
-    original_image = Image.open(image_path)
-    width, height = original_image.size
-    new_width = int(width * scale_factor)
-    new_height = int(height * scale_factor)
-    resized_image = original_image.resize((new_width, new_height))
-    return resized_image
+st.title('QRコード作成')
 
-def get_image_download_link(img, filename, text):
-    buffered = BytesIO()
-    img.save(buffered, format="JPEG")
-    img_str = base64.b64encode(buffered.getvalue()).decode()
-    href = f'<a href="data:file/txt;base64,{img_str}" download="{filename}">{text}</a>'
-    return href
+def generate_qr_code(data, size=500):
+    qr_img = qrcode.make(data)
+    img = Image.new("RGB", (size, size), "white")
+    qr_img = qr_img.convert("RGB")
+    img.paste(qr_img)
+    return img
 
-def main():
-    st.title('画像表示とダウンロード')
+def add_text_to_qr(img, text):
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.load_default()
+    draw.text((10, 10), text, font=font, fill="black")
+    return img
 
-    # 画像が格納されているフォルダのパス
-    folder_path = "/mount/src/hatake4911/☆Webアプリ/画像/東京画像"
+data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
+qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
+custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
 
-    # フォルダ内の画像ファイルの一覧を取得
-    image_files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+# Add file name input field
+file_name = st.text_input("QRコードのファイル名を入力してください", value="QR_code")
 
-    if not image_files:
-        st.warning("指定されたフォルダ内に画像ファイルが見つかりません。")
-        return
+if data:
+    try:
+        qr_img = generate_qr_code(data, size=qr_size)
+        if custom_text:
+            qr_img = add_text_to_qr(qr_img, custom_text)
 
-    # 画像を6列で表示
-    columns = st.columns(6)
+        img_byte_array = io.BytesIO()
+        qr_img.save(img_byte_array, format='PNG')
+        img_byte_array = img_byte_array.getvalue()
 
-    # 選択された画像のパスを保持する変数
-    selected_image_path = None
+        img = Image.open(io.BytesIO(img_byte_array))
+        st.image(img)
 
-    # ダウンロード時のファイル名を入力するテキストボックス
-    download_filename = st.text_input("ダウンロード時のファイル名を入力してください", "selected_image")
-
-    for i, image_file in enumerate(image_files):
-        image_path = os.path.join(folder_path, image_file)
-        resized_image = resize_image(image_path)
-
-        with columns[i % 6]:
-            # 画像を表示
-            st.image(resized_image, caption=image_file, use_column_width=True)
-
-            # 選択された画像をクリックしてダウンロード
-            if st.button(f"選択: {image_file}"):
-                selected_image_path = image_path
-
-    # 選択された画像があれば、ダウンロードリンクを表示
-    if selected_image_path:
-        selected_image = Image.open(selected_image_path)
-        download_link = get_image_download_link(selected_image, f"{download_filename}.jpg", 'Download Selected Image')
-        st.markdown(download_link, unsafe_allow_html=True)
-
-if __name__ == "__main__":
-    main()
-
+        # Use the provided file name input field
+        st.download_button(
+            label="QRコードをダウンロード",
+            data=img_byte_array,
+            key="download_qr_button",
+            file_name=f"{file_name}.png",  # Use the provided file name
+        )
+    except Exception as e:
+        st.error(f"QRコードの生成中にエラーが発生しました: {str(e)}")
+else:
+    st.warning("文字列を入力してください。")
