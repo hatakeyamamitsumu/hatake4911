@@ -24,7 +24,7 @@ def main():
         return
 
     # 画像を1/10サイズにして3列で表示
-    columns = st.beta_columns(3)
+    columns = st.columns(3)
     for image_file in image_files:
         image_path = os.path.join(folder_path, image_file)
         resized_image = resize_image(image_path)
