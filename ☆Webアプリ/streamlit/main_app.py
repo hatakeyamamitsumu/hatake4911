@@ -9,6 +9,13 @@ st.subheader('説明')
 st.write('プログラミングは初心者ですが、簡易なWEBアプリ「streamlit」を使って何かできないかと考えて、発表し続けようと考えております。\nよろしくお願いします。')
 st.text('オリジナルでないコードも含まれますが、可能な限り出典を明示させていただきます。')
 st.text("")
+# ハイパーリンクを表示するMarkdown文字列
+link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
+# Markdownを表示。
+st.markdown(link_str, unsafe_allow_html=True)
+st.text('無記名アンケートです。差し支えなければお答えください。')
+QR_path='/mount/src/hatake4911/☆Webアプリ/QRコード各種/アンケートフォーム用QR.png'
+st.image(QR_path)
 # フォルダのパス
 image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像/東京画像'
 
