@@ -36,7 +36,7 @@ def filter_and_display(text, filter_words):
 
 def main():
     st.title("テキストから文章を抽出")
-    st.text("私があらかじめ集めた単語群が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
+    st.write("私があらかじめ集めた単語群が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
 
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
 
