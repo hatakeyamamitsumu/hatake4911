@@ -22,7 +22,7 @@ def display_matching_images(folder_path, matching_images):
 
 def main():
     st.title("写真を検索")
-    st.text("左側のウィンドウから入力してください")
+    st.write("私が保管してある写真用フォルダの中の写真をファイル名で検索し、表示します。")
 
     base_folder_path = "/mount/src/hatake4911/☆Webアプリ/画像"
     subfolders = [f for f in os.listdir(base_folder_path) if os.path.isdir(os.path.join(base_folder_path, f))]
