@@ -59,5 +59,3 @@ st.image(selected_image_path, caption=f"選択された画像ファイル: {sele
 
 # 選択された画像ファイルのファイル名を表示
 st.write(f"選択された画像ファイルのファイル名: {selected_image}")
-
-
