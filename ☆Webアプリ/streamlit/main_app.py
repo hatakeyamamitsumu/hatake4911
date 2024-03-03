@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import random
 
-st.title('Hatの、WEBアプリ作りに挑戦！の記録')
+st.title('Hatの、WEBアプリ作り挑戦日記')
 st.write('こんにちは！Hatと申します。')
 
 st.subheader('自己紹介')
