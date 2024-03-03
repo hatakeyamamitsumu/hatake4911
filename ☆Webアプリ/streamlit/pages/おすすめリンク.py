@@ -37,6 +37,22 @@ link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xylt
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑いろんなエクセルファイルが入ったフォルダです。')
 st.text('')
+# 画像ファイルが保存されているフォルダのパス
+image_folder_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV"
 
+# フォルダ内の画像ファイルのリストを取得
+image_files = [f for f in os.listdir(image_folder_path) if f.endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+
+# 画像ファイルを選択するセレクトボックスを表示
+selected_image = st.selectbox("画像ファイルを選択してください", image_files)
+
+# 選択された画像ファイルのパスを作成
+selected_image_path = os.path.join(image_folder_path, selected_image)
+
+# 選択された画像を表示
+st.image(selected_image_path, caption=f"選択された画像ファイル: {selected_image}", use_column_width=True)
+
+# 選択された画像ファイルのファイル名を表示
+st.write(f"選択された画像ファイルのファイル名: {selected_image}")
 
 
