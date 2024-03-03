@@ -7,6 +7,7 @@ import base64
 st.set_page_config(layout="wide", page_title="Image Background Remover")
 
 st.write("## 写真の背景をぼかす")
+st.text("参考資料：https://bgremoval.streamlit.app/")
 st.write("背景を切り抜きたい写真を、左のウインドウからアップロードして、ぼかし具合をスライダーで調節してください＜＜")
 st.sidebar.write("## Upload and download :gear:")
 
