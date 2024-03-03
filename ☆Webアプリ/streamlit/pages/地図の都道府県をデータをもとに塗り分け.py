@@ -5,7 +5,7 @@ from PIL import Image
 
 def main():
     st.title("都道府県をデータをもとに塗り分け")
-    st.text('画像とCSVファイルの表示　参考資料：e-Stats')
+    st.text('画像とCSVファイルの表示　参考資料：e-Stats等')
 
     # 指定されたフォルダパス　CSVファイルと画像の表示
     folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/"
