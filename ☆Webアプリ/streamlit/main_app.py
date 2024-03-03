@@ -4,7 +4,7 @@ import os
 import random
 
 st.title('Hat')
-st.caption('こんにちは！Hatと申します。。')
+st.write('こんにちは！Hatと申します。。')
 st.subheader('説明')
 st.write('プログラミングは初心者ですが、簡易なWEBアプリ「streamlit」を使って何かできないかと考えて、発表し続けようと考えております。\nよろしくお願いします。')
 st.text('オリジナルでないコードも含まれますが、可能な限り出典を明示させていただきます。')
