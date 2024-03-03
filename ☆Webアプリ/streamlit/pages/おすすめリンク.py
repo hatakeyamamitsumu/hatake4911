@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 st.title("おすすめリンク")
 st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
