@@ -47,14 +47,14 @@ def AreaMarker(df, m):
 
 # ------------------------画面作成------------------------
 
-st.title("サンプル地図")  # タイトル
+st.title("地図のおすすめスポットにマーカーを立ててコメント添付")  # タイトル
 
-rad = st.slider('拠点を中心とした円の半径（km）',
+rad = st.slider('スポットを中心とした円の半径（km）',
                 value=40, min_value=1, max_value=50)  # スライダーをつける
 
 # Check if a CSV file was selected
 if selected_file is not None:
-    st.subheader("各拠点からの距離{}km - CSVファイル: {}".format(rad, selected_file))  # 半径の距離を表示
+    st.subheader("各スポットからの距離{}km - CSVファイル: {}".format(rad, selected_file))  # 半径の距離を表示
     m = folium.Map(location=[33.1, 131.0], zoom_start=7)  # 地図の初期設定
     AreaMarker(sales_office, m)  # データを地図に渡す
     folium_static(m)  # 地図情報を表示
