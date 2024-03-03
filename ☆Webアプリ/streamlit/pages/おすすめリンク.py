@@ -39,7 +39,7 @@ st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑いろんなエクセルファイルが入ったフォルダです。')
 st.text('')
 # 画像ファイルが保存されているフォルダのパス
-image_folder_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/QRコード各種"
+image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
 
 # フォルダ内の画像ファイルのリストを取得
 image_files = [f for f in os.listdir(image_folder_path) if f.endswith(('.png', '.jpg', '.jpeg', '.gif'))]
