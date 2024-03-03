@@ -41,21 +41,13 @@ st.text('')
 
 
 
-# 画像ファイルが保存されているフォルダのパス
-image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
+# ハイパーリンクを表示するMarkdown文字列
+link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
+# Markdownを表示。
+st.markdown(link_str, unsafe_allow_html=True)
+st.text('↑アンケートにお答えください。')
 
-# フォルダ内の画像ファイルのリストを取得
-image_files = [f for f in os.listdir(image_folder_path) if f.endswith(('.png', '.jpg', '.jpeg', '.gif'))]
+QR_path = '/mount/src/hatake4911/☆Webアプリ/QRコード各種/アンケートフォーム用QR.png'
 
-# 画像ファイルを選択するセレクトボックスを表示
-selected_image = st.selectbox("画像ファイルを選択してください", image_files)
-
-# 選択された画像ファイルのパスを作成
-selected_image_path = os.path.join(image_folder_path, selected_image)
-
-# 選択された画像を表示（横幅を30％に変更）
-column_width_percentage = 0.3
-st.image(selected_image_path, caption=f"選択された画像ファイル: {selected_image}", use_column_width=True, width=column_width_percentage)
-
-# 選択された画像ファイルのファイル名を表示
-st.write(f"選択された画像ファイルのファイル名: {selected_image}")
+# 画像のサイズを指定して表示
+st.image(QR_path, caption='アンケートへのQRコード', use_column_width=True, width=300, height=300)
