@@ -39,7 +39,7 @@ custom_text = st.text_input("QRコードに添える説明書き(アルファベ
 file_name = st.text_input("QRコードのファイル名を入力してください", value="QR_code")
 
 # Image upload
-uploaded_image = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+uploaded_image = st.file_uploader("QRコードの内容を説明するための画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if data:
     try:
