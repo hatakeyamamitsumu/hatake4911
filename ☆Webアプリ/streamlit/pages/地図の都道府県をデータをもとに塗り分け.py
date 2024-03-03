@@ -6,7 +6,7 @@ from PIL import Image
 def main():
     st.title("都道府県をデータをもとに塗り分け")
     st.text('様々な都道府県別データを集めて、値が大きい県ほど濃い色に塗られるように設定しています。')
-
+    st.text('主に政府統計e-Statsより引用。')
     # 指定されたフォルダパス　CSVファイルと画像の表示
     folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/都道府県を塗り分け用ＣＳＶ/"
 
