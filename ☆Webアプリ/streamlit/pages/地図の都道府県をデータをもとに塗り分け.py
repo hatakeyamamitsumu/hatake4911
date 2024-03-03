@@ -26,11 +26,11 @@ def main():
 
     # 画像が存在するか確認
     if not image_files:
-        st.warning("選択されたサブフォルダ内に画像ファイルが見つかりません。")
+        st.warning("選択されたフォルダ内に画像ファイルが見つかりません。")
         return
 
     # すべての画像を表示
-    st.subheader("画像:")
+    st.subheader("地図:")
     for selected_image in image_files:
         st.write(selected_image)
         image_path = os.path.join(folder_path, selected_subfolder, selected_image)
@@ -42,11 +42,11 @@ def main():
 
     # CSVファイルが存在するか確認
     if not csv_files:
-        st.warning("選択されたサブフォルダ内にCSVファイルが見つかりません。")
+        st.warning("選択されたフォルダ内にCSVファイルが見つかりません。")
         return
 
     # すべてのCSVファイルを表示
-    st.subheader("CSVファイル:")
+    st.subheader("塗分けに使った資料の内容:")
     for selected_csv in csv_files:
         st.write(selected_csv)
         csv_path = os.path.join(folder_path, selected_subfolder, selected_csv)
