@@ -5,6 +5,7 @@ from streamlit_folium import folium_static
 import folium
 from folium import plugins
 st.header("CSVデータをもとにヒートマップを表示")
+st.text('主に国土地理院データより引用。')
 # Specify the folder path
 folder_path = "/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV"
 
