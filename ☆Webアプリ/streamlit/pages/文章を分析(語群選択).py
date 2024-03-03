@@ -36,12 +36,12 @@ def filter_and_display(text, filter_words):
 
 def main():
     st.title("テキストから文章を抽出")
-    st.write("私があらかじめ集めた単語群が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
+    st.write("私があらかじめ集めた単語グループが含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
 
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
 
     filter_folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV"
-    filter_file_name = st.selectbox("単語群を選択してください", sorted(os.listdir(filter_folder_path)))
+    filter_file_name = st.selectbox("単語グループを選択してください", sorted(os.listdir(filter_folder_path)))
 
     filter_file_path = os.path.join(filter_folder_path, filter_file_name)
 
