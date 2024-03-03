@@ -33,7 +33,8 @@ def main():
         )
 
     st.title('画像2値化アプリ')
-    st.write("写真をひ様々な白黒画像に変形させるアプリです。ＹｏｕＴｕｂｅから引用させていただきました。")
+    st.write("写真をひ様々な白黒画像に変形させるアプリです。ネット上から引用させていただきました。")
+    st.text("https://enjoy-life-fullest.com/2022/04/07/")
     # アップローダー
     uploaded_image=st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
     # カラム設定
