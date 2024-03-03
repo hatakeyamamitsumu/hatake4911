@@ -16,7 +16,8 @@ link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('無記名アンケートです。差し支えなければお答えください。')
 QR_path='/mount/src/hatake4911/☆Webアプリ/QRコード各種/アンケートフォーム用QR.png'
-st.image(QR_path, width=200)
+st.image(QR_path, width=150)
+
 
 
 image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像/東京画像'
