@@ -41,7 +41,7 @@ def main():
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
 
     filter_folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/文章分析用CSV"
-    filter_file_name = st.selectbox("CSV ファイルを選択してください", sorted(os.listdir(filter_folder_path)))
+    filter_file_name = st.selectbox("単語群を選択してください", sorted(os.listdir(filter_folder_path)))
 
     filter_file_path = os.path.join(filter_folder_path, filter_file_name)
 
