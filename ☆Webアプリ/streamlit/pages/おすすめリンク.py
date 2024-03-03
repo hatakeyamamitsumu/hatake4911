@@ -38,6 +38,9 @@ link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xylt
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑いろんなエクセルファイルが入ったフォルダです。')
 st.text('')
+
+
+
 # 画像ファイルが保存されているフォルダのパス
 image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
 
@@ -51,7 +54,7 @@ selected_image = st.selectbox("画像ファイルを選択してください", i
 selected_image_path = os.path.join(image_folder_path, selected_image)
 
 # 選択された画像を表示
-st.image(selected_image_path, caption=f"選択された画像ファイル: {selected_image}", use_column_width=True)
+st.image(selected_image_path, caption=f"選択された画像ファイル: {selected_image}", use_column_width=True, width=int(st.columns(2)[0].width))
 
 # 選択された画像ファイルのファイル名を表示
 st.write(f"選択された画像ファイルのファイル名: {selected_image}")
