@@ -4,7 +4,7 @@ import pandas as pd
 from PIL import Image
 
 def main():
-    st.title("都道府県を塗り分け")
+    st.title("都道府県をデータをもとに塗り分け")
     st.text('画像とCSVファイルの表示　参考資料：e-Stats')
 
     # 指定されたフォルダパス　CSVファイルと画像の表示
