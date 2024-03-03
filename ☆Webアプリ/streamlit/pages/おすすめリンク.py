@@ -23,21 +23,21 @@ st.text('')
 link_str = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPBG5HYFYx05K9cEVRQ?e=cW1fFT)"
 # Markdownを表示。
 st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑マクロ等の挙動テスト用エクセルブック')
+st.text('↑Hatのプライベートフォルダ。マクロ等の挙動テスト用エクセルブック')
 st.text('')
 
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=dy53br)"
 # Markdownを表示。
 st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑画像フォルダです')
+st.text('↑Hatのプライベートフォルダ。画像フォルダです')
 st.text('')
 
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t)"
 # Markdownを表示。
 st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑いろんなエクセルファイルが入ったフォルダです。')
+st.text('↑Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。')
 st.text('')
 
 
