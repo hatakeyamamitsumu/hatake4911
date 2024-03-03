@@ -48,7 +48,7 @@ def filter_and_download(text, filter_words, filter_condition):
 
 def main():
     st.title("テキストから文章を抽出")
-    st.text("複数の単語を入力し、その語が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
+    st.write("複数の単語を入力し、その語が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
 
     # File upload
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
