@@ -8,7 +8,7 @@ st.caption('こんにちは！Hatと申します。。')
 st.subheader('説明')
 st.write('プログラミングは初心者ですが、簡易なWEBアプリ「streamlit」を使って何かできないかと考えて、発表し続けようと考えております。\nよろしくお願いします。')
 st.text('オリジナルでないコードも含まれますが、可能な限り出典を明示させていただきます。')
-
+st.text("")
 # フォルダのパス
 image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像/東京画像'
 
