@@ -3,7 +3,7 @@ import qrcode
 from PIL import Image, ImageDraw, ImageFont
 import io
 
-st.title('QRコード作成')
+st.title('QRコードに画像を添えて、分かりやすく！')
 
 def generate_qr_code(data, size=500):
     qr_img = qrcode.make(data)
