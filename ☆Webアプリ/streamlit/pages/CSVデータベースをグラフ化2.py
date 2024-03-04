@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import io
 from pathlib import Path
+from typing import List, Dict
 
 # ファイル形式の自動判別
 def detect_encoding(uploaded_file):
@@ -68,56 +69,56 @@ def plot_settings(df, selected_columns):
 
     return fig
 
-# メイン処理
-st.set_page_config(page_title='csvファイル', layout='centered')
+# データフレーム形式チェック
+def is_dataframe(df):
+    """
+    データフレーム形式かどうかをチェックします。
 
-# 複数ファイルアップロード
-uploaded_files = st.file_uploader('CSVファイル', type='csv', accept_multiple_files=True)
+    Args:
+        df: データフレーム
 
-# ファイル処理
-for uploaded_file in uploaded_files:
-    # ファイル名
-    file_name = uploaded_file.name
+    Returns:
+        True: データフレーム形式
+        False: データフレーム形式ではない
+    """
+    return isinstance(df, pd.DataFrame)
 
-    # エンコード自動判別
-    encoding = detect_encoding(uploaded_file)
+# 欠損値処理
+def handle_missing_values(df):
+    """
+    欠損値処理を行います。
 
-    # データフレーム読み込み
-    try:
-        df = pd.read_csv(uploaded_file, encoding=encoding)
+    Args:
+        df: データフレーム
 
-        # データフレーム形式チェック
-        if isinstance(df, pd.DataFrame):
-            # データフレーム形式の場合
-            # 列選択
-            selected_columns = st.multiselect(f"{file_name} - グラフ化したい列を選択してください。（取り込んだファイルがデータベース形式である場合に限られます）", df.columns)
+    Returns:
+        df: 欠損値処理済みのデータフレーム
+    """
+    # 欠損値の割合が50%以下の列のみ処理
+    for column in df.columns:
+        missing_value_ratio = df[column].isnull().mean()
+        if missing_value_ratio <= 0.5:
+            # 最頻値で補完
+            df[column] = df[column].fillna(df[column].mode())
 
-            # グラフ設定
-            fig = plot_settings(df, selected_columns)
+    return df
 
-            # グラフ表示
-            st.pyplot(fig)
-        else:
-            # データフレーム形式ではない場合
-            st.error(f"{file_name} - データフレーム形式ではないため、グラフ化できません。")
+# 外れ値処理
+def handle_outliers(df):
+    """
+    外れ値処理を行います。
 
-    except Exception as e:
-        st.error(f"{file_name} - エラー: {str(e)}")
+    Args:
+        df: データフレーム
 
-# ファイルダウンロード
-if st.button('ダウンロード'):
-    # ダウンロード用ファイル名
-    download_file_name = 'download.csv'
-
-    # CSVファイル形式に変換
-    csv_string = df.to_csv(index=False)
-
-    # ファイルオブジェクト作成
-    file_object = io.StringIO(csv_string)
-
-    # ダウンロード処理
-    st.download_button(label='ダウンロード', data=file_object, file_name=download_file_name, mime='text/csv')
-
-# データ保存・読み込み
-if st.button('保存'):
-    # 保存データ
+    Returns:
+        df: 外れ値処理済みのデータフレーム
+    """
+    # IQR法を用いて外れ値を除去
+    for column in df.columns:
+        q1 = df[column].quantile(0.25)
+        q3 = df[column].quantile(0.75)
+        iqr = q3 - q1
+        lower_bound = q1 - 1.5 * iqr
+        upper_bound = q3 + 1.5 * iqr
+        df = df[df
