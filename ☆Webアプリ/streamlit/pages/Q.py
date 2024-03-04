@@ -17,12 +17,15 @@ def main():
         # 画像のサイズを合わせる
         image1 = cv2.resize(image1, (image2.shape[1], image2.shape[0]))
 
+        # 2枚目の画像を1/3に縮小
+        height, width = image2.shape[:2]
+        image2_resized = cv2.resize(image2, (int(width / 3), int(height / 3)))
+
         # 画像を重ねる
-        overlay_image = cv2.addWeighted(image1, 0.5, image2, 0.5, 0)
+        overlay_image = cv2.addWeighted(image1, 0.5, image2_resized, 0.5, 0)
 
         # 重ねた画像を表示
         st.image(overlay_image, channels="BGR", caption="重ねた画像")
 
 if __name__ == "__main__":
     main()
-
