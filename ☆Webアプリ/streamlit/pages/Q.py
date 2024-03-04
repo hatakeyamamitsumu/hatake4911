@@ -27,15 +27,15 @@ def overlay_images(background, overlay, position):
     overlay = overlay.convert("RGBA")
     background.paste(overlay, position, overlay)
 
+# アップロードされた画像
+uploaded_image = st.file_uploader("QRコードの内容を説明するための画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+
 data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
 custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
 
 # Add file name input field
 file_name = st.text_input("QRコードのファイル名を入力してください", value="QR_code")
-
-# Image upload
-uploaded_image = st.file_uploader("QRコードの内容を説明するための画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if data:
     try:
@@ -44,30 +44,41 @@ if data:
             qr_img = add_text_to_qr(qr_img, custom_text)
 
         if uploaded_image is not None:
-            uploaded_img = Image.open(uploaded_image)
+            uploaded_img = Image.open(io.BytesIO(uploaded_image.read()))
             # Resize QR code to 50% of the width of the uploaded image
             qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.5))
             # Calculate the position for pasting QR code onto the uploaded image
             position = ((uploaded_img.width - qr_img_resized.width) // 2, (uploaded_img.height - qr_img_resized.height) // 2)
             # Overlay the QR code onto the uploaded image
             overlay_images(uploaded_img, qr_img_resized, position)
+            st.image(uploaded_img, caption="生成された画像", use_column_width=True)
+
+            img_byte_array = io.BytesIO()
+            uploaded_img.save(img_byte_array, format='PNG')
+            img_byte_array = img_byte_array.getvalue()
+
+            # Use the provided file name input field
+            st.download_button(
+                label="画像とQRコードをダウンロード",
+                data=img_byte_array,
+                key="download_image_qr_button",
+                file_name=f"{file_name}.png",  # Use the provided file name
+            )
         else:
-            uploaded_img = qr_img_resized
+            st.image(qr_img, caption="生成されたQRコード", use_column_width=True)
 
-        st.image(uploaded_img)
+            img_byte_array = io.BytesIO()
+            qr_img.save(img_byte_array, format='PNG')
+            img_byte_array = img_byte_array.getvalue()
 
-        img_byte_array = io.BytesIO()
-        uploaded_img.save(img_byte_array, format='PNG')
-        img_byte_array = img_byte_array.getvalue()
-
-        # Use the provided file name input field
-        st.download_button(
-            label="QRコードをダウンロード",
-            data=img_byte_array,
-            key="download_qr_button",
-            file_name=f"{file_name}.png",  # Use the provided file name
-        )
+            # Use the provided file name input field
+            st.download_button(
+                label="QRコードをダウンロード",
+                data=img_byte_array,
+                key="download_qr_button",
+                file_name=f"{file_name}.png",  # Use the provided file name
+            )
     except Exception as e:
-        st.error(f"QRコードの生成中または画像の結合中にエラーが発生しました: {str(e)}")
+        st.error(f"画像またはQRコードの生成中にエラーが発生しました: {str(e)}")
 else:
     st.warning("文字列を入力してください。")
