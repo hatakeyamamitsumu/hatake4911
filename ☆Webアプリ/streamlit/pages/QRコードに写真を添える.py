@@ -46,7 +46,7 @@ if data:
         if uploaded_image is not None:
             uploaded_img = Image.open(io.BytesIO(uploaded_image.read()))
             # Resize QR code to 50% of the width of the uploaded image
-            qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.5))
+            qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.4))
             # Calculate the position for pasting QR code onto the uploaded image
             position = ((uploaded_img.width - qr_img_resized.width) // 2, (uploaded_img.height - qr_img_resized.height) // 2)
             # Overlay the QR code onto the uploaded image
