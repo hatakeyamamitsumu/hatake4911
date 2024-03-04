@@ -1,73 +1,28 @@
 import streamlit as st
-import qrcode
-from PIL import Image, ImageDraw, ImageFont
-import io
+import cv2
+import numpy as np
 
-st.title('QRコード作成')
+def main():
+    st.title("画像重ね合わせアプリ")
 
-def generate_qr_code(data, size=500):
-    qr_img = qrcode.make(data)
-    img = Image.new("RGB", (size, size), "white")
-    qr_img = qr_img.convert("RGB")
-    img.paste(qr_img)
-    return img
+    # 画像のアップロード
+    uploaded_image1 = st.file_uploader("画像1をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image2 = st.file_uploader("画像2をアップロードしてください", type=["jpg", "jpeg", "png"])
 
-def add_text_to_qr(img, text):
-    draw = ImageDraw.Draw(img)
-    font = ImageFont.load_default()
-    draw.text((10, 10), text, font=font, fill="black")
-    return img
+    if uploaded_image1 is not None and uploaded_image2 is not None:
+        # 画像を読み込む
+        image1 = cv2.imdecode(np.frombuffer(uploaded_image1.read(), np.uint8), 1)
+        image2 = cv2.imdecode(np.frombuffer(uploaded_image2.read(), np.uint8), 1)
 
-def resize_image(image, target_width):
-    w_percent = (target_width / float(image.size[0]))
-    h_size = int((float(image.size[1]) * float(w_percent)))
-    return image.resize((target_width, h_size), Image.ANTIALIAS)
+        # 画像のサイズを合わせる
+        image1 = cv2.resize(image1, (image2.shape[1], image2.shape[0]))
 
-def center_image(img, base_img):
-    x_offset = (base_img.width - img.width) // 2
-    y_offset = (base_img.height - img.height) // 2
-    base_img.paste(img, (x_offset, y_offset), mask=img)
-    return base_img
+        # 画像を重ねる
+        overlay_image = cv2.addWeighted(image1, 0.5, image2, 0.5, 0)
 
-data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
-qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
-custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
+        # 重ねた画像を表示
+        st.image(overlay_image, channels="BGR", caption="重ねた画像")
 
-# Add file name input field
-file_name = st.text_input("QRコードのファイル名を入力してください", value="QR_code")
+if __name__ == "__main__":
+    main()
 
-# Image upload
-uploaded_image = st.file_uploader("QRコードの内容を説明するための画像をアップロードしてください", type=["jpg", "jpeg", "png"])
-
-if data:
-    try:
-        qr_img = generate_qr_code(data, size=qr_size)
-        if custom_text:
-            qr_img = add_text_to_qr(qr_img, custom_text)
-
-        if uploaded_image is not None:
-            uploaded_img = Image.open(uploaded_image)
-            # Resize QR code to 50% of the width of the uploaded image
-            qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.5))
-            # Center the QR code on the uploaded image
-            final_img = center_image(qr_img_resized, uploaded_img.copy())
-        else:
-            final_img = qr_img
-
-        st.image(final_img)
-
-        img_byte_array = io.BytesIO()
-        final_img.save(img_byte_array, format='PNG')
-        img_byte_array = img_byte_array.getvalue()
-
-        # Use the provided file name input field
-        st.download_button(
-            label="QRコードをダウンロード",
-            data=img_byte_array,
-            key="download_qr_button",
-            file_name=f"{file_name}.png",  # Use the provided file name
-        )
-    except Exception as e:
-        st.error(f"QRコードの生成中または画像の結合中にエラーが発生しました: {str(e)}")
-else:
-    st.warning("文字列を入力してください。")
