@@ -18,18 +18,10 @@ def add_text_to_qr(img, text):
     draw.text((10, 10), text, font=font, fill="black")
     return img
 
-def concatenate_images(top_img, bottom_img):
-    max_width = max(top_img.width, bottom_img.width)
-    max_height = top_img.height + bottom_img.height
-
-    top_img = top_img.resize((max_width, top_img.height))
-    bottom_img = bottom_img.resize((max_width, bottom_img.height))
-
-    concatenated_img = Image.new('RGB', (max_width, max_height))
-    concatenated_img.paste(top_img, (0, 0))
-    concatenated_img.paste(bottom_img, (0, top_img.height))
-
-    return concatenated_img
+def resize_image(image, target_width):
+    w_percent = (target_width / float(image.size[0]))
+    h_size = int((float(image.size[1]) * float(w_percent)))
+    return image.resize((target_width, h_size), Image.ANTIALIAS)
 
 data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
@@ -50,9 +42,11 @@ if data:
         if uploaded_image is not None:
             uploaded_img = Image.open(uploaded_image)
             # Resize QR code to 50% of the width of the uploaded image
-            qr_img = qr_img.resize((uploaded_img.width // 2, qr_img.height * uploaded_img.width // (2 * qr_img.width)))
-            # Concatenate images preserving the aspect ratio
-            final_img = concatenate_images(uploaded_img, qr_img)
+            qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.5))
+            # Paste QR code on top of the uploaded image
+            final_img = Image.new('RGB', uploaded_img.size)
+            final_img.paste(uploaded_img, (0, 0))
+            final_img.paste(qr_img_resized, (0, 0), mask=qr_img_resized)
         else:
             final_img = qr_img
 
