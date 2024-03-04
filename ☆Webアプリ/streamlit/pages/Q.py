@@ -44,8 +44,7 @@ if data:
             # Resize QR code to 50% of the width of the uploaded image
             qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.5))
             # Paste QR code on top of the uploaded image
-            final_img = Image.new('RGB', uploaded_img.size)
-            final_img.paste(uploaded_img, (0, 0))
+            final_img = uploaded_img.copy()
             final_img.paste(qr_img_resized, (0, 0), mask=qr_img_resized)
         else:
             final_img = qr_img
