@@ -23,6 +23,12 @@ def resize_image(image, target_width):
     h_size = int((float(image.size[1]) * float(w_percent)))
     return image.resize((target_width, h_size), Image.ANTIALIAS)
 
+def center_image(img, base_img):
+    x_offset = (base_img.width - img.width) // 2
+    y_offset = (base_img.height - img.height) // 2
+    base_img.paste(img, (x_offset, y_offset), mask=img)
+    return base_img
+
 data = st.text_input("QRコードにしたい文字列を入力してください。URL以外の文字列でも大丈夫です")
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
 custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
@@ -43,12 +49,8 @@ if data:
             uploaded_img = Image.open(uploaded_image)
             # Resize QR code to 50% of the width of the uploaded image
             qr_img_resized = resize_image(qr_img, int(uploaded_img.width * 0.5))
-            # Create a blank image with the same size as the uploaded image
-            final_img = Image.new('RGB', uploaded_img.size)
-            # Paste the uploaded image onto the blank image
-            final_img.paste(uploaded_img, (0, 0))
-            # Paste the resized QR code onto the blank image at a specific location
-            final_img.paste(qr_img_resized, (int((uploaded_img.width - qr_img_resized.width) / 2), 0), mask=qr_img_resized)
+            # Center the QR code on the uploaded image
+            final_img = center_image(qr_img_resized, uploaded_img.copy())
         else:
             final_img = qr_img
 
