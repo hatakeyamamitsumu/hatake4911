@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
+st.text("x軸を指定できるバージョン（まだテストしてません）")
 st.set_page_config(page_title='csvファイル', layout='centered')
 
 # CSVファイルのアップロードと読み込み
