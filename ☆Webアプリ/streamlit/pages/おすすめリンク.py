@@ -1,47 +1,33 @@
-import os
 import streamlit as st
-link_str = "(https://qrcode.onl.jp/)"
-description = '↑QRコードリーダーです。'
 
-
-
-st.markdown(f"{link_str} {description}", unsafe_allow_html=True)
+def display_link(link, description):
+    st.markdown(link, unsafe_allow_html=True)
+    st.text(description)
 
 st.title("おすすめリンク")
-#st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
 st.text('一部スマホではご利用いただけません。')
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://williammer.github.io/works/shodo/)"
+
+# リンクと説明文を表示
+link = "(https://williammer.github.io/works/shodo/)"
 description = '↑簡単な書道ができるフリーソフトです。'
-st.text('')
+display_link(link, description)
 
-link_str = "(https://gigafile.nu/)"
+link = "(https://gigafile.nu/)"
 description = '↑ギガファイルサービス'
-st.text('')
+display_link(link, description)
 
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://qrcode.onl.jp/)"
+link = "(https://qrcode.onl.jp/)"
 description = '↑QRコードリーダーです。'
-st.text('')
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPBG5HYFYx05K9cEVRQ?e=cW1fFT)"
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑Hatのプライベートフォルダ。マクロ等の挙動テスト用エクセルブック')
-st.text('')
+display_link(link, description)
 
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=dy53br)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑Hatのプライベートフォルダ。画像フォルダです')
-st.text('')
+link = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPBG5HYFYx05K9cEVRQ?e=cW1fFT)"
+description = '↑Hatのプライベートフォルダ。マクロ等の挙動テスト用エクセルブック'
+display_link(link, description)
 
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。')
-st.text('')
+link = "(https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=dy53br)"
+description = '↑Hatのプライベートフォルダ。画像フォルダです'
+display_link(link, description)
+
 
 
 # 画像ファイルが保存されているフォルダのパス
