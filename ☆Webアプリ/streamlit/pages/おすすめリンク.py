@@ -1,9 +1,12 @@
 import os
 import streamlit as st
-link_str = "(https://williammer.github.io/works/shodo/)"
-description = '↑簡単な書道ができるフリーソフトです。'
-st.markdown(f"{link_str} {description}", unsafe_allow_html=True)
+link_str1 = "(https://williammer.github.io/works/shodo/)"
+description1 = '↑簡単な書道ができるフリーソフトです。'
+st.markdown(f"{link_str1} {description1}", unsafe_allow_html=True)
 
+link_str2 = "(https://gigafile.nu/)"
+description2 = '↑ギガファイルサービス。'
+st.markdown(f"{link_str2} {description2}", unsafe_allow_html=True)
 st.title("おすすめリンク")
 #st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
 st.text('一部スマホではご利用いただけません。')
