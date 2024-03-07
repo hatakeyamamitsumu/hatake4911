@@ -7,6 +7,14 @@ st.markdown(f"{link_str1} {description1}", unsafe_allow_html=True)
 link_str2 = "(https://gigafile.nu/)"
 description2 = '↑ギガファイルサービス。'
 st.markdown(f"{link_str2} {description2}", unsafe_allow_html=True)
+
+link_str3 = "(https://qrcode.onl.jp/)"
+description3 = '↑ギガファイルサービス。'
+st.markdown(f"{link_str3} {description3}", unsafe_allow_html=True)
+
+
+
+
 st.title("おすすめリンク")
 #st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
 st.text('一部スマホではご利用いただけません。')
