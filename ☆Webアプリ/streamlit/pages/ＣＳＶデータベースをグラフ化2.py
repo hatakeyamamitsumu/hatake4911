@@ -2,8 +2,11 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# 日本語フォントの設定（Streamlit Cloud対応）
+plt.rcParams["font.family"] = "IPAGothic"
+
 st.text("x軸を指定できるバージョン（まだテストしてません）")
-#st.set_page_config(page_title='csvファイル', layout='centered')
+st.set_page_config(page_title='csvファイル', layout='centered')
 
 # CSVファイルのアップロードと読み込み
 def load_csv_and_plot(file_uploader_key, encoding):
