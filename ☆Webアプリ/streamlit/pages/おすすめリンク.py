@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-# ファイルの読み込み
+# ファイルの読み込み☆Webアプリ/ハイパーリンク各種/おすすめリンク用ハイパーリンク.txt
 with open('a.txt', 'r') as file:
     content = file.read()
 
