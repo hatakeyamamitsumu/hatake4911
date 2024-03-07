@@ -24,16 +24,27 @@ def load_csv_and_plot(file_uploader_key, encoding):
             fig, ax1 = plt.subplots()
 
             # プロットを追加
+            ax1.set_xlabel(selected_column)
+
+            # Plot on the primary y-axis (ax1)
             for i, column in enumerate(selected_columns):
-                # 異なる色を使いたい場合、以下のように指定します
-                color = plt.cm.viridis(i / len(selected_columns))  # カラーマップを利用して異なる色を生成
-                ax1.set_xlabel(selected_column)
-                ax1.set_ylabel(column, color=color)
-                ax1.plot(df[selected_column], df[column], label=column, color=color)  # Specify x-axis labels here
+                color = plt.cm.viridis(i / len(selected_columns))
+                ax1.plot(df[selected_column], df[column], label=column, color=color)
                 ax1.tick_params(axis='y', labelcolor=color)
 
-            # グラフを表示
+            # Create a secondary y-axis
+            ax2 = ax1.twinx()
+
+            # Plot on the secondary y-axis (ax2)
+            for i, column in enumerate(selected_columns):
+                color = plt.cm.viridis(i / len(selected_columns))
+                ax2.plot(df[selected_column], df[column], label=column + " (Secondary Y)", linestyle='dashed', color=color)
+                ax2.tick_params(axis='y', labelcolor=color)
+
+            # Display legends
             ax1.legend(loc='upper left', bbox_to_anchor=(1, 1))
+            ax2.legend(loc='upper left', bbox_to_anchor=(1, 0.9))
+
             st.pyplot(fig)
             
         except Exception as e:
@@ -46,4 +57,3 @@ load_csv_and_plot('csv_utf8', 'utf-8')
 # Shift-JIS の場合の処理
 st.title('CSVファイルのアップロードと読み込み (Shift-JIS)')
 load_csv_and_plot('csv_shiftjis', 'shift-jis')
-
