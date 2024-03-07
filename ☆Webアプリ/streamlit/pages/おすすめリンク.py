@@ -21,11 +21,6 @@ link_str5 = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyl
 description5 = '←　Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。'
 st.markdown(f"{link_str5} {description5}", unsafe_allow_html=True)
 
-
-#st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
-st.text('一部スマホではご利用いただけません。')
-
-
 st.text('')
 
 
