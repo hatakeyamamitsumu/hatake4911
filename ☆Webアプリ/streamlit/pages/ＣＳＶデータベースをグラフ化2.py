@@ -8,7 +8,7 @@ font_path = "/usr/share/fonts/truetype/takao-gothic/TakaoGothic.ttf"  # 日本�
 jp_font = fm.FontProperties(fname=font_path)
 
 st.text("x軸を指定できるバージョン（まだテストしてません）")
-st.set_page_config(page_title='csvファイル', page_icon=":bar_chart:", layout='centered')
+st.set_page_config(page_title='csvファイル', page_icon="📊", layout='centered')
 
 # CSVファイルのアップロードと読み込み
 def load_csv_and_plot(file_uploader_key, encoding):
