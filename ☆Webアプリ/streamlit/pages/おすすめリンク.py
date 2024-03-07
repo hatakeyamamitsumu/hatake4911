@@ -9,7 +9,7 @@ description2 = '↑ギガファイルサービス。'
 st.markdown(f"{link_str2} {description2}", unsafe_allow_html=True)
 
 link_str3 = "(https://qrcode.onl.jp/)"
-description3 = '↑ギガファイルサービス。'
+description3 = '↑QRコードリーダーです。'
 st.markdown(f"{link_str3} {description3}", unsafe_allow_html=True)
 
 
