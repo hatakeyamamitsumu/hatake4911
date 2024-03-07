@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+st.title("おすすめリンク")
 link_str1 = "(https://williammer.github.io/works/shodo/)"
 description1 = '↑簡単な書道ができるフリーソフトです。'
 st.markdown(f"{link_str1} {description1}", unsafe_allow_html=True)
@@ -12,53 +13,21 @@ link_str3 = "(https://qrcode.onl.jp/)"
 description3 = '↑QRコードリーダーです。'
 st.markdown(f"{link_str3} {description3}", unsafe_allow_html=True)
 
+link_str4 = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPBG5HYFYx05K9cEVRQ?e=cW1fFT)"
+description4 = '↑Hatのプライベートフォルダ。マクロ等の挙動テスト用エクセルブック'
+st.markdown(f"{link_str4} {description4}", unsafe_allow_html=True)
+
+link_str5 = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t)"
+description5 = '↑Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。'
+st.markdown(f"{link_str5} {description5}", unsafe_allow_html=True)
 
 
-
-st.title("おすすめリンク")
 #st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
 st.text('一部スマホではご利用いただけません。')
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://williammer.github.io/works/shodo/)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑簡単な書道ができるフリーソフトです。')
-st.text('')
-link_str = "(https://gigafile.nu/)"
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑ギガファイルサービス')
-st.text('')
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://qrcode.onl.jp/)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑QRコードリーダーです。')
-st.text('')
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPBG5HYFYx05K9cEVRQ?e=cW1fFT)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑Hatのプライベートフォルダ。マクロ等の挙動テスト用エクセルブック')
-st.text('')
-
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=dy53br)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑Hatのプライベートフォルダ。画像フォルダです')
-st.text('')
-
-# ハイパーリンクを表示するMarkdown文字列
-link_str = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。')
-st.text('')
 
 
+st.text('')
 
-import os
-import streamlit as st
 
 # 画像ファイルが保存されているフォルダのパス
 image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
