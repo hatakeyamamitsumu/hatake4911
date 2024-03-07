@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-st.text("x軸を指定できるバージョン（まだテストしてません）")
+st.text("x軸を指定できるバージョン")
 #st.set_page_config(page_title='csvファイル', layout='centered')
 
 # CSVファイルのアップロードと読み込み
@@ -16,7 +16,7 @@ def load_csv_and_plot(file_uploader_key, encoding):
             st.dataframe(df)
 
             # 列の選択
-            selected_column = st.selectbox("X軸にしたい列を選択してください。", df.columns, key="selected_column")
+            selected_column = st.selectbox("X軸にしたい列を選択してください。(日本語非対応です)", df.columns, key="selected_column")
 
             # Create a multiselect dropdown for choosing columns
             selected_columns = st.multiselect("Y軸にしたい列を選択してください。（取り込んだファイルがデータベース形式である場合に限られます）", df.columns)
