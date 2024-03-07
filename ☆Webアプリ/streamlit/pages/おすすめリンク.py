@@ -39,5 +39,3 @@ selected_image_path = os.path.join(image_folder_path, selected_image)
 # 選択された画像を表示
 st.image(selected_image_path, caption=f"選択された画像ファイル: {selected_image}")
 
-# 選択された画像ファイルのファイル名を表示
-st.write(f"選択された画像ファイルのファイル名: {selected_image}")
