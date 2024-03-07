@@ -30,7 +30,7 @@ def load_csv_and_plot(file_uploader_key, encoding):
                 color = plt.cm.viridis(i / len(selected_columns))  # カラーマップを利用して異なる色を生成
                 ax1.set_xlabel(selected_column)
                 ax1.set_ylabel(column, color=color)
-                ax1.plot(df.index, df[column], label=column, color=color)
+                ax1.plot(df[selected_column], df[column], label=column, color=color)  # Specify x-axis labels here
                 ax1.tick_params(axis='y', labelcolor=color)
 
             # グラフを表示
