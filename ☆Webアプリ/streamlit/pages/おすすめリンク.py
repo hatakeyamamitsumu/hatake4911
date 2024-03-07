@@ -2,7 +2,6 @@ import os
 import streamlit as st
 link_str = "(https://qrcode.onl.jp/)"
 description = '↑QRコードリーダーです。'
-import streamlit as st
 
 
 
@@ -44,10 +43,6 @@ st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。')
 st.text('')
 
-
-
-import os
-import streamlit as st
 
 # 画像ファイルが保存されているフォルダのパス
 image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
