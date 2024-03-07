@@ -1,6 +1,12 @@
 import os
 import streamlit as st
 
+import streamlit as st
+
+link_str = "(https://williammer.github.io/works/shodo/)"
+description = '↑簡単な書道ができるフリーソフトです。'
+# 横一列に表示
+st.markdown(f"{link_str} {description}", unsafe_allow_html=True)
 
 st.title("おすすめリンク")
 #st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
