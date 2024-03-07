@@ -31,7 +31,7 @@ image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
 image_files = [f for f in os.listdir(image_folder_path) if f.endswith(('.png', '.jpg', '.jpeg', '.gif'))]
 
 # 画像ファイルを選択するセレクトボックスを表示
-selected_image = st.selectbox("画像ファイルを選択してください", image_files)
+selected_image = st.selectbox("QRコード用意してます。リストから選択してください", image_files)
 
 # 選択された画像ファイルのパスを作成
 selected_image_path = os.path.join(image_folder_path, selected_image)
