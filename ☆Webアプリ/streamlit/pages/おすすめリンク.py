@@ -1,5 +1,10 @@
 import os
 import streamlit as st
+link_str = "(https://williammer.github.io/works/shodo/)"
+# Markdownを表示。
+st.markdown(link_str, unsafe_allow_html=True)
+st.text('↑簡単な書道ができるフリーソフトです。')
+
 st.title("おすすめリンク")
 #st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
 st.text('一部スマホではご利用いただけません。')
