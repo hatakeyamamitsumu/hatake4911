@@ -1,12 +1,14 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
-# 日本語フォントの設定（Streamlit Cloud対応）
-plt.rcParams["font.family"] = "IPAGothic"
+# 日本語フォントの設定
+font_path = "/usr/share/fonts/truetype/takao-gothic/TakaoGothic.ttf"  # 日本語フォントのパス
+jp_font = fm.FontProperties(fname=font_path)
 
 st.text("x軸を指定できるバージョン（まだテストしてません）")
-st.set_page_config(page_title='csvファイル', layout='centered')
+st.set_page_config(page_title='csvファイル', page_icon=":bar_chart:", layout='centered')
 
 # CSVファイルのアップロードと読み込み
 def load_csv_and_plot(file_uploader_key, encoding):
@@ -31,7 +33,7 @@ def load_csv_and_plot(file_uploader_key, encoding):
             for i, column in enumerate(selected_columns):
                 # 異なる色を使いたい場合、以下のように指定します
                 color = plt.cm.viridis(i / len(selected_columns))  # カラーマップを利用して異なる色を生成
-                ax1.set_xlabel(selected_column)
+                ax1.set_xlabel(selected_column, fontproperties=jp_font)  # 日本語フォントを使用
                 ax1.set_ylabel(column, color=color)
                 ax1.plot(df[selected_column], df[column], label=column, color=color)  # Specify x-axis labels here
                 ax1.tick_params(axis='y', labelcolor=color)
