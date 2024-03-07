@@ -2,7 +2,7 @@ import os
 import streamlit as st
 
 # ファイルの読み込み☆Webアプリ/ハイパーリンク各種/おすすめリンク用ハイパーリンク.txt
-with open('a.txt', 'r') as file:
+with open('/mount/src/hatake4911/☆Webアプリ/ハイパーリンク各種/おすすめリンク用ハイパーリンク.txt', 'r') as file:
     content = file.read()
 
 # 改行ごとに文字列を分割
