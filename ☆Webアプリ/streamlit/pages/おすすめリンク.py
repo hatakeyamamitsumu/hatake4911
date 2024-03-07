@@ -1,11 +1,11 @@
 import os
 import streamlit as st
-
+link_str = "(https://qrcode.onl.jp/)"
+description = '↑QRコードリーダーです。'
 import streamlit as st
 
-link_str = "(https://williammer.github.io/works/shodo/)"
-description = '↑簡単な書道ができるフリーソフトです。'
-# 横一列に表示
+
+
 st.markdown(f"{link_str} {description}", unsafe_allow_html=True)
 
 st.title("おすすめリンク")
@@ -13,23 +13,19 @@ st.title("おすすめリンク")
 st.text('一部スマホではご利用いただけません。')
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://williammer.github.io/works/shodo/)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑簡単な書道ができるフリーソフトです。')
+description = '↑簡単な書道ができるフリーソフトです。'
 st.text('')
+
 link_str = "(https://gigafile.nu/)"
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑ギガファイルサービス')
+description = '↑ギガファイルサービス'
 st.text('')
+
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://qrcode.onl.jp/)"
-# Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-st.text('↑QRコードリーダーです。')
+description = '↑QRコードリーダーです。'
 st.text('')
 # ハイパーリンクを表示するMarkdown文字列
 link_str = "(https://1drv.ms/x/c/25c3642a3103cdcb/EcOvbcbbK9ZAqtcuGtxvIKoB0CpKPBG5HYFYx05K9cEVRQ?e=cW1fFT)"
-# Markdownを表示。
 st.markdown(link_str, unsafe_allow_html=True)
 st.text('↑Hatのプライベートフォルダ。マクロ等の挙動テスト用エクセルブック')
 st.text('')
