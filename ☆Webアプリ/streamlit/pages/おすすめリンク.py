@@ -1,19 +1,6 @@
 import os
 import streamlit as st
 
-# ファイルの読み込み☆Webアプリ/ハイパーリンク各種/おすすめリンク用ハイパーリンク.txt
-with open('/mount/src/hatake4911/☆Webアプリ/ハイパーリンク各種/おすすめリンク用ハイパーリンク.txt', 'r') as file:
-    content = file.read()
-
-# 改行ごとに文字列を分割
-lines = content.split('\n')
-
-# 各行を処理
-for line in lines:
-    # 文字列がURLであるか確認
-    if st.button(line, key=line) and st.button("Open Link"):
-        st.write("Opening Link:", line)
-        # ここにリンクを開くための処理を追加（例: webbrowser.open(line)）
 
 st.title("おすすめリンク")
 #st.text('※OneDrive同期（更新）はスタートウインドウから入っておこなうこと。')
