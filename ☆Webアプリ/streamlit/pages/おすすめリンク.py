@@ -15,11 +15,13 @@ links = [
 
 # タイトル
 st.title("おすすめリンク")
-selected_link, selected_description = links[selected_index]
+
 # 選択ボックス
-#selected_index = st.selectbox("表示したいリンク番号を選択してください", range(len(links)))
-selected_index = st.selectbox("表示したいリンク番号を選択してください", selected_description)
+selected_index = st.selectbox("表示したいリンク番号を選択してください", range(len(links)))
 # 選択されたリンクと説明を表示
+selected_link, selected_description = links[selected_index]
+selected_index = st.selectbox("表示したいリンク番号を選択してください", selected_description)
+
 
 st.markdown(f"{selected_link} {selected_description}", unsafe_allow_html=True)
 
