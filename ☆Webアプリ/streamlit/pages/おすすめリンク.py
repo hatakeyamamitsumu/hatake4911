@@ -4,7 +4,7 @@ import streamlit as st
 import os
 import streamlit as st
 
-# リンクと説明のリスト
+# リンクと説明のリスト。
 links = [
     ("https://williammer.github.io/works/shodo/", "←　簡単な書道ができるフリーソフトです。"),
     ("https://gigafile.nu/", "←　ギガファイルサービス。"),
