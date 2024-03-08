@@ -1,27 +1,27 @@
 import os
 import streamlit as st
+
+import os
+import streamlit as st
+
+# リンクと説明のリスト
+links = [
+    ("https://williammer.github.io/works/shodo/", "←　簡単な書道ができるフリーソフトです。"),
+    ("https://gigafile.nu/", "←　ギガファイルサービス。"),
+    ("https://qrcode.onl.jp/", "←　QRコードリーダーです。"),
+    ("https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=6KTvOs", "←　Hatの画像フォルダ。"),
+    ("https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t", "←　Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。"),
+]
+
+# タイトル
 st.title("おすすめリンク")
-link_str1 = "(https://williammer.github.io/works/shodo/)"
-description1 = '←　簡単な書道ができるフリーソフトです。'
-st.markdown(f"{link_str1} {description1}", unsafe_allow_html=True)
 
-link_str2 = "(https://gigafile.nu/)"
-description2 = '←　ギガファイルサービス。'
-st.markdown(f"{link_str2} {description2}", unsafe_allow_html=True)
+# 選択ボックス
+selected_index = st.selectbox("表示したいリンクを選択してください", range(len(links)))
 
-link_str3 = "(https://qrcode.onl.jp/)"
-description3 = '←　QRコードリーダーです。'
-st.markdown(f"{link_str3} {description3}", unsafe_allow_html=True)
-
-link_str4 = "(https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=6KTvOs)"
-description4 = '←　Hatの画像フォルダ。'
-st.markdown(f"{link_str4} {description4}", unsafe_allow_html=True)
-
-link_str5 = "(https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t)"
-description5 = '←　Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。'
-st.markdown(f"{link_str5} {description5}", unsafe_allow_html=True)
-
-st.text('')
+# 選択されたリンクと説明を表示
+selected_link, selected_description = links[selected_index]
+st.markdown(f"{selected_link} {selected_description}", unsafe_allow_html=True)
 
 
 # 画像ファイルが保存されているフォルダのパス
