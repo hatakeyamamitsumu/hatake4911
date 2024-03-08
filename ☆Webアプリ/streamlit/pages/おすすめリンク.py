@@ -17,7 +17,11 @@ links = [
 st.title("おすすめリンク")
 
 # 選択ボックス
-selected_index = st.selectbox("表示したいリンクを選択してください", range(len(links))+"番")
+#selected_index = st.selectbox("表示したいリンクを選択してください", range(len(links)))
+options = [f"No.{i + 1}" for i in range(len(links))]
+# 選択ボックス
+selected_index = st.selectbox("表示したいリンクを選択してください", options)
+
 
 # 選択されたリンクと説明を表示
 selected_link, selected_description = links[selected_index]
