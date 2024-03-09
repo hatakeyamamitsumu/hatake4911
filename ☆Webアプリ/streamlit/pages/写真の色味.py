@@ -13,7 +13,7 @@ def main():
     st.title("aフォルダから青味の強い写真を選んで表示")
 
     # aフォルダ内の画像ファイル一覧を取得
-    image_filenames = os.listdir("/mount/src/hatake4911/☆Webアプリ/画像/東京画像")
+    image_filenames = os.listdir("/mount/src/hatake4911/☆Webアプリ/画像")
 
     # 画像ファイルリストを表示
     image_file_selectbox = st.selectbox("画像ファイルを選択", image_filenames)
