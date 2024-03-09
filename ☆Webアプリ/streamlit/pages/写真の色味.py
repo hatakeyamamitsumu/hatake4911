@@ -19,7 +19,7 @@ def main():
     image_file_selectbox = st.selectbox("画像ファイルを選択", image_filenames)
 
     # 選択された画像を読み込み
-    image = cv2.imread(os.path.join("a", image_file_selectbox))
+    image = cv2.imread(os.path.join("/mount/src/hatake4911/☆Webアプリ/画像/東京画像", image_file_selectbox))
 
     # 画像をHSVに変換
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
