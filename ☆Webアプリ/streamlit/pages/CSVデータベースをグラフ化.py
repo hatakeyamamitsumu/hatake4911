@@ -41,9 +41,9 @@ def load_csv_and_plot(file_uploader_key, encoding):
             st.error(f"エラー: {str(e)}")
 
 # UTF-8 の場合の処理
-st.title('CSVファイルのアップロードと読み込み (UTF-8)')
+st.write('CSVファイルのアップロードと読み込み (UTF-8)')
 load_csv_and_plot('csv_utf8', 'utf-8')
 
 # Shift-JIS の場合の処理
-st.title('CSVファイルのアップロードと読み込み (Shift-JIS)')
+st.write('CSVファイルのアップロードと読み込み (Shift-JIS)')
 load_csv_and_plot('csv_shiftjis', 'shift-jis')
