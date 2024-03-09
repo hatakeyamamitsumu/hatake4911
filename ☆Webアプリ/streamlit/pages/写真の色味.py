@@ -1,3 +1,5 @@
+
+
 import streamlit as st
 import os
 import cv2
@@ -19,7 +21,14 @@ def main():
     image_file_selectbox = st.selectbox("画像ファイルを選択", image_filenames)
 
     # 選択された画像を読み込み
-    image = cv2.imread(os.path.join("/mount/src/hatake4911/☆Webアプリ/画像/東京画像", image_file_selectbox))
+    image = cv2.imread(os.path.join("/mount/src/hatake4911/☆Webアプリ/画像", image_file_selectbox))
+
+    # 画像の深度を確認
+    depth = image.depth
+
+    # 深度が期待通りでない場合は変換
+    if depth != cv2.CV_8U and depth != cv2.CV_16U:
+        image = cv2.convertScaleAbs(image, alpha=255.0)
 
     # 画像をHSVに変換
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -38,3 +47,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
