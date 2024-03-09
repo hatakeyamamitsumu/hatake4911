@@ -4,7 +4,7 @@ from io import StringIO
 from docx import Document
 # Extract words from text and count occurrences
 def count_words(text):
-  words = text.split()
+  words = text.split()
   word_counts = dict(pd.Series(words).value_counts())
   return word_counts
 
