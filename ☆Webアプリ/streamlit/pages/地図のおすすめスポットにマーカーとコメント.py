@@ -13,7 +13,7 @@ folder_path = "/mount/src/hatake4911/☆Webアプリ/CSVファイル各種/地�
 csv_files = [file for file in os.listdir(folder_path) if file.endswith('.csv')]
 
 # Allow the user to select a CSV file
-selected_file = st.selectbox("項目を選んでください", csv_files)
+selected_file = st.selectbox("リストを選んでください", csv_files)
 
 # Check if a file was selected
 if selected_file:
