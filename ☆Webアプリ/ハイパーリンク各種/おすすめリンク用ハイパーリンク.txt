@@ -1,6 +1,0 @@
-https://williammer.github.io/works/shodo/
-↑簡単な書道ができるフリーソフトです。
-https://gigafile.nu/
-↑ギガファイルサービス
-https://qrcode.onl.jp/
-st.text('↑QRコードリーダーです。')
