@@ -23,7 +23,7 @@ def plot_scatter(data, selected_columns, index_col, dimensions):
         plot_3d_scatter(data, selected_columns[0], selected_columns[1], selected_columns[2], index_col)
 
 def main():
-    st.title('散布図表示ページ')
+    st.title('CSVデータベースを読み込んで二次元・三次元散布図作成するページ')
     st.text('インデックスの多すぎるファイルは見づらくなります。')
 
     uploaded_file_utf8 = st.file_uploader('3列以上あるＣＳＶデータベースファイルをアップロードしてください (UTF-8)', type=['csv'])
