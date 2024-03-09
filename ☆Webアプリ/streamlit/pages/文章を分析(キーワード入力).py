@@ -71,7 +71,7 @@ def main():
         st.dataframe(result_df)
 
         # Input words to filter
-        filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください:")
+        filter_words = st.text_area("フィルタリングする単語をスペースで区切って入力してください。例：山　川　歩　泳")
         
         # Choose filtering condition
         filter_condition = st.radio("条件を選択してください:", ['and', 'or', 'not'])
