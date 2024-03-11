@@ -1,24 +1,27 @@
+import os
 import streamlit as st
 
-# リンクと説明のリスト
+# リンクと説明のリスト。
 links = [
-    ("https://williammer.github.io/works/shodo/", "←　簡単な書道ができるフリーソフトです。"),
-    ("https://gigafile.nu/", "←　ギガファイルサービス。"),
-    ("https://qrcode.onl.jp/", "←　QRコードリーダーです。"),
-    ("https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=6KTvOs", "←　Hatの画像フォルダ。"),
-    ("https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t", "←　Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。"),
+    ("https://williammer.github.io/works/shodo/", "簡単な書道ができるフリーソフトです。"),
+    ("https://gigafile.nu/", "ギガファイルサービス。"),
+    ("https://qrcode.onl.jp/", "QRコードリーダーです。"),
+    ("https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=6KTvOs", "Hatの画像フォルダ。"),
+    ("https://1drv.ms/f/c/25c3642a3103cdcb/EleQi7m0oTtBijUzs5uWIJsB37xyltZG6PP6_LzORRJFqQ?e=Guz12t", "Hatのプライベートフォルダ。いろんなエクセルファイルが入ったフォルダです。"),
 ]
 
 # タイトル
 st.title("おすすめリンク")
 
-# リンクをリストとして表示
-for link, description in links:
-    st.markdown(f"""
-- {link}
-- {description}
-""", unsafe_allow_html=True)
+# 選択ボックス
 
+selected_link = st.selectbox("表示したいリンクを選択してください", links)
+
+# 選択されたリンクと説明を表示
+st.markdown(f"""
+- **リンク:** {selected_link[0]}
+- **説明:** {selected_link[1]}
+""", unsafe_allow_html=True)
 
 # 画像ファイルが保存されているフォルダのパス
 image_folder_path = "/mount/src/hatake4911/☆Webアプリ/QRコード各種"
