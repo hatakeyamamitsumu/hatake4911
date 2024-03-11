@@ -3,7 +3,7 @@ import streamlit as st
 
 # リンクと説明のリスト。
 links = [
-    ("https://williammer.github.io/works/shodo/", "簡単な書道ができるフリーソフトです。"),
+    ( "簡単な書道ができるフリーソフトです。","https://williammer.github.io/works/shodo/"),
     ("https://gigafile.nu/", "ギガファイルサービス。"),
     ("https://qrcode.onl.jp/", "QRコードリーダーです。"),
     ("https://1drv.ms/f/c/25c3642a3103cdcb/EtW74Af8pZJEvbgsxfhCAgoBBufG7sLiDQJKDcu2UhWzNw?e=6KTvOs", "Hatの画像フォルダ。"),
