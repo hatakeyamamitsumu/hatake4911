@@ -18,9 +18,8 @@ st.title("おすすめリンク")
 selected_link = st.selectbox("表示したいリンクを選択してください", links)
 
 # 選択されたリンクと説明を表示
-st.markdown(f"""
-- **リンク:** {selected_link[0]}
-- **説明:** {selected_link[1]}
+st.markdown(f"""- **説明:** {selected_link[0]}
+- **リンク:** {selected_link[1]}
 """, unsafe_allow_html=True)
 
 # 画像ファイルが保存されているフォルダのパス
