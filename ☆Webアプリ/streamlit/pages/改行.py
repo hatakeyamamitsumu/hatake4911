@@ -12,9 +12,21 @@ def main():
         # テキストファイルを「。」「.」「．」で分割
         split_text = re.split(r"[。.．]", text)
 
-        # 分割された結果を改行して表示
-        for sentence in split_text:
-            st.write(sentence + "\r\n")
+        # ダウンロードボタン
+        if st.button("ダウンロード"):
+            # ダウンロードファイル名
+            filename = "分割結果.txt"
+
+            # ダウンロードファイルの内容
+            content = "\r\n".join(split_text)
+
+            # ダウンロード処理
+            st.download_button(
+                label="ダウンロード",
+                data=content,
+                file_name=filename,
+                mime="text/plain",
+            )
 
 if __name__ == "__main__":
     main()
