@@ -28,7 +28,9 @@ def main():
                 mime="text/plain",
             )
 
+            # 実際のダウンロード処理
+            with open(filename, "w", encoding="utf-8") as file:
+                file.write(content)
+
 if __name__ == "__main__":
     main()
-
-
