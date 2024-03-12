@@ -9,8 +9,8 @@ def main():
     if uploaded_file is not None:
         text = uploaded_file.read().decode("utf-8")
 
-        # テキストファイルを「。」「.」「．」で分割
-        split_text = re.split(r"[。.．]", text)
+        # テキストファイルを「。」「．」で分割（ピリオドは含まれないよう修正）
+        split_text = re.split(r"[。．]", text)
 
         # ダウンロードボタン
         if st.button("ダウンロード"):
@@ -27,10 +27,6 @@ def main():
                 file_name=filename,
                 mime="text/plain",
             )
-
-            # 実際のダウンロード処理
-            with open(filename, "w", encoding="utf-8") as file:
-                file.write(content)
 
 if __name__ == "__main__":
     main()
