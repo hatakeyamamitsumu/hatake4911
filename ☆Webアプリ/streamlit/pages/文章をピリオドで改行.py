@@ -10,7 +10,7 @@ def main():
         text = uploaded_file.read().decode("utf-8")
 
         # テキストファイルを「。」「.」「．」で分割
-        split_text = re.split(r"[。.．]", text)
+        split_text = re.split(r"(?<=[。．\.])", text)
 
         # ダウンロードボタン
         if st.button("ダウンロード"):
