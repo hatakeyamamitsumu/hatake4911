@@ -1,54 +1,42 @@
 import streamlit as st
-import numpy as np
 from PIL import Image
 import io
 
-# Function to round each RGB value to the nearest multiple of 4
-def round_to_nearest_multiple_of_4(value):
-    return int(4 * round(value / 4))
-
-# Function to convert image to nearest multiple of 4
-def convert_to_nearest_multiple_of_4(image):
-    # Convert image to numpy array
-    image_array = np.array(image)
-
-    # Apply rounding to each pixel's RGB value
-    rounded_image_array = np.vectorize(round_to_nearest_multiple_of_4)(image_array)
-
-    # Create PIL image from rounded array
-    rounded_image = Image.fromarray(rounded_image_array.astype('uint8'))
-
-    return rounded_image
+# Function to quantize image to specified number of colors
+def quantize_image(image, num_colors):
+    return image.quantize(colors=num_colors)
 
 # Streamlit app
-st.title("写真のRGB値を最も近い4の倍数に変換")
+st.title("色数を変えて画像を保存")
 
 # File uploader
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+
+# Color slider
+num_colors = st.slider("色数", min_value=2, max_value=256, value=256, step=1)
 
 if uploaded_file is not None:
     # Read the image
     image = Image.open(uploaded_file)
 
-    # Convert image to nearest multiple of 4
-    rounded_image = convert_to_nearest_multiple_of_4(image)
+    # Convert image to specified number of colors
+    quantized_image = quantize_image(image, num_colors)
 
-    # Display original and rounded images
-    st.image([image, rounded_image], caption=["Original Image", "Rounded Image"], width=300)
+    # Display quantized image
+    st.image(quantized_image, caption=f"{num_colors}色に変換された画像", use_column_width=True)
 
     # Download button
     def download_image(image):
-        # Convert PIL image to bytes
         img_byte_array = io.BytesIO()
         image.save(img_byte_array, format='PNG')
         img_byte_array = img_byte_array.getvalue()
         return img_byte_array
 
     if st.button("画像をダウンロード"):
-        rounded_image_bytes = download_image(rounded_image)
+        rounded_image_bytes = download_image(quantized_image)
         st.download_button(
             label="画像をダウンロード",
             data=rounded_image_bytes,
-            file_name="rounded_image.png",
+            file_name="quantized_image.png",
             mime="image/png"
         )
