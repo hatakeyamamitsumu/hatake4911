@@ -8,7 +8,7 @@ def quantize_image(image, num_colors):
 
 # Streamlit app
 st.title("色数を変えて画像を保存")
-
+st.write('写真の色数を減らします。')
 # File uploader
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
