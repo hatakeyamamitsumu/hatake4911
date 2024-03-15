@@ -29,7 +29,7 @@ def main():
                     formatted_text.append(split_text[i])
 
         # ダウンロードボタン
-        if st.button("ダウンロード"):
+        if st.button("ダウンロードしますか？"):
             # ダウンロードファイル名
             filename = "分割結果.txt"
 
@@ -38,7 +38,7 @@ def main():
 
             # ダウンロード処理
             st.download_button(
-                label="ダウンロード",
+                label="ダウンロードボタン",
                 data=content,
                 file_name=filename,
                 mime="text/plain",
