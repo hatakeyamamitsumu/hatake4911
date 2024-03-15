@@ -32,10 +32,10 @@ if uploaded_file is not None:
         img_byte_array = img_byte_array.getvalue()
         return img_byte_array
 
-    if st.button("画像をダウンロード"):
+    if st.button("画像をダウンロードしますか？"):
         rounded_image_bytes = download_image(quantized_image)
         st.download_button(
-            label="画像をダウンロード",
+            label="ダウンロードボタン",
             data=rounded_image_bytes,
             file_name="quantized_image.png",
             mime="image/png"
