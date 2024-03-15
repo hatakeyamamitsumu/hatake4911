@@ -1,6 +1,7 @@
 import streamlit as st
 import re
-st.text("文章をピリオドで改行")
+st.text("文章をピリオドで改行")。．\.
+st.write("「。」「．」「.」を境に改行します。")
 def main():
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
