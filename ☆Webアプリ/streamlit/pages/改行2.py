@@ -9,7 +9,7 @@ def main():
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
 
     # ユーザーが選択したピリオド（複数選択可）
-    selected_periods = st.multiselect("ピリオドを選択してください", ["。", "．", "."])
+    selected_periods = st.multiselect("ピリオドを選択してください", ["。", "．", ".", "「"])
 
     # テキストファイルの内容を読み込み
     if uploaded_file is not None:
