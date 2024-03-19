@@ -23,12 +23,12 @@ def main():
         
         # 分割結果の整形
         formatted_text = []
-    for i in range(len(split_text)):
-        # 最後の要素の場合は、ピリオドの直前で改行を追加
-        if i == len(split_text) - 1 and split_text[i] in selected_periods:
-            formatted_text.append("\n" + split_text[i])
-        else:
-            formatted_text.append(split_text[i])
+        for i in range(len(split_text)):
+            # 最後の要素の場合は、ピリオドの直前で改行を追加
+            if i == len(split_text) - 1 and split_text[i] in selected_periods:
+                formatted_text.append("\n" + split_text[i])
+            else:
+                formatted_text.append(split_text[i])
 
         # ダウンロードボタン
         if st.button("ダウンロードしますか？"):
