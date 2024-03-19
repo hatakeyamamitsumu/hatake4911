@@ -3,20 +3,23 @@ import re
 
 def main():
     st.title("文章をピリオドで改行")
-    st.write("文章を選択したピリオドで改行します。")
+    st.write("文章を複数選択したピリオドで改行します。")
 
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
 
-    # ユーザーが選択したピリオド
-    selected_period = st.selectbox("ピリオドを選択してください", ["。", "．", "."])
+    # ユーザーが選択したピリオド（複数選択可）
+    selected_periods = st.multiselect("ピリオドを選択してください", ["。", "．", "."])
 
     # テキストファイルの内容を読み込み
     if uploaded_file is not None:
         text = uploaded_file.read().decode("utf-8")
 
+        # 選択したピリオドを正規表現パターンに組み込む
+        pattern = "|".join(map(re.escape, selected_periods))
+
         # テキストファイルを選択したピリオドで分割
-        split_text = re.split(r"({})".format(re.escape(selected_period)), text)
+        split_text = re.split(f"({pattern})", text)
         
         # 分割結果の整形
         formatted_text = []
@@ -26,7 +29,7 @@ def main():
                 formatted_text.append(split_text[i])
             else:
                 # ピリオドの直後なら改行を追加
-                if split_text[i] == selected_period:
+                if split_text[i] in selected_periods:
                     formatted_text.append(split_text[i] + "\n")
                 else:
                     formatted_text.append(split_text[i])
