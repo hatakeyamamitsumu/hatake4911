@@ -37,9 +37,9 @@ def main():
                 # ピリオドの直後なら改行を追加
                 if split_text[i-1] in selected_periods:
                     formatted_text.append("\n" + split_text[i])
-                # 区切り文字自身とともに改行を追加
+                # 区切り文字の直前なら改行を追加
                 elif split_text[i] in selected_delimiters:
-                    formatted_text.append(split_text[i] + "\n")
+                    formatted_text.append("\n" + split_text[i])
                 else:
                     formatted_text.append(split_text[i])
 
