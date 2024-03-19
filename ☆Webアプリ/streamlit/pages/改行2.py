@@ -3,13 +3,13 @@ import re
 
 def main():
     st.title("文章をピリオドで改行")
-    st.write("文章を複数選択したピリオドで改行します")
+    st.write("文章を指定したピリオドの直後で改行します")
 
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
 
     # ユーザーが選択したピリオド（複数選択可）
-    selected_periods = st.multiselect("ピリオドを選択してください", ["。", "．", ".", "、", ","])
+    selected_periods = st.multiselect("ピリオドを選択してください(複数選択可)", ["。", "．", ".", "、", ","])
 
     # テキストファイルの内容を読み込み
     if uploaded_file is not None:
