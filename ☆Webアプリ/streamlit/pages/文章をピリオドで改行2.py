@@ -2,8 +2,8 @@ import streamlit as st
 import re
 
 def main():
-    st.title("文章をピリオドで改行")
-    st.write("文章を指定したピリオドの直後で改行します")
+    st.title("文章をピリオドで改行、区切り文字の前で改行")
+    st.write("文章を指定したピリオドの直後で改行し、区切り文字の直前で改行します")
 
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
@@ -30,12 +30,15 @@ def main():
         # 分割結果の整形
         formatted_text = []
         for i in range(len(split_text)):
-            # 最後の要素は追加だけ
-            if i == len(split_text) - 1:
+            # 最初の要素は追加だけ
+            if i == 0:
                 formatted_text.append(split_text[i])
             else:
-                # ピリオドまたは区切り文字の直後なら改行を追加
-                if split_text[i] in selected_periods or split_text[i] in selected_delimiters:
+                # ピリオドの直後なら改行を追加
+                if split_text[i-1] in selected_periods:
+                    formatted_text.append("\n" + split_text[i])
+                # 区切り文字の直前なら改行を追加
+                elif split_text[i] in selected_delimiters:
                     formatted_text.append(split_text[i] + "\n")
                 else:
                     formatted_text.append(split_text[i])
