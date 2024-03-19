@@ -3,7 +3,7 @@ import re
 
 def main():
     st.title("文章をピリオドで改行")
-    st.write("文章を複数選択したピリオドで改行します。")
+    st.write("文章を複数選択したピリオドで改行します")
 
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
