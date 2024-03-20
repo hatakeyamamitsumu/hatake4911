@@ -3,7 +3,7 @@ import qrcode
 from PIL import Image, ImageDraw, ImageFont
 import io
 
-st.title('QRコードに背景をつけて、分かりやすく！')ツール
+st.title('QRコードに背景をつけて、分かりやすく！')
 st.write('何のQRコードか分かりやすくなります。')
 def generate_qr_code(data, size=500):
     qr_img = qrcode.make(data)
