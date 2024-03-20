@@ -47,7 +47,7 @@ def swirl_image(image_array, strength=10, radius=1000, center_x=None, center_y=N
 # Streamlit app
 st.title("写真を渦巻に変換")
 st.write("写真を渦巻状に変形させるアプリです。「いつ使うんだ！」とツッコまずにあったかい目で見てあげてください。")
-st.text("ダウンロード機能がありません。お手数ですがスクリーンショットしてください")
+st.write("※ダウンロード機能がありません。お手数ですがスクリーンショットしてください")
 
 # File uploader
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
