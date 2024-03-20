@@ -1,7 +1,6 @@
 import io
 import streamlit as st
 import qrcode
-from PIL import Image
 
 # リンクと説明のリスト
 links = [
@@ -30,7 +29,7 @@ img = qr.make_image(fill_color="black", back_color="white")
 # PILイメージをバイトデータに変換
 img_byte_arr = io.BytesIO()
 img.save(img_byte_arr, format='PNG')
-img_byte_arr.seek(0)  # ファイルの先頭に移動
+img_byte_arr = img_byte_arr.getvalue()
 
-# Streamlitに画像を表示
+# Streamlitにバイトデータを表示
 st.image(img_byte_arr, caption="QRコード", use_column_width=True)
