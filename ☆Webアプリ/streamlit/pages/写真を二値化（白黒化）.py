@@ -32,8 +32,8 @@ def main():
             "Otsu' thresholding", "Otsu's thresholding + Gaussian fileter")
         )
 
-    st.title('画像2値化アプリ')
-    st.write("写真を様々な白黒画像に変形させるアプリです。ネット上から引用させていただきました。")
+    st.title('画像２値化アプリ')
+    st.write("写真を様々な白と黒のみの画像(２値化画像)に変形させるアプリです。ネット上から引用させていただきました。")
     st.text("https://enjoy-life-fullest.com/2022/04/07/")
     # アップローダー
     uploaded_image=st.file_uploader("以下からファイルアップロード", type=['jpg','png'])
