@@ -31,5 +31,5 @@ img_byte_arr = io.BytesIO()
 img.save(img_byte_arr, format='PNG')
 img_byte_arr = img_byte_arr.getvalue()
 
-# Streamlitにバイトデータを表示
-st.image(img_byte_arr, caption="QRコード", use_column_width=True)
+# Streamlitにバイトデータを表示　, use_column_width=True
+st.image(img_byte_arr, caption="QRコード")
