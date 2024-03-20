@@ -15,7 +15,7 @@ st.title("おすすめリンク")
 
 # 選択ボックス
 
-selected_link = st.selectbox("表示したいリンクを選択してください", links[0])
+selected_link = st.selectbox("表示したいリンクを選択してください", links)
 
 # 選択されたリンクと説明を表示
 st.markdown(f"""- **説明:** {selected_link[0]}
