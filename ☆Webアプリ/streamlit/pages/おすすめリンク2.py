@@ -1,7 +1,7 @@
-import io
 import os
 import streamlit as st
 import qrcode
+import tempfile
 
 # リンクと説明のリスト
 links = [
@@ -21,16 +21,16 @@ selected_link = st.selectbox("表示したいリンクを選択してくださ�
 # 選択されたリンクと説明を表示
 st.markdown(f"""**リンク:** {selected_link[1]}""", unsafe_allow_html=True)
 
-# 選択されたリンクのQRコードを生成して表示
+# 選択されたリンクのQRコードを生成して保存
 qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
 qr.add_data(selected_link[1])
 qr.make(fit=True)
 img = qr.make_image(fill_color="black", back_color="white")
 
-# PIL形式からバイトデータに変換
-img_byte_arr = io.BytesIO()
-img.save(img_byte_arr, format='PNG')
-img_byte_arr = img_byte_arr.getvalue()
+# 一時ファイルにQRコードを保存
+temp_dir = tempfile.mkdtemp()
+temp_file_path = os.path.join(temp_dir, "qr_code.png")
+img.save(temp_file_path)
 
 # Streamlitに画像を表示
-st.image(img_byte_arr, caption="QRコード", use_column_width=True)
+st.image(temp_file_path, caption="QRコード", use_column_width=True)
