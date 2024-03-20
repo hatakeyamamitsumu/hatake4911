@@ -8,9 +8,11 @@ def main():
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルを選択してください")
     # ユーザーが選択した区切り文字（複数選択可）
-    selected_delimiters = st.multiselect("前改行用の文字を選択してください(複数選択可)", ["「"])
+    st.write("1：特定の文字の前で改行します。")
+    selected_delimiters = st.multiselect("改行用の文字を選択してください(複数選択可)", ["「"])
     # ユーザーが選択したピリオド（複数選択可）
-    selected_periods = st.multiselect("後改行用の文字を選択してください(複数選択可)", ["。", "．", ".", "、", ",", "」"])
+    st.write("2：特定の文字の後で改行します。")
+    selected_periods = st.multiselect("改行用の文字を選択してください(複数選択可)", ["。", "．", ".", "、", ",", "」"])
 
 
 
