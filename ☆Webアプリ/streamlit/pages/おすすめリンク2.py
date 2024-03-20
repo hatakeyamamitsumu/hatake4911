@@ -1,3 +1,4 @@
+import io
 import os
 import streamlit as st
 import qrcode
@@ -24,5 +25,12 @@ st.markdown(f"""**リンク:** {selected_link[1]}""", unsafe_allow_html=True)
 qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
 qr.add_data(selected_link[1])
 qr.make(fit=True)
-qr_image = qr.make_image(fill_color="black", back_color="white")
-st.image(qr_image, caption="QRコード", use_column_width=True)
+img = qr.make_image(fill_color="black", back_color="white")
+
+# PIL形式からバイトデータに変換
+img_byte_arr = io.BytesIO()
+img.save(img_byte_arr, format='PNG')
+img_byte_arr = img_byte_arr.getvalue()
+
+# Streamlitに画像を表示
+st.image(img_byte_arr, caption="QRコード", use_column_width=True)
