@@ -2,11 +2,11 @@ import streamlit as st
 import re
 
 def main():
-    st.title("文章をピリオドで改行、区切り文字の前で改行")
-    st.write("文章を指定したピリオドの直後で改行し、区切り文字の直前で改行します")
+    st.title("文章を指定の文字の前後で改行")
+    st.write("文章を選択した文字の前後で改行し、見やすくします")
 
     # アップロードされたテキストファイルを取得
-    uploaded_file = st.file_uploader("テキストファイルを選択してください")
+    uploaded_file = st.file_uploader("テキストファイルをアップロードしてください")
     # ユーザーが選択した区切り文字（複数選択可）
     st.write("1：特定の文字の前で改行します。")
     selected_delimiters = st.multiselect("改行用の文字を選択してください(複数選択可)", ["「"])
