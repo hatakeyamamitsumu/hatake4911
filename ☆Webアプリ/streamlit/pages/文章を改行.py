@@ -10,13 +10,13 @@ def main():
     
     # ユーザーが入力したピリオド
     st.write("1：特定の文字の前で改行します。")
-    custom_delimiters = st.text_input("改行用の文字を入力してください（複数可、カンマで区切ってください）", key="delimiter_input")
-    selected_delimiters = [delimiter.strip() for delimiter in custom_delimiters.split(",") if delimiter.strip()]
+    custom_delimiters = st.text_input("改行用の文字を入力してください（複数可、スペースで区切ってください）")
+    selected_delimiters = [delimiter.strip() for delimiter in custom_delimiters.split(" ") if delimiter.strip()]
     
     # ユーザーが入力した区切り文字
     st.write("2：特定の文字の後で改行します。")
-    custom_periods = st.text_input("改行用の文字を入力してください（複数可、カンマで区切ってください）", key="period_input")
-    selected_periods = [period.strip() for period in custom_periods.split(",") if period.strip()]
+    custom_periods = st.text_input("改行用の文字を入力してください（複数可、スペースで区切ってください）")
+    selected_periods = [period.strip() for period in custom_periods.split(" ") if period.strip()]
 
     # テキストファイルの内容を読み込み
     if uploaded_file is not None:
