@@ -28,7 +28,7 @@ def overlay_images(background, overlay, position):
     background.paste(overlay, position, overlay)
 
 # アップロードされた画像
-data = st.text_input("QRコードにしたい文字列を入力してください。")
+data = st.text_input("QRコード化したい文字列を入力してください。")
 uploaded_image = st.file_uploader("QRコードの背景用画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
 
