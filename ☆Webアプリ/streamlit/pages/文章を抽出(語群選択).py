@@ -3,7 +3,7 @@ import pandas as pd
 from docx import Document
 import os
 import base64
-
+st.text("参考資料：https://myoji-yurai.net/")
 def read_word_file(file):
     doc = Document(file)
     text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
