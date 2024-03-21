@@ -47,7 +47,7 @@ def filter_and_download(text, filter_words, filter_condition):
         st.write(f"テキストに '{', '.join(filter_words)}' を含む行は見つかりませんでした。")
 
 def main():
-    st.title("テキストから文章を抽出")
+    st.title("テキストから文章を選別")
     st.write("複数の単語を入力し、その語が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
 
     # File upload
