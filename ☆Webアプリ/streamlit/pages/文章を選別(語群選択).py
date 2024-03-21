@@ -35,7 +35,7 @@ def filter_and_display(text, filter_words):
         st.write(f"単語帳の中の単語を含む行は見つかりませんでした.")
 
 def main():
-    st.title("テキストから文章を抽出")
+    st.title("テキストから文章を選別")
     st.write("私があらかじめ単語帳に集めた５０～１００個の単語が含まれる行を抽出するアプリです。特定の文脈の内容をざっくりと抽出するときにご利用ください。")
 
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
