@@ -48,7 +48,7 @@ def quantize_image(image, num_colors):
 
 # Streamlit app
 st.title("画像調整 & 色数変更アプリ")
-st.write("##写真の色のバランスを調節、写真の色数を減らすアプリを左のウィンドウで選択してご利用ください##")
+st.write("写真の色のバランスを調節、写真の色数を減らすアプリを左のウィンドウで選択してご利用ください")
 # Sidebar selection for app mode
 app_mode = st.sidebar.selectbox("App Mode", ["画像調整", "色数変更"])
 
