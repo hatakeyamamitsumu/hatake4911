@@ -9,7 +9,7 @@ st.header("CSVデータをもとにヒートマップを表示")
 st.text('主に国土地理院データより引用。')
 
 # Allow the user to select a folder
-folder_path = st.sidebar.selectbox("フォルダを選択してください", os.listdir("/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV"))
+folder_path = st.selectbox("フォルダを選択してください", os.listdir("/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV"))
 
 # Construct the full folder path
 folder_full_path = os.path.join("/mount/src/hatake4911/☆Webアプリ//CSVファイル各種/ヒートマップ地図用CSV", folder_path)
