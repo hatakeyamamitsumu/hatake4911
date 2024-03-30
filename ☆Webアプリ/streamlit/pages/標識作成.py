@@ -8,8 +8,8 @@ def main():
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
-        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第三層",
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第二層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第三層",
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第四層",
     ]
 
