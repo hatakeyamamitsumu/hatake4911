@@ -37,5 +37,21 @@ def main():
     # 画像を表示
     st.image(WMedImage, caption='合成された画像', use_column_width=True)
 
+    # 画像をダウンロードするボタン
+    def download_image(image, filename='合成された画像.png'):
+        image.save(filename, 'PNG')
+        with open(filename, 'rb') as f:
+            data = f.read()
+        return data
+
+    if st.button("画像をダウンロード"):
+        data = download_image(WMedImage)
+        st.download_button(
+            label="ここをクリックしてダウンロード",
+            data=data,
+            file_name='合成された画像.png',
+            mime='image/png'
+        )
+
 if __name__ == '__main__':
     main()
