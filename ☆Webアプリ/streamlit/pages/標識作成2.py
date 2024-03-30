@@ -10,13 +10,20 @@ def main():
 
     # 画像ファイルの選択
     uploaded_images = []
-    st.write("### 画像を選択してください")
     for root, _, files in os.walk(image_folder):
         for file in files:
             if file.endswith(('.png', '.jpg', '.jpeg', '.gif')):
                 uploaded_images.append(os.path.join(root, file))
 
+    if not uploaded_images:
+        st.error("画像が見つかりませんでした。正しい画像フォルダを指定してください。")
+        return
+
     selected_image_paths = st.multiselect("画像を選択してください", uploaded_images)
+
+    if not selected_image_paths:
+        st.info("画像が選択されていません。")
+        return
 
     ImgObjs = []
     for img_path in selected_image_paths:
