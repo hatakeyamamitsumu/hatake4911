@@ -1,0 +1,41 @@
+import streamlit as st
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+def main():
+    st.title("画像合成アプリ")
+
+    # 画像フォルダのパス
+    image_folders = [
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/最背面",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/背面",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/右人物"
+    ]
+
+    # 画像ファイルの選択
+    uploaded_images = []
+    for folder in image_folders:
+        st.write(f"### {os.path.basename(folder)}")
+        image_files = os.listdir(folder)
+        selected_image = st.selectbox("画像を選択してください", image_files, index=0)
+        uploaded_images.append(os.path.join(folder, selected_image))
+
+    ImgObjs = []
+    for img_path in uploaded_images:
+        ImgObj = Image.open(img_path)
+        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
+        ImgObjs.append(ImgObj)
+
+    WHs = [img.size for img in ImgObjs]
+
+    wmCanvas = Image.new('RGBA', max(WHs), (255, 255, 255, 0))  # 透かし画像の生成
+    for i, img in enumerate(ImgObjs):
+        wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
+
+    WMedImage = wmCanvas  # 画像の合成
+
+    # 画像を表示
+    st.image(WMedImage, caption='合成された画像', use_column_width=True)
+
+if __name__ == '__main__':
+    main()
