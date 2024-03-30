@@ -35,7 +35,7 @@ def main():
     WMedImage = wmCanvas  # 画像の合成
 
     # 画像を表示
-    st.image(WMedImage, caption='合成された画像', use_column_width=True)
+    st.image(WMedImage, caption='合成された画像')
 
     # 画像をダウンロードするボタン
     def download_image(image, filename='合成された画像.png'):
