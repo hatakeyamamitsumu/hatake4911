@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 def main():
-    st.title("画像合成アプリ")
+    st.title("標識作成アプリ")
 
     # 画像フォルダのパス
     image_folders = [
