@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import os
-
+#st.write(f"{os.path.basename(folder)}")
 def main():
     st.title("標識作成アプリ")
 
@@ -17,7 +17,7 @@ def main():
     # 画像ファイルの選択
     uploaded_images = []
     for folder in image_folders:
-        st.write(f"{os.path.basename(folder)}")
+        
         image_files = os.listdir(folder)
         selected_image = st.selectbox("画像を選択してください", image_files, index=0)
         uploaded_images.append(os.path.join(folder, selected_image))
