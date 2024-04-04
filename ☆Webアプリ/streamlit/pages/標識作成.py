@@ -19,7 +19,7 @@ def main():
     for folder in image_folders:
         
         image_files = os.listdir(folder)
-        selected_image = st.selectbox(image_files, index=0)
+        selected_image = st.selectbox("",image_files, index=0)
         uploaded_images.append(os.path.join(folder, selected_image))
 
     ImgObjs = []
