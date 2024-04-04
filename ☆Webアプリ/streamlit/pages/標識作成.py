@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 def main():
-    st.title("標識作成アプリ")
+    st.title("標識（？）作成アプリ")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
     # 画像フォルダのパス
     image_folders = [
