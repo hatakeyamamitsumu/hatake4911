@@ -1,10 +1,10 @@
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import os
-#st.write(f"{os.path.basename(folder)}")
+
 def main():
     st.title("標識作成アプリ")
-
+    st.write(それぞれのリストからお好みの絵を選択して重ねてください。")
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
