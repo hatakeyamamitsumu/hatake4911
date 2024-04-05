@@ -13,6 +13,7 @@ def main():
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第三層",
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第四層",
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第五層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第六層",
     ]
 
     # 画像ファイルの選択
