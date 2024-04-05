@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
+import io
 
 # Function to swirl the image
 def swirl_image(image_array, strength=10, radius=1000, center_x=None, center_y=None):
@@ -47,7 +48,7 @@ def swirl_image(image_array, strength=10, radius=1000, center_x=None, center_y=N
 # Streamlit app
 st.title("写真を渦巻に変換")
 st.write("写真を渦巻状に変形させるアプリです。「いつ使うんだ！」とツッコまずにあたたかい目で見てあげてください。")
-st.write("※ダウンロード機能がありません。お手数ですがスクリーンショットしてください")
+st.write("※ダウンロード機能があります。お手数ですがスクリーンショットしてください")
 
 # File uploader
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
@@ -73,3 +74,12 @@ if uploaded_file is not None:
 
     # Display the original and processed images with adjustable width
     st.image([image, Image.fromarray(processed_image_array)], caption=["Original Image", "Swirled Image"], width=display_width)
+
+    # Download button
+    # Convert the processed image array back to Image object
+    processed_image = Image.fromarray(processed_image_array)
+    # Convert Image object to bytes
+    img_byte_array = io.BytesIO()
+    processed_image.save(img_byte_array, format='PNG')
+    img_byte_array = img_byte_array.getvalue()
+    st.download_button(label="処理された画像をダウンロード", data=img_byte_array, file_name='processed_image.png', mime='image/png')
