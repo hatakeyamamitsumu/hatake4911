@@ -48,7 +48,7 @@ def main():
             data = f.read()
         return data
 
-    if st.button("画像をダウンロード"):
+    if st.button("ダウンロードしますか？"):
         data = download_image(WMedImage)
         st.download_button(
             label="ここをクリックしてダウンロード",
