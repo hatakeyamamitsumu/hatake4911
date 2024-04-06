@@ -4,7 +4,7 @@ import os
 
 def main():
     st.title("標識（？）作成アプリ")
-    st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・。")
+    st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
 
     # 画像フォルダのパス
@@ -34,15 +34,19 @@ def main():
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(Image.open(os.path.join(folder, selected_image)))
 
-    ImgObjs = []
-    for img in uploaded_images:
-        ImgObj = img.copy()
-        ImgObj.thumbnail((ImgObj.size[0], ImgObj.size[1]))  # サイズの調整
-        ImgObjs.append(ImgObj)
+    # 他の画像のサイズに合わせて縮小拡大
+    max_width = max(img.size[0] for img in uploaded_images)
+    max_height = max(img.size[1] for img in uploaded_images)
+    for i, img in enumerate(uploaded_images):
+        width_ratio = max_width / img.size[0]
+        height_ratio = max_height / img.size[1]
+        resize_ratio = min(width_ratio, height_ratio)
+        new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
+        uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
-    WHs = [img.size for img in ImgObjs]
+    ImgObjs = uploaded_images
 
-    wmCanvas = Image.new('RGBA', max(WHs), (255, 255, 255, 0))  # 透かし画像の生成
+    wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
     for i, img in enumerate(ImgObjs):
         wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
 
