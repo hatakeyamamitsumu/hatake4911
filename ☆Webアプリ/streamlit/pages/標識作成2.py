@@ -23,7 +23,7 @@ def main():
     if uploaded_image is not None:
         ImgObj = Image.open(uploaded_image)
         ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
-        uploaded_images = [ImgObj]
+        uploaded_images = [center_align(ImgObj)]
 
     else:
         uploaded_images = []
@@ -32,7 +32,7 @@ def main():
     for folder in image_folders:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(Image.open(os.path.join(folder, selected_image)))
+        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
@@ -70,6 +70,13 @@ def main():
             file_name='合成された画像.png',
             mime='image/png'
         )
+
+def center_align(img):
+    width, height = img.size
+    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
+    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
+    new_img.paste(img, position)
+    return new_img
 
 if __name__ == '__main__':
     main()
