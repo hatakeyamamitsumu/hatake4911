@@ -39,7 +39,7 @@ def main():
 
         # Save transformed image with the same color space
         st.download_button(
-            label="ダウウンロードボタン",
+            label="ダウンロードボタン",
             data=cv2.imencode('.jpg', result)[1].tobytes(),
             file_name='Perspective_Transformed_Image.jpg',
             mime='image/jpg'
