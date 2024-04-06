@@ -44,8 +44,8 @@ def main():
         selected_images.append(Image.open(selected_image))
 
     # 他の画像のサイズに合わせて縦横比を変えずにリサイズ
-    max_width = max(img.size[0] for img in selected_images)
-    max_height = max(img.size[1] for img in selected_images)
+    max_width = max(img.size[0] for img in selected_images) if selected_images else 0
+    max_height = max(img.size[1] for img in selected_images) if selected_images else 0
     for i, img in enumerate(selected_images):
         width_ratio = max_width / img.size[0]
         height_ratio = max_height / img.size[1]
