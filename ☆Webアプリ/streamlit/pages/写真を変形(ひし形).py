@@ -13,7 +13,7 @@ def main():
     st.write("写真をひし形に変形させるアプリです。「いつ使うんだ！」とツッコまずにあったかい目で見てあげてください。")
     st.text("デフォルト値は1X=0.00,1Y=0.00,2X=1.00,2Y=0.00,3X=1.00,3Y=1.00,4X=0.00,4Y=1.00です。")
 
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    uploaded_file = st.file_uploader("写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
         # Load the image
@@ -24,7 +24,7 @@ def main():
         dst_pts = np.array([[image.shape[1] * default_values[i], image.shape[0] * default_values[i + 1]] for i in range(0, len(default_values), 2)], dtype=np.float32)
 
         # Allow users to interactively adjust destination points
-        st.subheader("Adjust Destination Points:")
+        st.subheader("写真の四隅の座標を変更してください:")
         for i in range(4):
             row = st.slider(f"Point {i + 1} X", 0.0, 1.0, default_values[i * 2], 0.01)
             col = st.slider(f"Point {i + 1} Y", 0.0, 1.0, default_values[i * 2 + 1], 0.01)
