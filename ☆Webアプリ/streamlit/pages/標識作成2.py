@@ -23,14 +23,9 @@ def main():
     if uploaded_image is not None:
         uploaded_image = Image.open(uploaded_image)
         uploaded_image = uploaded_image.convert('RGBA') if uploaded_image.mode == "RGB" else uploaded_image  # JPEGをRGBAに変換
-        max_width = max(img.size[0] for img in uploaded_images)
-        max_height = max(img.size[1] for img in uploaded_images)
-        resize_ratio = min(max_width / uploaded_image.size[0], max_height / uploaded_image.size[1])
-        new_size = (int(uploaded_image.size[0] * resize_ratio), int(uploaded_image.size[1] * resize_ratio))
-        uploaded_image = uploaded_image.resize(new_size, Image.ANTIALIAS)
-
+        uploaded_images = [uploaded_image]
     else:
-        uploaded_image = None
+        uploaded_images = []
 
     # 画像ファイルの選択
     image_files_list = []
@@ -53,9 +48,7 @@ def main():
         new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
         selected_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
-    ImgObjs = selected_images
-    if uploaded_image is not None:
-        ImgObjs.append(uploaded_image)
+    ImgObjs = selected_images + uploaded_images
 
     wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
     for i, img in enumerate(ImgObjs):
@@ -86,3 +79,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
