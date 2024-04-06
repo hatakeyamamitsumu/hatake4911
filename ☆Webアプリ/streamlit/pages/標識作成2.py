@@ -1,3 +1,4 @@
+User
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import os
@@ -21,33 +22,34 @@ def main():
     uploaded_image = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
     if uploaded_image is not None:
-        uploaded_img = Image.open(uploaded_image)
-        uploaded_img = uploaded_img.convert('RGBA') if uploaded_img.mode == "RGB" else uploaded_img  # JPEGをRGBAに変換
+        ImgObj = Image.open(uploaded_image)
+        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
+        uploaded_images = [ImgObj]
+
+    else:
+        uploaded_images = []
 
     # 画像ファイルの選択
-    selected_images = []
     for folder in image_folders:
         image_files = os.listdir(folder)
-        selected_image = st.selectbox("", [os.path.join(folder, image_file) for image_file in image_files], index=0)
-        selected_images.append(Image.open(selected_image))
+        selected_image = st.selectbox("", image_files, index=0)
+        uploaded_images.append(Image.open(os.path.join(folder, selected_image)))
 
-    # アップロードされた画像と他の画像のサイズを合わせる
-    max_width = max(img.size[0] for img in selected_images) if selected_images else 0
-    max_height = max(img.size[1] for img in selected_images) if selected_images else 0
+    # 他の画像のサイズに合わせて縮小拡大
+    max_width = max(img.size[0] for img in uploaded_images)
+    max_height = max(img.size[1] for img in uploaded_images)
+    for i, img in enumerate(uploaded_images):
+        width_ratio = max_width / img.size[0]
+        height_ratio = max_height / img.size[1]
+        resize_ratio = min(width_ratio, height_ratio)
+        new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
+        uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
-    if uploaded_image is not None:
-        uploaded_width, uploaded_height = uploaded_img.size
-        uploaded_ratio = max(max_width / uploaded_width, max_height / uploaded_height)
-        new_uploaded_size = (int(uploaded_width * uploaded_ratio), int(uploaded_height * uploaded_ratio))
-        uploaded_img = uploaded_img.resize(new_uploaded_size, Image.ANTIALIAS)
-        selected_images.append(uploaded_img)
+    ImgObjs = uploaded_images
 
     wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
-    y_offset = 0
-    for img in selected_images:
-        offset_x = (max_width - img.size[0]) // 2
-        wmCanvas.paste(img, (offset_x, y_offset), img)  # 透かし画像を貼り付け
-        y_offset += img.size[1]
+    for i, img in enumerate(ImgObjs):
+        wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
 
     WMedImage = wmCanvas  # 画像の合成
 
