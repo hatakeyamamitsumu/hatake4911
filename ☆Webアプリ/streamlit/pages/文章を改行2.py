@@ -53,7 +53,7 @@ def main():
                 elif split_text[i-1] == custom_word_before:
                     formatted_text.append("\n" + split_text[i])
                 # 任意の単語（後）の直後なら改行を追加
-                elif split_text[i] == custom_word_after:
+                elif split_text[i-1] == custom_word_after:
                     formatted_text.append(split_text[i] + "\n")
                 else:
                     formatted_text.append(split_text[i])
