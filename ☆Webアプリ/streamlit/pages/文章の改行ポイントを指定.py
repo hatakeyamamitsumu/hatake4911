@@ -2,7 +2,7 @@ import streamlit as st
 import re
 
 def main():
-    st.title("文章を指定の文字の前後で改行")
+    st.title("文章を選択した文字の前後で改行")
     st.write("文章を、選択した文字の前後で改行し、見やすくします。文章選別の前準備としてご利用ください")
 
     # アップロードされたテキストファイルを取得
