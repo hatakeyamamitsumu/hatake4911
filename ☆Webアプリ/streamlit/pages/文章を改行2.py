@@ -17,8 +17,11 @@ def main():
     st.write("**2：指定した文字の後で改行**")
     selected_periods = st.multiselect("改行用の文字を選択してください(複数選択可)", ["。", "．", ".", "、", ",", "」", ")", "）","＞",">","]","｝","}"])
 
-    # ユーザーが入力した任意の単語
-    custom_word = st.text_input("任意の単語を入力してください")
+    # ユーザーが入力した任意の単語（前）
+    custom_word_before = st.text_input("任意の単語（前）を入力してください")
+
+    # ユーザーが入力した任意の単語（後）
+    custom_word_after = st.text_input("任意の単語（後）を入力してください")
 
     # テキストファイルの内容を読み込み
     if uploaded_file is not None:
@@ -46,9 +49,12 @@ def main():
                 # 区切り文字の直前なら改行を追加
                 elif split_text[i] in selected_delimiters:
                     formatted_text.append("\n" + split_text[i])
-                # 任意の単語の直前なら改行を追加
-                elif split_text[i-1] == custom_word:
+                # 任意の単語（前）の直前なら改行を追加
+                elif split_text[i-1] == custom_word_before:
                     formatted_text.append("\n" + split_text[i])
+                # 任意の単語（後）の直後なら改行を追加
+                elif split_text[i] == custom_word_after:
+                    formatted_text.append(split_text[i] + "\n")
                 else:
                     formatted_text.append(split_text[i])
 
@@ -67,4 +73,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
