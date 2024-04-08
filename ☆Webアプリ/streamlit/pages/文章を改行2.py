@@ -1,5 +1,6 @@
 import streamlit as st
 import re
+import base64
 
 def main():
     st.title("文章を指定の文字の前後で改行")
@@ -59,12 +60,10 @@ def main():
             # ダウンロードファイルの内容
             content = "".join(formatted_text)
 
-            # ダウンロード処理
-            st.write("ダウンロードボタンがクリックされました！")
-            st.write("ファイルがダウンロードされました。")
-
-            with open(filename, "w", encoding="utf-8") as file:
-                file.write(content)
+            # Base64エンコード
+            b64 = base64.b64encode(content.encode()).decode()
+            href = f'<a href="data:file/txt;base64,{b64}" download="{filename}">ダウンロード</a>'
+            st.markdown(href, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
