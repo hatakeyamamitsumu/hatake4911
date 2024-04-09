@@ -7,24 +7,24 @@ def main():
 
     # アップロードされたテキストファイルを取得
     uploaded_file = st.file_uploader("テキストファイルをアップロードしてください")
-    # ユーザーが選択した区切り文字（複数選択可）
+
+    # ユーザーが入力した区切り文字（スペースで区切って複数入力）
     st.write("**1：指定した文字の前で改行**")
-    selected_delimiters = st.multiselect("改行用の文字を選択してください(複数選択可)", ["「","(","（","＜","<","[","｛","{"])
-    # ユーザーが選択したピリオド（複数選択可）
+    custom_delimiters = st.text_input("改行用の文字をスペースで区切って入力してください")
+
+    # ユーザーが入力したピリオド（スペースで区切って複数入力）
     st.write("**2：指定した文字の後で改行**")
-    selected_periods = st.multiselect("改行用の文字を選択してください(複数選択可)", ["。", "．", ".", "、", ",", "」", ")", "）","＞",">","]","｝","}"])
-
-
+    custom_periods = st.text_input("改行用の文字をスペースで区切って入力してください")
 
     # テキストファイルの内容を読み込み
     if uploaded_file is not None:
         text = uploaded_file.read().decode("utf-8")
 
         # 選択したピリオドを正規表現パターンに組み込む
-        period_pattern = "|".join(map(re.escape, selected_periods))
+        period_pattern = "|".join(map(re.escape, custom_periods.split()))
 
         # 選択した区切り文字を正規表現パターンに組み込む
-        delimiter_pattern = "|".join(map(re.escape, selected_delimiters))
+        delimiter_pattern = "|".join(map(re.escape, custom_delimiters.split()))
 
         # テキストファイルを選択したピリオドと区切り文字で分割
         split_text = re.split(f"({period_pattern}|{delimiter_pattern})", text)
@@ -37,10 +37,10 @@ def main():
                 formatted_text.append(split_text[i])
             else:
                 # ピリオドの直後なら改行を追加
-                if split_text[i-1] in selected_periods:
+                if split_text[i-1] in custom_periods.split():
                     formatted_text.append("\n" + split_text[i])
                 # 区切り文字の直前なら改行を追加
-                elif split_text[i] in selected_delimiters:
+                elif split_text[i] in custom_delimiters.split():
                     formatted_text.append("\n" + split_text[i])
                 else:
                     formatted_text.append(split_text[i])
