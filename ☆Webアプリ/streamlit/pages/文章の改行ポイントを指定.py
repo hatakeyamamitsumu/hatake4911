@@ -9,11 +9,11 @@ def main():
     uploaded_file = st.file_uploader("テキストファイルをアップロードしてください")
 
     # ユーザーが入力した区切り文字（スペースで区切って複数入力）
-    st.text("指定した文字の後ろで改行します。")
+    st.text("#1：指定した文字の後ろで改行します。#")
     custom_delimiters = st.text_input("改行用の文字をスペースで区切って入力してください", key="delimiters")
 
     # ユーザーが入力したピリオド（スペースで区切って複数入力）
-    st.text("指定した文字の前で改行します。")
+    st.text("#2：指定した文字の前で改行します。#")
     custom_periods = st.text_input("改行用の文字をスペースで区切って入力してください", key="periods")
 
     # テキストファイルの内容を読み込み
