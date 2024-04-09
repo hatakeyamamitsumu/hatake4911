@@ -10,12 +10,12 @@ def main():
 
     # ユーザーが入力した区切り文字（スペースで区切って複数入力）
     st.write("1：指定した文字の後ろで改行します。")
-    st.write("例：」　｝　.　． 。")
+    st.write("例：」　｝　]　.　． 。")
     custom_delimiters = st.text_input("改行したい文字をスペースで区切って入力してください", key="delimiters")
 
     # ユーザーが入力したピリオド（スペースで区切って複数入力）
     st.write("2：指定した文字の手前で改行します。")
-    st.write("例：「　｛　結論　その他　")
+    st.write("例：「　｛ [　結論　その他　")
     custom_periods = st.text_input("改行したい文字をスペースで区切って入力してください", key="periods")
 
     # テキストファイルの内容を読み込み
