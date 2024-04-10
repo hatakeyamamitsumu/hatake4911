@@ -23,13 +23,12 @@ def main():
     # アップロードされた画像
     uploaded_image = st.file_uploader("写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
+    # uploaded_images を初期化
+    uploaded_images = []
+
     if uploaded_image is not None:
         if st.checkbox("背景を切り抜く"):
             uploaded_image = remove_background(uploaded_image)
-            uploaded_images = []
-
-    else:
-        uploaded_images = []
 
     # 画像ファイルの選択
     for folder in image_folders:
@@ -96,5 +95,3 @@ def center_align(img):
 
 if __name__ == '__main__':
     main()
-
-  
