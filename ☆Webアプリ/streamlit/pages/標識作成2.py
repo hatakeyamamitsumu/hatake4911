@@ -2,18 +2,11 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-def center_align(img):
-    width, height = img.size
-    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
-    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
-    new_img.paste(img, position)
-    return new_img
-
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
-    st.write("それぞれのアップローダーからお好みの絵を選択して重ねてください。")
-
+    st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
+    st.write("写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
@@ -27,6 +20,7 @@ def main():
     # アップロードされた画像
     uploaded_image1 = st.file_uploader("1つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
     uploaded_image2 = st.file_uploader("2つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image3 = st.file_uploader("3つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
     if uploaded_image1 is not None:
         ImgObj1 = Image.open(uploaded_image1)
@@ -34,13 +28,22 @@ def main():
         uploaded_images = [center_align(ImgObj1)]
 
     else:
-        uploaded_images = [None]
+        uploaded_images = []
 
     # 2つ目のアップローダーも同じように処理
     if uploaded_image2 is not None:
         ImgObj2 = Image.open(uploaded_image2)
         ImgObj2 = ImgObj2.convert('RGBA') if ImgObj2.mode == "RGB" else ImgObj2  # JPEGをRGBAに変換
         uploaded_images.append(center_align(ImgObj2))
+
+    else:
+        uploaded_images.append(None)
+
+    # 3つ目のアップローダー
+    if uploaded_image3 is not None:
+        ImgObj3 = Image.open(uploaded_image3)
+        ImgObj3 = ImgObj3.convert('RGBA') if ImgObj3.mode == "RGB" else ImgObj3  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj3))
 
     else:
         uploaded_images.append(None)
@@ -61,6 +64,11 @@ def main():
         new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
         uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
+    # 4番目の画像を最前面に配置
+    uploaded_images[3], uploaded_images[0] = uploaded_images[0], uploaded_images
+    # 4番目の画像を最前面に配置
+    uploaded_images[3], uploaded_images[0] = uploaded_images[0], uploaded_images[3]
+
     ImgObjs = uploaded_images
 
     wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
@@ -71,5 +79,30 @@ def main():
     WMedImage = wmCanvas  # 画像の合成
 
     # 画像を表示
-    st.image(WMedImage, caption='合成された画像
+    st.image(WMedImage, caption='合成された画像')
 
+    # 画像をダウンロードするボタン
+    def download_image(image, filename='合成された画像.png'):
+        image.save(filename, 'PNG')
+        with open(filename, 'rb') as f:
+            data = f.read()
+        return data
+
+    if st.button("ダウンロードしますか？"):
+        data = download_image(WMedImage)
+        st.download_button(
+            label="ここをクリックしてダウンロード",
+            data=data,
+            file_name='合成された画像.png',
+            mime='image/png'
+        )
+
+def center_align(img):
+    width, height = img.size
+    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
+    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
+    new_img.paste(img, position)
+    return new_img
+
+if __name__ == '__main__':
+    main()
