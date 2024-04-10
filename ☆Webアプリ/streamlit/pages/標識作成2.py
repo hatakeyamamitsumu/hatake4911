@@ -75,12 +75,17 @@ if len(uploaded_images) == 0:
     max_height = max(img.size[1] for img in filtered_images)
 
     # 画像のサイズに合わせて縮小拡大
-    for i, img in enumerate(uploaded_images):
+# 画像のサイズに合わせて縮小拡大
+for i, img in enumerate(uploaded_images):
+    # 画像が選択されている場合のみ処理
+    if img is not None:
         width_ratio = max_width / img.size[0]
         height_ratio = max_height / img.size[1]
         resize_ratio = min(width_ratio, height_ratio)
         new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
         uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
+
+
     ImgObjs = uploaded_images
 
     wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
