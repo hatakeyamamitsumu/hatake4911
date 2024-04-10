@@ -29,16 +29,14 @@ def main():
     if uploaded_image is not None:
         if st.checkbox("背景を切り抜く"):
             uploaded_image = remove_background(uploaded_image)
+        # 切り抜いた画像を一番上に挿入
+        uploaded_images.insert(0, uploaded_image)
 
     # 画像ファイルの選択
     for folder in image_folders:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
-
-    # アップロードされた画像がある場合は、その画像を一番上のレイヤーに挿入し、他の画像と合成する前に重ねる
-    if uploaded_image is not None:
-        uploaded_images.insert(0, uploaded_image)
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
