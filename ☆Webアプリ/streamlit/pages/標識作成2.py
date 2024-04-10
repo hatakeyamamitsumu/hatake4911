@@ -73,7 +73,7 @@ def main():
 
     # 最大幅と最大高さを取得
     max_width = max(img.size[0] for img in filtered_images)
-     max_height = max(img.size[1] for img in filtered_images)
+    max_height = max(img.size[1] for img in filtered_images)
     # 画像のサイズに合わせて縮小拡大
     for i, img in enumerate(uploaded_images):
         width_ratio = max_width / img.size[0]
