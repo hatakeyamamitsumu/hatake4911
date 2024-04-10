@@ -26,10 +26,7 @@ def main():
     if uploaded_image is not None:
         if st.checkbox("背景を切り抜く"):
             uploaded_image = remove_background(uploaded_image)
-            
-        ImgObj = Image.open(uploaded_image)
-        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
-        uploaded_images = [center_align(ImgObj)]
+            uploaded_images = []
 
     else:
         uploaded_images = []
@@ -39,6 +36,10 @@ def main():
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+
+    # アップロードされた画像があれば、その画像を4番目の重ねる
+    if uploaded_image is not None:
+        uploaded_images.insert(3, Image.open(BytesIO(uploaded_image)))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
