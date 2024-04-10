@@ -2,6 +2,13 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import os
 
+def center_align(img):
+    width, height = img.size
+    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
+    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
+    new_img.paste(img, position)
+    return new_img
+
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
@@ -29,6 +36,7 @@ def main():
     else:
         uploaded_images = [None]
 
+    # 2つ目のアップローダーも同じように処理
     if uploaded_image2 is not None:
         ImgObj2 = Image.open(uploaded_image2)
         ImgObj2 = ImgObj2.convert('RGBA') if ImgObj2.mode == "RGB" else ImgObj2  # JPEGをRGBAに変換
@@ -63,15 +71,5 @@ def main():
     WMedImage = wmCanvas  # 画像の合成
 
     # 画像を表示
-    st.image(WMedImage, caption='合成された画像')
+    st.image(WMedImage, caption='合成された画像
 
-    # 画像をダウンロードするボタン
-    def download_image(image, filename='合成された画像.png'):
-        image.save(filename, 'PNG')
-        with open(filename, 'rb') as f:
-            data = f.read()
-        return data
-
-    if st.button("ダウンロードしますか？"):
-        data = download_image(WMedImage)
-        st.download_button
