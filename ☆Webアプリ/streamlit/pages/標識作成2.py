@@ -5,52 +5,73 @@ import os
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
-    st.write("写真をアップロードして、4番目の層に重ねてください。")
+    st.write("それぞれのアップローダーからお好みの絵を選択して重ねてください。")
+
+    # 画像フォルダのパス
+    image_folders = [
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第二層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第三層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第四層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第五層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第六層",
+    ]
 
     # アップロードされた画像
-    uploaded_image = st.file_uploader("写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image1 = st.file_uploader("1つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image2 = st.file_uploader("2つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
-    if uploaded_image is not None:
-        ImgObj = Image.open(uploaded_image)
-        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
+    if uploaded_image1 is not None:
+        ImgObj1 = Image.open(uploaded_image1)
+        ImgObj1 = ImgObj1.convert('RGBA') if ImgObj1.mode == "RGB" else ImgObj1  # JPEGをRGBAに変換
+        uploaded_images = [center_align(ImgObj1)]
 
-        # 4番目の層の画像を取得
-        fourth_layer_image_path = os.path.join("/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第四層", 
-                                             random.choice(os.listdir("/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第四層")))
-        fourth_layer_image = Image.open(fourth_layer_image_path)
+    else:
+        uploaded_images = [None]
 
-        # 画像サイズを合わせる
-        width_ratio = fourth_layer_image.size[0] / ImgObj.size[0]
-        height_ratio = fourth_layer_image.size[1] / ImgObj.size[1]
+    if uploaded_image2 is not None:
+        ImgObj2 = Image.open(uploaded_image2)
+        ImgObj2 = ImgObj2.convert('RGBA') if ImgObj2.mode == "RGB" else ImgObj2  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj2))
+
+    else:
+        uploaded_images.append(None)
+
+    # 画像ファイルの選択
+    for folder in image_folders:
+        image_files = os.listdir(folder)
+        selected_image = st.selectbox("", image_files, index=0)
+        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+
+    # 他の画像のサイズに合わせて縮小拡大
+    max_width = max(img.size[0] for img in uploaded_images)
+    max_height = max(img.size[1] for img in uploaded_images)
+    for i, img in enumerate(uploaded_images):
+        width_ratio = max_width / img.size[0]
+        height_ratio = max_height / img.size[1]
         resize_ratio = min(width_ratio, height_ratio)
-        new_size = (int(ImgObj.size[0] * resize_ratio), int(ImgObj.size[1] * resize_ratio))
-        ImgObj = ImgObj.resize(new_size, Image.ANTIALIAS)
+        new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
+        uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
-        # 画像を重ねる
-        wmCanvas = Image.new('RGBA', fourth_layer_image.size, (255, 255, 255, 0))  # 透かし画像の生成
-        wmCanvas.paste(fourth_layer_image, (0, 0), fourth_layer_image)
-        wmCanvas.paste(ImgObj, (0, 0), ImgObj)  # 透かし画像を貼り付け
+    ImgObjs = uploaded_images
 
-        WMedImage = wmCanvas  # 画像の合成
+    wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
+    for i, img in enumerate(ImgObjs):
+        if img is not None:
+            wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
 
-        # 画像を表示
-        st.image(WMedImage, caption='合成された画像')
+    WMedImage = wmCanvas  # 画像の合成
 
-        # 画像をダウンロードするボタン
-        def download_image(image, filename='合成された画像.png'):
-            image.save(filename, 'PNG')
-            with open(filename, 'rb') as f:
-                data = f.read()
-            return data
+    # 画像を表示
+    st.image(WMedImage, caption='合成された画像')
 
-        if st.button("ダウンロードしますか？"):
-            data = download_image(WMedImage)
-            st.download_button(
-                label="ここをクリックしてダウンロード",
-                data=data,
-                file_name='合成された画像.png',
-                mime='image/png'
-            )
+    # 画像をダウンロードするボタン
+    def download_image(image, filename='合成された画像.png'):
+        image.save(filename, 'PNG')
+        with open(filename, 'rb') as f:
+            data = f.read()
+        return data
 
-if __name__ == '__main__':
-    main()
+    if st.button("ダウンロードしますか？"):
+        data = download_image(WMedImage)
+        st.download_button
