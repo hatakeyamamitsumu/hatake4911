@@ -37,9 +37,9 @@ def main():
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
-    # アップロードされた画像があれば、その画像を4番目の重ねる
+    # アップロードされた画像がある場合は、その画像を下から4番目に挿入し、他の画像と合成する前に4番目の位置に重ねる
     if uploaded_image is not None:
-        uploaded_images.insert(3, Image.open(BytesIO(uploaded_image)))
+        uploaded_images.insert(-3, Image.open(BytesIO(uploaded_image)))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
