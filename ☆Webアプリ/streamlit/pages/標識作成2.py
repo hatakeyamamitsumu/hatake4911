@@ -49,7 +49,16 @@ def main():
     for folder in image_folders:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+        # None を除外
+        if selected_image != "":
+            uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+
+# 画像が選択されていない場合の処理
+if len(uploaded_images) == 0:
+    # デフォルト画像を追加
+    uploaded_images.append(center_align(Image.open("/path/to/default_image.png")))
+
+
 
     # 4番目の画像を最前面に配置
     uploaded_images[3], uploaded_images[0] = uploaded_images[0], uploaded_images[3]
