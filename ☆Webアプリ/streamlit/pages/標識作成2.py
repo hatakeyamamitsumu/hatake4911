@@ -39,7 +39,7 @@ def main():
 
     # アップロードされた画像がある場合は、その画像を第四層の画像と同じレベルに挿入し、他の画像と合成する前に重ねる
     if uploaded_image is not None:
-        uploaded_images.insert(3, Image.open(BytesIO(uploaded_image)))
+        uploaded_images.insert(2, Image.open(BytesIO(uploaded_image)))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
