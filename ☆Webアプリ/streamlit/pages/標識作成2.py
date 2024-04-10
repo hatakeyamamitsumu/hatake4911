@@ -2,6 +2,13 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 import os
 
+def center_align(img):
+    width, height = img.size
+    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
+    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
+    new_img.paste(img, position)
+    return new_img
+
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
@@ -54,20 +61,26 @@ def main():
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
-    # 他の画像のサイズに合わせて縮小拡大
-    max_width = max(img.size[0] for img in uploaded_images)
-    max_height = max(img.size[1] for img in uploaded_images)
+    # 4番目の画像を最前面に配置
+    uploaded_images[3], uploaded_images[0] = uploaded_images[0], uploaded_images[3]
+
+    # None を除いた画像のリストを取得
+    filtered_images = [img for img in uploaded_images if img is not None]
+
+    if not filtered_images:
+        st.error("Please upload at least one image.")
+        return
+
+    # 最大幅と最大高さを取得
+    max_width = max(img.size[0] for img in filtered_images)
+     max_height = max(img.size[1] for img in filtered_images)
+    # 画像のサイズに合わせて縮小拡大
     for i, img in enumerate(uploaded_images):
         width_ratio = max_width / img.size[0]
         height_ratio = max_height / img.size[1]
         resize_ratio = min(width_ratio, height_ratio)
         new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
         uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
-
-    # 4番目の画像を最前面に配置
-    uploaded_images[3], uploaded_images[0] = uploaded_images[0], uploaded_images
-    # 4番目の画像を最前面に配置
-    uploaded_images[3], uploaded_images[0] = uploaded_images[0], uploaded_images[3]
 
     ImgObjs = uploaded_images
 
@@ -96,13 +109,6 @@ def main():
             file_name='合成された画像.png',
             mime='image/png'
         )
-
-def center_align(img):
-    width, height = img.size
-    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
-    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
-    new_img.paste(img, position)
-    return new_img
 
 if __name__ == '__main__':
     main()
