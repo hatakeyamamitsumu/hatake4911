@@ -27,7 +27,6 @@ def main():
     # アップロードされた画像
     uploaded_image1 = st.file_uploader("1つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
     uploaded_image2 = st.file_uploader("2つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
-    uploaded_image3 = st.file_uploader("3つ目の写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
     if uploaded_image1 is not None:
         ImgObj1 = Image.open(uploaded_image1)
@@ -42,15 +41,6 @@ def main():
         ImgObj2 = Image.open(uploaded_image2)
         ImgObj2 = ImgObj2.convert('RGBA') if ImgObj2.mode == "RGB" else ImgObj2  # JPEGをRGBAに変換
         uploaded_images.append(center_align(ImgObj2))
-
-    else:
-        uploaded_images.append(None)
-
-    # 3つ目のアップローダー
-    if uploaded_image3 is not None:
-        ImgObj3 = Image.open(uploaded_image3)
-        ImgObj3 = ImgObj3.convert('RGBA') if ImgObj3.mode == "RGB" else ImgObj3  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj3))
 
     else:
         uploaded_images.append(None)
@@ -74,6 +64,7 @@ def main():
     # 最大幅と最大高さを取得
     max_width = max(img.size[0] for img in filtered_images)
     max_height = max(img.size[1] for img in filtered_images)
+
     # 画像のサイズに合わせて縮小拡大
     for i, img in enumerate(uploaded_images):
         width_ratio = max_width / img.size[0]
@@ -81,7 +72,6 @@ def main():
         resize_ratio = min(width_ratio, height_ratio)
         new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
         uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
-
     ImgObjs = uploaded_images
 
     wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
