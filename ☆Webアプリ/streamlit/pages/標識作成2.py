@@ -29,48 +29,50 @@ def main():
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         uploaded_images.append(center_align(ImgObj_top))
 
-    # 画像ファイルの選択
-    for folder in image_folders:
-        image_files = os.listdir(folder)
-        selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+        # 画像ファイルの選択
+        for folder in image_folders:
+            image_files = os.listdir(folder)
+            selected_image = st.selectbox("", image_files, index=0)
+            uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
-    # 他の画像のサイズに合わせて縮小拡大
-    max_width = max(img.size[0] for img in uploaded_images)
-    max_height = max(img.size[1] for img in uploaded_images)
-    for i, img in enumerate(uploaded_images):
-        width_ratio = max_width / img.size[0]
-        height_ratio = max_height / img.size[1]
-        resize_ratio = min(width_ratio, height_ratio)
-        new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
-        uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
+        # 他の画像のサイズに合わせて縮小拡大
+        max_width = max(img.size[0] for img in uploaded_images)
+        max_height = max(img.size[1] for img in uploaded_images)
+        for i, img in enumerate(uploaded_images):
+            width_ratio = max_width / img.size[0]
+            height_ratio = max_height / img.size[1]
+            resize_ratio = min(width_ratio, height_ratio)
+            new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
+            uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
-    ImgObjs = uploaded_images
+        ImgObjs = uploaded_images
 
-    wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
-    for i, img in enumerate(ImgObjs):
-        wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
+        wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
+        for i, img in enumerate(ImgObjs):
+            wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
 
-    WMedImage = wmCanvas  # 画像の合成
+        WMedImage = wmCanvas  # 画像の合成
 
-    # 画像を表示
-    st.image(WMedImage, caption='合成された画像')
+        # 画像を表示
+        st.image(WMedImage, caption='合成された画像')
 
-    # 画像をダウンロードするボタン
-    def download_image(image, filename='合成された画像.png'):
-        image.save(filename, 'PNG')
-        with open(filename, 'rb') as f:
-            data = f.read()
-        return data
+        # 画像をダウンロードするボタン
+        def download_image(image, filename='合成された画像.png'):
+            image.save(filename, 'PNG')
+            with open(filename, 'rb') as f:
+                data = f.read()
+            return data
 
-    if st.button("ダウンロードしますか？"):
-        data = download_image(WMedImage)
-        st.download_button(
-            label="ここをクリックしてダウンロード",
-            data=data,
-            file_name='合成された画像.png',
-            mime='image/png'
-        )
+        if st.button("ダウンロードしますか？"):
+            data = download_image(WMedImage)
+            st.download_button(
+                label="ここをクリックしてダウンロード",
+                data=data,
+                file_name='合成された画像.png',
+                mime='image/png'
+            )
+    else:
+        st.warning("上に重ねる写真をアップロードしてください。")
 
 def center_align(img):
     width, height = img.size
