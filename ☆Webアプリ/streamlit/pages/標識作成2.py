@@ -30,9 +30,9 @@ def main():
         ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
         uploaded_images.append(center_align(ImgObj_bottom))
 
-    # 画像ファイルの選択（第四層）
+    # 画像ファイルの選択（第四層以外）
     for folder in image_folders:
-        if folder.endswith("第四層"):
+        if not folder.endswith("第四層"):
             image_files = os.listdir(folder)
             selected_image = st.selectbox("", image_files, index=0)
             uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
