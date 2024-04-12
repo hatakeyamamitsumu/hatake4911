@@ -126,3 +126,5 @@ def remove_background(image):
 
 if __name__ == '__main__':
     main()
+
+       
