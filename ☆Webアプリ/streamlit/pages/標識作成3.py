@@ -2,6 +2,7 @@ import streamlit as st
 from rembg import remove
 from PIL import Image
 from io import BytesIO
+import os  
 
 def main():
     st.title("標識（？）作成アプリ")
