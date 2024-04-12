@@ -46,8 +46,6 @@ def main():
     if uploaded_image_bottom is not None:
         ImgObj_bottom = Image.open(uploaded_image_bottom)
         ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        # Remove background from the uploaded image
-        ImgObj_bottom = remove_background(ImgObj_bottom)
         uploaded_images.insert(0, center_align(ImgObj_bottom))  # 修正点: 一番上に追加する
 
     # 他の画像のサイズに合わせて縮小拡大
@@ -115,5 +113,3 @@ def remove_background(image):
 
 if __name__ == '__main__':
     main()
-
- 
