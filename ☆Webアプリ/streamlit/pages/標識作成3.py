@@ -33,10 +33,10 @@ def main():
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         # Remove background from the uploaded image
         ImgObj_top = remove_background(ImgObj_top)
-        uploaded_images.insert(0, center_align(ImgObj_top))  # 修正点: 第六層より手前に追加する
+        uploaded_images.append(center_align(ImgObj_top))  # 修正点: 第六層より手前に追加する
 
     # 画像ファイルの選択（第四層以外）
-    for folder in image_folders:
+    for folder in image_folders[::-1]:  # 逆順にループ
         if not folder.endswith("第四層") and not folder.endswith("第六層"):  # 第四層と第六層を除外
             image_files = os.listdir(folder)
             selected_image = st.selectbox("", image_files, index=0)
@@ -46,7 +46,7 @@ def main():
     if uploaded_image_bottom is not None:
         ImgObj_bottom = Image.open(uploaded_image_bottom)
         ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_bottom))  # 修正点: 一番奥に追加する
+        uploaded_images.insert(0, center_align(ImgObj_bottom))  # 修正点: 一番奥に追加する
 
     # 第六層の画像を追加
     for folder in image_folders:
