@@ -103,19 +103,25 @@ def remove_background(image):
     # Convert image to RGBA mode if not already
     if image.mode != "RGBA":
         image = image.convert("RGBA")
-    
-    # Convert image to byte array
-    image_byte_array = BytesIO()
-    image.save(image_byte_array, format="PNG")
-    image_byte_array.seek(0)
-    
-    # Remove background using rembg library
-    image_with_bg_removed_byte_array = remove(image_byte_array.getvalue())
-    
-    # Open image from byte array
-    image_with_bg_removed = Image.open(BytesIO(image_with_bg_removed_byte_array))
-    
-    return image_with_bg_removed
+
+    # 切り抜き加工を行うのは2番目のアップローダーでアップロードされた画像のみ
+    # 上に重ねる画像がアップロードされた場合にのみ処理を実行する
+    uploaded_image_top = st.file_uploader("上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    if uploaded_image_top is not None:
+        # Convert image to byte array
+        image_byte_array = BytesIO()
+        image.save(image_byte_array, format="PNG")
+        image_byte_array.seek(0)
+        
+        # Remove background using rembg library
+        image_with_bg_removed_byte_array = remove(image_byte_array.getvalue())
+        
+        # Open image from byte array
+        image_with_bg_removed = Image.open(BytesIO(image_with_bg_removed_byte_array))
+        
+        return image_with_bg_removed
+
+    return image
 
 
 if __name__ == '__main__':
