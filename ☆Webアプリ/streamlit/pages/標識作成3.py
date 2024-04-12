@@ -1,9 +1,8 @@
 import streamlit as st
 from PIL import Image
-import os
+import os  # os モジュールを追加
 from rembg import remove
 from io import BytesIO
-
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
@@ -26,20 +25,6 @@ def main():
 
     # 画像リストの初期化
     uploaded_images = []
-    # 下に重ねる画像がアップロードされた場合
-    if uploaded_image_bottom is not None:
-        ImgObj_bottom = Image.open(uploaded_image_bottom)
-        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_bottom))  # 修正点: 一番奥に追加する
-
-
-    # 画像ファイルの選択（第四層以外）
-    for folder in image_folders:
-        if not folder.endswith("第四層") and not folder.endswith("第六層"):  # 第四層と第六層を除外
-            image_files = os.listdir(folder)
-            selected_image = st.selectbox("", image_files, index=0)
-            uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
-
 
     # 上に重ねる画像がアップロードされた場合
     if uploaded_image_top is not None:
@@ -47,13 +32,22 @@ def main():
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         # Remove background from the uploaded image
         ImgObj_top = remove_background(ImgObj_top)
-        uploaded_images.insert(0, center_align(ImgObj_top))  # 修正点: 第六層の手前に追加する
-    # 第六層の画像を追加
+        uploaded_images.append(center_align(ImgObj_top))  # 修正点: 一番下に追加する
+
+    # 画像ファイルの選択（第四層以外）
     for folder in image_folders:
-        if folder.endswith("第六層"):  # 第六層の画像を追加
+        if not folder.endswith("第四層"):
             image_files = os.listdir(folder)
             selected_image = st.selectbox("", image_files, index=0)
             uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+
+    # 下に重ねる画像がアップロードされた場合
+    if uploaded_image_bottom is not None:
+        ImgObj_bottom = Image.open(uploaded_image_bottom)
+        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
+        # Remove background from the uploaded image
+        ImgObj_bottom = remove_background(ImgObj_bottom)
+        uploaded_images.insert(0, center_align(ImgObj_bottom))  # 修正点: 一番上に追加する
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
@@ -103,24 +97,19 @@ def remove_background(image):
     # Convert image to RGBA mode if not already
     if image.mode != "RGBA":
         image = image.convert("RGBA")
-
-    # 切り抜き加工を行うのは2番目のアップローダーでアップロードされた画像のみ
-    # 上に重ねる画像がアップロードされた場合にのみ処理を実行する
-    if image is not None:
-        # Convert image to byte array
-        image_byte_array = BytesIO()
-        image.save(image_byte_array, format="PNG")
-        image_byte_array.seek(0)
-        
-        # Remove background using rembg library
-        image_with_bg_removed_byte_array = remove(image_byte_array.getvalue())
-        
-        # Open image from byte array
-        image_with_bg_removed = Image.open(BytesIO(image_with_bg_removed_byte_array))
-        
-        return image_with_bg_removed
-
-    return image
+    
+    # Convert image to byte array
+    image_byte_array = BytesIO()
+    image.save(image_byte_array, format="PNG")
+    image_byte_array.seek(0)
+    
+    # Remove background using rembg library
+    image_with_bg_removed_byte_array = remove(image_byte_array.getvalue())
+    
+    # Open image from byte array
+    image_with_bg_removed = Image.open(BytesIO(image_with_bg_removed_byte_array))
+    
+    return image_with_bg_removed
 
 
 if __name__ == '__main__':
