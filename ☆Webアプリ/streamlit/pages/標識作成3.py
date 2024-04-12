@@ -1,3 +1,9 @@
+import streamlit as st
+from PIL import Image
+import os  # os モジュールを追加
+from rembg import remove
+from io import BytesIO
+
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
