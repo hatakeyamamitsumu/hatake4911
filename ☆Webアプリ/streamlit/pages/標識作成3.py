@@ -28,20 +28,20 @@ def main():
     # 画像リストの初期化
     uploaded_images = []
 
-    # 画像ファイルの選択（第四層以外）
-    for folder in image_folders:
-        if not folder.endswith("第四層"):
-            image_files = os.listdir(folder)
-            selected_image = st.selectbox("", image_files, index=0)
-            uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
-
     # 上に重ねる画像がアップロードされた場合
     if uploaded_image_top is not None:
         ImgObj_top = Image.open(uploaded_image_top)
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         # Remove background from the uploaded image
         ImgObj_top = remove_background(ImgObj_top)
-        uploaded_images.insert(0, center_align(ImgObj_top))  # 修正点: 一番上に追加する
+        uploaded_images.append(center_align(ImgObj_top))  # 修正点: 一番上に追加する
+
+    # 画像ファイルの選択（第四層以外）
+    for folder in image_folders:
+        if not folder.endswith("第四層"):
+            image_files = os.listdir(folder)
+            selected_image = st.selectbox("", image_files, index=0)
+            uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
     # 下に重ねる画像がアップロードされた場合
     if uploaded_image_bottom is not None:
