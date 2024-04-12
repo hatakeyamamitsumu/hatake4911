@@ -18,18 +18,18 @@ def main():
     ]
 
     # 画像アップローダー
-    uploaded_image_bottom = st.file_uploader("下に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
-    uploaded_image_third_layer = st.file_uploader("３番目のリストから選択された画像の上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
     uploaded_image_top = st.file_uploader("上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image_third_layer = st.file_uploader("３番目のリストから選択された画像の上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image_bottom = st.file_uploader("下に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
     # 画像リストの初期化
     uploaded_images = []
 
-    # 下に重ねる画像がアップロードされた場合
-    if uploaded_image_bottom is not None:
-        ImgObj_bottom = Image.open(uploaded_image_bottom)
-        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_bottom))
+    # ３番目のリストから選択された画像の上に重ねる画像がアップロードされた場合
+    if uploaded_image_third_layer is not None:
+        ImgObj_third_layer = Image.open(uploaded_image_third_layer)
+        ImgObj_third_layer = ImgObj_third_layer.convert('RGBA') if ImgObj_third_layer.mode == "RGB" else ImgObj_third_layer  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj_third_layer))
 
     # 画像ファイルの選択（第四層以外）
     for folder in image_folders:
@@ -38,17 +38,17 @@ def main():
             selected_image = st.selectbox("", image_files, index=0)
             uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
-    # ３番目のリストから選択された画像の上に重ねる画像がアップロードされた場合
-    if uploaded_image_third_layer is not None:
-        ImgObj_third_layer = Image.open(uploaded_image_third_layer)
-        ImgObj_third_layer = ImgObj_third_layer.convert('RGBA') if ImgObj_third_layer.mode == "RGB" else ImgObj_third_layer  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_third_layer))
-
     # 上に重ねる画像がアップロードされた場合
     if uploaded_image_top is not None:
         ImgObj_top = Image.open(uploaded_image_top)
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         uploaded_images.append(center_align(ImgObj_top))
+
+    # 下に重ねる画像がアップロードされた場合
+    if uploaded_image_bottom is not None:
+        ImgObj_bottom = Image.open(uploaded_image_bottom)
+        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj_bottom))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
