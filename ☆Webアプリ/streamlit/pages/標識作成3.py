@@ -97,13 +97,19 @@ def remove_background(image):
     if image.mode != "RGBA":
         image = image.convert("RGBA")
     
+    # Convert image to byte array
+    image_byte_array = BytesIO()
+    image.save(image_byte_array, format="PNG")
+    image_byte_array.seek(0)
+    
     # Remove background using rembg library
-    image_data = BytesIO()
-    image.save(image_data, format="PNG")
-    image_data.seek(0)
-    image_with_bg_removed = Image.open(remove(image_data))
+    image_with_bg_removed_byte_array = remove(image_byte_array.getvalue())
+    
+    # Open image from byte array
+    image_with_bg_removed = Image.open(BytesIO(image_with_bg_removed_byte_array))
     
     return image_with_bg_removed
+
 
 if __name__ == '__main__':
     main()
