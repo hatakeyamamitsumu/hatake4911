@@ -106,8 +106,7 @@ def remove_background(image):
 
     # 切り抜き加工を行うのは2番目のアップローダーでアップロードされた画像のみ
     # 上に重ねる画像がアップロードされた場合にのみ処理を実行する
-    uploaded_image_top = st.file_uploader("上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
-    if uploaded_image_top is not None:
+    if image is not None:
         # Convert image to byte array
         image_byte_array = BytesIO()
         image.save(image_byte_array, format="PNG")
@@ -122,7 +121,6 @@ def remove_background(image):
         return image_with_bg_removed
 
     return image
-
 
 if __name__ == '__main__':
     main()
