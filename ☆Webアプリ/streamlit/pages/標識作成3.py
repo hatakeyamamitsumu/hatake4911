@@ -1,9 +1,3 @@
-import streamlit as st
-from rembg import remove
-from PIL import Image
-from io import BytesIO
-import os  
-
 def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
@@ -34,19 +28,19 @@ def main():
             selected_image = st.selectbox("", image_files, index=0)
             uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
+    # 下に重ねる画像がアップロードされた場合
+    if uploaded_image_bottom is not None:
+        ImgObj_bottom = Image.open(uploaded_image_bottom)
+        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj_bottom))
+
     # 上に重ねる画像がアップロードされた場合
     if uploaded_image_top is not None:
         ImgObj_top = Image.open(uploaded_image_top)
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         # Remove background from the uploaded image
         ImgObj_top = remove_background(ImgObj_top)
-        uploaded_images.append(center_align(ImgObj_top))
-
-    # 下に重ねる画像がアップロードされた場合
-    if uploaded_image_bottom is not None:
-        ImgObj_bottom = Image.open(uploaded_image_bottom)
-        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_bottom))
+        uploaded_images.insert(0, center_align(ImgObj_top))  # 修正点: 一番下に挿入する
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
