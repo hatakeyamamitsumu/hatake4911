@@ -3,7 +3,6 @@ from PIL import Image
 import os  # os モジュールを追加
 from rembg import remove
 from io import BytesIO
-    
 
 def main():
     st.title("標識（？）作成アプリ")
@@ -34,7 +33,7 @@ def main():
         ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
         # Remove background from the uploaded image
         ImgObj_top = remove_background(ImgObj_top)
-        uploaded_images.insert(0, center_align(ImgObj_top))  # 修正点: 一番上に挿入する
+        uploaded_images.append(center_align(ImgObj_top))  # 修正点: 一番下に追加する
 
     # 画像ファイルの選択（第四層以外）
     for folder in image_folders:
@@ -47,7 +46,9 @@ def main():
     if uploaded_image_bottom is not None:
         ImgObj_bottom = Image.open(uploaded_image_bottom)
         ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_bottom))
+        # Remove background from the uploaded image
+        ImgObj_bottom = remove_background(ImgObj_bottom)
+        uploaded_images.insert(0, center_align(ImgObj_bottom))  # 修正点: 一番上に追加する
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
@@ -114,3 +115,5 @@ def remove_background(image):
 
 if __name__ == '__main__':
     main()
+
+ 
