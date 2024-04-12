@@ -42,18 +42,18 @@ def main():
             selected_image = st.selectbox("", image_files, index=0)
             uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
+    # 下に重ねる画像がアップロードされた場合
+    if uploaded_image_bottom is not None:
+        ImgObj_bottom = Image.open(uploaded_image_bottom)
+        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj_bottom))  # 修正点: 一番奥に追加する
+
     # 第六層の画像を追加
     for folder in image_folders:
         if folder.endswith("第六層"):  # 第六層の画像を追加
             image_files = os.listdir(folder)
             selected_image = st.selectbox("", image_files, index=0)
             uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
-
-    # 下に重ねる画像がアップロードされた場合
-    if uploaded_image_bottom is not None:
-        ImgObj_bottom = Image.open(uploaded_image_bottom)
-        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
-        uploaded_images.append(center_align(ImgObj_bottom))  # 修正点: 一番奥に追加する
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
