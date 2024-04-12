@@ -1,6 +1,7 @@
 import streamlit as st
-from PIL import Image, ImageDraw, ImageFont
-import os
+from rembg import remove
+from PIL import Image
+from io import BytesIO
 
 def main():
     st.title("標識（？）作成アプリ")
@@ -8,12 +9,6 @@ def main():
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
     st.write("写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
     
-    # 一番目のアップローダーからの画像を表示
-    uploaded_image_first = st.file_uploader("一番目のアップローダーから画像をアップロードしてください", type=["jpg", "jpeg", "png"])
-    if uploaded_image_first is not None:
-        uploaded_image_first = Image.open(uploaded_image_first)
-        st.image(uploaded_image_first, caption='一番目のアップローダーからの画像')
-
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
@@ -25,37 +20,32 @@ def main():
     ]
 
     # 画像アップローダー
-    uploaded_image_top = st.file_uploader("上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
     uploaded_image_bottom = st.file_uploader("下に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image_top = st.file_uploader("上に重ねる写真をアップロードしてください", type=["jpg", "jpeg", "png"])
 
     # 画像リストの初期化
     uploaded_images = []
 
-    # 第一層の画像を追加
-    if uploaded_image_first is not None:
-        uploaded_images.append(center_align(uploaded_image_first))
-
-    # 画像ファイルの選択（第一〜三層）
-    for folder in image_folders[:3]:
-        image_files = os.listdir(folder)
-        selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
-
-    # 画像ファイルの選択（第四〜六層）
-    for folder in image_folders[3:]:
-        image_files = os.listdir(folder)
-        selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+    # 下に重ねる画像がアップロードされた場合
+    if uploaded_image_bottom is not None:
+        ImgObj_bottom = Image.open(uploaded_image_bottom)
+        ImgObj_bottom = ImgObj_bottom.convert('RGBA') if ImgObj_bottom.mode == "RGB" else ImgObj_bottom  # JPEGをRGBAに変換
+        uploaded_images.append(center_align(ImgObj_bottom))
 
     # 上に重ねる画像がアップロードされた場合
     if uploaded_image_top is not None:
-        uploaded_image_top = Image.open(uploaded_image_top)
-        uploaded_images.append(center_align(uploaded_image_top))
+        ImgObj_top = Image.open(uploaded_image_top)
+        ImgObj_top = ImgObj_top.convert('RGBA') if ImgObj_top.mode == "RGB" else ImgObj_top  # JPEGをRGBAに変換
+        # Remove background from the uploaded image
+        ImgObj_top = remove_background(ImgObj_top)
+        uploaded_images.append(center_align(ImgObj_top))
 
-    # 下に重ねる画像がアップロードされた場合
-    if uploaded_image_bottom is not None:
-        uploaded_image_bottom = Image.open(uploaded_image_bottom)
-        uploaded_images.append(center_align(uploaded_image_bottom))
+    # 画像ファイルの選択（第四層以外）
+    for folder in image_folders:
+        if not folder.endswith("第四層"):
+            image_files = os.listdir(folder)
+            selected_image = st.selectbox("", image_files, index=0)
+            uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
@@ -100,6 +90,19 @@ def center_align(img):
     position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
     new_img.paste(img, position)
     return new_img
+
+def remove_background(image):
+    # Convert image to RGBA mode if not already
+    if image.mode != "RGBA":
+        image = image.convert("RGBA")
+    
+    # Remove background using rembg library
+    image_data = BytesIO()
+    image.save(image_data, format="PNG")
+    image_data.seek(0)
+    image_with_bg_removed = Image.open(remove(image_data))
+    
+    return image_with_bg_removed
 
 if __name__ == '__main__':
     main()
