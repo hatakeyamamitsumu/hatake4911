@@ -55,7 +55,7 @@ def process_image(upload, blur_background, blur_radius):
         st.sidebar.download_button("Download Cutout Image", byte_im, "cutout_image.png", "image/png")
 
 # Sidebar options
-option = st.sidebar.radio("Choose Background Editing Option:", ("Blur Background", "Remove Background"))
+option = st.sidebar.radio("Choose Background Editing Option:", ("背景をぼかす", "背景を切り取る"))
 
 if option == "Blur Background":
     blur_radius = st.sidebar.slider("Blur Radius", 0, 20, 5)
