@@ -6,7 +6,7 @@ def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
-    st.write("一番上の画像として表示したい画像は、一番上のアップローダーから選択してください。")
+    st.write("写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
 
     # 画像フォルダのパス
     image_folders = [
@@ -19,37 +19,38 @@ def main():
     ]
 
     # アップロードされた画像
-    uploaded_image = st.file_uploader("一番上に表示したい画像をアップロードしてください", type=["jpg", "jpeg", "png"])
-    uploaded_images_top = []
+    uploaded_image = st.file_uploader("写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+
     if uploaded_image is not None:
         ImgObj = Image.open(uploaded_image)
-        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
-        uploaded_images_top.append(center_align(ImgObj))
+        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj # JPEGをRGBAに変換
+        uploaded_images = [center_align(ImgObj)]
+    else:
+        uploaded_images = []
 
-    # その他の画像ファイルの選択
-    uploaded_images = []
+    # 画像ファイルの選択
     for folder in image_folders:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
     # 他の画像のサイズに合わせて縮小拡大
-    max_width = max(img.size[0] for img in uploaded_images + uploaded_images_top)
-    max_height = max(img.size[1] for img in uploaded_images + uploaded_images_top)
-    for i, img in enumerate(uploaded_images + uploaded_images_top):
+    max_width = max(img.size[0] for img in uploaded_images)
+    max_height = max(img.size[1] for img in uploaded_images)
+    for i, img in enumerate(uploaded_images):
         width_ratio = max_width / img.size[0]
         height_ratio = max_height / img.size[1]
         resize_ratio = min(width_ratio, height_ratio)
         new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
-        (uploaded_images + uploaded_images_top)[i] = img.resize(new_size, Image.ANTIALIAS)
+        uploaded_images[i] = img.resize(new_size, Image.ANTIALIAS)
 
-    ImgObjs = uploaded_images_top + uploaded_images  # 上に表示したい画像を先頭に
+    ImgObjs = uploaded_images
 
-    wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
-    for i, img in enumerate(ImgObjs):
-        wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
+    wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0)) # 透かし画像の生成
+    for i, img in enumerate(ImgObjs[::-1]):  # Reverse order to overlay uploaded image on top
+        wmCanvas.paste(img, (0, 0), img) # 透かし画像を貼り付け
 
-    WMedImage = wmCanvas  # 画像の合成
+    WMedImage = wmCanvas # 画像の合成
 
     # 画像を表示
     st.image(WMedImage, caption='合成された画像')
