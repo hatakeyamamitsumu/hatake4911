@@ -6,7 +6,7 @@ from io import BytesIO
 st.set_page_config(layout="wide", page_title="Image Background Editor")
 
 st.write("## 写真の背景を編集")
-st.write("写真の背景を編集するアプリです。背景をぼかすか、完全に切り取るかを選択してください。")
+st.write("写真の背景を編集するアプリです。背景をぼかすか、完全に切り取るかを選択してください")
 
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
 
