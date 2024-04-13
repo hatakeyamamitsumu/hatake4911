@@ -72,4 +72,10 @@ def main():
 
 def center_align(img):
     width, height = img.size
-    new_img = Image.new("RGBA", (max(width, height), max(
+    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
+    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
+    new_img.paste(img, position)
+    return new_img
+
+if __name__ == '__main__':
+    main()
