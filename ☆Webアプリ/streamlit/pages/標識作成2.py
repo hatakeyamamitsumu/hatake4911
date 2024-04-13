@@ -1,0 +1,75 @@
+import streamlit as st
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+def main():
+    st.title("標識（？）作成アプリ")
+    st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
+    st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
+    st.write("一番上の画像として表示したい画像は、一番上のアップローダーから選択してください。")
+
+    # 画像フォルダのパス
+    image_folders = [
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第二層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第三層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第四層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第五層",
+        "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第六層",
+    ]
+
+    # アップロードされた画像
+    uploaded_image = st.file_uploader("一番上に表示したい画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_images_top = []
+    if uploaded_image is not None:
+        ImgObj = Image.open(uploaded_image)
+        ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
+        uploaded_images_top.append(center_align(ImgObj))
+
+    # その他の画像ファイルの選択
+    uploaded_images = []
+    for folder in image_folders:
+        image_files = os.listdir(folder)
+        selected_image = st.selectbox("", image_files, index=0)
+        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+
+    # 他の画像のサイズに合わせて縮小拡大
+    max_width = max(img.size[0] for img in uploaded_images + uploaded_images_top)
+    max_height = max(img.size[1] for img in uploaded_images + uploaded_images_top)
+    for i, img in enumerate(uploaded_images + uploaded_images_top):
+        width_ratio = max_width / img.size[0]
+        height_ratio = max_height / img.size[1]
+        resize_ratio = min(width_ratio, height_ratio)
+        new_size = (int(img.size[0] * resize_ratio), int(img.size[1] * resize_ratio))
+        (uploaded_images + uploaded_images_top)[i] = img.resize(new_size, Image.ANTIALIAS)
+
+    ImgObjs = uploaded_images_top + uploaded_images  # 上に表示したい画像を先頭に
+
+    wmCanvas = Image.new('RGBA', (max_width, max_height), (255, 255, 255, 0))  # 透かし画像の生成
+    for i, img in enumerate(ImgObjs):
+        wmCanvas.paste(img, (0, 0), img)  # 透かし画像を貼り付け
+
+    WMedImage = wmCanvas  # 画像の合成
+
+    # 画像を表示
+    st.image(WMedImage, caption='合成された画像')
+
+    # 画像をダウンロードするボタン
+    def download_image(image, filename='合成された画像.png'):
+        image.save(filename, 'PNG')
+        with open(filename, 'rb') as f:
+            data = f.read()
+        return data
+
+    if st.button("ダウンロードしますか？"):
+        data = download_image(WMedImage)
+        st.download_button(
+            label="ここをクリックしてダウンロード",
+            data=data,
+            file_name='合成された画像.png',
+            mime='image/png'
+        )
+
+def center_align(img):
+    width, height = img.size
+    new_img = Image.new("RGBA", (max(width, height), max(
