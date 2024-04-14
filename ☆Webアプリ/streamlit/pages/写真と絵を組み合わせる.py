@@ -5,7 +5,6 @@ import os
 def main():
     st.title("写真と絵を組み合わせるアプリ")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
-    st.write("※写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
@@ -17,7 +16,7 @@ def main():
     ]
 
     # アップロードされた画像
-    uploaded_image = st.file_uploader("写真をアップロードしてください。完成写真の一番奥にセットされます。", type=["jpg", "jpeg", "png"])
+    uploaded_image = st.file_uploader("写真をアップロードしてください。一番上のリストは「なし」を選択してください。", type=["jpg", "jpeg", "png"])
 
     if uploaded_image is not None:
         ImgObj = Image.open(uploaded_image)
