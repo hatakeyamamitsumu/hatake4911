@@ -16,7 +16,7 @@ def main():
     ]
 
     # アップロードされた画像
-    uploaded_image = st.file_uploader("写真をアップロードしてください。一番上のリストは「なし」を選択してください。", type=["jpg", "jpeg", "png"])
+    uploaded_image = st.file_uploader("写真をアップロードしてください。※一番上のリストは「なし」を選択してください。", type=["jpg", "jpeg", "png"])
 
     if uploaded_image is not None:
         ImgObj = Image.open(uploaded_image)
