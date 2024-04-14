@@ -1,76 +1,46 @@
 import streamlit as st
 from rembg import remove
-from PIL import Image, ImageFilter
+from PIL import Image
 from io import BytesIO
+import base64
 
-st.set_page_config(layout="wide", page_title="Image Background Editor")
+st.set_page_config(layout="wide", page_title="Image Background Remover")
 
-st.write("## 写真の背景を編集")
-st.write("写真の背景を編集するアプリです。背景をぼかすか、完全に切り取るかを左のリストから選択してください")
+st.write("## Remove background from your image")
+st.write(
+    ":dog: Try uploading an image to watch the background magically removed. Full quality images can be downloaded from the sidebar. This code is open source and available [here](https://github.com/tyler-simons/BackgroundRemoval) on GitHub. Special thanks to the [rembg library](https://github.com/danielgatis/rembg) :grin:"
+)
+st.sidebar.write("## Upload and download :gear:")
 
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
 
-# Function to blur the background and blend with the original image
-def blur_and_blend(original, cutout, blur_radius):
-    # Blur the original image
-    original_blurred = original.filter(ImageFilter.GaussianBlur(blur_radius))
-    # Composite the cutout onto the blurred original image
-    original_blurred.paste(cutout, (0, 0), cutout)
-    return original_blurred
-
-# Function to remove the background completely
-def remove_background(upload):
-    image = Image.open(upload)
-    cutout = remove(image)
-    return cutout
-
-# Main function for image processing based on user choice
-def process_image(upload, blur_background, blur_radius):
-    original_image = Image.open(upload)
-    col1, col2 = st.columns(2)
-    with col1:
-        st.write("Original Image")
-        st.image(original_image, use_column_width=True)
-
-    with col2:
-        if blur_background:
-            st.write("Blurred Background Image")
-            cutout = remove_background(upload)
-            blurred_image = blur_and_blend(original_image, cutout, blur_radius)
-            st.image(blurred_image, use_column_width=True)
-        else:
-            st.write("Cutout Image (Background Removed)")
-            cutout = remove_background(upload)
-            st.image(cutout, use_column_width=True)
-
-    # Download button
+# Download the fixed image
+def convert_image(img):
     buf = BytesIO()
-    if blur_background:
-        blurred_image.save(buf, format='PNG')
-        byte_im = buf.getvalue()
-        st.sidebar.download_button("Download Blurred Background Image", byte_im, "blurred_background.png", "image/png")
+    img.save(buf, format="PNG")
+    byte_im = buf.getvalue()
+    return byte_im
+
+
+def fix_image(upload):
+    image = Image.open(upload)
+    col1.write("Original Image :camera:")
+    col1.image(image)
+
+    fixed = remove(image)
+    col2.write("Fixed Image :wrench:")
+    col2.image(fixed)
+    st.sidebar.markdown("\n")
+    st.sidebar.download_button("ダウンロード", convert_image(fixed), "fixed.png", "image/png")
+
+
+col1, col2 = st.columns(2)
+my_upload = st.sidebar.file_uploader("写真をアップロードしてください。", type=["png", "jpg", "jpeg"])
+
+if my_upload is not None:
+    if my_upload.size > MAX_FILE_SIZE:
+        st.error("ファイルサイズが大きすぎます。5MB以内でお願いします。")
     else:
-        cutout.save(buf, format='PNG')
-        byte_im = buf.getvalue()
-        st.sidebar.download_button("Download Cutout Image", byte_im, "cutout_image.png", "image/png")
-
-# Sidebar options
-option = st.sidebar.radio("Choose Background Editing Option:", ("背景をぼかす", "背景を切り取る"))
-
-if option == "Blur Background":
-    blur_radius = st.sidebar.slider("Blur Radius", 0, 20, 5)
-    uploaded_file = st.sidebar.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
-
-    if uploaded_file is not None:
-        if uploaded_file.size <= MAX_FILE_SIZE:
-            process_image(upload=uploaded_file, blur_background=True, blur_radius=blur_radius)
-        else:
-            st.sidebar.error("Uploaded file is too large. Please upload an image smaller than 5MB.")
+        fix_image(upload=my_upload)
 else:
-    uploaded_file = st.sidebar.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
-
-    if uploaded_file is not None:
-        if uploaded_file.size <= MAX_FILE_SIZE:
-            process_image(upload=uploaded_file, blur_background=False, blur_radius=0)
-        else:
-            st.sidebar.error("Uploaded file is too large. Please upload an image smaller than 5MB.")
+    fix_image("./zebra.jpg")
