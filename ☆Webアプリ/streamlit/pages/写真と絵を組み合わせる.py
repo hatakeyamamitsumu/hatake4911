@@ -6,7 +6,7 @@ def main():
     st.title("標識（？）作成アプリ")
     st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
-    st.write("写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
+    st.write("※写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
@@ -18,7 +18,7 @@ def main():
     ]
 
     # アップロードされた画像
-    uploaded_image = st.file_uploader("写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+    uploaded_image = st.file_uploader("写真をアップロードしてください。完成写真の一番奥にセットされます。", type=["jpg", "jpeg", "png"])
 
     if uploaded_image is not None:
         ImgObj = Image.open(uploaded_image)
@@ -35,7 +35,7 @@ def main():
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
     # 一番手前の画像をアップロード
-    front_image = st.file_uploader("一番手前に重ねる画像をアップロードしてください。背景を切り取った画像を置くと面白くなります。", type=["jpg", "jpeg", "png"])
+    front_image = st.file_uploader("一番前に重ねる画像をアップロードしてください。背景を切り取った画像を置くと面白くなります。", type=["jpg", "jpeg", "png"])
 
     if front_image is not None:
         front_image_obj = Image.open(front_image)
