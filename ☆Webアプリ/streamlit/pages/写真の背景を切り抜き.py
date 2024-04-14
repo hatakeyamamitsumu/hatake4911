@@ -73,7 +73,6 @@ def process_image(upload, background_option, blur_radius):
 background_option = st.sidebar.radio("Choose Background Editing Option:", ("Blur Background", "Remove Background"))
 blur_radius = st.sidebar.slider("Blur Radius", 0, 20, 5)
 uploaded_file = st.sidebar.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
-
 if uploaded_file is not None:
     if uploaded_file.size <= MAX_FILE_SIZE:
         process_image(upload=uploaded_file, background_option=background_option, blur_radius=blur_radius)
