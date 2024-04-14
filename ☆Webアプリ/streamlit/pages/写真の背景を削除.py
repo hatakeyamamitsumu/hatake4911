@@ -6,7 +6,7 @@ import base64
 
 st.set_page_config(layout="wide", page_title="写真の背景を削除")
 
-st.write("## Remove background from your image")
+st.write("写真の背景を切り取ります。")
 st.write(
     ":dog: Try uploading an image to watch the background magically removed. Full quality images can be downloaded from the sidebar. This code is open source and available [here](https://github.com/tyler-simons/BackgroundRemoval) on GitHub. Special thanks to the [rembg library](https://github.com/danielgatis/rembg) :grin:"
 )
