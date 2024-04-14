@@ -54,7 +54,7 @@ blur_radius = st.sidebar.slider("ぼかし具合", 0, 20, 5)  # You can adjust t
 
 if my_upload is not None:
     if my_upload.size > MAX_FILE_SIZE:
-        st.error("The uploaded file is too large. Please upload an image smaller than 5MB.")
+        st.error("ファイルサイズが大きすぎます。 5MB以下でお願いします。.")
     else:
         fix_image(upload=my_upload, blur_radius=blur_radius)
 else:
