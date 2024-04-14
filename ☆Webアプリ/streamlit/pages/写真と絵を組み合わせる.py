@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 def main():
-    st.title("写真と絵を組み合わせるアプリ")
+    st.title("写真と絵を組み合わせるアプリです。")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
     # 画像フォルダのパス
     image_folders = [
