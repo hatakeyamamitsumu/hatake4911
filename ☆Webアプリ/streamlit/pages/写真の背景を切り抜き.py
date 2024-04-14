@@ -1,58 +1,61 @@
 import streamlit as st
+from rembg import remove
 from PIL import Image, ImageFilter
 from io import BytesIO
+import base64
 
-st.set_page_config(layout="wide", page_title="Image Background Editor")
+st.set_page_config(layout="wide", page_title="Image Background Remover")
 
-st.write("## Edit Your Image Background")
-st.write(
-    "Upload an image and choose whether to remove the background or blur it. Full quality images can be downloaded from the sidebar."
-)
+st.write("## 写真の背景をぼかす")
+st.text("参考資料：https://bgremoval.streamlit.app/")
+st.write("背景をぼかしたい写真を、左のウインドウからアップロードして、ぼかし具合をスライダーで調節してください＜＜")
 st.sidebar.write("## Upload and download :gear:")
 
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
 
-# Function to remove background from the image
-def remove_background(image):
-    with st.spinner("Removing background..."):
-        image_array = Image.open(image)
-        return remove(image_array)
-
-# Function to blur the background
-def blur_background(image, blur_radius):
-    with st.spinner("Blurring background..."):
-        return image.filter(ImageFilter.GaussianBlur(blur_radius))
-
-# Download the image
-def download_image(img):
+# Download the fixed image
+def convert_image(img):
     buf = BytesIO()
     img.save(buf, format="PNG")
     byte_im = buf.getvalue()
     return byte_im
 
-def fix_image(upload, process_option, blur_radius):
-    if process_option == "Remove Background":
-        fixed_image = remove_background(upload)
-    elif process_option == "Blur Background":
-        fixed_image = blur_background(upload, blur_radius)
-    else:
-        fixed_image = upload
+def fix_and_blend_images(original, cutout, blur_radius):
+    # 元の画像をぼかす
+    original_blurred = original.filter(ImageFilter.GaussianBlur(blur_radius))
 
+    # 切り抜いた画像をもとの画像の上に合成
+    original_blurred.paste(cutout, (0, 0), cutout)
+
+    return original_blurred
+
+def fix_image(upload, blur_radius):
+    image = Image.open(upload)
     col1.write("Original Image :camera:")
-    col1.image(upload)
+    col1.image(image)
 
-    col2.write("Fixed Image :wrench:")
-    col2.image(fixed_image)
+    # ぼかし効果を適用した元の画像を作成
+    original_blurred = image.filter(ImageFilter.GaussianBlur(blur_radius))
+
+    # 切り抜き処理
+    cutout = remove(image)
+
+    # 合成してぼかし効果を適用
+    blended_image = fix_and_blend_images(original_blurred, cutout, blur_radius)
+
+    col2.write("Fixed and Blurred Image :wrench:")
+    col2.image(blended_image)
     st.sidebar.markdown("\n")
-    st.sidebar.download_button("Download fixed image", download_image(fixed_image), "fixed.png", "image/png")
+    st.sidebar.download_button("ダウンロードボタン", convert_image(blended_image), "blended_image.png", "image/png")
 
 col1, col2 = st.columns(2)
-my_upload = st.sidebar.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
-process_option = st.sidebar.radio("Choose processing option:", ("Original Image", "Remove Background", "Blur Background"))
-blur_radius = st.sidebar.slider("Blur Radius", 0, 20, 5)
+my_upload = st.sidebar.file_uploader("ここからアップロードしてください", type=["png", "jpg", "jpeg"])
+blur_radius = st.sidebar.slider("ぼかし具合", 0, 20, 5)  # You can adjust the min, max, and default values as needed.
 
 if my_upload is not None:
     if my_upload.size > MAX_FILE_SIZE:
         st.error("The uploaded file is too large. Please upload an image smaller than 5MB.")
     else:
-        fix_image(upload=my_upload, process_option=process_option, blur_radius=blur_radius)
+        fix_image(upload=my_upload, blur_radius=blur_radius)
+else:
+    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/東京画像/小伝馬町からのスカイツリー_昼_.jpg", blur_radius=blur_radius)
