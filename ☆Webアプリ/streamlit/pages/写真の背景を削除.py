@@ -43,4 +43,4 @@ if my_upload is not None:
     else:
         fix_image(upload=my_upload)
 else:
-    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/東京画像")
+    fix_image("/mount/src/hatake4911/☆Webアプリ/画像/東京画像/渋谷宮下公園屋上_像_夕方_.jpg")
