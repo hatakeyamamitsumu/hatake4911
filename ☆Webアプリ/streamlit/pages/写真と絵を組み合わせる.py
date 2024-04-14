@@ -33,7 +33,7 @@ def main():
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
 
     # 一番手前の画像をアップロード
-    front_image = st.file_uploader("一番前に重ねる画像をアップロードしてください。背景を切り取った画像を置くと面白くなります。", type=["jpg", "jpeg", "png"])
+    front_image = st.file_uploader("「写真の背景を削除」を使って、背景を取り除いた画像をアップロードしてみてください。.", type=["jpg", "jpeg", "png"])
 
     if front_image is not None:
         front_image_obj = Image.open(front_image)
