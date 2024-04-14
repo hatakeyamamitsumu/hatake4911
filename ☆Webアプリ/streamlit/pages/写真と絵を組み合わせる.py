@@ -3,8 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 def main():
-    st.title("標識（？）作成アプリ")
-    st.write("当初は標識を作成するアプリを作る予定でしたが、大幅に脱線しました・・・・。")
+    st.title("写真と絵を組み合わせるアプリ")
     st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
     st.write("※写真をアップロードする場合は、一番上のリストは「なし」を選択してください。")
     # 画像フォルダのパス
