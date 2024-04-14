@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 import base64
 
-st.set_page_config(layout="wide", page_title="Image Background Remover")
+st.set_page_config(layout="wide", page_title="写真の背景を削除")
 
 st.write("## Remove background from your image")
 st.write(
