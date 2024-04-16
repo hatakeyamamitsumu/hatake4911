@@ -43,7 +43,7 @@ def main():
         front_image_obj = front_image_obj.resize(uploaded_images[0].size, Image.ANTIALIAS)
         
         # 3番目の画像と4番目の画像の間に追加
-        uploaded_images.insert(3, front_image_obj)
+        uploaded_images.insert(4, front_image_obj)
 
     # 画像ファイルの選択
     for folder in image_folders[2:]:
