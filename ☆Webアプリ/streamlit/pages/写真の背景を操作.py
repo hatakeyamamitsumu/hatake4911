@@ -8,7 +8,7 @@ st.set_page_config(layout="wide", page_title="Image Editor")
 
 st.write("## 背景編集ツール")
 st.text("参考資料：https://bgremoval.streamlit.app/")
-st.write("左のウィンドウから画像をアップロードして、「背景を削除」か「背景をぼかす」か選択してください")
+st.write("左のウィンドウから画像をアップロードして、「背景を削除」か、「背景をぼかす」か選択してください")
 
 st.sidebar.write("## 操作設定 :gear:")
 
