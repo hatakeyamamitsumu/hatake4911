@@ -6,7 +6,7 @@ import base64
 
 st.set_page_config(layout="wide", page_title="Image Editor")
 
-st.write("## 画像編集ツール")
+st.write("## 背景編集ツール")
 st.text("参考資料：https://bgremoval.streamlit.app/")
 st.write("左のウィンドウから画像をアップロードしてください")
 
