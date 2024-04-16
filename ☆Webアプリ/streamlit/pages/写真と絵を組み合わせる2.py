@@ -30,7 +30,9 @@ def main():
     for folder in image_folders[:3]:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+        img = Image.open(os.path.join(folder, selected_image))
+        img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
+        uploaded_images.append(center_align(img))
 
     # 一番手前の画像をアップロード
     front_image = st.file_uploader("「写真の背景を削除」を使って、背景を取り除いた画像をアップロードしてみてください。.", type=["jpg", "jpeg", "png"])
@@ -38,9 +40,7 @@ def main():
     if front_image is not None:
         front_image_obj = Image.open(front_image)
         front_image_obj = front_image_obj.convert('RGBA') if front_image_obj.mode == "RGB" else front_image_obj
-        
-        # 他の画像と同じサイズに調整
-        front_image_obj = front_image_obj.resize(uploaded_images[0].size, Image.ANTIALIAS)
+        front_image_obj = keep_aspect_ratio(front_image_obj, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
         
         # 4番目と5番目の画像の間に追加
         uploaded_images.insert(4, front_image_obj)
@@ -49,7 +49,9 @@ def main():
     for folder in image_folders[3:]:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
-        uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
+        img = Image.open(os.path.join(folder, selected_image))
+        img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
+        uploaded_images.append(center_align(img))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
@@ -94,6 +96,16 @@ def center_align(img):
     position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
     new_img.paste(img, position)
     return new_img
+
+def keep_aspect_ratio(img, max_size):
+    """
+    画像のアスペクト比を保ちながら、最大サイズにリサイズする
+    """
+    width, height = img.size
+    ratio = min(max_size[0] / width, max_size[1] / height)
+    new_width = int(width * ratio)
+    new_height = int(height * ratio)
+    return img.resize((new_width, new_height), Image.ANTIALIAS)
 
 if __name__ == '__main__':
     main()
