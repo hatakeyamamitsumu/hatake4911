@@ -22,7 +22,8 @@ def main():
         ImgObj = Image.open(uploaded_image)
         ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換　uploaded_images = [keep_within_max_size(ImgObj, max_size=(300, 300))]
         
-        uploaded_images = [keep_within_max_size(center_align_with_max_size(ImgObj, max_size=(300, 300)), max_size=(300, 300))]
+        uploaded_images = [center_align_with_max_size(keep_within_max_size(ImgObj, max_size=(300, 300)), max_size=(300, 300))]
+
     else:
         uploaded_images = []
 
