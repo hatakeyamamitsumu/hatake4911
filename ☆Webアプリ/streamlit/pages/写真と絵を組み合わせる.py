@@ -35,7 +35,7 @@ def main():
         uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
 
     # 一番手前の画像をアップロード
-    front_image = st.file_uploader("「写真の背景を削除」を使って、背景を取り除いた画像をアップロードしてみてください。.", type=["jpg", "jpeg", "png"])
+    front_image = st.file_uploader("「写真の背景を操作」を使って、背景を取り除いた画像をアップロードしてみてください。.", type=["jpg", "jpeg", "png"])
 
     if front_image is not None:
         front_image_obj = Image.open(front_image)
