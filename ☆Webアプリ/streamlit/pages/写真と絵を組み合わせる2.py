@@ -21,7 +21,7 @@ def main():
     if uploaded_image is not None:
         ImgObj = Image.open(uploaded_image)
         ImgObj = ImgObj.convert('RGBA') if ImgObj.mode == "RGB" else ImgObj  # JPEGをRGBAに変換
-        uploaded_images = [center_align(ImgObj)]
+        uploaded_images = [center_align_with_max_size(ImgObj, max_size=(300, 300))]
 
     else:
         uploaded_images = []
@@ -32,7 +32,7 @@ def main():
         selected_image = st.selectbox("", image_files, index=0)
         img = Image.open(os.path.join(folder, selected_image))
         img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
-        uploaded_images.append(center_align(img))
+        uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
 
     # 一番手前の画像をアップロード
     front_image = st.file_uploader("「写真の背景を削除」を使って、背景を取り除いた画像をアップロードしてみてください。.", type=["jpg", "jpeg", "png"])
@@ -43,7 +43,7 @@ def main():
         front_image_obj = keep_aspect_ratio(front_image_obj, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
         
         # 4番目と5番目の画像の間に追加
-        uploaded_images.insert(4, front_image_obj)
+        uploaded_images.insert(4, center_align_with_max_size(front_image_obj, max_size=(300, 300)))
 
     # 画像ファイルの選択
     for folder in image_folders[3:]:
@@ -51,7 +51,7 @@ def main():
         selected_image = st.selectbox("", image_files, index=0)
         img = Image.open(os.path.join(folder, selected_image))
         img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
-        uploaded_images.append(center_align(img))
+        uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
@@ -90,11 +90,15 @@ def main():
             mime='image/png'
         )
 
-def center_align(img):
+def center_align_with_max_size(img, max_size):
+    """
+    画像を中央揃えにし、指定された最大サイズにリサイズする
+    """
     width, height = img.size
-    new_img = Image.new("RGBA", (max(width, height), max(width, height)), (255, 255, 255, 0))
-    position = ((max(width, height) - width) // 2, (max(width, height) - height) // 2)
-    new_img.paste(img, position)
+    left = (max_size[0] - width) // 2
+    top = (max_size[1] - height) // 2
+    new_img = Image.new("RGBA", max_size, (255, 255, 255, 0))
+    new_img.paste(img, (left, top))
     return new_img
 
 def keep_aspect_ratio(img, max_size):
