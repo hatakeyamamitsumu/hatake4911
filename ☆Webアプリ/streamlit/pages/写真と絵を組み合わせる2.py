@@ -29,10 +29,11 @@ def main():
     # 画像ファイルの選択
     for folder in image_folders[:3]:
         image_files = os.listdir(folder)
-        selected_image = st.selectbox("", image_files, index=0)
-        img = Image.open(os.path.join(folder, selected_image))
-        img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
-        uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
+        selected_image = st.selectbox("", ["なし.png"] + image_files, index=0)
+        if selected_image != "なし.png":
+            img = Image.open(os.path.join(folder, selected_image))
+            img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
+            uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
 
     # 一番手前の画像をアップロード
     front_image = st.file_uploader("「写真の背景を操作」を使って、背景を取り除いた画像をアップロードしてみてください。.", type=["jpg", "jpeg", "png"])
@@ -48,10 +49,11 @@ def main():
     # 画像ファイルの選択
     for folder in image_folders[3:]:
         image_files = os.listdir(folder)
-        selected_image = st.selectbox("", image_files, index=0)
-        img = Image.open(os.path.join(folder, selected_image))
-        img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
-        uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
+        selected_image = st.selectbox("", ["なし.png"] + image_files, index=0)
+        if selected_image != "なし.png":
+            img = Image.open(os.path.join(folder, selected_image))
+            img = keep_aspect_ratio(img, max_size=(300, 300))  # アスペクト比を保持しつつ最大サイズを設定
+            uploaded_images.append(center_align_with_max_size(img, max_size=(300, 300)))
 
     # 他の画像のサイズに合わせて縮小拡大
     max_width = max(img.size[0] for img in uploaded_images)
