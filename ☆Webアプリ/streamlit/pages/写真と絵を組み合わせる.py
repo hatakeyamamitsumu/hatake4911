@@ -96,7 +96,7 @@ def center_align_with_max_size(img, max_size):
     """
     width, height = img.size
     left = (max_size[0] - width) // 2
-    top = (max_size[1] - height) // 2
+    #top = (max_size[1] - height) // 2
     new_img = Image.new("RGBA", max_size, (255, 255, 255, 0))
     new_img.paste(img, (left, top))
     return new_img
