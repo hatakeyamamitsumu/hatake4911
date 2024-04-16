@@ -27,7 +27,7 @@ def main():
         uploaded_images = []
 
     # 画像ファイルの選択
-    for folder in image_folders[:2]:
+    for folder in image_folders[:3]:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
@@ -42,11 +42,11 @@ def main():
         # 他の画像と同じサイズに調整
         front_image_obj = front_image_obj.resize(uploaded_images[0].size, Image.ANTIALIAS)
         
-        # 3番目の画像と4番目の画像の間に追加
+        # 4番目と5番目の画像の間に追加
         uploaded_images.insert(4, front_image_obj)
 
     # 画像ファイルの選択
-    for folder in image_folders[2:]:
+    for folder in image_folders[3:]:
         image_files = os.listdir(folder)
         selected_image = st.selectbox("", image_files, index=0)
         uploaded_images.append(center_align(Image.open(os.path.join(folder, selected_image))))
