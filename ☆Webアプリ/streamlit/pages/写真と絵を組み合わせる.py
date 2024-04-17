@@ -4,7 +4,7 @@ import os
 
 def main():
     st.title("写真と絵を組み合わせるアプリです。")
-    st.write("それぞれのリストからお好みの絵を選択して重ねてください。")
+    st.write("それぞれのリストから,お好みの絵を選択して重ねてください。")
     # 画像フォルダのパス
     image_folders = [
         "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
