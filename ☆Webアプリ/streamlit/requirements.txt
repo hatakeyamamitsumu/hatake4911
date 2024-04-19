@@ -27,5 +27,5 @@ imageio
 
 python-docx
 
-
+streamlit.local_storage
 
