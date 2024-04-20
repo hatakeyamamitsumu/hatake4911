@@ -1,8 +1,11 @@
 import streamlit as st
-import cv2
-import numpy as np
 from PIL import Image
-import io
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill
+import os
+import shutil
+import tempfile
+import numpy as np
 
 def perspective_transform(img, dst_pts):
     src_pts = np.array([[0, 0], [img.shape[1], 0], [img.shape[1], img.shape[0]], [0, img.shape[0]]], dtype=np.float32)
@@ -42,10 +45,29 @@ def swirl_image(image_array, strength=10, radius=1000, center_x=None, center_y=N
 
     return output_array
 
+def image_to_excel(image, output_filename):
+    width, height = image.size
+
+    workbook = Workbook()
+    sheet = workbook.active
+
+    for y in range(height):
+        for x in range(width):
+            pixel_color = image.getpixel((x, y))
+            hex_color = f'{pixel_color[0]:02X}{pixel_color[1]:02X}{pixel_color[2]:02X}'
+            fill = PatternFill(start_color=hex_color, end_color=hex_color, fill_type='solid')
+            cell = sheet.cell(row=y + 1, column=x + 1)
+            cell.fill = fill
+
+    temp_folder = tempfile.mkdtemp()
+    temp_filepath = os.path.join(temp_folder, output_filename)
+    workbook.save(temp_filepath)
+    return temp_filepath
+
 def main():
     st.title("画像処理アプリ")
 
-    option = st.sidebar.selectbox("処理を選択してください", ("ひし形に変形", "渦巻き"))
+    option = st.sidebar.selectbox("処理を選択してください", ("ひし形に変形", "渦巻き", "画像をExcelに転記"))
 
     if option == "ひし形に変形":
         st.subheader("写真をひし形に変形")
@@ -102,6 +124,32 @@ def main():
             processed_image.save(img_byte_array, format='PNG')
             img_byte_array = img_byte_array.getvalue()
             st.download_button(label="処理された画像をダウンロード", data=img_byte_array, file_name='processed_image.png', mime='image/png')
+
+    elif option == "画像をExcelに転記":
+        st.subheader("画像をExcelに転記")
+        st.write("画像をExcelシートに、1ピクセルが1セルに対応するように転記するアプリです。")
+
+        image_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
+
+        if image_file is not None:
+            image = Image.open(image_file)
+
+            st.image(image, caption='Uploaded Image', use_column_width=True)
+
+            output_excel_filename = st.text_input("出力Excelファイル名", "output_colors.xlsx")
+
+            if st.button("変換してExcelに保存"):
+                output_filepath = image_to_excel(image, output_excel_filename)
+                st.success(f'画像の色情報をExcelに保存しました: {output_filepath}')
+
+                download_button = st.download_button(
+                    label="Excelファイルをダウンロード",
+                    data=open(output_filepath, "rb").read(),
+                    file_name=output_excel_filename,
+                    key="download_button",
+                )
+
+                shutil.rmtree(os.path.dirname(output_filepath))
 
 if __name__ == '__main__':
     main()
