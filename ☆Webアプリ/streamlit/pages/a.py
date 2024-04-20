@@ -6,7 +6,7 @@ import os
 import shutil
 import tempfile
 import numpy as np
-
+import io
 def perspective_transform(img, dst_pts):
     src_pts = np.array([[0, 0], [img.shape[1], 0], [img.shape[1], img.shape[0]], [0, img.shape[0]]], dtype=np.float32)
     matrix = cv2.getPerspectiveTransform(src_pts, dst_pts)
