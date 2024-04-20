@@ -73,7 +73,7 @@ def main():
         st.subheader("写真をひし形に変形")
         st.write("写真をひし形に変形させるアプリです。")
 
-        uploaded_file = st.file_uploader("写真をアップロードしてください", type=["jpg", "jpeg", "png"])
+        uploaded_file = st.file_uploader("写真をアップロードしてください。", type=["jpg", "jpeg", "png"])
 
         if uploaded_file is not None:
             image = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), 1)
