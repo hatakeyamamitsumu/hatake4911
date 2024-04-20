@@ -127,7 +127,7 @@ def main():
 
     elif option == "画像をExcelに転記":
         st.subheader("画像をExcelに転記")
-        st.write("画像をExcelシートに、1ピクセルが1セルに対応するように転記するアプリです。")
+        st.write("画像をExcelシートに、1ピクセルが1セルに対応するように転記するアプリです。２００kbぐらいの画像をアップロードしてください")
 
         image_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
