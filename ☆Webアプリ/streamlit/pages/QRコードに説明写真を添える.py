@@ -42,7 +42,8 @@ if data:
     try:
         qr_img = generate_qr_code(data, size=qr_size)
         if custom_text:
-            qr_img = add_text_to_qr(qr_img, custom_text)
+            #qr_img = add_text_to_qr(qr_img, custom_text)
+            qr_img = add_text_to_qr(qr_img)
 
         if uploaded_image is not None:
             uploaded_img = Image.open(io.BytesIO(uploaded_image.read()))
