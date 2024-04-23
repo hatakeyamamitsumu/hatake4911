@@ -33,7 +33,7 @@ uploaded_image = st.file_uploader("QRコードの背景用画像をアップロ�
 
 
 qr_size = st.slider("QRコードの余白を調整してください", min_value=100, max_value=1000, value=500)
-custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
+#custom_text = st.text_input("QRコードに添える説明書き(アルファベットと数字のみ)")
 
 # Add file name input field
 file_name = st.text_input("QRコードのファイル名を入力してください", value="QR_code")
