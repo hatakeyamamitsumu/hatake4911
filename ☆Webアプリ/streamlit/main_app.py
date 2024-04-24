@@ -2,6 +2,8 @@ import streamlit as st
 from PIL import Image
 import os
 import random
+import io
+import qrcode
 
 st.title('Hatの、WEBアプリ作り挑戦日記')
 st.write('こんにちは！Hatと申します。')
