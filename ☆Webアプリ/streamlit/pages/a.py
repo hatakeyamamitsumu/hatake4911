@@ -17,6 +17,6 @@ worksheet=sh.worksheet(SP_SHEET)
 data=worksheet.get_all_values()
 #data
 df=pd.DataFrame(data[1:],columns=data[0])
-#df
+df
 
-df.sort_values('社員ID')
+#df.sort_values('社員ID')
