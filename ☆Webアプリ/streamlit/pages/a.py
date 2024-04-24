@@ -15,6 +15,7 @@ gc=gspread.authorize(credentials)
 sh=gc.open_by_key(SP_SHEET_KEY)
 worksheet=sh.worksheet(SP_SHEET)
 data=worksheet.get_all_values()
-df=pd.DataFrame(data[1:],columns=data[0])
+data
+#df=pd.DataFrame(data[1:],columns=data[0])
 
 #df.sort_values('社員ID')
