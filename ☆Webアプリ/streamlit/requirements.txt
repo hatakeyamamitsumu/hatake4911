@@ -22,6 +22,9 @@ seaborn
 
 requests
 bs4
+
+gspread
+oauth2client
 moviepy
 imageio
 
