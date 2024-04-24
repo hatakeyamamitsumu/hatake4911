@@ -23,12 +23,15 @@ seaborn
 requests
 bs4
 
-gspread
-oauth2client
+
 moviepy
 imageio
 
 python-docx
+
+gspread
+oauth2client
+json
 
 streamlit.local_storage
 
