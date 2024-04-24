@@ -33,3 +33,6 @@ updated_df = df.append(pd.Series(new_data, index=df.columns), ignore_index=True)
 worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
 
 print("新しいデータをスプレッドシートに書き込みました。")
+print("スプレッドシートを確認してください。")
+
+# プログラムを終了する
