@@ -1,0 +1,19 @@
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import json
+import pandas as pd
+SP_CREDENTIAL_FILE = 'gspread-test-421301-6cd8b0cc0e27.json'
+SP_COPE = [
+    'https://www.googleapis.com/auth/drive',
+    'https://spreadsheets.google.com/feeds'
+]
+SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
+SP_SHEET='DEMO'
+credentials =ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE,SP_COPE)
+gc=gspread.authorize(credentials)
+sh=gc.open_by_key(SP_SHEET_KEY)
+worksheet=sh.worksheet(SP_SHEET)
+data=worksheet.get_all_values()
+df=pd.DataFrame(data[1:],columns=data[0])
+
+df.sort_values('社員ID')
