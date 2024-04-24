@@ -3,6 +3,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import json
 import pandas as pd
 SP_CREDENTIAL_FILE = 'gspread-test-421301-6cd8b0cc0e27.json'
+☆Webアプリ/streamlit/pages/gspread-test-421301-6cd8b0cc0e27.json
 SP_COPE = [
     'https://www.googleapis.com/auth/drive',
     'https://spreadsheets.google.com/feeds'
