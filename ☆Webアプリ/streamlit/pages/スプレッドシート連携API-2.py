@@ -15,6 +15,9 @@ gc = gspread.authorize(credentials)
 sh = gc.open_by_key(SP_SHEET_KEY)
 worksheet = sh.worksheet(SP_SHEET_NAME)
 
+# 表の列数を取得
+num_columns = len(worksheet.row_values(1))
+
 # ユーザーにデータの入力を求めるループ
 while True:
     # データの入力を求める
@@ -25,7 +28,14 @@ while True:
         print("終了します。")
         break
     
+    # 入力されたデータをリストに分割
+    new_data_list = new_data.split(',')
+    
+    # 入力されたデータの列数が表の列数と一致するかチェック
+    if len(new_data_list) != num_columns:
+        print("入力されたデータの列数が不正です。正しい列数のデータを入力してください。")
+        continue
+    
     # スプレッドシートにデータを書き込む
-    worksheet.append_row([new_data])
+    worksheet.append_row(new_data_list)
     print("データをスプレッドシートに書き込みました。")
-
