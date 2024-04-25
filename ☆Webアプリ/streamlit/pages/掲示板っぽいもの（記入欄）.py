@@ -34,7 +34,7 @@ for i, column in enumerate(df.columns):
 updated_df = df.append(pd.Series(new_data, index=df.columns), ignore_index=True)
 
 # 書き込みボタンが押されたらスプレッドシートに書き込む
-if st.button('データをスプレッドシートに書き込む'):
+if st.button('データを書き込む'):
     # 新しいデータをスプレッドシートに書き込む
     worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
     st.success("新しいデータをスプレッドシートに書き込みました。")
