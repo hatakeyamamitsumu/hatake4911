@@ -2,7 +2,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 import pandas as pd
-from ipywidgets import interact, widgets
+import streamlit as st
 
 SP_CREDENTIAL_FILE = '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json'
 
@@ -18,13 +18,12 @@ def get_sheet_names(credentials, sheet_key):
     sh = gc.open_by_key(sheet_key)
     return [worksheet.title for worksheet in sh.worksheets()]
 
-# 選択式のセレクトボックスを作成する関数
-def select_sheet(sheet_names):
-    @interact(sheet_name=sheet_names)
-    def get_selected_sheet(sheet_name):
-        return sheet_name
-
-# シート名の取得とセレクトボックスの表示
+# シート名の取得
 credentials = ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE, SP_SCOPE)
 sheet_names = get_sheet_names(credentials, SP_SHEET_KEY)
-select_sheet(sheet_names)
+
+# セレクトボックスでシート名を選択
+selected_sheet = st.selectbox("シートを選択してください:", sheet_names)
+
+# 選択されたシート名を表示
+st.write("選択されたシート:", selected_sheet)
