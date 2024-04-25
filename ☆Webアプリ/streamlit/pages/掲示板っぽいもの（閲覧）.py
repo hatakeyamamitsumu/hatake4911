@@ -9,7 +9,7 @@ SP_COPE = [
     'https://spreadsheets.google.com/feeds'
 ]
 SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
-SP_SHEET='DEMO'
+SP_SHEET='話題1'
 credentials =ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE,SP_COPE)
 gc=gspread.authorize(credentials)
 sh=gc.open_by_key(SP_SHEET_KEY)
