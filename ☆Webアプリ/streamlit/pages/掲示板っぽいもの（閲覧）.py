@@ -2,6 +2,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 import pandas as pd
+
+st.title('簡易な掲示板っぽいアプリ（閲覧コーナー）')
 SP_CREDENTIAL_FILE = '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json'
 
 SP_COPE = [
