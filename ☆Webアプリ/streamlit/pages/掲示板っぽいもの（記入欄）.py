@@ -16,7 +16,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FIL
 gc = gspread.authorize(credentials)
 
 # スプレッドシートの選択
-selected_sheet = st.selectbox("シートを選択してください:", gc.open_by_key(SP_SHEET_KEY).worksheet_titles())
+selected_sheet = st.selectbox("シートを選択してください:", [worksheet.title for worksheet in gc.open_by_key(SP_SHEET_KEY).worksheets()])
 
 # 選択されたシートのデータ取得
 worksheet = gc.open_by_key(SP_SHEET_KEY).worksheet(selected_sheet)
@@ -37,4 +37,3 @@ if st.button('データをスプレッドシートに書き込む'):
     # 新しいデータをスプレッドシートに書き込む
     worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
     st.success("新しいデータをスプレッドシートに書き込みました。")
-
