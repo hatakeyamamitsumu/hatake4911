@@ -1,40 +1,54 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import pandas as pd
 import streamlit as st
+import pandas as pd
 
-# Streamlitアプリケーションのタイトルを設定
-st.title('簡易な掲示板っぽいアプリ')
-
-# Google Sheets 認証情報のファイルパスとスコープ
+# Google Sheetsの認証情報ファイルパス
 SP_CREDENTIAL_FILE = '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json'
-SP_SCOPE = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
+
+# Google Sheets APIのスコープ
+SP_SCOPE = [
+    'https://www.googleapis.com/auth/drive',
+    'https://spreadsheets.google.com/feeds'
+]
+
+# Google Sheetsのキー
 SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
-SP_SHEET_NAME = '話題1'
 
-# 認証情報の読み込みと認証
-credentials = ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE, SP_SCOPE)
-gc = gspread.authorize(credentials)
+# Google Sheetsからシート名を取得する関数
+def get_sheet_names(credentials, sheet_key):
+    gc = gspread.authorize(credentials)
+    sh = gc.open_by_key(sheet_key)
+    return [worksheet.title for worksheet in sh.worksheets()]
 
-# スプレッドシートの指定
-sh = gc.open_by_key(SP_SHEET_KEY)
-worksheet = sh.worksheet(SP_SHEET_NAME)
+# Google Sheetsからデータを読み込む関数
+def read_data(credentials, sheet_key, sheet_name):
+    gc = gspread.authorize(credentials)
+    sh = gc.open_by_key(sheet_key)
+    worksheet = sh.worksheet(sheet_name)
+    data = worksheet.get_all_values()
+    df = pd.DataFrame(data[1:], columns=data[0])
+    return df
 
-# 現在のデータ取得
-data = worksheet.get_all_values()
-df = pd.DataFrame(data[1:], columns=data[0])
+# Streamlitアプリの構築
+def main():
+    # サイドバーにタイトルを表示
+    st.sidebar.title("Google Sheets データ閲覧")
 
-# ユーザーから新しいデータの入力を受け取る
-new_data = []
-for i, column in enumerate(df.columns):
-    new_value = st.text_input("{}を入力してください: ".format(column), key=str(i))
-    new_data.append(new_value)
+    # サイドバーに情報を表示
+    st.sidebar.info("このアプリでは、Google Sheetsからデータを読み込んで閲覧します。")
 
-# 新しいデータを追加
-updated_df = df.append(pd.Series(new_data, index=df.columns), ignore_index=True)
+    # シート名を取得
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE, SP_SCOPE)
+    sheet_names = get_sheet_names(credentials, SP_SHEET_KEY)
 
-# 書き込みボタンが押されたらスプレッドシートに書き込む
-if st.button('データを書き込む'):
-    # 新しいデータをスプレッドシートに書き込む
-    worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
-    st.success("新しいデータを書き込みました。")
+    # セレクトボックスでシート名を選択
+    selected_sheet = st.sidebar.selectbox("シートを選択してください:", sheet_names)
+
+    # 選択されたシートのデータを読み込んで表示
+    df = read_data(credentials, SP_SHEET_KEY, selected_sheet)
+    st.write(f"選択されたシート: {selected_sheet}")
+    st.write(df)
+
+if __name__ == "__main__":
+    main()
