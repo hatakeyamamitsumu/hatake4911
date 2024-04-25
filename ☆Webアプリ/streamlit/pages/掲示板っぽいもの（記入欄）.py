@@ -27,14 +27,14 @@ df = pd.DataFrame(data[1:], columns=data[0])
 # ユーザーから新しいデータの入力を受け取る
 new_data = []
 for i, column in enumerate(df.columns):
-    new_value = st.text_input("新しい{}を入力してください: ".format(column), key=str(i))
+    new_value = st.text_input("{}を入力してください: ".format(column), key=str(i))
     new_data.append(new_value)
 
 # 新しいデータを追加
 updated_df = df.append(pd.Series(new_data, index=df.columns), ignore_index=True)
 
 # 書き込みボタンが押されたらスプレッドシートに書き込む
-if st.button('データをスプレッドシートに書き込む'):
+if st.button('データを書き込む'):
     # 新しいデータをスプレッドシートに書き込む
     worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
-    st.success("新しいデータをスプレッドシートに書き込みました。")
+    st.success("新しいデータを書き込みました。")
