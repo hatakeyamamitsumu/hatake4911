@@ -27,7 +27,7 @@ df = pd.DataFrame(data[1:], columns=data[0])
 # ユーザーから新しいデータの入力を受け取る
 new_data = []
 for i, column in enumerate(df.columns):
-    new_value = st.text_input("新しい{}を入力してください: ".format(column), key=str(i))
+    new_value = st.text_input("{}を入力してください: ".format(column), key=str(i))
     new_data.append(new_value)
 
 # 新しいデータを追加
