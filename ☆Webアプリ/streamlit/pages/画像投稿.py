@@ -63,7 +63,7 @@ def main():
             st.error(f'エラーが発生しました: {e}')
 
     # 画像をアップロードする
-    uploaded_file = st.file_uploader("画像をアップロードしてください", type=['jpg', 'jpeg', 'png'])
+    uploaded_file = st.file_uploader("画像をアップロードしてください（アップロードした画像は削除できません）", type=['jpg', 'jpeg', 'png'])
     if uploaded_file is not None:
         try:
             upload_image_to_folder(folder_id, uploaded_file)
