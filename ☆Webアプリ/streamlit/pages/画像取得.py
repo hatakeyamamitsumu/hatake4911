@@ -4,7 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from PIL import Image
 import io
 
-# Google ドライブ API 認証情報
+# Google ドライブ API 認証情報　https://drive.google.com/drive/folders/1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN?usp=drive_link
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
     '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json', 
     ['https://www.googleapis.com/auth/drive']
@@ -35,8 +35,8 @@ def main():
     st.title('Googleドライブ内の画像を表示する')
 
     # フォルダIDの入力
-    folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
-
+    #folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
+    folder_id = 1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN
     if folder_id:
         try:
             images = get_images_from_folder(folder_id)
