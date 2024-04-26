@@ -36,7 +36,7 @@ def main():
 
     # フォルダIDの入力
     #folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
-    folder_id = 1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN
+    folder_id = '1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
     if folder_id:
         try:
             images = get_images_from_folder(folder_id)
