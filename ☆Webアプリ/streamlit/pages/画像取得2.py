@@ -1,6 +1,7 @@
 import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseUpload
 from PIL import Image
 import io
 
@@ -36,12 +37,12 @@ def upload_image_to_folder(folder_id, image_file):
         'name': image_file.name,
         'parents': [folder_id]
     }
-    media = drive_service.files().create(
+    media = MediaIoBaseUpload(image_file, mimetype='image/jpeg')  # 画像のMIMEタイプを適切に指定してください
+    drive_service.files().create(
         body=file_metadata,
-        media_body=image_file,
+        media_body=media,
         fields='id'
     ).execute()
-    return media.get('id')
 
 # メイン処理
 def main():
