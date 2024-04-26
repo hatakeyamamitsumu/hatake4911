@@ -3,7 +3,7 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from PIL import Image
 import io
-
+#フォルダのアクセス権限を「リンクを知っている全員」に設定しておく必要あり
 # Google ドライブ API 認証情報
 credentials = Credentials.from_service_account_file(
     '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json',
