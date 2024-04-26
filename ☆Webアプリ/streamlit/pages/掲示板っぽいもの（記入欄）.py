@@ -22,7 +22,7 @@ sh = gc.open_by_key(SP_SHEET_KEY)
 sheet_names = [worksheet.title for worksheet in sh.worksheets()]
 
 # セレクトボックスでシートを選択
-selected_sheet_name = st.selectbox("スプレッドシートのシート名を選択してください", sheet_names)
+selected_sheet_name = st.selectbox("読みたいテーマを選択してください", sheet_names)
 
 # 選択したシートを開く
 worksheet = sh.worksheet(selected_sheet_name)
