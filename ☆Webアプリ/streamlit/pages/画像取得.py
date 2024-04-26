@@ -6,9 +6,10 @@ import io
 
 # Google ドライブ API 認証情報
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    'your-credentials.json', 
+    '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json', 
     ['https://www.googleapis.com/auth/drive']
 )
+
 drive_service = build('drive', 'v3', credentials=credentials)
 
 # フォルダ内の画像を取得する関数
