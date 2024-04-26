@@ -34,4 +34,4 @@ oauth2client
 
 
 streamlit.local_storage
-
+googleapiclient.discovery
