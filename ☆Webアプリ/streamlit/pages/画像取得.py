@@ -1,13 +1,13 @@
 import streamlit as st
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from oauth2client.service_account import ServiceAccountCredentials
 from PIL import Image
 import io
 
-# Google ドライブ API 認証情報　https://drive.google.com/drive/folders/1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN?usp=drive_link
-credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json', 
-    ['https://www.googleapis.com/auth/drive']
+# Google ドライブ API 認証情報
+credentials = Credentials.from_service_account_file(
+    '/mount/src/hatake4911/☆Webアプリ/秘密鍵/gspread-test-421301-6cd8b0cc0e27.json',
+    scopes=['https://www.googleapis.com/auth/drive']
 )
 
 drive_service = build('drive', 'v3', credentials=credentials)
@@ -35,8 +35,8 @@ def main():
     st.title('Googleドライブ内の画像を表示する')
 
     # フォルダIDの入力
-    #folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
-    folder_id = '1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
+    folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
+
     if folder_id:
         try:
             images = get_images_from_folder(folder_id)
