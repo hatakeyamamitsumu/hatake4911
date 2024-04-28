@@ -65,14 +65,13 @@ def main():
             # ファイル名を検索するための入力欄
             search_query = st.text_input("検索するファイル名を入力してください：")
             
+            images = []
             if search_query:
                 images = search_images_by_filename(folder_id, search_query)
-            else:
-                images = get_images_from_folder(folder_id)
             
             if images:
                 display_images(images)
-            else:
+            elif search_query:
                 st.warning('指定された条件に一致する画像が見つかりませんでした。')
         except Exception as e:
             st.error(f'エラーが発生しました: {e}')
