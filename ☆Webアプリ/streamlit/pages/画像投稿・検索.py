@@ -77,8 +77,7 @@ def main():
                 st.warning('指定された条件に一致する画像が見つかりませんでした。')
         except Exception as e:
             st.error(f'エラーが発生しました: {e}')
-    else:
-        st.warning('Googleドライブ内のフォルダIDを入力してください。')
+
 
     # 画像をアップロードする
     uploaded_file = st.file_uploader("画像をアップロードしてください（アップロードした画像は削除できません）", type=['jpg', 'jpeg', 'png'])
