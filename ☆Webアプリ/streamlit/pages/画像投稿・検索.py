@@ -58,8 +58,8 @@ def main():
     st.title('Googleドライブ内の画像を表示する')
 
     # フォルダIDの入力
-    folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
-
+    #folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
+    folder_id ='1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
     if folder_id:
         try:
             # ファイル名を検索するための入力欄
