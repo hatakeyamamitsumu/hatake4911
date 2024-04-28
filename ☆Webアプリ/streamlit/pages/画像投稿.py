@@ -8,7 +8,7 @@ import io
 #フォルダの
 # Google ドライブ API 認証情報
 credentials = Credentials.from_service_account_file(
-    '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
+    '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json,
     scopes=['https://www.googleapis.com/auth/drive']
 )
 
