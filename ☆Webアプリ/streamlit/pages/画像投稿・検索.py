@@ -59,22 +59,20 @@ def main():
     
     st.title('Googleドライブ内の画像を表示する')
 
-    try:
-        # ファイル名を検索するための入力欄
-        search_query = st.text_input("検索するファイル名を入力してください")
-        
-        images = []
-        if search_query:
+    # ファイル名を検索するための入力欄
+    search_query = st.text_input("検索するファイル名を入力してください：")
+    
+    if search_query:
+        try:
             images = search_images_by_filename(folder_id, search_query)
-        else:
-            images = get_images_from_folder(folder_id)
-        
-        if images:
-            display_images(images)
-        elif search_query:
-            st.warning('指定された条件に一致する画像が見つかりませんでした。')
-    except Exception as e:
-        st.error(f'エラーが発生しました: {e}')
+            if images:
+                display_images(images)
+            else:
+                st.warning('指定された条件に一致する画像が見つかりませんでした。')
+        except Exception as e:
+            st.error(f'エラーが発生しました: {e}')
+    else:
+        st.info("検索条件を入力してください。")
 
     # 画像をアップロードする
     uploaded_file = st.file_uploader("画像をアップロードしてください（アップロードした画像は削除できません）", type=['jpg', 'jpeg', 'png'])
@@ -87,5 +85,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
- 
