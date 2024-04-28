@@ -61,7 +61,7 @@ def main():
 
     try:
         # ファイル名を検索するための入力欄
-        search_query = st.text_input("検索するファイル名を入力してください：")
+        search_query = st.text_input("検索するファイル名を入力してください")
         
         images = []
         if search_query:
