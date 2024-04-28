@@ -58,8 +58,8 @@ def main():
     st.title('Googleドライブ内の画像を表示する')
 
     # フォルダIDの入力
-    # folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
-    folder_id = '1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
+    folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
+
     if folder_id:
         try:
             # ファイル名を検索するための入力欄
@@ -68,6 +68,8 @@ def main():
             images = []
             if search_query:
                 images = search_images_by_filename(folder_id, search_query)
+            else:
+                images = get_images_from_folder(folder_id)
             
             if images:
                 display_images(images)
