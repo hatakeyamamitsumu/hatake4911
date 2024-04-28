@@ -31,7 +31,7 @@ def display_images(images):
         img = Image.open(image_data)
         st.image(img, caption=image['name'], use_column_width=True)
 
-#フォルダ内の特定のファイル名を持つ画像を取得する関数
+# フォルダ内の特定のファイル名を持つ画像を取得する関数
 def search_images_by_filename(folder_id, filename):
     results = drive_service.files().list(
         q=f"'{folder_id}' in parents and mimeType contains 'image/' and name contains '{filename}'",
@@ -55,29 +55,26 @@ def upload_image_to_folder(folder_id, image_file):
 
 # メイン処理
 def main():
+    folder_id ='1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
+    
     st.title('Googleドライブ内の画像を表示する')
 
-    # フォルダIDの入力
-    #folder_id = st.text_input('Googleドライブ内のフォルダIDを入力してください')
-    folder_id ='1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
-    if folder_id:
-        try:
-            # ファイル名を検索するための入力欄
-            search_query = st.text_input("検索するファイル名を入力してください：")
-            
-            images = []
-            if search_query:
-                images = search_images_by_filename(folder_id, search_query)
-            else:
-                images = get_images_from_folder(folder_id)
-            
-            if images:
-                display_images(images)
-            elif search_query:
-                st.warning('指定された条件に一致する画像が見つかりませんでした。')
-        except Exception as e:
-            st.error(f'エラーが発生しました: {e}')
-
+    try:
+        # ファイル名を検索するための入力欄
+        search_query = st.text_input("検索するファイル名を入力してください：")
+        
+        images = []
+        if search_query:
+            images = search_images_by_filename(folder_id, search_query)
+        else:
+            images = get_images_from_folder(folder_id)
+        
+        if images:
+            display_images(images)
+        elif search_query:
+            st.warning('指定された条件に一致する画像が見つかりませんでした。')
+    except Exception as e:
+        st.error(f'エラーが発生しました: {e}')
 
     # 画像をアップロードする
     uploaded_file = st.file_uploader("画像をアップロードしてください（アップロードした画像は削除できません）", type=['jpg', 'jpeg', 'png'])
@@ -90,3 +87,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+ 
