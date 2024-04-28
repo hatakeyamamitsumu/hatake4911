@@ -31,7 +31,7 @@ def display_images(images):
         img = Image.open(image_data)
         st.image(img, caption=image['name'], use_column_width=True)
 
-# フォルダ内の特定のファイル名を持つ画像を取得する関数
+#フォルダ内の特定のファイル名を持つ画像を取得する関数
 def search_images_by_filename(folder_id, filename):
     results = drive_service.files().list(
         q=f"'{folder_id}' in parents and mimeType contains 'image/' and name contains '{filename}'",
