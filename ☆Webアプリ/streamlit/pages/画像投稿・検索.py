@@ -78,6 +78,7 @@ def main():
 
     # 画像をアップロードする
     uploaded_file = st.file_uploader("画像をアップロードしてください（アップロードした画像は削除できません）", type=['jpg', 'jpeg', 'png'])
+    st.write("※検索しやすいファイル名を付けておいてください。")
     if uploaded_file is not None:
         try:
             upload_image_to_folder(folder_id, uploaded_file)
