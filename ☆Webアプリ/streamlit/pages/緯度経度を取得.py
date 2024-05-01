@@ -1,6 +1,5 @@
 import streamlit as st
 import folium
-from streamlit_folium import folium_static
 
 # Streamlitアプリケーションのタイトルを設定
 st.title('地図上にピンを立てる')
@@ -18,5 +17,5 @@ m = folium.Map(location=map_center, zoom_start=12)
 # 入力された緯度経度にピンを立てる
 folium.Marker(location=[latitude, longitude], popup='Selected Point').add_to(m)
 
-# Streamlitで地図を表示
-folium_static(m)
+# Folium 地図を表示
+st.write(m)
