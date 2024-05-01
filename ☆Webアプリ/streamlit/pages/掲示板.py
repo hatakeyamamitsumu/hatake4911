@@ -43,8 +43,10 @@ if '書き込み' in st.session_state:
 else:
     # 読み込み機能
     # セレクトボックスでシートを選択
+    # セレクトボックスでシートを選択
     selected_sheet_name = st.selectbox("読みたいテーマを選択してください", sheet_names, key='selected_sheet_name')
     st.session_state.selected_sheet_name = selected_sheet_name
+
 
     # 選択したシートを開く
     worksheet = sh.worksheet(selected_sheet_name)
