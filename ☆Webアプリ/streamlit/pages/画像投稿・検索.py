@@ -59,10 +59,10 @@ def upload_image_to_folder(folder_id, image_file):
 def main():
     folder_id ='1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
     
-    st.title('Googleドライブ内の画像を表示する')
+    st.title('画像掲示板')
 
     # ファイル名を検索するための入力欄
-    search_query = st.text_input("検索するファイル名を入力してください：")
+    search_query = st.text_input("調べたい画像ファイル名を入力してください（部分一致ＯＫ）：")
     
     if search_query:
         try:
@@ -74,7 +74,7 @@ def main():
         except Exception as e:
             st.error(f'エラーが発生しました: {e}')
     else:
-        st.info("検索条件を入力してください。")
+        st.info("検索ワードを入力してください。")
 
     # 画像をアップロードする
     uploaded_file = st.file_uploader("画像をアップロードしてください（アップロードした画像は削除できません）", type=['jpg', 'jpeg', 'png'])
