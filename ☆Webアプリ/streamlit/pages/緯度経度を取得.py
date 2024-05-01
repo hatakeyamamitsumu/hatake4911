@@ -1,21 +1,38 @@
 import streamlit as st
+from streamlit_folium import st_folium
 import folium
 
-# Streamlitアプリケーションのタイトルを設定
-st.title('地図上にピンを立てる')
+# Initial values for latitude and longitude
+initial_latitude = 35.6895  # Tokyo station latitude
+initial_longitude = 139.6917  # Tokyo station longitude
 
-# ユーザーからの緯度経度の入力を受け取る
-latitude = st.number_input("緯度を入力してください", value=35.6895, step=0.0001)
-longitude = st.number_input("経度を入力してください", value=139.6917, step=0.0001)
+# Create input fields for latitude and longitude
+latitude_input = st.number_input('緯度', min_value=30, max_value=45, value=initial_latitude)
+longitude_input = st.number_input('経度', min_value=130, max_value=145, value=initial_longitude)
 
-# 地図を表示する領域を指定
-map_center = [latitude, longitude]
+# Create the map centered at the initial location
+m = folium.Map(location=[initial_latitude, initial_longitude], zoom_start=7)
 
-# 地図を作成
-m = folium.Map(location=map_center, zoom_start=12)
+# Create a marker at the initial location
+folium.Marker([initial_latitude, initial_longitude], popup='初期位置').add_to(m)
 
-# 入力された緯度経度にピンを立てる
-folium.Marker(location=[latitude, longitude], popup='Selected Point').add_to(m)
+# Update the map and marker when input values change
+def update_map():
+    new_latitude = latitude_input
+    new_longitude = longitude_input
 
-# Folium 地図を表示
-st.write(m)
+    # Clear existing markers
+    m.clear()
+
+    # Create a new marker at the updated location
+    folium.Marker([new_latitude, new_longitude], popup=f'新しい位置: {new_latitude}, {new_longitude}', color='red').add_to(m)
+
+# Button to trigger map and marker update
+update_button = st.button('更新')
+
+# Update the map and marker when the button is clicked
+if update_button:
+    update_map()
+
+# Display the map
+st_folium(m)
