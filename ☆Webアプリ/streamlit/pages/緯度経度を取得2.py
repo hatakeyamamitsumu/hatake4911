@@ -3,7 +3,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import streamlit as st
 
-# Googleドライブの認証情報
+# Googleドライブの認証情報　https://drive.google.com/file/d/1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k/view?usp=drive_link
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
     '/path/to/your/credentials.json',
     scopes=['https://www.googleapis.com/auth/drive']
@@ -13,7 +13,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(
 gc = gspread.authorize(credentials)
 
 # Googleドライブ内のCSVファイルのID
-file_id = 'your_file_id'
+file_id = '1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k'
 file_url = f'https://drive.google.com/uc?id={file_id}'
 
 # ユーザーから緯度と経度の入力を受け取る
