@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 from streamlit_folium import folium_static
 
-# タイトルを設定
+# タイトルを設定　　1GOR9sw1Nkon2qxMOfIDiq0zF4TICipRV
 st.title("ピンを立てる")
 
 # ユーザーから緯度と経度の入力を受け取る
