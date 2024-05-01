@@ -1,39 +1,20 @@
-import streamlit as st
-from streamlit_folium import st_folium
 import folium
+import streamlit as st
+import pandas as pd
+from streamlit_folium import folium_static
 
-# Default values for latitude and longitude (assuming they're numerical)
-initial_latitude = 35.6895  # Tokyo station latitude
-initial_longitude = 139.6917  # Tokyo station longitude
+# タイトルを設定
+st.title("ピンを立てる")
 
-# Combine latitude and longitude into a list (if necessary)
-initial_location = [initial_latitude, initial_longitude]
+# ユーザーから緯度と経度の入力を受け取る
+latitude = st.number_input("緯度を入力してください", value=35.6895, step=0.0001)
+longitude = st.number_input("経度を入力してください", value=139.6917, step=0.0001)
 
-# Create input fields for latitude and longitude
-latitude_input = st.number_input('緯度', min_value=30, max_value=45, value=initial_latitude)
-longitude_input = st.number_input('経度', min_value=130, max_value=145, value=initial_longitude)
+# 地図を作成
+m = folium.Map(location=[latitude, longitude], zoom_start=10)
 
-# Create the map centered at the user-defined location
-m = folium.Map(location=initial_location, zoom_start=7)
+# 入力された緯度経度にピンを立てる
+folium.Marker([latitude, longitude], popup='Selected Point').add_to(m)
 
-# Define a function to update the map and marker
-def update_map():
-    new_latitude = latitude_input
-    new_longitude = longitude_input
-
-    # Clear existing markers (optional, if you want to keep the initial marker, comment this out)
-    m.clear()
-
-    # Create a new marker at the updated location
-    new_location = [new_latitude, new_longitude]
-    folium.Marker(new_location, popup=f'新しい位置: {new_latitude}, {new_longitude}', color='red').add_to(m)
-
-# Create a button to trigger the map and marker update
-update_button = st.button('更新')
-
-# Update the map and marker when the button is clicked
-if update_button:
-    update_map()
-
-# Display the map
-st_folium(m)
+# 地図を表示
+folium_static(m)
