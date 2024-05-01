@@ -2,11 +2,11 @@ import folium
 import streamlit as st
 import pandas as pd
 from streamlit_folium import folium_static
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import gspread
 
 # Googleドライブの認証情報
-credentials = Credentials.from_service_account_file(
+credentials = ServiceAccountCredentials.from_json_keyfile_name(
     '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
     scopes=['https://www.googleapis.com/auth/drive']
 )
@@ -48,4 +48,3 @@ if st.button("書き込み"):
 
     # ユーザーに成功メッセージを表示
     st.success("緯度経度がCSVファイルに書き込まれました。")
-
