@@ -2,7 +2,8 @@ import streamlit as st
 from PIL import Image
 import os
 import random
-
+import io
+import qrcode
 
 st.title('Hatの、WEBアプリ作り挑戦日記')
 st.write('こんにちは！Hatと申します。')
@@ -22,18 +23,8 @@ st.image(QR_path, width=150)
 
 
 
-image_folder_path = '/mount/src/hatake4911/☆Webアプリ/画像/東京画像'
-image_files = [f for f in os.listdir(image_folder_path) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
-selected_image = random.choice(image_files)
-selected_image_path = os.path.join(image_folder_path, selected_image)
-st.text('こちらは2022年に東京に旅行した際の写真です。ランダムに表示されます。')
-st.text(selected_image)
-st.image(selected_image_path)
 
 
-import io
-import streamlit as st
-import qrcode
 
 # リンクと説明のリスト
 links = [
