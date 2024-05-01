@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 
 # Streamlitアプリケーションのタイトルを設定
-st.title('簡易な掲示板っぽいアプリ')
+st.title('簡易な掲示板')
 
 # Google Sheets 認証情報のファイルパスとスコープ
 SP_CREDENTIAL_FILE = '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'
