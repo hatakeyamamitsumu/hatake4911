@@ -31,18 +31,21 @@ folium.Marker([latitude, longitude], popup='Selected Point').add_to(m)
 # 地図を表示
 folium_static(m)
 
-# ユーザーが書き込むデータを作成
-new_data = {'緯度': [latitude], '経度': [longitude]}
+# 書き込みボタンが押されたらデータを書き込む
+if st.button("書き込み"):
+    # ユーザーが書き込むデータを作成
+    new_data = {'緯度': [latitude], '経度': [longitude]}
 
-# 新しいデータフレームを作成
-new_df = pd.DataFrame(new_data)
+    # 新しいデータフレームを作成
+    new_df = pd.DataFrame(new_data)
 
-# CSVファイルに新しいデータを追記
-existing_data = pd.read_csv(file_url)
-updated_data = pd.concat([existing_data, new_df], ignore_index=True)
+    # CSVファイルに新しいデータを追記
+    existing_data = pd.read_csv(file_url)
+    updated_data = pd.concat([existing_data, new_df], ignore_index=True)
 
-# GoogleドライブのCSVファイルに書き込む
-updated_data.to_csv(file_url, index=False)
+    # GoogleドライブのCSVファイルに書き込む
+    updated_data.to_csv(file_url, index=False)
 
-# ユーザーに成功メッセージを表示
-st.success("緯度経度がCSVファイルに書き込まれました。")
+    # ユーザーに成功メッセージを表示
+    st.success("緯度経度がCSVファイルに書き込まれました。")
+
