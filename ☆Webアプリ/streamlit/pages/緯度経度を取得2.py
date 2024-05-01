@@ -13,7 +13,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(
 
 # 認証情報の読み込みと認証
 gc = gspread.authorize(credentials)
-#https://drive.google.com/file/d/1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k/view?usp=drive_link
+
 # Googleドライブ内のCSVファイルのIDとURL
 file_id = '1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k'
 file_url = f'https://drive.google.com/uc?id={file_id}'
@@ -44,7 +44,8 @@ if st.button("書き込み"):
     updated_data = pd.concat([existing_data, new_df], ignore_index=True)
 
     # GoogleドライブのCSVファイルに書き込む
-    updated_data.to_csv(file_url, index=False)
+    with open(file_url, 'w') as f:
+        updated_data.to_csv(f, index=False)
 
     # ユーザーに成功メッセージを表示
     st.success("緯度経度がCSVファイルに書き込まれました。")
