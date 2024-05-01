@@ -16,7 +16,6 @@ gc = gspread.authorize(credentials)
 
 # Googleドライブ内のCSVファイルのID
 file_id = '1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k'
-file_url = f'https://drive.google.com/uc?id={file_id}'
 
 # ユーザーから緯度と経度の入力を受け取る
 latitude = st.number_input("緯度を入力してください", value=35.6895, step=0.0001)
@@ -33,19 +32,21 @@ folium_static(m)
 
 # 書き込みボタンが押されたらデータを書き込む
 if st.button("書き込み"):
-    # ユーザーが書き込むデータを作成
-    new_data = {'緯度': [latitude], '経度': [longitude]}
+    try:
+        # ユーザーが書き込むデータを作成
+        new_data = {'緯度': [latitude], '経度': [longitude]}
+        
+        # 新しいデータフレームを作成
+        new_df = pd.DataFrame(new_data)
 
-    # 新しいデータフレームを作成
-    new_df = pd.DataFrame(new_data)
+        # GoogleドライブのCSVファイルを開く
+        file = gc.open_by_key(file_id)
+        worksheet = file.sheet1
 
-    # GoogleドライブのCSVファイルを開く
-    file = gc.open_by_key(file_id)
-    worksheet = file.sheet1
+        # 新しいデータをGoogle Sheetsに書き込む
+        worksheet.append_row(new_df.values.tolist()[0])
 
-    # 新しいデータをGoogle Sheetsに書き込む
-    worksheet.append_row(new_df.values[0].tolist())
-
-    # ユーザーに成功メッセージを表示
-    st.success("緯度経度がGoogle Sheetsに書き込まれました。")
-
+        # ユーザーに成功メッセージを表示
+        st.success("緯度経度がGoogle Sheetsに書き込まれました。")
+    except Exception as e:
+        st.error(f"エラーが発生しました: {e}")
