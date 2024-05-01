@@ -21,14 +21,14 @@ sh = gc.open_by_key(SP_SHEET_KEY)
 # スプレッドシート内のシート名を取得
 sheet_names = [worksheet.title for worksheet in sh.worksheets()]
 
-# セレクトボックスでシートを選択
-selected_sheet_name = st.selectbox("操作したいシートを選択してください", sheet_names)
+# ユーザーが選択するモードを決定するためのセレクトボックスを追加
+selected_mode = st.radio("選択してください:", ("閲覧", "書き込み"))
 
-# 選択したシートを開く
-worksheet = sh.worksheet(selected_sheet_name)
-
-# 閲覧コーナー
-if st.button('データを閲覧する'):
+if selected_mode == "閲覧":
+    # シートの選択
+    selected_sheet_name = st.selectbox("操作したいシートを選択してください", sheet_names)
+    worksheet = sh.worksheet(selected_sheet_name)
+    
     # データ取得
     data = worksheet.get_all_values()
     df = pd.DataFrame(data[1:], columns=data[0])
@@ -36,9 +36,12 @@ if st.button('データを閲覧する'):
     # データフレームを表示
     st.write(df)
 
-# 記入コーナー
-if st.button('メッセージを書き込む（書き込んだら消せません）'):
-    # データ取得
+elif selected_mode == "書き込み":
+    # シートの選択
+    selected_sheet_name = st.selectbox("書き込むシートを選択してください", sheet_names)
+    worksheet = sh.worksheet(selected_sheet_name)
+
+    # 現在のデータ取得
     data = worksheet.get_all_values()
     df = pd.DataFrame(data[1:], columns=data[0])
 
@@ -51,6 +54,8 @@ if st.button('メッセージを書き込む（書き込んだら消せません
     # 新しいデータを追加
     updated_df = df.append(pd.Series(new_data, index=df.columns), ignore_index=True)
 
-    # 新しいデータをスプレッドシートに書き込む
-    worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
-    st.success("新しいメッセージを書き込みました。")
+    # 書き込みボタンが押されたらスプレッドシートに書き込む
+    if st.button('メッセージを書き込む（書き込んだら消せません）'):
+        # 新しいデータをスプレッドシートに書き込む
+        worksheet.update([updated_df.columns.values.tolist()] + updated_df.values.tolist())
+        st.success("新しいメッセージを書き込みました。")
