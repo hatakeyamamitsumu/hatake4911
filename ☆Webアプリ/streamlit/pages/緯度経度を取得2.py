@@ -3,9 +3,10 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import streamlit as st
 
+    
 # Googleドライブの認証情報　https://drive.google.com/file/d/1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k/view?usp=drive_link
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    '/path/to/your/credentials.json',
+    '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
     scopes=['https://www.googleapis.com/auth/drive']
 )
 
