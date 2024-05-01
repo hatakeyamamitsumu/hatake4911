@@ -2,11 +2,11 @@ import folium
 import streamlit as st
 import pandas as pd
 from streamlit_folium import folium_static
-from oauth2client.service_account import ServiceAccountCredentials
 import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
 # Googleドライブの認証情報
-credentials = ServiceAccountCredentials.from_json_keyfile_name(
+credentials = Credentials.from_service_account_file(
     '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
     scopes=['https://www.googleapis.com/auth/drive']
 )
