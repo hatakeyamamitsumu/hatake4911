@@ -5,9 +5,11 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from streamlit_folium import folium_static
 
+
+
 # Google Sheetsの認証情報
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('path_to_your_json_file.json', scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name('/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json', scope)
 client = gspread.authorize(creds)
 
 # Google Sheetsのデータを取得
