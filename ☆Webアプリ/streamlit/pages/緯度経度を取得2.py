@@ -1,4 +1,3 @@
-
 import folium
 import streamlit as st
 import pandas as pd
@@ -10,9 +9,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 credentials = Credentials.from_service_account_file(
     '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
     scopes=['https://www.googleapis.com/auth/drive']
+)
 
 # 認証情報の読み込みと認証
-credentials = ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE, SP_SCOPE)
 gc = gspread.authorize(credentials)
 
 # Googleドライブ内のCSVファイルのID
@@ -43,13 +42,7 @@ existing_data = pd.read_csv(file_url)
 updated_data = pd.concat([existing_data, new_df], ignore_index=True)
 
 # GoogleドライブのCSVファイルに書き込む
-existing_data.to_csv(file_url, index=False)
+updated_data.to_csv(file_url, index=False)
 
 # ユーザーに成功メッセージを表示
-st.success("緯度経度がCSVファイルに書き込まれました。")
-
-# データを書き込む
-worksheet.insert_row(new_df.values[0].tolist(), next_row)
-
-# 結果を表示
 st.success("緯度経度がCSVファイルに書き込まれました。")
