@@ -13,9 +13,9 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name(
 
 # 認証情報の読み込みと認証
 gc = gspread.authorize(credentials)
-
-# Googleドライブ内のCSVファイルのID
-file_id = '1GOR9sw1Nkon2qxMOfIDiq0zF4TICipRV'
+#https://drive.google.com/file/d/1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k/view?usp=drive_link
+# Googleドライブ内のCSVファイルのIDとURL
+file_id = '1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k'
 file_url = f'https://drive.google.com/uc?id={file_id}'
 
 # ユーザーから緯度と経度の入力を受け取る
