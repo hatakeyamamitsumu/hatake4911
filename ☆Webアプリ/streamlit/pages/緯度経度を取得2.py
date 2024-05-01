@@ -2,9 +2,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import streamlit as st
-
-    
-# Googleドライブの認証情報　https://drive.google.com/file/d/1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k/view?usp=drive_link
+  
+# Googleドライブの認証情報
 credentials = ServiceAccountCredentials.from_json_keyfile_name(
     '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
     scopes=['https://www.googleapis.com/auth/drive']
@@ -15,24 +14,20 @@ gc = gspread.authorize(credentials)
 
 # Googleドライブ内のCSVファイルのID
 file_id = '1c6A5_rnoabBChQgqcw2RwVrI6jrepW3k'
-file_url = f'https://drive.google.com/uc?id={file_id}'
 
 # ユーザーから緯度と経度の入力を受け取る
 latitude = st.number_input("緯度を入力してください", value=35.6895, step=0.0001)
 longitude = st.number_input("経度を入力してください", value=139.6917, step=0.0001)
 
 # 新しいデータを作成
-new_data = {'緯度': [latitude], '経度': [longitude]}
-
-# 新しいデータをDataFrameに変換
-new_df = pd.DataFrame(new_data)
+new_data = {'緯度': latitude, '経度': longitude}
 
 # GoogleドライブのCSVファイルを開く
 file = gc.open_by_key(file_id)
 worksheet = file.sheet1
 
 # 新しいデータをGoogle Sheetsに書き込む
-worksheet.append_row(new_df.values[0].tolist())
+worksheet.append_row([new_data['緯度'], new_data['経度']])
 
 # ユーザーに成功メッセージを表示
 st.success("緯度経度がGoogle Sheetsに書き込まれました。")
