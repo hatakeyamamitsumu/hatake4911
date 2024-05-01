@@ -4,11 +4,10 @@ from oauth2client.service_account import ServiceAccountCredentials
 import gspread
 
 # Googleドライブの認証情報
-credentials = ServiceAccountCredentials.from_json_keyfile_name(
-    'path/to/your/credentials.json',  # 認証情報ファイルのパスを指定してください
-    ['https://www.googleapis.com/auth/drive']
+credentials = Credentials.from_service_account_file(
+    '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
+    scopes=['https://www.googleapis.com/auth/drive']
 )
-
 # Googleドライブに接続
 gc = gspread.authorize(credentials)
 
