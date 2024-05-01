@@ -1,5 +1,6 @@
 import streamlit as st
 import folium
+from streamlit_folium import folium_static
 
 # Streamlitアプリケーションのタイトルを設定
 st.title('地図上にピンを立てる')
