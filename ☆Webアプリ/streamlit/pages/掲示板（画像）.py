@@ -59,7 +59,7 @@ def upload_image_to_folder(folder_id, image_file):
 def main():
     folder_id ='1BIEdWNQ1Iw0nEqf8OpGZXDywXFBiQueN'
     
-    st.title('画像掲示板')
+    st.title('簡易な画像掲示板')
 
     # ファイル名を検索するための入力欄
     search_query = st.text_input("調べたい画像ファイル名を入力してください（部分一致ＯＫ）：")
