@@ -12,14 +12,14 @@ client = gspread.authorize(creds)
 # タイトルを設定
 st.title("スプレッドシートから地図上に表示")
 
-# スプレッドシートのURLを入力
-spreadsheet_url = st.text_input("スプレッドシートのURLを入力してください")
+# スプレッドシートのURL
+spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
 
-# スプレッドシートのシートを選択
+# ユーザーにシート名を入力してもらう
 sheet_name = st.text_input("シート名を入力してください")
 
 # スプレッドシートからデータを取得
-if spreadsheet_url and sheet_name:
+if sheet_name:
     try:
         sheet = client.open_by_url(spreadsheet_url).worksheet(sheet_name)
         data = sheet.get_all_values()
@@ -35,4 +35,4 @@ if spreadsheet_url and sheet_name:
         # 地図を表示
         folium_static(m)
     except gspread.exceptions.APIError as e:
-        st.error("スプレッドシートが見つかりません。正しいURLとシート名を入力してください。")
+        st.error("スプレッドシートが見つかりません。正しいシート名を入力してください。")
