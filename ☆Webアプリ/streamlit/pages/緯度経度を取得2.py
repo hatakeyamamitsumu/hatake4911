@@ -6,12 +6,8 @@ from streamlit_folium import folium_static
 
 # Google Sheetsの認証情報
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  # "your_credentials.json" を実際のJSONキーファイルへのパスに置き換えてください
+creds = ServiceAccountCredentials.from_json_keyfile_name("your_credentials.json", scope)  # "your_credentials.json" を実際のJSONキーファイルへのパスに置き換えてください
 client = gspread.authorize(creds)
-
-# Google Sheetsのデータを取得
-spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-sheet = client.open_by_url(spreadsheet_url).sheet1
 
 # タイトルを設定
 st.title("ピンを立てる")
@@ -29,9 +25,15 @@ folium.Marker([latitude, longitude], popup='Selected Point').add_to(m)
 # 地図を表示
 folium_static(m)
 
-# 新しいデータをGoogle Sheetsに書き込む
-new_row = [latitude, longitude]
-sheet.append_row(new_row)
+# 書き込みボタンを追加
+if st.button("書き込み"):
+    # Google Sheetsのデータを取得
+    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+    sheet = client.open_by_url(spreadsheet_url).sheet1
 
-# ユーザーに成功メッセージを表示
-st.success("緯度経度がGoogle Sheetsに書き込まれました。")
+    # 新しいデータをGoogle Sheetsに書き込む
+    new_row = [latitude, longitude]
+    sheet.append_row(new_row)
+
+    # ユーザーに成功メッセージを表示
+    st.success("緯度経度がGoogle Sheetsに書き込まれました。")
