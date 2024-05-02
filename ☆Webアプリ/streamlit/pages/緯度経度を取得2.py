@@ -1,11 +1,8 @@
 import folium
 import streamlit as st
-import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from streamlit_folium import folium_static
-
-
 
 # Google Sheetsの認証情報
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
@@ -32,8 +29,8 @@ folium.Marker([latitude, longitude], popup='Selected Point').add_to(m)
 folium_static(m)
 
 # 新しいデータをGoogle Sheetsに書き込む
-new_data = {'緯度': latitude, '経度': longitude}
-sheet.append_row([new_data['緯度'], new_data['経度']])
+new_row = [latitude, longitude]
+sheet.append_row(new_row)
 
 # ユーザーに成功メッセージを表示
 st.success("緯度経度がGoogle Sheetsに書き込まれました。")
