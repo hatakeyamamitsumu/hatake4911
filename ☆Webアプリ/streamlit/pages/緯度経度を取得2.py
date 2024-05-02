@@ -6,7 +6,7 @@ from streamlit_folium import folium_static
 
 # Google Sheetsの認証情報
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json', scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  # "your_credentials.json" を実際のJSONキーファイルへのパスに置き換えてください
 client = gspread.authorize(creds)
 
 # Google Sheetsのデータを取得
