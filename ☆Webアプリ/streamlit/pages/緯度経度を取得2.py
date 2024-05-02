@@ -10,7 +10,8 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/
 client = gspread.authorize(creds)
 
 # Google Sheetsのデータを取得
-sheet = client.open("緯度経度情報").sheet1
+spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+sheet = client.open_by_url(spreadsheet_url).sheet1
 
 # タイトルを設定
 st.title("ピンを立てる")
