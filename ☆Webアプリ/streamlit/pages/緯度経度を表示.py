@@ -15,24 +15,24 @@ st.title("スプレッドシートから地図上に表示")
 # スプレッドシートのURL
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
 
-# ユーザーにシート名を入力してもらう
-sheet_name = st.text_input("シート名を入力してください")
+# スプレッドシートからシート名を取得
+spreadsheet = client.open_by_url(spreadsheet_url)
+sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
+
+# シート名を選択
+selected_sheet_name = st.selectbox("シート名を選択してください", sheet_names)
 
 # スプレッドシートからデータを取得
-if sheet_name:
-    try:
-        sheet = client.open_by_url(spreadsheet_url).worksheet(sheet_name)
-        data = sheet.get_all_values()
+sheet = spreadsheet.worksheet(selected_sheet_name)
+data = sheet.get_all_values()
 
-        # 地図を作成
-        m = folium.Map()
+# 地図を作成
+m = folium.Map()
 
-        # データから緯度経度を取得し、ピンを立てる
-        for row in data[1:]:  # ヘッダーを除く
-            latitude, longitude, info = float(row[0]), float(row[1]), row[2]
-            folium.Marker([latitude, longitude], popup=info).add_to(m)
+# データから緯度経度を取得し、ピンを立てる
+for row in data[1:]:  # ヘッダーを除く
+    latitude, longitude, info = float(row[0]), float(row[1]), row[2]
+    folium.Marker([latitude, longitude], popup=info).add_to(m)
 
-        # 地図を表示
-        folium_static(m)
-    except gspread.exceptions.APIError as e:
-        st.error("スプレッドシートが見つかりません。正しいシート名を入力してください。")
+# 地図を表示
+folium_static(m)
