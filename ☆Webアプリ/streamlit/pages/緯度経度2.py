@@ -13,29 +13,12 @@ client = gspread.authorize(creds)
 st.title("情報とピンを立てる")
 
 # 緯度の入力方法を選択
-latitude_input = st.number_input("緯度を入力してください", min_value=-90.0, max_value=90.0, value=35.6895, step=0.0001)
+latitude_slider = st.slider("緯度を選択してください", min_value=-90.0, max_value=90.0, value=35.6895, step=0.0001)
+latitude_input = st.number_input("緯度を入力してください", value=latitude_slider, step=0.0001)
 
 # 経度の入力方法を選択
-longitude_input = st.number_input("経度を入力してください", min_value=-180.0, max_value=180.0, value=139.6917, step=0.0001)
-
-# 緯度と経度の入力が変更された時に、対応するスライダーの値も更新する
-if "latitude_slider" not in st.session_state:
-    st.session_state.latitude_slider = latitude_input
-if "longitude_slider" not in st.session_state:
-    st.session_state.longitude_slider = longitude_input
-
-if st.session_state.latitude_input != latitude_input:
-    st.session_state.latitude_slider = latitude_input
-if st.session_state.longitude_input != longitude_input:
-    st.session_state.longitude_slider = longitude_input
-
-# スライダーを使って緯度と経度を選択
-latitude_slider = st.slider("緯度を選択してください", min_value=-90.0, max_value=90.0, value=st.session_state.latitude_slider, step=0.0001)
-longitude_slider = st.slider("経度を選択してください", min_value=-180.0, max_value=180.0, value=st.session_state.longitude_slider, step=0.0001)
-
-# 入力値を更新
-st.session_state.latitude_input = latitude_slider
-st.session_state.longitude_input = longitude_slider
+longitude_slider = st.slider("経度を選択してください", min_value=-180.0, max_value=180.0, value=139.6917, step=0.0001)
+longitude_input = st.number_input("経度を入力してください", value=longitude_slider, step=0.0001)
 
 # ユーザーから情報の入力を受け取る
 info = st.text_input("情報を入力してください")
