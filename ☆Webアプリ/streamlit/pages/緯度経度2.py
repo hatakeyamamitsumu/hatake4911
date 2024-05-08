@@ -36,7 +36,7 @@ folium.Marker([latitude_input, longitude_input], popup=info).add_to(m)
 folium_static(m)
 
 # 書き込みボタンを追加
-if st.sidebar.button("書き込み"):
+if st.sidebar.button("緯度経度、コメントを保存"):
     # Google Sheetsのデータを取得
     spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
     sheet = client.open_by_url(spreadsheet_url).sheet1
