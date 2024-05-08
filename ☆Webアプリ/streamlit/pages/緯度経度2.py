@@ -24,7 +24,7 @@ longitude_input = st.sidebar.number_input("経度を入力してください", v
 info = st.sidebar.text_input("情報を入力してください")
 
 # 地図の拡大率の設定
-zoom_value = st.sidebar.slider("地図の拡大率を選択してください", min_value=1, max_value=20, value=10)
+zoom_value = st.sidebar.slider("地図の拡大率を固定できます", min_value=1, max_value=20, value=10)
 
 # 地図を作成
 m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
