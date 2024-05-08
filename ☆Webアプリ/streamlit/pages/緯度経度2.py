@@ -10,18 +10,18 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/
 client = gspread.authorize(creds)
 
 # タイトルを設定
-st.title("情報とピンを立てる")
+st.sidebar.title("情報とピンを立てる")
 
 # 緯度の入力方法を選択
-latitude_slider = st.slider("緯度を選択してください", min_value=-90.000000, max_value=90.000000, value=35.689500, step=0.000001)
-latitude_input = st.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f")
+latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=-90.000000, max_value=90.000000, value=35.689500, step=0.000001)
+latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f")
 
 # 経度の入力方法を選択
-longitude_slider = st.slider("経度を選択してください", min_value=-180.000000, max_value=180.000000, value=139.691700, step=0.000001)
-longitude_input = st.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f")
+longitude_slider = st.sidebar.slider("経度を選択してください", min_value=-180.000000, max_value=180.000000, value=139.691700, step=0.000001)
+longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f")
 
 # ユーザーから情報の入力を受け取る
-info = st.text_input("情報を入力してください")
+info = st.sidebar.text_input("情報を入力してください")
 
 # 地図を作成
 m = folium.Map(location=[latitude_input, longitude_input], zoom_start=10)
@@ -33,7 +33,7 @@ folium.Marker([latitude_input, longitude_input], popup=info).add_to(m)
 folium_static(m)
 
 # 書き込みボタンを追加
-if st.button("書き込み"):
+if st.sidebar.button("書き込み"):
     # Google Sheetsのデータを取得
     spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
     sheet = client.open_by_url(spreadsheet_url).sheet1
@@ -43,4 +43,4 @@ if st.button("書き込み"):
     sheet.append_row(new_row)
 
     # ユーザーに成功メッセージを表示
-    st.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
+    st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
