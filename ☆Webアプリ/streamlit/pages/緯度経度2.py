@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import folium
+from streamlit_folium import folium_static
 
 # データの読み込み
 df = pd.DataFrame({
