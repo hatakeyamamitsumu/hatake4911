@@ -1,30 +1,21 @@
 import streamlit as st
+import pandas as pd
 import folium
-from streamlit_folium import st_folium
 
-# Define the data for the markers
-data = [
-    {"name": "Marker 1", "location": [35.6895, 139.6917]},
-    {"name": "Marker 2", "location": [35.7119, 139.7003]},
-    {"name": "Marker 3", "location": [35.7343, 139.7188]}
-]
+# データの読み込み
+df = pd.DataFrame({
+    'lat': [35.681236, 35.681236, 37.7749],
+    'lon': [139.767125, 139.767125, -122.4194],
+    'name': ['東京タワー', '東京駅', 'サンフランシスコ']
+})
 
-# Create a folium map
-m = folium.Map(location=[35.6895, 139.6917], zoom_start=6)
+# 地図の初期化
+st.write("地図上でクリックしてピンを立てることができます")
+m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=5)
 
-# Add markers to the map
-for marker_data in data:
-    marker = folium.Marker(marker_data["location"], popup=marker_data["name"])
-    marker.add_to(m)
+# ピンを立てる
+for i, row in df.iterrows():
+    folium.Marker([row['lat'], row['lon']], popup=row['name']).add_to(m)
 
-# Define the click_event function
-def click_event(click_location):
-    # Add a new marker at the clicked location
-    new_marker = folium.CircleMarker(click_location, radius=5, color='red')
-    new_marker.add_to(m)
-
-# Connect the click_event function to the map
-m.on_click(click_event)
-
-# Display the map in Streamlit
-st_folium(m)
+# 地図を表示
+folium_static(m)
