@@ -10,7 +10,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/
 client = gspread.authorize(creds)
 
 # タイトルを設定
-st.sidebar.title("情報とピンを立てる")
+st.title("地図にピンを立てる")
 
 # 緯度の入力方法を選択
 latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=-90.000000, max_value=90.000000, value=35.689500, step=0.000001)
