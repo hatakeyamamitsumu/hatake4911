@@ -22,7 +22,7 @@ longitude_slider = st.sidebar.slider("経度を選択してください", min_va
 longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude")
 
 # ユーザーから情報の入力を受け取る
-info = st.sidebar.text_input("情報を入力してください")
+info = st.sidebar.text_input("コメントを入力してください")
 
 
 
