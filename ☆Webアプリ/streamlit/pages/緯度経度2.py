@@ -13,11 +13,11 @@ client = gspread.authorize(creds)
 st.title("情報とピンを立てる")
 
 # 緯度の入力方法を選択
-latitude_slider = st.slider("緯度を選択してください", min_value=-90.0, max_value=90.0, value=35.6895, step=0.000001)
+latitude_slider = st.slider("緯度を選択してください", min_value=-90.000000, max_value=90.000000, value=35.689500, step=0.000001)
 latitude_input = st.number_input("緯度を入力してください", value=latitude_slider, step=0.000001)
 
 # 経度の入力方法を選択
-longitude_slider = st.slider("経度を選択してください", min_value=-180.0, max_value=180.0, value=139.6917, step=0.000001)
+longitude_slider = st.slider("経度を選択してください", min_value=-180.000000, max_value=180.000000, value=139.691700, step=0.000001)
 longitude_input = st.number_input("経度を入力してください", value=longitude_slider, step=0.000001)
 
 # ユーザーから情報の入力を受け取る
