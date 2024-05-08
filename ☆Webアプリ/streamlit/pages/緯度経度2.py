@@ -20,20 +20,22 @@ latitude_input = st.sidebar.number_input("緯度を入力してください", va
 longitude_slider = st.sidebar.slider("経度を選択してください", min_value=-180.000000, max_value=180.000000, value=139.691700, step=0.000001)
 longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude")
 
-# ユーザーから情報の入力を受け取る
-info = st.sidebar.text_input("情報を入力してください")
-
 # 地図の拡大率の設定を保持
 zoom_state = st.sidebar.empty()
+zoom_slider = zoom_state.slider("地図の拡大率を選択してください", min_value=1, max_value=20, value=10)
 
 # 地図を作成
-m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_state.slider("地図の拡大率を選択してください", min_value=1, max_value=20, value=10),)
+m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_slider)
 
 # 入力された緯度経度にピンを立てる
-folium.Marker([latitude_input, longitude_input], popup=info).add_to(m)
+folium.Marker([latitude_input, longitude_input]).add_to(m)
 
 # 地図を表示
 folium_static(m)
+
+# 地図の拡大率が変更された場合、拡大率のスライダーも更新する
+if zoom_state.button("更新"):
+    zoom_slider = zoom_state.slider("地図の拡大率を選択してください", min_value=1, max_value=20, value=10)
 
 # 書き込みボタンを追加
 if st.sidebar.button("書き込み"):
@@ -42,7 +44,7 @@ if st.sidebar.button("書き込み"):
     sheet = client.open_by_url(spreadsheet_url).sheet1
 
     # 新しいデータをGoogle Sheetsに書き込む
-    new_row = [latitude_input, longitude_input, info]
+    new_row = [latitude_input, longitude_input]
     sheet.append_row(new_row)
 
     # ユーザーに成功メッセージを表示
