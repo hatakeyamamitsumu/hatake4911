@@ -13,29 +13,21 @@ client = gspread.authorize(creds)
 st.title("情報とピンを立てる")
 
 # 緯度の入力方法を選択
-latitude_option = st.radio("緯度の入力方法を選択してください", ("スライダー", "入力欄"))
-
-if latitude_option == "スライダー":
-    latitude = st.slider("緯度を選択してください", min_value=-90.0, max_value=90.0, value=35.6895, step=0.0001)
-else:
-    latitude = st.number_input("緯度を入力してください", value=35.6895, step=0.0001)
+latitude_slider = st.slider("緯度を選択してください", min_value=-90.0, max_value=90.0, value=35.6895, step=0.0001)
+latitude_input = st.number_input("緯度を入力してください", value=latitude_slider, step=0.0001)
 
 # 経度の入力方法を選択
-longitude_option = st.radio("経度の入力方法を選択してください", ("スライダー", "入力欄"))
-
-if longitude_option == "スライダー":
-    longitude = st.slider("経度を選択してください", min_value=-180.0, max_value=180.0, value=139.6917, step=0.0001)
-else:
-    longitude = st.number_input("経度を入力してください", value=139.6917, step=0.0001)
+longitude_slider = st.slider("経度を選択してください", min_value=-180.0, max_value=180.0, value=139.6917, step=0.0001)
+longitude_input = st.number_input("経度を入力してください", value=longitude_slider, step=0.0001)
 
 # ユーザーから情報の入力を受け取る
 info = st.text_input("情報を入力してください")
 
 # 地図を作成
-m = folium.Map(location=[latitude, longitude], zoom_start=10)
+m = folium.Map(location=[latitude_input, longitude_input], zoom_start=10)
 
 # 入力された緯度経度にピンを立てる
-folium.Marker([latitude, longitude], popup=info).add_to(m)
+folium.Marker([latitude_input, longitude_input], popup=info).add_to(m)
 
 # 地図を表示
 folium_static(m)
@@ -47,7 +39,7 @@ if st.button("書き込み"):
     sheet = client.open_by_url(spreadsheet_url).sheet1
 
     # 新しいデータをGoogle Sheetsに書き込む
-    new_row = [latitude, longitude, info]
+    new_row = [latitude_input, longitude_input, info]
     sheet.append_row(new_row)
 
     # ユーザーに成功メッセージを表示
