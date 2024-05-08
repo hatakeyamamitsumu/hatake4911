@@ -1,26 +1,42 @@
+import folium
 import streamlit as st
-import pandas as pd
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from streamlit_folium import folium_static
 
-# データの読み込み
-df = pd.DataFrame({
-    'lat': [35.681236, 35.681236, 37.7749],
-    'lon': [139.767125, 139.767125, -122.4194],
-    'name': ['東京タワー', '東京駅', 'サンフランシスコ']
-})
+# Google Sheetsの認証情報
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  
+client = gspread.authorize(creds)
 
-# 地図の初期化
-st.write("地図上でクリックしてピンを立てることができます")
-map_data = df[['lat', 'lon']]
-st.map(map_data)
+# タイトルを設定
+st.title("情報とピンを立てる")
 
-# ピンを立てる
-if st.button("ピンを立てる"):
-    new_marker_lat = st.number_input("緯度を入力してください:")
-    new_marker_lon = st.number_input("経度を入力してください:")
-    new_marker_name = st.text_input("マーカーの名前を入力してください:")
-    if new_marker_lat and new_marker_lon and new_marker_name:
-        st.write(f"新しいマーカー: ({new_marker_lat}, {new_marker_lon}, {new_marker_name})")
-        new_marker = pd.DataFrame({'lat': [new_marker_lat], 'lon': [new_marker_lon], 'name': [new_marker_name]})
-        df = pd.concat([df, new_marker], ignore_index=True)
-        map_data = df[['lat', 'lon']]
-        st.map(map_data)
+# ユーザーから緯度と経度の入力を受け取る
+latitude = st.slider("緯度を選択してください", min_value=-90.0, max_value=90.0, value=35.6895, step=0.0001)
+longitude = st.slider("経度を選択してください", min_value=-180.0, max_value=180.0, value=139.6917, step=0.0001)
+
+# ユーザーから情報の入力を受け取る
+info = st.text_input("情報を入力してください")
+
+# 地図を作成
+m = folium.Map(location=[latitude, longitude], zoom_start=10)
+
+# 入力された緯度経度にピンを立てる
+folium.Marker([latitude, longitude], popup=info).add_to(m)
+
+# 地図を表示
+folium_static(m)
+
+# 書き込みボタンを追加
+if st.button("書き込み"):
+    # Google Sheetsのデータを取得
+    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+    sheet = client.open_by_url(spreadsheet_url).sheet1
+
+    # 新しいデータをGoogle Sheetsに書き込む
+    new_row = [latitude, longitude, info]
+    sheet.append_row(new_row)
+
+    # ユーザーに成功メッセージを表示
+    st.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
