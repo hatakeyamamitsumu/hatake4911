@@ -13,7 +13,7 @@ client = gspread.authorize(creds)
 st.title("地図にピンを立てる")
 st.write("緯度経度の0.000001度は、おおよそ0.1メートルです。")
 # 地図の拡大率の設定
-zoom_value = st.slider("地図の拡大率を固定できます", min_value=1, max_value=20, value=10)
+zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
 # 緯度の入力方法を選択
 latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=-90.000000, max_value=90.000000, value=35.689500, step=0.000001)
 latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f", key="latitude")
