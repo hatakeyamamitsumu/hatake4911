@@ -11,7 +11,7 @@ client = gspread.authorize(creds)
 
 # タイトルを設定
 st.title("地図にピンを立てる")
-st.text("緯度経度の0.000001度は、おおよそ0.1メートルです。")
+st.write("緯度経度の0.000001度は、おおよそ0.1メートルです。")
 # 地図の拡大率の設定
 zoom_value = st.slider("地図の拡大率を固定できます", min_value=1, max_value=20, value=10)
 # 緯度の入力方法を選択
