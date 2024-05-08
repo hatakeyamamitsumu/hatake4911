@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import folium
-from streamlit_folium import folium_static
 
 # データの読み込み
 df = pd.DataFrame({
@@ -12,27 +10,17 @@ df = pd.DataFrame({
 
 # 地図の初期化
 st.write("地図上でクリックしてピンを立てることができます")
-m = folium.Map(location=[df['lat'].mean(), df['lon'].mean()], zoom_start=5)
+map_data = df[['lat', 'lon']]
+st.map(map_data)
 
 # ピンを立てる
-for i, row in df.iterrows():
-    folium.Marker([row['lat'], row['lon']], popup=row['name']).add_to(m)
-
-# 地図を表示
-folium_static(m)
-
-# JavaScriptを挿入して地図上のクリックイベントを処理
-st.components.v1.html("""
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var map = document.getElementsByClassName("folium-map")[0];
-            map.on("click", function(event) {
-                var lat = event.latlng.lat;
-                var lon = event.latlng.lng;
-                var popup = prompt("Enter popup text:");
-                var marker = L.marker([lat, lon]).addTo(map);
-                marker.bindPopup(popup).openPopup();
-            });
-        });
-    </script>
-""", height=0)
+if st.button("ピンを立てる"):
+    new_marker_lat = st.number_input("緯度を入力してください:")
+    new_marker_lon = st.number_input("経度を入力してください:")
+    new_marker_name = st.text_input("マーカーの名前を入力してください:")
+    if new_marker_lat and new_marker_lon and new_marker_name:
+        st.write(f"新しいマーカー: ({new_marker_lat}, {new_marker_lon}, {new_marker_name})")
+        new_marker = pd.DataFrame({'lat': [new_marker_lat], 'lon': [new_marker_lon], 'name': [new_marker_name]})
+        df = pd.concat([df, new_marker], ignore_index=True)
+        map_data = df[['lat', 'lon']]
+        st.map(map_data)
