@@ -14,11 +14,11 @@ st.title("情報とピンを立てる")
 
 # 緯度の入力方法を選択
 latitude_slider = st.slider("緯度を選択してください", min_value=-90.000000, max_value=90.000000, value=35.689500, step=0.000001)
-latitude_input = round(st.number_input("緯度を入力してください", value=latitude_slider, step=0.000001), 6)
+latitude_input = st.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f")
 
 # 経度の入力方法を選択
 longitude_slider = st.slider("経度を選択してください", min_value=-180.000000, max_value=180.000000, value=139.691700, step=0.000001)
-longitude_input = round(st.number_input("経度を入力してください", value=longitude_slider, step=0.000001), 6)
+longitude_input = st.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f")
 
 # ユーザーから情報の入力を受け取る
 info = st.text_input("情報を入力してください")
