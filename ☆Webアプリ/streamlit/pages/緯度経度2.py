@@ -20,3 +20,19 @@ for i, row in df.iterrows():
 
 # 地図を表示
 folium_static(m)
+
+# JavaScriptを挿入して地図上のクリックイベントを処理
+st.components.v1.html("""
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var map = document.getElementsByClassName("folium-map")[0];
+            map.on("click", function(event) {
+                var lat = event.latlng.lat;
+                var lon = event.latlng.lng;
+                var popup = prompt("Enter popup text:");
+                var marker = L.marker([lat, lon]).addTo(map);
+                marker.bindPopup(popup).openPopup();
+            });
+        });
+    </script>
+""", height=0)
