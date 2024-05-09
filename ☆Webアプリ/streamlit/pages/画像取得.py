@@ -57,8 +57,19 @@ def main():
             files = search_files_by_filename(folder_id, search_query)
             if files:
                 st.write("検索結果:")
+                file_names = [file['name'] for file in files]
+                selected_file_name = st.selectbox("ファイルを選択してください", file_names)
+                selected_file_id = None
                 for file in files:
-                    st.write(f"- {file['name']}")
+                    if file['name'] == selected_file_name:
+                        selected_file_id = file['id']
+                        break
+                if selected_file_id:
+                    st.write(f"選択されたファイル: {selected_file_name}")
+                    # ファイルの再生などを行う
+                    # ここに動画再生のコードを追加してください
+                else:
+                    st.warning('ファイルが選択されていません。')
             else:
                 st.warning('指定されたファイル名に一致するファイルが見つかりませんでした。')
         except HttpError as e:
