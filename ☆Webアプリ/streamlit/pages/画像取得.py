@@ -3,7 +3,8 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
 from googleapiclient.errors import HttpError
-import io
+import tempfile
+import os
 
 # Google ドライブ API 認証情報
 credentials = Credentials.from_service_account_file(
@@ -38,13 +39,12 @@ def upload_video_to_folder(folder_id, video_file):
 # Googleドライブから動画ファイルをダウンロードする関数
 def download_video(file_id):
     request = drive_service.files().get_media(fileId=file_id)
-    downloaded_video = io.BytesIO()
-    downloader = MediaIoBaseDownload(downloaded_video, request)
+    temp_file = tempfile.NamedTemporaryFile(delete=False)
+    downloader = MediaIoBaseDownload(temp_file, request)
     done = False
     while done is False:
         status, done = downloader.next_chunk()
-    downloaded_video.seek(0)
-    return downloaded_video
+    return temp_file.name
 
 # メイン処理
 def main():
@@ -78,8 +78,8 @@ def main():
                 if selected_file_id:
                     st.write(f"選択されたファイル: {selected_file_name}")
                     st.write("動画の再生:")
-                    downloaded_video = download_video(selected_file_id)
-                    st.video(downloaded_video)
+                    downloaded_video_path = download_video(selected_file_id)
+                    st.video(downloaded_video_path)
                 else:
                     st.warning('ファイルが選択されていません。')
             else:
