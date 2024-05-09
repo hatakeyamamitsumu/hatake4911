@@ -1,8 +1,7 @@
 import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload
-import io
+from googleapiclient.http import MediaFileUpload
 
 # Google ドライブ API 認証情報
 credentials = Credentials.from_service_account_file(
@@ -18,7 +17,7 @@ def upload_video_to_folder(folder_id, video_file):
         'name': video_file.name,
         'parents': [folder_id]
     }
-    media = MediaIoBaseUpload(video_file, mimetype='video/mp4')  # 動画のMIMEタイプを適切に指定してください
+    media = MediaFileUpload(video_file.name, mimetype='video/mp4')  # 動画のMIMEタイプを適切に指定してください
     drive_service.files().create(
         body=file_metadata,
         media_body=media,
