@@ -57,15 +57,7 @@ def main():
         except Exception as e:
             st.error(f'動画のアップロード中にエラーが発生しました: {e}')
 
-    # 指定されたフォルダ内の動画を検索して表示
-    st.header('動画一覧')
-    videos = search_videos_in_folder(folder_id)
-    if videos:
-        st.write("フォルダ内の動画:")
-        for video in videos:
-            st.write(f"動画名: {video['name']}, ID: {video['id']}")
-    else:
-        st.write("フォルダ内に動画が見つかりませんでした。")
+
 
     # 選択された動画を再生
     if videos:
