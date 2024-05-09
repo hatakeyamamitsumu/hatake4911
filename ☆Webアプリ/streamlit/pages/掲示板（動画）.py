@@ -26,7 +26,7 @@ def upload_video_to_folder(folder_id, video_file):
 
 # メイン処理
 def main():
-    folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF'
+    folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF?usp=sharing'
 
     st.title('簡易な動画アップロード')
 
