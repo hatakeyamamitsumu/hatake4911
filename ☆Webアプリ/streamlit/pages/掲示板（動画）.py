@@ -27,7 +27,7 @@ def upload_video_to_folder(folder_id, video_file):
 
 # メイン処理
 def main():
-    folder_id = 'https://drive.google.com/drive/folders/1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF?usp=sharing'
+    folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF'
     
     st.title('簡易な動画アップロード')
 
