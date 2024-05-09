@@ -1,7 +1,7 @@
 import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 import io
 
 # Google ドライブ API 認証情報
@@ -11,6 +11,12 @@ credentials = Credentials.from_service_account_file(
 )
 
 drive_service = build('drive', 'v3', credentials=credentials)
+
+# Google ドライブ内の特定のフォルダから動画を検索する関数
+def search_videos_in_folder(folder_id):
+    results = drive_service.files().list(q=f"'{folder_id}' in parents and mimeType='video/mp4'",
+                                         fields="files(id, name)").execute()
+    return results.get('files', [])
 
 # 動画をGoogleドライブのフォルダにアップロードする関数
 def upload_video_to_folder(folder_id, video_file):
@@ -25,11 +31,22 @@ def upload_video_to_folder(folder_id, video_file):
         fields='id'
     ).execute()
 
-# メイン処理　https://drive.google.com/drive/folders/1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF?usp=sharing
+# Google ドライブから動画をダウンロードする関数
+def download_video(video_id):
+    request = drive_service.files().get_media(fileId=video_id)
+    downloaded_video = io.BytesIO()
+    downloader = MediaIoBaseDownload(downloaded_video, request)
+    done = False
+    while done is False:
+        status, done = downloader.next_chunk()
+    downloaded_video.seek(0)
+    return downloaded_video
+
+# メイン処理
 def main():
     folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF'
     
-    st.title('簡易な動画アップロード')
+    st.title('動画アップロードと再生')
 
     # 動画をアップロードする
     uploaded_file = st.file_uploader("動画をアップロードしてください", type=['mp4', 'avi', 'mov'])
@@ -39,6 +56,27 @@ def main():
             st.success("動画が正常にアップロードされました。")
         except Exception as e:
             st.error(f'動画のアップロード中にエラーが発生しました: {e}')
+
+    # 指定されたフォルダ内の動画を検索して表示
+    st.header('動画一覧')
+    videos = search_videos_in_folder(folder_id)
+    if videos:
+        st.write("フォルダ内の動画:")
+        for video in videos:
+            st.write(f"動画名: {video['name']}, ID: {video['id']}")
+    else:
+        st.write("フォルダ内に動画が見つかりませんでした。")
+
+    # 選択された動画を再生
+    if videos:
+        st.header('動画再生')
+        video_names = [video['name'] for video in videos]
+        selected_video_name = st.selectbox("再生する動画を選択してください", video_names)
+        selected_video = [video for video in videos if video['name'] == selected_video_name][0]
+        video_id = selected_video['id']
+        st.subheader('選択された動画')
+        downloaded_video = download_video(video_id)
+        st.video(downloaded_video, format='video/mp4')
 
 if __name__ == '__main__':
     main()
