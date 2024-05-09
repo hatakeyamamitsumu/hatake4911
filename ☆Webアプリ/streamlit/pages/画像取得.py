@@ -1,10 +1,8 @@
 import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
-from googleapiclient.errors import HttpError
-import tempfile
-import os
+from googleapiclient.http import MediaIoBaseUpload
+import io
 
 # Google ドライブ API 認証情報
 credentials = Credentials.from_service_account_file(
@@ -14,14 +12,11 @@ credentials = Credentials.from_service_account_file(
 
 drive_service = build('drive', 'v3', credentials=credentials)
 
-# フォルダ内の特定のファイル名を持つファイルを検索する関数
-def search_files_by_filename(folder_id, filename):
-    results = drive_service.files().list(
-        q=f"'{folder_id}' in parents and mimeType != 'application/vnd.google-apps.folder' and name contains '{filename}'",
-        fields='files(id, name)'
-    ).execute()
-    files = results.get('files', [])
-    return files
+# Google ドライブ内の特定のフォルダから動画を検索する関数
+def search_videos_in_folder(folder_id):
+    results = drive_service.files().list(q=f"'{folder_id}' in parents and mimeType='video/mp4'",
+                                         fields="files(id, name)").execute()
+    return results.get('files', [])
 
 # 動画をGoogleドライブのフォルダにアップロードする関数
 def upload_video_to_folder(folder_id, video_file):
@@ -36,17 +31,7 @@ def upload_video_to_folder(folder_id, video_file):
         fields='id'
     ).execute()
 
-# Googleドライブから動画ファイルをダウンロードする関数
-def download_video(file_id):
-    request = drive_service.files().get_media(fileId=file_id)
-    temp_file = tempfile.NamedTemporaryFile(delete=False)
-    downloader = MediaIoBaseDownload(temp_file, request)
-    done = False
-    while done is False:
-        status, done = downloader.next_chunk()
-    return temp_file.name
-
-# メイン処理
+# メイン処理　https://drive.google.com/drive/folders/1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF?usp=sharing
 def main():
     folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF'
     
@@ -58,34 +43,18 @@ def main():
         try:
             upload_video_to_folder(folder_id, uploaded_file)
             st.success("動画が正常にアップロードされました。")
-        except HttpError as e:
+        except Exception as e:
             st.error(f'動画のアップロード中にエラーが発生しました: {e}')
-    
-    # ファイル名を検索するテキストボックス
-    search_query = st.text_input("検索するファイル名を入力してください：")
-    if search_query:
-        try:
-            files = search_files_by_filename(folder_id, search_query)
-            if files:
-                st.write("検索結果:")
-                file_names = [file['name'] for file in files]
-                selected_file_name = st.selectbox("ファイルを選択してください", file_names)
-                selected_file_id = None
-                for file in files:
-                    if file['name'] == selected_file_name:
-                        selected_file_id = file['id']
-                        break
-                if selected_file_id:
-                    st.write(f"選択されたファイル: {selected_file_name}")
-                    st.write("動画の再生:")
-                    downloaded_video_path = download_video(selected_file_id)
-                    st.video(downloaded_video_path)
-                else:
-                    st.warning('ファイルが選択されていません。')
-            else:
-                st.warning('指定されたファイル名に一致するファイルが見つかりませんでした。')
-        except HttpError as e:
-            st.error(f'ファイル名の検索中にエラーが発生しました: {e}')
+
+    # 指定されたフォルダ内の動画を検索して表示
+    st.header('動画一覧')
+    videos = search_videos_in_folder(folder_id)
+    if videos:
+        st.write("フォルダ内の動画:")
+        for video in videos:
+            st.write(f"動画名: {video['name']}, ID: {video['id']}")
+    else:
+        st.write("フォルダ内に動画が見つかりませんでした。")
 
 if __name__ == '__main__':
     main()
