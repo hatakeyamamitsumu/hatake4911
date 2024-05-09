@@ -1,7 +1,7 @@
 import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
 from googleapiclient.errors import HttpError
 import io
 
@@ -35,6 +35,17 @@ def upload_video_to_folder(folder_id, video_file):
         fields='id'
     ).execute()
 
+# Googleドライブから動画ファイルをダウンロードする関数
+def download_video(file_id):
+    request = drive_service.files().get_media(fileId=file_id)
+    downloaded_video = io.BytesIO()
+    downloader = MediaIoBaseDownload(downloaded_video, request)
+    done = False
+    while done is False:
+        status, done = downloader.next_chunk()
+    downloaded_video.seek(0)
+    return downloaded_video
+
 # メイン処理
 def main():
     folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF'
@@ -66,8 +77,9 @@ def main():
                         break
                 if selected_file_id:
                     st.write(f"選択されたファイル: {selected_file_name}")
-                    # ファイルの再生などを行う
-                    # ここに動画再生のコードを追加してください
+                    st.write("動画の再生:")
+                    downloaded_video = download_video(selected_file_id)
+                    st.video(downloaded_video)
                 else:
                     st.warning('ファイルが選択されていません。')
             else:
