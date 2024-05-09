@@ -25,7 +25,7 @@ def upload_video_to_folder(folder_id, video_file):
         fields='id'
     ).execute()
 
-# メイン処理https://drive.google.com/drive/folders/1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF?usp=drive_link
+# メイン処理https://drive.google.com/drive/folders/1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF?usp=sharing
 def main():
     folder_id = '1oEyH8MMILXXDyXxbOEGPkQK_fzARbPVF'
     
