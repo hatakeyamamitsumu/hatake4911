@@ -1,37 +1,29 @@
 import streamlit as st
 import subprocess
-import re
-from google.colab import drive
+import requests
 
 # Streamlitアプリのタイトル
 st.title("Googleドライブ内のPythonファイルの実行")
 
-# Googleドライブ内のPythonファイルのURL
+# Googleドライブ内の.ipynbファイルの共有リンク
 google_drive_url = "https://colab.research.google.com/drive/19Rm3z4QAolOk0HoBcp7AOR9bR8YjwSTW?usp=sharing"
 
-# ファイルIDを抽出する関数
-def extract_file_id_from_url(url):
-    pattern = r'/drive/([a-zA-Z0-9_-]+)\?'
-    match = re.search(pattern, url)
-    if match:
-        return match.group(1)
+# Google Colabで.ipynbファイルを実行して実行結果を取得する関数
+def execute_ipynb_file(ipynb_url):
+    # Google Colabの実行URLを構築する
+    colab_url = f"https://colab.research.google.com/drive/{ipynb_url}"
+    # Google ColabのAPIを使用して.ipynbファイルを実行する
+    response = requests.get(colab_url)
+    if response.status_code == 200:
+        return response.text
     else:
         return None
 
-# Googleドライブ内のPythonファイルのパス
-file_id = extract_file_id_from_url(google_drive_url)
-drive.mount('/content/drive')
-google_drive_path = f"/content/drive/MyDrive/{file_id}.ipynb" 
+# Googleドライブ内の.ipynbファイルを実行し、実行結果を取得
+execution_result = execute_ipynb_file(google_drive_url)
 
-# Google Colabノートブックの実行
-subprocess.run(["jupyter", "nbconvert", "--to", "python", google_drive_path])
-
-# 出力ファイルのパス
-output_file_path = "/content/drive/MyDrive/output.txt"
-
-# 出力ファイルの内容を読み込んで表示
-with open(output_file_path, "r") as file:
-    output_content = file.read()
-
-# 出力をStreamlitに表示
-st.code(output_content)
+# 実行結果をStreamlitに表示
+if execution_result is not None:
+    st.code(execution_result)
+else:
+    st.error("ファイルの実行に失敗しました。")
