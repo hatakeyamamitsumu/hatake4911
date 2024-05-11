@@ -4,9 +4,9 @@ import re
 
 # Streamlitアプリのタイトル　
 st.title("Googleドライブ内のPythonファイルの実行")
-
+#https://colab.research.google.com/drive/1ABCFiAKYI6buI2k-htVLABm3kDKhFRWE?usp=drive_link
 # Googleドライブ内のPythonファイルのURL　https://colab.research.google.com/drive/1ABCFiAKYI6buI2k-htVLABm3kDKhFRWE?usp=drive_link
-google_drive_url = "https://colab.research.google.com/drive/1ABCFiAKYI6buI2k-htVLABm3kDKhFRWE?usp=drive_link"
+google_drive_url = "https://colab.research.google.com/drive/19Rm3z4QAolOk0HoBcp7AOR9bR8YjwSTW?usp=sharing"
 
 # ファイルIDを抽出する関数
 def extract_file_id_from_url(url):
