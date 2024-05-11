@@ -6,7 +6,7 @@ import re
 st.title("Googleドライブ内のPythonファイルの実行")
 
 # Googleドライブ内のPythonファイルのURL　https://colab.research.google.com/drive/1ABCFiAKYI6buI2k-htVLABm3kDKhFRWE?usp=drive_link
-google_drive_url = "https://drive.google.com/file/d/1ABCFiAKYI6buI2k-htVLABm3kDKhFRWE/view"
+google_drive_url = "https://colab.research.google.com/drive/1ABCFiAKYI6buI2k-htVLABm3kDKhFRWE?usp=drive_link"
 
 # ファイルIDを抽出する関数
 def extract_file_id_from_url(url):
