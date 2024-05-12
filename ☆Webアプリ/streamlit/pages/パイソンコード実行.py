@@ -8,7 +8,7 @@ import io
 import os
 import tempfile
 import subprocess
-https://colab.research.google.com/drive/19Rm3z4QAolOk0HoBcp7AOR9bR8YjwSTW?usp=drive_link
+#https://colab.research.google.com/drive/19Rm3z4QAolOk0HoBcp7AOR9bR8YjwSTW?usp=drive_link
 # Google ドライブ API の認証情報を設定
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 SERVICE_ACCOUNT_FILE = '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'  # Google Cloud Console で取得したサービス アカウント キーの JSON ファイル
