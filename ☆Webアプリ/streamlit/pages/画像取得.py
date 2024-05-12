@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 import io
+import base64
 
 # Google ドライブ API 認証情報
 credentials = Credentials.from_service_account_file(
@@ -70,15 +71,15 @@ def main():
         st.video(downloaded_video, format='video/mp4', start_time=0)
         
         # ダウンロードボタンを追加
-        st.markdown(get_binary_file_downloader(downloaded_video, selected_video_name), unsafe_allow_html=True)
+        if st.button('動画をダウンロード'):
+            get_binary_file_downloader(downloaded_video, selected_video_name)
 
 # ダウンロード用の関数
 def get_binary_file_downloader(bin_file, file_label='動画ファイル'):
-    with open(bin_file.name, 'rb') as f:
-        data = f.read()
+    data = bin_file.getvalue()
     b64 = base64.b64encode(data).decode()
     href = f'<a href="data:file/mp4;base64,{b64}" download="{file_label}.mp4">ダウンロード</a>'
-    return href
+    st.markdown(href, unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
