@@ -1,3 +1,6 @@
+
+
+
 import streamlit as st
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -5,7 +8,7 @@ import io
 import os
 import tempfile
 import subprocess
-
+https://colab.research.google.com/drive/19Rm3z4QAolOk0HoBcp7AOR9bR8YjwSTW?usp=drive_link
 # Google ドライブ API の認証情報を設定
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 SERVICE_ACCOUNT_FILE = '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'  # Google Cloud Console で取得したサービス アカウント キーの JSON ファイル
@@ -14,7 +17,7 @@ SERVICE_ACCOUNT_FILE = '/mount/src/hatake4911/☆Webアプリ/その他/gspread-
 st.title('Google Drive Python Code Runner')
 
 # Google ドライブのファイルを選択
-file_id = st.text_input('Enter the Google Drive file ID:')
+file_id = '19Rm3z4QAolOk0HoBcp7AOR9bR8YjwSTW'
 if file_id:
     # Google ドライブからファイルを取得する関数
     def download_file_from_drive(file_id):
@@ -47,3 +50,4 @@ if file_id:
                 st.error(result.stderr)
         except Exception as e:
             st.error(f'Error executing the script: {e}')
+
