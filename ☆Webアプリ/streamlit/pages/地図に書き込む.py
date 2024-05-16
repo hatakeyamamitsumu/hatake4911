@@ -96,7 +96,7 @@ def load_data(file_id):
 
 # Streamlitアプリのセットアップ
 def main():
-    st.title("緯度経度検索")
+    st.title("おおよその緯度経度検索")
 
     # CSVファイルを読み込む
     df = load_data(file_id)
