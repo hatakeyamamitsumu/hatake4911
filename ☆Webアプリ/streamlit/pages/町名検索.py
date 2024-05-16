@@ -1,20 +1,21 @@
 import pandas as pd
 import streamlit as st
 
-# GoogleドライブからCSVファイルを読み込む。
+# Google DriveのファイルID
+file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+
+# ファイルを読み込む
 @st.cache
-def load_data(file_path):
-    return pd.read_csv(file_path)
+def load_data(file_id):
+    url = f"https://drive.google.com/uc?id={file_id}"
+    return pd.read_csv(url)
 
 # Streamlitアプリのセットアップ
 def main():
     st.title("部分一致検索")
 
-    # Googleドライブ内のCSVファイルパス
-    file_path = "/content/drive/MyDrive/a.csv"
-
     # CSVファイルを読み込む
-    df = load_data(file_path)
+    df = load_data(file_id)
 
     # 部分一致検索の条件入力
     search_query = st.text_input("検索クエリを入力してください：")
