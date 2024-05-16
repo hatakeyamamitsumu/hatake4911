@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-# GoogleドライブからCSVファイルを読み込む
+# GoogleドライブからCSVファイルを読み込む。
 @st.cache
 def load_data(file_path):
     return pd.read_csv(file_path)
