@@ -8,7 +8,7 @@ from google.cloud import vision
 # Google Drive API Authentication
 def get_drive_service():
     creds = service_account.Credentials.from_service_account_file(
-        'path_to_service_account_key.json',
+        '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
         scopes=['https://www.googleapis.com/auth/drive']
     )
     return build('drive', 'v3', credentials=creds)
@@ -16,7 +16,7 @@ def get_drive_service():
 # Google Vision API Client
 def get_vision_client():
     creds = service_account.Credentials.from_service_account_file(
-        'path_to_service_account_key.json'
+        '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'
     )
     return vision.ImageAnnotatorClient(credentials=creds)
 
