@@ -5,8 +5,9 @@
 import streamlit as st
 import pandas as pd
 import os
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+import requests
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 from streamlit_folium import folium_static
 import folium
 from folium import plugins
@@ -14,10 +15,12 @@ from folium import plugins
 st.header("CSVデータをもとにヒートマップを表示")
 st.text('主に国土地理院データより引用。')
 
-# Google Sheetsの認証情報
-scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)
-client = gspread.authorize(creds)
+# Google Drive APIの認証情報
+creds = service_account.Credentials.from_service_account_file(
+    "/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json",
+    scopes=["https://www.googleapis.com/auth/drive"]
+)
+service = build('drive', 'v3', credentials=creds)
 
 # Google Drive folder ID
 drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
@@ -25,9 +28,8 @@ drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
 # Function to list files in Google Drive folder
 def list_drive_files(folder_id):
     query = f"'{folder_id}' in parents"
-    url = f"https://www.googleapis.com/drive/v3/files?q={query}&key=your_api_key"
-    response = requests.get(url)
-    files = response.json().get('files', [])
+    results = service.files().list(q=query).execute()
+    files = results.get('files', [])
     return files
 
 # Get the list of folders in the specified Google Drive folder
@@ -51,7 +53,9 @@ selected_file_id = csv_file_ids[selected_file_name]
 # Download the selected CSV file
 file_url = f"https://drive.google.com/uc?id={selected_file_id}"
 csv_file_path = f"/tmp/{selected_file_name}"
-os.system(f"wget -O {csv_file_path} {file_url}")
+response = requests.get(file_url)
+with open(csv_file_path, 'wb') as f:
+    f.write(response.content)
 
 # Read data from the downloaded CSV file
 data = pd.read_csv(csv_file_path)
