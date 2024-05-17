@@ -44,6 +44,7 @@ def perform_ocr_on_document(image_id, drive_service, vision_client):
     doc = drive_service.files().create(body=document, media_body=None).execute()
     document_id = doc.get('id')
 
+    # 正しいリクエスト形式を作成
     batch = vision.BatchAnnotateImagesRequest()
     batch.requests = [{
         'image': {
@@ -51,14 +52,16 @@ def perform_ocr_on_document(image_id, drive_service, vision_client):
                 'imageUri': f'https://drive.google.com/uc?id={image_id}'
             }
         },
-        'features': [
-            {'type': 'DOCUMENT_TEXT_DETECTION'}
-        ]
+        'features': [{
+            'type': 'DOCUMENT_TEXT_DETECTION'
+        }]
     }]
+    
     response = vision_client.batch_annotate_images(requests=batch)
     full_text = response.responses[0].full_text_annotation.text
 
     return full_text
+
 
 # Streamlitアプリケーション
 st.title("OCR on Image Uploaded to Google Drive")
