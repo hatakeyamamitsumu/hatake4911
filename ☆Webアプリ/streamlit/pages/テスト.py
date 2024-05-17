@@ -3,6 +3,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from google.cloud import vision
+import os
 
 # GoogleドライブAPIの認証情報を取得する関数
 def get_drive_service():
@@ -25,8 +26,14 @@ def upload_image_to_drive(image_file, folder_id, drive_service):
         'name': image_file.name,
         'parents': [folder_id]
     }
+    # 一時フォルダに保存されたファイルを開く
+    with open(image_file.name, "wb") as f:
+        f.write(image_file.read())
+    # 一時フォルダ内のファイルをGoogleドライブにアップロード
     media = MediaFileUpload(image_file.name, resumable=True)
     file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    # 一時ファイルを削除
+    os.remove(image_file.name)
     return file.get('id')
 
 # Googleドキュメントを作成し、画像を挿入してOCRを実行する関数
