@@ -1,122 +1,73 @@
-import folium
 import streamlit as st
+import pandas as pd
+import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from streamlit_folium import folium_static
-import pandas as pd
+import folium
+from folium import plugins
+
+st.header("CSVデータをもとにヒートマップを表示")
+st.text('主に国土地理院データより引用。')
+
 # Google Sheetsの認証情報
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  
+creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)
 client = gspread.authorize(creds)
 
-# アプリ選択
-app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
+# Google Drive folder ID
+drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
 
-if app_selection == "地図にピンを立て、コメントをつけて保存する":
-    # タイトルを設定
-    st.title("地図にピンを立て、コメントをつけて保存するアプリ")
-    st.write("※緯度経度の0.000001度は、おおよそ0.1メートルです。")
-    # 地図の拡大率の設定
-    zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
-    # 緯度の入力方法を選択
-    latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.210000, max_value=46.320000, value=35.689500, step=0.000001)
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f", key="latitude")
+# Function to list files in Google Drive folder
+def list_drive_files(folder_id):
+    query = f"'{folder_id}' in parents"
+    url = f"https://www.googleapis.com/drive/v3/files?q={query}&key=your_api_key"
+    response = requests.get(url)
+    files = response.json().get('files', [])
+    return files
 
-    # 経度の入力方法を選択
-    longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.550000, max_value=146.080000, value=139.691700, step=0.000001)
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude")
+# Get the list of folders in the specified Google Drive folder
+folders = list_drive_files(drive_folder_id)
+folder_names = [folder['name'] for folder in folders]
+folder_ids = {folder['name']: folder['id'] for folder in folders}
 
-    # ユーザーから情報の入力を受け取る
-    info = st.sidebar.text_input("コメントを入力してください")
+# Allow the user to select a folder
+selected_folder_name = st.selectbox("フォルダを選択してください", folder_names)
+selected_folder_id = folder_ids[selected_folder_name]
 
-    # 地図を作成
-    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+# Get the list of CSV files in the selected folder
+csv_files = list_drive_files(selected_folder_id)
+csv_file_names = [file['name'] for file in csv_files if file['name'].endswith('.csv')]
+csv_file_ids = {file['name']: file['id'] for file in csv_files if file['name'].endswith('.csv')}
 
-    # 入力された緯度経度にピンを立てる
-    folium.Marker([latitude_input, longitude_input], popup=info).add_to(m)
+# Allow the user to select a CSV file
+selected_file_name = st.selectbox("CSVファイルを選択してください", csv_file_names)
+selected_file_id = csv_file_ids[selected_file_name]
 
-    # 地図を表示
-    folium_static(m)
-    
+# Download the selected CSV file
+file_url = f"https://drive.google.com/uc?id={selected_file_id}"
+csv_file_path = f"/tmp/{selected_file_name}"
+os.system(f"wget -O {csv_file_path} {file_url}")
 
+# Read data from the downloaded CSV file
+data = pd.read_csv(csv_file_path)
 
+# Check if the data has latitude, longitude, and elevation columns
+latitude_column = data.columns[0]
+longitude_column = data.columns[1]
+elevation_column = data.columns[2]
 
+# Center of the map (you may adjust this based on your data)
+center = [data[latitude_column].mean(), data[longitude_column].mean()]
 
-    # Google DriveのファイルID
-    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+# Create a base map
+m = folium.Map(center, zoom_start=6)
 
-    # ファイルを読み込む
-    @st.cache
-    def load_data(file_id):
-        url = f"https://drive.google.com/uc?id={file_id}"
-        return pd.read_csv(url)
+# Add a heatmap layer to the map using the latitude, longitude, and elevation data from the CSV
+heat_map = folium.plugins.HeatMap(
+    data=data[[latitude_column, longitude_column, elevation_column]].values,  # Use the latitude, longitude, and elevation columns
+    radius=15  # You can adjust the radius of the heatmap points
+).add_to(m)
 
-    # Streamlitアプリのセットアップ
-    def main():
-        st.title("おおよその緯度経度検索")
-
-        # CSVファイルを読み込む
-        df = load_data(file_id)
-
-        # 都道府県名の入力欄
-        prefecture = st.text_input("都道府県名を入力してください：")
-
-        # 市区町村名の入力欄
-        city = st.text_input("市区町村名を入力してください：")
-
-        # 大字・丁目名の入力欄
-        district = st.text_input("大字・丁目名を入力してください：")
-
-        # 部分一致検索を実行
-        if prefecture or city or district:
-            filtered_df = df[df["都道府県名"].str.contains(prefecture) &
-                             df["市区町村名"].str.contains(city) &
-                             df["大字・丁目名"].str.contains(district)]
-            st.write(filtered_df)
-
-    # Streamlitアプリを実行
-    if __name__ == "__main__":
-        main()
-    # 書き込みボタンを追加
-    if st.sidebar.button("緯度経度、コメントを保存"):
-        # Google Sheetsのデータを取得
-        spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-        sheet = client.open_by_url(spreadsheet_url).sheet1
-
-        # 新しいデータをGoogle Sheetsに書き込む
-        new_row = [latitude_input, longitude_input, info]
-        sheet.append_row(new_row)
-
-        # ユーザーに成功メッセージを表示
-        st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
-
-elif app_selection == "スプレッドシートから地図上に表示":
-    # タイトルを設定
-    st.title("スプレッドシートから地図上に表示")
-
-    # スプレッドシートのURL
-    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-
-    # スプレッドシートからシート名を取得
-    spreadsheet = client.open_by_url(spreadsheet_url)
-    sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
-
-    # シート名を選択
-    selected_sheet_name = st.selectbox("シート名を選択してください", sheet_names)
-
-    # スプレッドシートからデータを取得
-    sheet = spreadsheet.worksheet(selected_sheet_name)
-    data = sheet.get_all_values()
-
-    # 地図を作成
-    m = folium.Map()
-
-    # データから緯度経度を取得し、ピンを立てる
-    for row in data[1:]:  # ヘッダーを除く
-        latitude, longitude, info = float(row[0]), float(row[1]), row[2]
-        folium.Marker([latitude, longitude], popup=info).add_to(m)
-
-    # 地図を表示
-    folium_static(m)
-
-
+# Display the map using Streamlit
+folium_static(m)
