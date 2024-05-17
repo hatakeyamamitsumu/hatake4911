@@ -12,7 +12,7 @@ from streamlit_folium import folium_static
 import folium
 from folium import plugins
 
-st.header("CSVデータをもとにヒートマップを表示")
+st.header("グーグルドライブ内のCSVデータをもとにヒートマップを表示")
 st.text('主に国土地理院データより引用。')
 
 # Google Drive APIの認証情報
