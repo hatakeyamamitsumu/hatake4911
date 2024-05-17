@@ -30,7 +30,7 @@ def upload_image_to_drive(image_file, folder_id, drive_service):
     return file.get('id')
 
 # Googleドキュメントを作成し、画像を挿入してOCRを実行する関数
-def perform_ocr_on_document(image_id, vision_client):
+def perform_ocr_on_document(image_id, drive_service, vision_client):
     document = {
         'title': 'OCR Document'
     }
@@ -60,10 +60,10 @@ uploaded_file = st.file_uploader("Upload an image file", type=["jpg", "jpeg", "p
 if uploaded_file:
     folder_id = "1GOO5qF34z32MyAYSr4lUBLDV7rnYcRYS"  # Googleドライブ内のフォルダID
     drive_service = get_drive_service()
+    vision_client = get_vision_client()
     image_id = upload_image_to_drive(uploaded_file, folder_id, drive_service)
 
-    vision_client = get_vision_client()
-    ocr_result = perform_ocr_on_document(image_id, vision_client)
+    ocr_result = perform_ocr_on_document(image_id, drive_service, vision_client)
 
     st.write("OCR Result:")
     st.write(ocr_result)
