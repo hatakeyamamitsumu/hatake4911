@@ -1,20 +1,23 @@
 
 
+
+
 import streamlit as st
 import pandas as pd
 import os
-import subprocess
-
-# Install gdown if not already installed
-subprocess.run(['pip', 'install', 'gdown'])
-
-import gdown
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 from streamlit_folium import folium_static
 import folium
 from folium import plugins
 
 st.header("CSVデータをもとにヒートマップを表示")
 st.text('主に国土地理院データより引用。')
+
+# Google Sheetsの認証情報
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)
+client = gspread.authorize(creds)
 
 # Google Drive folder ID
 drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
@@ -45,11 +48,13 @@ csv_file_ids = {file['name']: file['id'] for file in csv_files if file['name'].e
 selected_file_name = st.selectbox("CSVファイルを選択してください", csv_file_names)
 selected_file_id = csv_file_ids[selected_file_name]
 
-# Download the selected CSV file using gdown
-gdown.download(f"https://drive.google.com/uc?id={selected_file_id}", f"/tmp/{selected_file_name}", quiet=False)
+# Download the selected CSV file
+file_url = f"https://drive.google.com/uc?id={selected_file_id}"
+csv_file_path = f"/tmp/{selected_file_name}"
+os.system(f"wget -O {csv_file_path} {file_url}")
 
 # Read data from the downloaded CSV file
-data = pd.read_csv(f"/tmp/{selected_file_name}")
+data = pd.read_csv(csv_file_path)
 
 # Check if the data has latitude, longitude, and elevation columns
 latitude_column = data.columns[0]
