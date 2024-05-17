@@ -10,7 +10,7 @@ st.header("CSVデータをもとにヒートマップを表示")
 st.text('主に国土地理院データより引用。')
 
 # Google Drive folder ID
-drive_folder_id = "your_google_drive_folder_id_here"
+drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
 
 # Function to list files in Google Drive folder
 def list_drive_files(folder_id):
