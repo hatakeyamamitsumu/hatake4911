@@ -1,6 +1,13 @@
+
+
 import streamlit as st
 import pandas as pd
 import os
+import subprocess
+
+# Install gdown if not already installed
+subprocess.run(['pip', 'install', 'gdown'])
+
 import gdown
 from streamlit_folium import folium_static
 import folium
