@@ -7,7 +7,7 @@ from google.cloud import vision
 # GoogleドライブAPIの認証情報を取得する関数
 def get_drive_service():
     creds = service_account.Credentials.from_service_account_file(
-        'path_to_service_account_key.json',
+        '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
         scopes=['https://www.googleapis.com/auth/drive']
     )
     return build('drive', 'v3', credentials=creds)
@@ -15,7 +15,7 @@ def get_drive_service():
 # Google Cloud Vision APIのクライアントを取得する関数
 def get_vision_client():
     creds = service_account.Credentials.from_service_account_file(
-        'path_to_service_account_key.json'
+        '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'
     )
     return vision.ImageAnnotatorClient(credentials=creds)
 
@@ -58,7 +58,7 @@ st.title("OCR on Image Uploaded to Google Drive")
 
 uploaded_file = st.file_uploader("Upload an image file", type=["jpg", "jpeg", "png"])
 if uploaded_file:
-    folder_id = "your_folder_id"  # Googleドライブ内のフォルダID
+    folder_id = "1GOO5qF34z32MyAYSr4lUBLDV7rnYcRYS"  # Googleドライブ内のフォルダID
     drive_service = get_drive_service()
     image_id = upload_image_to_drive(uploaded_file, folder_id, drive_service)
 
