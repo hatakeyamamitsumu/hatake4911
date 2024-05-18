@@ -2,8 +2,7 @@ import streamlit as st
 from icrawler.builtin import BingImageCrawler
 import os
 import shutil
-from zipfile import ZipFile
-import io
+import zipfile
 
 # 画像をクロールして保存
 def crawl_images(keyword, max_num=10):
@@ -24,15 +23,14 @@ def crawl_images(keyword, max_num=10):
 
 # フォルダーを.zipファイルに圧縮してダウンロード
 def download_images(images):
-    zip_buffer = io.BytesIO()
-    with ZipFile(zip_buffer, 'w') as zipf:
+    zip_file_path = "./downloaded_images.zip"
+    with zipfile.ZipFile(zip_file_path, "w") as zipf:
         for image_path in images:
             zipf.write(image_path, os.path.basename(image_path))
-    zip_buffer.seek(0)
-    return zip_buffer.getvalue()
+    return zip_file_path
 
 # Streamlitアプリ
-st.title("画像クローリングして表示")
+st.title("画像クローリング・表示")
 
 keyword = st.text_input("キーワードを入力してください:")
 max_images = st.number_input("取得する画像の枚数を入力してください:", min_value=1, max_value=100, value=10)
@@ -48,8 +46,10 @@ if st.button("クローリング＆表示"):
                 st.image(img_path)
             
             if st.button("画像をダウンロード"):
-                zip_data = download_images(images)
-                st.download_button(label="画像をダウンロード", data=zip_data, file_name="downloaded_images.zip", mime="application/zip")
+                zip_file_path = download_images(images)
+                with open(zip_file_path, "rb") as f:
+                    zip_file_bytes = f.read()
+                st.download_button(label="画像をダウンロード", data=zip_file_bytes, file_name="downloaded_images.zip", mime="application/zip")
         else:
             st.write("画像が見つかりませんでした。")
     else:
