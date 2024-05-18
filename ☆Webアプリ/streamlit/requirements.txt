@@ -38,4 +38,4 @@ streamlit.local_storage
 google-api-python-client
 
 google-cloud-vision
-
+pydrive2
