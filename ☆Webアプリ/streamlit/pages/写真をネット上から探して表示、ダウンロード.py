@@ -34,8 +34,8 @@ def create_zip(image_paths):
 # Streamlitアプリ
 st.title("画像クローリング・表示")
 
-keyword = st.text_input("キーワードを入力してください:")
-max_images = st.number_input("取得する画像の枚数を入力してください:", min_value=1, max_value=20, value=10)
+keyword = st.text_input("キーワードを入力してください（複数入力可能）:")
+max_images = st.number_input("取得する画像の枚数を入力してください（上限20）:", min_value=1, max_value=20, value=10)
 
 if st.button("クローリング＆表示"):
     if keyword:
