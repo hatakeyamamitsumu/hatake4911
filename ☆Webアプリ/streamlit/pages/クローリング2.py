@@ -45,7 +45,7 @@ st.title("画像クローリング・表示")
 keyword = st.text_input("キーワードを入力してください:")
 max_images = st.number_input("取得する画像の枚数を入力してください:", min_value=1, max_value=100, value=10)
 
-if st.button("クローリング＆表示"):
+if st.button("クローリングして表示"):
     if keyword:
         st.write(f"{keyword} に関連する画像をクローリングしています...")
         images = crawl_images(keyword, max_num=max_images)
