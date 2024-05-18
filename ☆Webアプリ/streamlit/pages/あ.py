@@ -20,7 +20,7 @@ def crawl_images(keyword, max_num=10):
     return image_paths
 
 # Streamlitアプリ
-st.title("画像クローリング＆表示")
+st.title("画像クローリング・表示")
 
 keyword = st.text_input("キーワードを入力してください:")
 max_images = st.number_input("取得する画像の枚数を入力してください:", min_value=1, max_value=100, value=10)
