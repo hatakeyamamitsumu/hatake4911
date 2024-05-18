@@ -3,7 +3,7 @@ from icrawler.builtin import BingImageCrawler
 import os
 
 # 画像をクロールして保存
-def crawl_images(keyword, max_num=max_images):
+def crawl_images(keyword, max_num=10):
     save_dir = f"./{keyword}_images"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
