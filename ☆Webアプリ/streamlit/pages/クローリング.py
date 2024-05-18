@@ -8,8 +8,9 @@ def crawl_images(keyword, max_num=10):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     
-    crawler = BingImageCrawler(storage={"root_dir": save_dir})
-    crawler.crawl(keyword=keyword, max_num=max_num)
+    # BingImageCrawlerのmax_num引数を正しく設定
+    crawler = BingImageCrawler(storage={"root_dir": save_dir}, max_num=max_num)
+    crawler.crawl(keyword=keyword)
     
     # ダウンロードした画像のパスを取得
     image_paths = []
