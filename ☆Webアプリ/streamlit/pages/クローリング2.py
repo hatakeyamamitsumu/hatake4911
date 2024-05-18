@@ -27,7 +27,7 @@ def crawl_images(keyword, max_num=10):
 def upload_to_drive(images, folder_id):
 
     # Google ドライブ API 認証情報
-creds = Credentials.from_service_account_file(
+    creds = Credentials.from_service_account_file(
     '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
     st.secrets['https://www.googleapis.com/auth/drive']
     drive_service = build("drive", "v3", credentials=creds)
