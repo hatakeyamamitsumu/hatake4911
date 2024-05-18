@@ -3,7 +3,7 @@ from icrawler.builtin import BingImageCrawler
 import os
 import shutil
 from zipfile import ZipFile
-from io import BytesIO
+import io
 
 # 画像をクロールして保存
 def crawl_images(keyword, max_num=10):
@@ -24,12 +24,12 @@ def crawl_images(keyword, max_num=10):
 
 # フォルダーを.zipファイルに圧縮してダウンロード
 def download_images(images):
-    zip_buffer = BytesIO()
+    zip_buffer = io.BytesIO()
     with ZipFile(zip_buffer, 'w') as zipf:
         for image_path in images:
             zipf.write(image_path, os.path.basename(image_path))
     zip_buffer.seek(0)
-    return zip_buffer.read()
+    return zip_buffer.getvalue()
 
 # Streamlitアプリ
 st.title("画像クローリング・表示")
