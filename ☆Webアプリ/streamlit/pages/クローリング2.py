@@ -25,9 +25,12 @@ def crawl_images(keyword, max_num=10):
 
 # Google Driveに画像をアップロードする関数
 def upload_to_drive(images, folder_id):
-    creds = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"]
+
     )
+    # Google ドライブ API 認証情報
+creds = Credentials.from_service_account_file(
+    '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json',
+    st.secrets['https://www.googleapis.com/auth/drive']
     drive_service = build("drive", "v3", credentials=creds)
     
     for image in images:
