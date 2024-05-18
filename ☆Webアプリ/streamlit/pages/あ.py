@@ -1,15 +1,6 @@
 import streamlit as st
 from icrawler.builtin import BingImageCrawler
-from pydrive2.auth import GoogleAuth
-from pydrive2.drive import GoogleDrive
 import os
-
-# Google Drive認証
-def authenticate_drive():
-    gauth = GoogleAuth()
-    gauth.LocalWebserverAuth()  # 認証フローを開始
-    drive = GoogleDrive(gauth)
-    return drive
 
 # 画像をクロールして保存
 def crawl_images(keyword, max_num=10):
@@ -28,30 +19,22 @@ def crawl_images(keyword, max_num=10):
                 image_paths.append(os.path.join(root, file))
     return image_paths
 
-# Google Driveに画像をアップロード
-def upload_images_to_drive(drive, folder_id, image_paths):
-    for img_path in image_paths:
-        file1 = drive.CreateFile({"parents": [{"id": folder_id}]})
-        file1.SetContentFile(img_path)
-        file1.Upload()
-        os.remove(img_path)  # ローカルから削除
-
 # Streamlitアプリ
-st.title("画像クローリング＆Googleドライブアップロード")
+st.title("画像クローリング＆表示")
 
 keyword = st.text_input("キーワードを入力してください:")
 max_images = st.number_input("取得する画像の枚数を入力してください:", min_value=1, max_value=100, value=10)
-folder_id = st.text_input("GoogleドライブフォルダIDを入力してください:")
 
-if st.button("クローリング＆アップロード"):
-    if keyword and folder_id:
+if st.button("クローリング＆表示"):
+    if keyword:
         st.write(f"{keyword} に関連する画像をクローリングしています...")
         images = crawl_images(keyword, max_num=max_images)
-        st.write("画像をGoogleドライブにアップロードしています...")
         
-        drive = authenticate_drive()
-        upload_images_to_drive(drive, folder_id, images)
-        
-        st.write("画像のアップロードが完了しました。")
+        if images:
+            st.write("取得した画像:")
+            for img_path in images:
+                st.image(img_path)
+        else:
+            st.write("画像が見つかりませんでした。")
     else:
-        st.write("キーワードとGoogleドライブフォルダIDを入力してください。")
+        st.write("キーワードを入力してください。")
