@@ -11,7 +11,7 @@ import tensorflow as tf
 # Google Drive API認証とクライアント作成
 def authenticate_gdrive():
     credentials = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"],
+        st.secrets["'/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json"],
         scopes=["https://www.googleapis.com/auth/drive"]
     )
     service = build("drive", "v3", credentials=credentials)
