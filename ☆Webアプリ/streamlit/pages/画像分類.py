@@ -8,9 +8,10 @@ import numpy as np
 import tensorflow as tf
 
 # Google Drive API認証とクライアント作成
+#
 def authenticate_gdrive():
     credentials = service_account.Credentials.from_service_account_info(
-        st.secrets["gcp_service_account"],
+        st.secrets['/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'],
         scopes=["https://www.googleapis.com/auth/drive"]
     )
     service = build("drive", "v3", credentials=credentials)
@@ -56,8 +57,10 @@ def classify_image(model, image):
 def main():
     st.title("Google Drive 画像分類アプリ")
 
-    folder_a_id = st.text_input("人物AのフォルダIDを入力してください:", "")
-    folder_b_id = st.text_input("人物BのフォルダIDを入力してください:", "")
+    #folder_a_id = st.text_input("人物AのフォルダIDを入力してください:", "")
+    #folder_b_id = st.text_input("人物BのフォルダIDを入力してください:", "")
+    folder_a_id = "1eN8T2U6h33yrP_OshHEpeeiB-y7en7pk?usp=drive_link"
+    folder_b_id = "1QNsYx2rRb-49_ZgsVsYL5Rt9iCqrmp7L"
     
     if st.button("分類を開始"):
         if folder_a_id and folder_b_id:
