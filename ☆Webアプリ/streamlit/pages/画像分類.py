@@ -3,6 +3,7 @@ import os
 import io
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
 from PIL import Image
 import numpy as np
 import tensorflow as tf
@@ -10,7 +11,7 @@ import tensorflow as tf
 # Google Drive API認証とクライアント作成
 def authenticate_gdrive():
     credentials = service_account.Credentials.from_service_account_info(
-        st.secrets['/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'],
+        st.secrets["gcp_service_account"],
         scopes=["https://www.googleapis.com/auth/drive"]
     )
     service = build("drive", "v3", credentials=credentials)
@@ -26,14 +27,15 @@ def list_files_in_folder(service, folder_id):
 def download_file(service, file_id):
     request = service.files().get_media(fileId=file_id)
     file_io = io.BytesIO()
-    downloader = googleapiclient.http.MediaIoBaseDownload(file_io, request)
+    downloader = MediaIoBaseDownload(file_io, request)
     done = False
-    while done is False:
+    while not done:
         status, done = downloader.next_chunk()
     file_io.seek(0)
     return file_io
 
 # 事前訓練済みの画像分類モデルをロードする（例：MobileNetV2）
+@st.cache(allow_output_mutation=True)
 def load_model():
     model = tf.keras.applications.mobilenet_v2.MobileNetV2(weights="imagenet")
     return model
@@ -72,46 +74,47 @@ def get_most_common_label(predictions):
 def main():
     st.title("Google Drive 画像分類アプリ")
 
-    #folder_a_id = st.text_input("人物AのフォルダIDを入力してください:", "")
-    #folder_b_id = st.text_input("人物BのフォルダIDを入力してください:", "")
-    folder_a_id = "1eN8T2U6h33yrP_OshHEpeeiB-y7en7pk"
-    folder_b_id = "1QNsYx2rRb-49_ZgsVsYL5Rt9iCqrmp7L"
+    folder_a_id = st.text_input("人物AのフォルダIDを入力してください:", "")
+    folder_b_id = st.text_input("人物BのフォルダIDを入力してください:", "")
     
     if st.button("分類を開始"):
         if folder_a_id and folder_b_id:
-            service = authenticate_gdrive()
+            try:
+                service = authenticate_gdrive()
 
-            # モデルのロード
-            model = load_model()
+                # モデルのロード
+                model = load_model()
 
-            st.write("人物Aの写真を分類しています...")
-            predictions_a = classify_folder_images(service, folder_a_id, model)
-            label_a = get_most_common_label(predictions_a)
-            st.write(f"人物Aの最も一般的なラベル: {label_a}")
+                st.write("人物Aの写真を分類しています...")
+                predictions_a = classify_folder_images(service, folder_a_id, model)
+                label_a = get_most_common_label(predictions_a)
+                st.write(f"人物Aの最も一般的なラベル: {label_a}")
 
-            st.write("人物Bの写真を分類しています...")
-            predictions_b = classify_folder_images(service, folder_b_id, model)
-            label_b = get_most_common_label(predictions_b)
-            st.write(f"人物Bの最も一般的なラベル: {label_b}")
+                st.write("人物Bの写真を分類しています...")
+                predictions_b = classify_folder_images(service, folder_b_id, model)
+                label_b = get_most_common_label(predictions_b)
+                st.write(f"人物Bの最も一般的なラベル: {label_b}")
 
-            st.write("画像をアップロードして判定します")
-            uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
-            if uploaded_file is not None:
-                image = Image.open(uploaded_file)
-                st.image(image, caption="アップロードされた画像")
+                st.write("画像をアップロードして判定します")
+                uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+                if uploaded_file is not None:
+                    image = Image.open(uploaded_file)
+                    st.image(image, caption="アップロードされた画像")
 
-                # アップロード画像を前処理して分類
-                preprocessed_image = preprocess_image(image)
-                prediction = classify_image(model, preprocessed_image)
-                st.write(f"アップロード画像の予測結果: {prediction[1]} ({prediction[2]*100:.2f}%)")
+                    # アップロード画像を前処理して分類
+                    preprocessed_image = preprocess_image(image)
+                    prediction = classify_image(model, preprocessed_image)
+                    st.write(f"アップロード画像の予測結果: {prediction[1]} ({prediction[2]*100:.2f}%)")
 
-                # 判定
-                if prediction[1] == label_a:
-                    st.write("アップロードされた画像は人物Aに近いです。")
-                elif prediction[1] == label_b:
-                    st.write("アップロードされた画像は人物Bに近いです。")
-                else:
-                    st.write("アップロードされた画像のラベルは人物Aまたは人物Bのどちらとも一致しません。")
+                    # 判定
+                    if prediction[1] == label_a:
+                        st.write("アップロードされた画像は人物Aに近いです。")
+                    elif prediction[1] == label_b:
+                        st.write("アップロードされた画像は人物Bに近いです。")
+                    else:
+                        st.write("アップロードされた画像のラベルは人物Aまたは人物Bのどちらとも一致しません。")
+            except Exception as e:
+                st.error(f"エラーが発生しました: {e}")
 
 if __name__ == "__main__":
     main()
