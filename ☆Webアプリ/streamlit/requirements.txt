@@ -18,6 +18,7 @@ streamlit_folium
 
 qrcode[pil]==7.3
 
+
 seaborn
 
 requests
@@ -40,3 +41,4 @@ google-api-python-client
 google-cloud-vision
 pydrive2
 icrawler
+tensorflow
