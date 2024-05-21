@@ -59,7 +59,7 @@ def main():
 
     #folder_a_id = st.text_input("人物AのフォルダIDを入力してください:", "")
     #folder_b_id = st.text_input("人物BのフォルダIDを入力してください:", "")
-    folder_a_id = "1eN8T2U6h33yrP_OshHEpeeiB-y7en7pk?usp=drive_link"
+    folder_a_id = "1eN8T2U6h33yrP_OshHEpeeiB-y7en7pk"
     folder_b_id = "1QNsYx2rRb-49_ZgsVsYL5Rt9iCqrmp7L"
     
     if st.button("分類を開始"):
