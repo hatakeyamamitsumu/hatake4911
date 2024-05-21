@@ -1,4 +1,4 @@
 # Exclude secrets.toml file
-secrets.toml
+#secrets.toml
 /mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json
 
