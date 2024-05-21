@@ -28,7 +28,7 @@ if selected_mode == "閲覧":
     # シートの選択
     selected_sheet_name = st.selectbox("操作したいシートを選択してください", sheet_names)
     worksheet = sh.worksheet(selected_sheet_name)
-
+    
     # データ取得
     data = worksheet.get_all_values()
     df = pd.DataFrame(data[1:], columns=data[0])
