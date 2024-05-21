@@ -49,9 +49,9 @@ if st.button("クローリング＆表示"):
             st.write("取得した画像:")
 
             # 6列で表示
-            columns = st.columns(6)
+            columns = st.columns(8)
             for i, img_path in enumerate(images):
-                with columns[i % 6]:
+                with columns[i % 8]:
                     st.image(img_path, caption=f"Image {i+1}")
 
             # ZIPファイルのダウンロードボタン
