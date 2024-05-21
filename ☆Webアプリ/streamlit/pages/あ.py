@@ -2,5 +2,10 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import streamlit as st
-SP_CREDENTIAL_FILE = st.secrets["gcp"]["json_where"]
-SP_SHEET_KEY = st.secrets["gcp"]["sp_sheet_key"]
+#SP_CREDENTIAL_FILE = st.secrets["gcp"]["json_where"]
+#SP_SHEET_KEY = st.secrets["gcp"]["sp_sheet_key"]
+
+import streamlit as st
+
+st.write(st.secrets)  # シークレット全体を表示して確認
+
