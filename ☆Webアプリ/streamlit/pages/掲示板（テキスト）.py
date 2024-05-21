@@ -7,9 +7,13 @@ import streamlit as st
 st.title('簡易な掲示板')
 
 # Google Sheets 認証情報のファイルパスとスコープ
-SP_CREDENTIAL_FILE = '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'
+#SP_CREDENTIAL_FILE = '/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json'
 SP_SCOPE = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
-SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
+#SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
+
+SP_CREDENTIAL_FILE = st.secrets["gcp"]["sp_credential_file"]
+SP_SHEET_KEY = st.secrets["gcp"]["sp_sheet_key"]
+
 #SP_SHEET_KEY = googledriveAPI
 # 認証情報の読み込みと認証
 credentials = ServiceAccountCredentials.from_json_keyfile_name(SP_CREDENTIAL_FILE, SP_SCOPE)
