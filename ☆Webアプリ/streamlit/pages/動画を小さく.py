@@ -27,13 +27,6 @@ if uploaded_file is not None:
     
     # 圧縮実行ボタン
     if st.button("圧縮を実行"):
-        # 圧縮中の進捗バー
-        progress_bar = st.progress(0)
-        
-        def update_progress_callback(progress, *args):
-            progress_bar.progress(int(progress * 100))
-
-
         # 圧縮後の動画を一時ファイルに保存
         output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4").name
         video_resized = video.resize((resolution, height))
@@ -44,8 +37,7 @@ if uploaded_file is not None:
             bitrate=f"{bitrate}k",
             logger=None,
             verbose=False,
-            progress_bar=True,
-            progress_callback=update_progress_callback
+            progress_bar=False
         )
         
         # 圧縮後のファイルサイズを表示
