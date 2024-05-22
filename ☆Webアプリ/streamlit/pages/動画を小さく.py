@@ -31,7 +31,8 @@ if uploaded_file is not None:
         progress_bar = st.progress(0)
         
         def update_progress_callback(progress, *args):
-            progress_bar.progress(progress)
+            progress_bar.progress(int(progress * 100))
+
 
         # 圧縮後の動画を一時ファイルに保存
         output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4").name
