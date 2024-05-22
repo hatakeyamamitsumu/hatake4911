@@ -68,7 +68,7 @@ def main():
         selected_video = [video for video in videos if video['name'] == selected_video_name][0]
         video_id = selected_video['id']
         st.subheader('選択された動画')
-        st.write("右クリックからダウンロードできます")
+        st.write("右クリック→名前を付けてビデオを保存　からダウンロードできます")
         downloaded_video = download_video(video_id)
         st.video(downloaded_video, format='video/mp4')
 
