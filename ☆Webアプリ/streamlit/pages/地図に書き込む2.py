@@ -19,23 +19,19 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     st.write("※緯度経度の0.000001度は、おおよそ0.1メートルです。")
     # 地図の拡大率の設定
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
-    # 緯度の入力方法を選択
     # 地図の拡大率に応じてスライダーのサイズを動的に変更する
     slider_width = int(zoom_value * 50)  # 適切な倍率を調整して幅を設定
     latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.210000, max_value=46.320000, value=35.689500, step=0.000001, width=slider_width)
-
-    
     latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f", key="latitude")
 
     # 経度の入力方法を選択
     longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.550000, max_value=146.080000, value=139.691700, step=0.000001)
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude",width=slider_width)
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("コメントを入力してください")
 
     # 地図を作成
-    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
@@ -100,22 +96,4 @@ elif app_selection == "スプレッドシートから地図上に表示":
 
     # スプレッドシートからシート名を取得
     spreadsheet = client.open_by_url(spreadsheet_url)
-    sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
-
-    # シート名を選択
-    selected_sheet_name = st.selectbox("シート名を選択してください", sheet_names)
-
-    # スプレッドシートからデータを取得
-    sheet = spreadsheet.worksheet(selected_sheet_name)
-    data = sheet.get_all_values()
-
-    # 地図を作成
-    m = folium.Map()
-
-    # データから緯度経度を取得し、ピンを立てる
-    for row in data[1:]:  # ヘッダーを除く
-        latitude, longitude, info = float(row[0]), float(row[1]), row[2]
-        folium.Marker([latitude, longitude], popup=folium.Popup(info, max_width=300)).add_to(m)
-
-    # 地図を表示
-    folium_static(m)
+    sheet
