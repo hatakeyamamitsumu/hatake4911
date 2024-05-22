@@ -22,7 +22,9 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
         longitude_input = st.number_input("経度を入力してください", value=139.691700, step=0.000001, format="%.6f", key="longitude")
 
     # ユーザーから情報の入力を受け取る
-    info = st.sidebar.text_input("コメントを入力してください")
+    # ユーザーから情報の入力を受け取る
+    info = st.sidebar.text_area("コメントを入力してください")
+
 
     # 地図を作成
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
