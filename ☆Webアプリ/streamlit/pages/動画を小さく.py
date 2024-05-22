@@ -25,26 +25,30 @@ if uploaded_file is not None:
     # ビットレートの設定
     bitrate = st.slider("ビットレート (kbps)", 100, 5000, 1000)
     
-    # 圧縮後の動画を一時ファイルに保存
-    output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4").name
-    video_resized = video.resize((resolution, height))
-    video_resized.write_videofile(output_path, bitrate=f"{bitrate}k")
-    
-    # 圧縮後のファイルサイズを表示
-    size_before = os.path.getsize(tfile.name)
-    size_after = os.path.getsize(output_path)
-    st.write(f"圧縮前のファイルサイズ: {size_before / (1024*1024):.2f} MB")
-    st.write(f"圧縮後のファイルサイズ: {size_after / (1024*1024):.2f} MB")
-    
-    # 圧縮後の動画をダウンロードリンクとして提供
-    with open(output_path, "rb") as file:
-        btn = st.download_button(
-            label="圧縮された動画をダウンロード",
-            data=file,
-            file_name="compressed_video.mp4",
-            mime="video/mp4"
-        )
-    
-    # 一時ファイルの削除
-    os.remove(tfile.name)
-    os.remove(output_path)
+    # 圧縮実行ボタン
+    if st.button("圧縮を実行"):
+        # 圧縮中の進捗バー
+        with st.spinner('動画を圧縮中...'):
+            # 圧縮後の動画を一時ファイルに保存
+            output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4").name
+            video_resized = video.resize((resolution, height))
+            video_resized.write_videofile(output_path, bitrate=f"{bitrate}k", progress_bar=True)
+        
+        # 圧縮後のファイルサイズを表示
+        size_before = os.path.getsize(tfile.name)
+        size_after = os.path.getsize(output_path)
+        st.write(f"圧縮前のファイルサイズ: {size_before / (1024*1024):.2f} MB")
+        st.write(f"圧縮後のファイルサイズ: {size_after / (1024*1024):.2f} MB")
+        
+        # 圧縮後の動画をダウンロードリンクとして提供
+        with open(output_path, "rb") as file:
+            st.download_button(
+                label="圧縮された動画をダウンロード",
+                data=file,
+                file_name="compressed_video.mp4",
+                mime="video/mp4"
+            )
+        
+        # 一時ファイルの削除
+        os.remove(tfile.name)
+        os.remove(output_path)
