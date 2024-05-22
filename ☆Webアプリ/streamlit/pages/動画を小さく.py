@@ -2,6 +2,7 @@ import streamlit as st
 from moviepy.editor import VideoFileClip
 import tempfile
 import os
+from moviepy.video.io.ffmpeg_tools import ffmpeg_resize
 
 # Streamlitの設定
 st.title("動画圧縮アプリ")
@@ -28,11 +29,25 @@ if uploaded_file is not None:
     # 圧縮実行ボタン
     if st.button("圧縮を実行"):
         # 圧縮中の進捗バー
-        with st.spinner('動画を圧縮中...'):
-            # 圧縮後の動画を一時ファイルに保存
-            output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4").name
-            video_resized = video.resize((resolution, height))
-            video_resized.write_videofile(output_path, bitrate=f"{bitrate}k", progress_bar=True)
+        progress_bar = st.progress(0)
+        
+        def update_progress_callback(total, current, *args):
+            progress = current / total
+            progress_bar.progress(progress)
+
+        # 圧縮後の動画を一時ファイルに保存
+        output_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4").name
+        video_resized = video.resize((resolution, height))
+        
+        # 動画を圧縮する
+        video_resized.write_videofile(
+            output_path,
+            bitrate=f"{bitrate}k",
+            logger=None,
+            verbose=False,
+            progress_bar=True,
+            progress_callback=update_progress_callback
+        )
         
         # 圧縮後のファイルサイズを表示
         size_before = os.path.getsize(tfile.name)
