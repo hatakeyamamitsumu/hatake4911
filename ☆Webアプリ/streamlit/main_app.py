@@ -15,10 +15,12 @@ st.text("")
 # ハイパーリンクを表示するMarkdown文字列
 
 # Markdownを表示。
-st.markdown(link_str, unsafe_allow_html=True)
-link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
 st.write('感想をお聞かせください。')
 st.text('無記名アンケートです。差し支えなければお答えください。')
+link_str = "(https://forms.gle/DUHCTT5CfajGjoGMA)"
+st.markdown(link_str, unsafe_allow_html=True)
+
+
 
 QR_path='/mount/src/hatake4911/☆Webアプリ/QRコード各種/アンケートフォーム用QR.png'
 st.image(QR_path, width=150)
