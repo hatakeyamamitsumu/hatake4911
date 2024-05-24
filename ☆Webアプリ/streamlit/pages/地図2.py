@@ -20,12 +20,12 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 地図の拡大率の設定
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
     # 緯度の入力方法を選択
-    latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.21000, max_value=46.32000, value=35.689500, step=0.000001)
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f", key="latitude")
+    latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.21000, max_value=46.32000, value=35.68950, step=0.00001)
+    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.00001, format="%.5f", key="latitude")
 
     # 経度の入力方法を選択
-    longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.550000, max_value=146.080000, value=139.691700, step=0.000001)
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude")
+    longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.55000, max_value=146.08000, value=139.69170, step=0.00001)
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.00001, format="%.5f", key="longitude")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("コメントを入力してください")
