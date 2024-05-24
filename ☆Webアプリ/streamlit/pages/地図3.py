@@ -2,12 +2,12 @@ import folium
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from streamlit_folium import folium_static
+from streamlit_folium import folium_static, st_folium
 import pandas as pd
 
 # Google Sheetsの認証情報
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  
+creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)
 client = gspread.authorize(creds)
 
 # アプリ選択
@@ -16,34 +16,35 @@ app_selection = st.sidebar.radio("アプリを選択してください", ("地�
 if app_selection == "地図にピンを立て、コメントをつけて保存する":
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存するアプリ")
-    st.write("※緯度経度の0.000001度は、おおよそ0.1メートルです。")
+    st.write("※緯度経度の0.0001度は、おおよそ10メートルです。")
     # 地図の拡大率の設定
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
     # 緯度の入力方法を選択
-    latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.210000, max_value=46.320000, value=35.689500, step=0.000001)
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.000001, format="%.6f", key="latitude")
-
-    # 経度の入力方法を選択
-    longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.550000, max_value=146.080000, value=139.691700, step=0.000001)
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.000001, format="%.6f", key="longitude")
+    latitude_input = st.sidebar.number_input("緯度を入力してください", value=35.6895, step=0.0001, format="%.4f", key="latitude")
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=139.6917, step=0.0001, format="%.4f", key="longitude")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("コメントを入力してください")
 
     # 地図を作成
-    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
-    # 地図を表示
-    folium_static(m)
+    # 地図を表示して、クリックイベントを取得
+    folium_map = st_folium(m, width=700, height=500)
+
+    # 地図クリック時の緯度経度をサイドバーに表示
+    if folium_map['last_clicked'] is not None:
+        st.sidebar.write(f"クリックされた位置: {folium_map['last_clicked']}")
+        st.sidebar.number_input("緯度を入力してください", value=folium_map['last_clicked']['lat'], step=0.0001, format="%.4f", key="latitude")
+        st.sidebar.number_input("経度を入力してください", value=folium_map['last_clicked']['lng'], step=0.0001, format="%.4f", key="longitude")
 
     # Google DriveのファイルID
     file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
 
     # ファイルを読み込む
-    @st.cache
+    @st.cache_data
     def load_data(file_id):
         url = f"https://drive.google.com/uc?id={file_id}"
         return pd.read_csv(url)
