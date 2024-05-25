@@ -61,7 +61,7 @@ def main():
     audios = search_audio_in_folder(folder_id)
     if audios:
         st.header('音声再生')
-audio_names = [audio['name'] for audio in audios]
+        audio_names = [audio['name'] for audio in audios]
         selected_audio_name = st.selectbox("再生する音声ファイルを選択してください", audio_names)
         selected_audio = [audio for audio in audios if audio['name'] == selected_audio_name][0]
         audio_id = selected_audio['id']
