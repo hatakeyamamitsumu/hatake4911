@@ -61,4 +61,16 @@ def main():
     audios = search_audio_in_folder(folder_id)
     if audios:
         st.header('音声再生')
-        audio_names = [audio
+audio_names = [audio['name'] for audio in audios]
+        selected_audio_name = st.selectbox("再生する音声ファイルを選択してください", audio_names)
+        selected_audio = [audio for audio in audios if audio['name'] == selected_audio_name][0]
+        audio_id = selected_audio['id']
+        st.subheader('選択された音声ファイル')
+        st.write("音声ファイルの上で右クリック→名前を付けてオーディオを保存　からダウンロードできます")
+        downloaded_audio = download_audio(audio_id)
+        st.audio(downloaded_audio, format='audio/mpeg')
+
+if __name__ == '__main__':
+    main()
+65
+
