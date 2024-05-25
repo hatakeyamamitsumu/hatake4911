@@ -14,8 +14,8 @@ credentials = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["googl
 gc = gspread.authorize(credentials)
 
 # スプレッドシートの指定
-#SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
-SP_SHEET_KEY = st.secrets["spreadsheet"]["spreadsheet_key"]
+SP_SHEET_KEY = '1GuaN72pbZxQJBsxLTK3n7fAQfLMJIcuUjZ7pBd-R7kc'
+
 
 sh = gc.open_by_key(SP_SHEET_KEY)
 
