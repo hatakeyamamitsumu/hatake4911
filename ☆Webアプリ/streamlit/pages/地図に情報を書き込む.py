@@ -45,12 +45,12 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     folium_static(m)
 
     # Google DriveのファイルID
-    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+    file_id_1 = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
 
     # ファイルを読み込む
     @st.cache
     def load_data(file_id):
-        url = f"https://drive.google.com/uc?id={file_id}"
+        url = f"https://drive.google.com/uc?id={file_id_1}"
         return pd.read_csv(url)
 
     # Streamlitアプリのセットアップ
@@ -58,7 +58,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
         st.title("おおよその緯度経度検索")
 
         # CSVファイルを読み込む
-        df = load_data(file_id)
+        df = load_data(file_id_1)
 
         # 都道府県名の入力欄
         prefecture = st.text_input("都道府県名を入力してください：")
@@ -82,8 +82,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 書き込みボタンを追加
     if st.sidebar.button("緯度経度、コメントを保存"):
         # Google Sheetsのデータを取得
-        spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-        sheet = client.open_by_url(spreadsheet_url).sheet1
+        spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+        sheet = client.open_by_url(spreadsheet_url_1).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
         new_row = [latitude_input, longitude_input, info]
@@ -97,10 +97,10 @@ elif app_selection == "スプレッドシートから地図上に表示":
     st.title("スプレッドシートから地図上に表示")
 
     # スプレッドシートのURL
-    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+    spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
 
     # スプレッドシートからシート名を取得
-    spreadsheet = client.open_by_url(spreadsheet_url)
+    spreadsheet = client.open_by_url(spreadsheet_url_1)
     sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
 
     # シート名を選択
