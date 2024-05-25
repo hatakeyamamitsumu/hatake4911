@@ -10,11 +10,11 @@ st.title('簡易な掲示板')
 SP_SCOPE = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 
 # 認証情報の読み込みと認証
-credentials = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google2"], SP_SCOPE)
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], SP_SCOPE)
 gc = gspread.authorize(credentials)
 
 # スプレッドシートの指定
-SP_SHEET_KEY = st.secrets["google2"]["spreadsheet_id"]
+SP_SHEET_KEY = st.secrets["google"]["text_spreadsheet_id"]
 sh = gc.open_by_key(SP_SHEET_KEY)
 
 # スプレッドシート内のシート名を取得
