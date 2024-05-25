@@ -6,10 +6,8 @@ from streamlit_folium import folium_static
 import pandas as pd
 
 # Google Sheetsの認証情報
-credentials = Credentials.from_service_account_info(
-    st.secrets["google"],
-    scopes=['https://www.googleapis.com/auth/drive']
-)
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope) 
 
 drive_service = build('drive', 'v3', credentials=credentials)
 client = gspread.authorize(creds)
