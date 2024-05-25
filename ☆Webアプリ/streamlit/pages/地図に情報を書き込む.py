@@ -97,8 +97,8 @@ elif app_selection == "スプレッドシートから地図上に表示":
     st.title("スプレッドシートから地図上に表示")
 
     # スプレッドシートのURL
-    #spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-    spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
+    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+    #spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
     # スプレッドシートからシート名を取得
     spreadsheet = client.open_by_url(spreadsheet_url)
     sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
