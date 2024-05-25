@@ -45,8 +45,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     folium_static(m)
 
     # Google DriveのファイルID
-    file_id_1 = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
-
+    #file_id_1 = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+    file_id = st.secrets["gdrive"]["file_id_1"]
     # ファイルを読み込む
     @st.cache
     def load_data(file_id):
@@ -82,7 +82,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 書き込みボタンを追加
     if st.sidebar.button("緯度経度、コメントを保存"):
         # Google Sheetsのデータを取得
-        spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+        #spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+        spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
         sheet = client.open_by_url(spreadsheet_url_1).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
@@ -97,8 +98,8 @@ elif app_selection == "スプレッドシートから地図上に表示":
     st.title("スプレッドシートから地図上に表示")
 
     # スプレッドシートのURL
-    spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-
+    #spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+    spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
     # スプレッドシートからシート名を取得
     spreadsheet = client.open_by_url(spreadsheet_url_1)
     sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
