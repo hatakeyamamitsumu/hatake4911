@@ -9,8 +9,6 @@ import pandas as pd
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 client = gspread.authorize(creds)
-file_id = st.secrets["gdrive"]["file_id_1"]
-spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
 # Google Sheetsの認証情報
 #scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 #creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  
@@ -46,7 +44,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     folium_static(m)
 
     # Google DriveのファイルID
-    #file_id_1 = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
     #file_id = st.secrets["gdrive"]["file_id_1"]
     # ファイルを読み込む
     @st.cache
@@ -83,7 +81,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 書き込みボタンを追加
     if st.sidebar.button("緯度経度、コメントを保存"):
         # Google Sheetsのデータを取得
-        #spreadsheet_url_1 = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+        spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
         spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
         sheet = client.open_by_url(spreadsheet_url).sheet1
 
