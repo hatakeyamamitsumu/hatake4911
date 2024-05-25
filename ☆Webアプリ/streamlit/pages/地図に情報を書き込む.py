@@ -4,11 +4,16 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from streamlit_folium import folium_static
 import pandas as pd
+#
+# Google Sheets 認証情報とスコープをsecretsから取得
+scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
+creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], SP_SCOPE)
+client = gspread.authorize(credentials)
 
 # Google Sheetsの認証情報
-scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  
-client = gspread.authorize(creds)
+#scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+#creds = ServiceAccountCredentials.from_json_keyfile_name("/mount/src/hatake4911/☆Webアプリ/その他/gspread-test-421301-6cd8b0cc0e27.json", scope)  
+#client = gspread.authorize(creds)
 
 # アプリ選択
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
