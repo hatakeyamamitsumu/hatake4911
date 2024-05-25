@@ -7,8 +7,8 @@ import pandas as pd
 #
 # Google Sheets 認証情報とスコープをsecretsから取得
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
-creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], SP_SCOPE)
-client = gspread.authorize(credentials)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
+client = gspread.authorize(creds)
 
 # Google Sheetsの認証情報
 #scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
