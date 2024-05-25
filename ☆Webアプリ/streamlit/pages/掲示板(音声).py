@@ -44,8 +44,7 @@ def download_audio(audio_id):
 
 # メイン処理
 def main():
-    #folder_id = '1jGk6GIRRW465MPEJCP-mZC8csMegXcsy'
-    folder_id=st.secrets["gdrive"]["folder_id_m"]
+    folder_id = '1jGk6GIRRW465MPEJCP-mZC8csMegXcsy'
     
     st.title('音声アップロードと再生')
 
