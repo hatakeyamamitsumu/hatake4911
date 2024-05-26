@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # 画像をクロールして保存（BingImageCrawlerを使用）
-def crawl_images_bing(keyword, max_num=10):
+def crawl_images_bing(keyword, max_num=100):
     save_dir = f"./{keyword}_images_bing"
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
