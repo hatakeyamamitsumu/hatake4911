@@ -159,4 +159,6 @@ if st.button("Googleからクローリング＆表示"):
                 mime="application/zip"
             )
         else:
-            st.write("画像が見つかりませんでした
+            st.write("画像が見つかりませんでした。")
+    else:
+        st.write("キーワードを入力してください。")
