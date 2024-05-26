@@ -157,4 +157,19 @@ if st.button("Googleからクローリング＆表示"):
             zip_buffer = io.BytesIO()
             with zipfile.ZipFile(zip_buffer, "w") as zf:
                 for i, img_url in enumerate(image_urls_google):
-                    ext
+                    ext = os.path.splitext(img_url)[1]
+                    zip_filename = f"{keyword}_google_{i+1}{ext}"
+                    img_data = requests.get(img_url).content
+                    zf.writestr(zip_filename, img_data)
+            zip_buffer.seek(0)
+
+            st.download_button(
+                label="すべての画像をダウンロード (ZIP)",
+                data=zip_buffer,
+                file_name=f"{keyword}_images_google.zip",
+                mime="application/zip"
+            )
+        else:
+            st.write("画像が見つかりませんでした。")
+    else:
+        st.write("キーワードを入力してください。")
