@@ -18,8 +18,8 @@ st.text('主に国土地理院データより引用。')
 # Google Drive APIの認証情報
 
 credentials = Credentials.from_service_account_info(
-    st.secrets["google"],
-    scopes=['https://www.googleapis.com/auth/drive']
+st.secrets["google"],
+scopes=['https://www.googleapis.com/auth/drive']
 )
 
 service = build('drive', 'v3', credentials=credentials)
