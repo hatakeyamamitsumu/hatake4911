@@ -20,14 +20,13 @@ longitude_input = st.sidebar.number_input("経度を入力してください", v
 
 # スライダーの値と入力欄の値を連動させる
 if latitude_slider != latitude_input:
+    latitude_input = latitude_slider
     latitude_slider = latitude_input
 if longitude_slider != longitude_input:
+    longitude_input = longitude_slider
     longitude_slider = longitude_input
     
-if latitude_input != latitude_slider:
-    latitude_input = latitude_slider
-if longitude_input != longitude_slider:
-    longitude_input = longitude_slider
+
 # アプリ選択
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
 
