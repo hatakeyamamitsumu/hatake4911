@@ -23,7 +23,11 @@ if latitude_slider != latitude_input:
     latitude_slider = latitude_input
 if longitude_slider != longitude_input:
     longitude_slider = longitude_input
-
+    
+if latitude_input != latitude_slide:
+    latitude_input = latitude_slide
+if longitude_input != longitude_slider:
+    longitude_input = longitude_slider
 # アプリ選択
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
 
