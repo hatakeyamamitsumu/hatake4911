@@ -24,8 +24,8 @@ if latitude_slider != latitude_input:
 if longitude_slider != longitude_input:
     longitude_slider = longitude_input
     
-if latitude_input != latitude_slide:
-    latitude_input = latitude_slide
+if latitude_input != latitude_slider:
+    latitude_input = latitude_slider
 if longitude_input != longitude_slider:
     longitude_input = longitude_slider
 # アプリ選択
