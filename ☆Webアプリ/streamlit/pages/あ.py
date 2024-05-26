@@ -1,164 +1,117 @@
+import folium
 import streamlit as st
-import os
-import io
-import zipfile
-from PIL import Image
-import time
-from icrawler.builtin import BingImageCrawler
-from selenium import webdriver
-import requests
-from bs4 import BeautifulSoup
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from streamlit_folium import folium_static
+import pandas as pd
+#
+# Google Sheets 認証情報とスコープをsecretsから取得
+scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
+creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
+client = gspread.authorize(creds)
 
-# 画像をクロールして保存（BingImageCrawlerを使用）
-def crawl_images_bing(keyword, max_num=100):
-    save_dir = f"./{keyword}_images_bing"
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    
-    # BingImageCrawlerのmax_num引数はcrawlメソッドに渡す
-    crawler = BingImageCrawler(storage={"root_dir": save_dir})
-    crawler.crawl(keyword=keyword, max_num=max_num)
-    
-    # ダウンロードした画像のパスを取得
-    image_paths = []
-    for root, dirs, files in os.walk(save_dir):
-        for file in files:
-            if file.endswith(('.jpg', '.jpeg', '.png')):
-                image_paths.append(os.path.join(root, file))
-    return image_paths
 
-# 画像をクロールして保存（Google Imagesを使用）
-def fetch_image_urls(query:str, max_links_to_fetch:int, wd):
-    def scroll_to_end(wd):
-        wd.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(1)  # wait for more images to load
-        # scroll additional times if needed
+# アプリ選択
+app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
 
-    # build the google query
-    search_url = "https://www.google.com/search?safe=off&site=&tbm=isch&source=hp&q={q}&oq={q}&gs_l=img"
+if app_selection == "地図にピンを立て、コメントをつけて保存する":
+    # タイトルを設定
+    st.title("地図にピンを立て、コメントをつけて保存するアプリ")
+    st.write("※緯度経度の0.0001度は、おおよそ10メートルです。")
+    # 地図の拡大率の設定
+    zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
+    # 緯度の入力方法を選択
+    latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
+    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
 
-    # load the page
-    wd.get(search_url.format(q=query))
+    # 経度の入力方法を選択
+    longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.0001, format="%.4f", key="longitude")
 
-    image_urls = set()
-    image_count = 0
-    results_start = 0
-    while image_count < max_links_to_fetch:
-        scroll_to_end(wd)
+    # ユーザーから情報の入力を受け取る
+    info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
-        # get all image thumbnail results
-        thumbnail_results = wd.find_elements_by_css_selector("img.Q4LuWd")
-        number_results = len(thumbnail_results)
+    # 地図を作成
+    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    # 入力された緯度経度にピンを立てる
+    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
-        for img in thumbnail_results[results_start:number_results]:
-            # try to click every thumbnail such that we can get the real image behind it
-            try:
-                img.click()
-                time.sleep(1)
-            except Exception:
-                continue
+    # 地図を表示
+    folium_static(m)
 
-            # extract image urls
-            actual_images = wd.find_elements_by_css_selector('img.n3VNCb')
-            for actual_image in actual_images:
-                if actual_image.get_attribute('src') and 'http' in actual_image.get_attribute('src'):
-                    image_urls.add(actual_image.get_attribute('src'))
+    # Google DriveのファイルID
+    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+     # ファイルを読み込む
+    @st.cache
+    def load_data(file_id):
+        url = f"https://drive.google.com/uc?id={file_id}"
+        return pd.read_csv(url)
 
-            image_count = len(image_urls)
+    # Streamlitアプリのセットアップ
+    def main():
+        st.title("おおよその緯度経度検索")
 
-            if len(image_urls) >= max_links_to_fetch:
-                print(f"Found: {len(image_urls)} image links, done!")
-                break
-        else:
-            print("Found:", len(image_urls), "image links, looking for more ...")
-            time.sleep(30)
-            return
-            load_more_button = wd.find_element_by_css_selector(".mye4qd")
-            if load_more_button:
-                wd.execute_script("document.querySelector('.mye4qd').click();")
+        # CSVファイルを読み込む
+        df = load_data(file_id)
 
-        # move the result startpoint further down
-        results_start = len(thumbnail_results)
+        # 都道府県名の入力欄
+        prefecture = st.text_input("都道府県名を入力してください：")
 
-    return image_urls
+        # 市区町村名の入力欄
+        city = st.text_input("市区町村名を入力してください：")
 
-# 画像をZIPファイルに圧縮
-def create_zip(image_paths, keyword):
-    zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, "w") as zf:
-        for i, img_path in enumerate(image_paths):
-            ext = os.path.splitext(img_path)[1]
-            zip_filename = f"{keyword}_{i+1}{ext}"
-            zf.write(img_path, zip_filename)
-    zip_buffer.seek(0)
-    return zip_buffer
+        # 大字・丁目名の入力欄
+        district = st.text_input("大字・丁目名を入力してください：")
 
-# Streamlitアプリ
-st.title("画像クローリング・表示")
+        # 部分一致検索を実行
+        if prefecture or city or district:
+            filtered_df = df[df["都道府県名"].str.contains(prefecture) &
+                             df["市区町村名"].str.contains(city) &
+                             df["大字・丁目名"].str.contains(district)]
+            st.write(filtered_df)
 
-keyword = st.text_input("キーワードを入力してください（複数入力可能）:")
-max_images = st.number_input("取得する画像の枚数を入力してください（上限50）:", min_value=1, max_value=50, value=10)
+    # Streamlitアプリを実行
+    if __name__ == "__main__":
+        main()
+    # 書き込みボタンを追加
+    if st.sidebar.button("緯度経度、コメントを保存"):
+        # Google Sheetsのデータを取得
+        spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+        spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
+        sheet = client.open_by_url(spreadsheet_url).sheet1
 
-if st.button("Bingからクローリング＆表示"):
-    if keyword:
-        st.write(f"{keyword} に関連する画像をクローリングしています...")
-        images_bing = crawl_images_bing(keyword, max_num=max_images)
-        
-        if images_bing:
-            st.write("取得した画像:")
+        # 新しいデータをGoogle Sheetsに書き込む
+        new_row = [latitude_input, longitude_input, info]
+        sheet.append_row(new_row)
 
-            # 6列で表示
-            columns = st.columns(8)
-            for i, img_path in enumerate(images_bing):
-                with columns[i % 8]:
-                    st.image(img_path, caption=f"Bing Image {i+1}")
+        # ユーザーに成功メッセージを表示
+        st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
 
-            # ZIPファイルのダウンロードボタン
-            zip_buffer = create_zip(images_bing, keyword)
-            st.download_button(
-                label="すべての画像をダウンロード (ZIP)",
-                data=zip_buffer,
-                file_name=f"{keyword}_images_bing.zip",
-                mime="application/zip"
-            )
-        else:
-            st.write("画像が見つかりませんでした。")
-    else:
-        st.write("キーワードを入力してください。")
+elif app_selection == "スプレッドシートから地図上に表示":
+    # タイトルを設定
+    st.title("スプレッドシートから地図上に表示")
 
-if st.button("Googleからクローリング＆表示"):
-    if keyword:
-        st.write(f"{keyword} に関連する画像をクローリングしています...")
-        image_urls_google = fetch_image_urls(query=keyword, max_links_to_fetch=max_images, wd=webdriver.Chrome(executable_path="./chromedriver"))
-        
-        if image_urls_google:
-            st.write("取得した画像:")
+    # スプレッドシートのURL
+    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
+    # スプレッドシートからシート名を取得
+    spreadsheet = client.open_by_url(spreadsheet_url)
+    sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
 
-            # 6列で表示
-            columns = st.columns(8)
-            for i, img_url in enumerate(image_urls_google):
-                response = requests.get(img_url)
-                image = Image.open(io.BytesIO(response.content))
-                with columns[i % 8]:
-                    st.image(image, caption=f"Google Image {i+1}")
+    # シート名を選択
+    selected_sheet_name = st.selectbox("シート名を選択してください", sheet_names)
 
-            # ZIPファイルのダウンロードボタン
-            zip_buffer = io.BytesIO()
-            with zipfile.ZipFile(zip_buffer, "w") as zf:
-                for i, img_url in enumerate(image_urls_google):
-                    ext = os.path.splitext(img_url)[1]
-                    zip_filename = f"{keyword}_google_{i+1}{ext}"
-                    img_data = requests.get(img_url).content
-                    zf.writestr(zip_filename, img_data)
-            zip_buffer.seek(0)
+    # スプレッドシートからデータを取得
+    sheet = spreadsheet.worksheet(selected_sheet_name)
+    data = sheet.get_all_values()
 
-            st.download_button(
-                label="すべての画像をダウンロード (ZIP)",
-                data=zip_buffer,
-                file_name=f"{keyword}_images_google.zip",
-                mime="application/zip"
-            )
-        else:
-            st.write("画像が見つかりませんでした。")
-    else:
-        st.write("キーワードを入力してください。")
+    # 地図を作成
+    m = folium.Map()
+
+    # データから緯度経度を取得し、ピンを立てる
+    for row in data[1:]:  # ヘッダーを除く
+        latitude, longitude, info = float(row[0]), float(row[1]), row[2]
+        folium.Marker([latitude, longitude], popup=folium.Popup(info, max_width=300)).add_to(m)
+
+    # 地図を表示
+    folium_static(m)
