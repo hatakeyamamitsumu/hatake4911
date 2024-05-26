@@ -1,82 +1,72 @@
-
-
-
-
 import streamlit as st
 import pandas as pd
-import os
 import requests
+import gspread
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from streamlit_folium import folium_static
 import folium
-from folium import plugins
+from folium.plugins import HeatMap
+from streamlit_folium import folium_static
 
+# Streamlitアプリのヘッダー
 st.header("グーグルドライブ内のCSVデータをもとにヒートマップを表示")
 st.text('主に国土地理院データより引用。')
 
 # Google Drive APIの認証情報
+scope = ['https://www.googleapis.com/auth/drive']
+creds = service_account.Credentials.from_service_account_info(st.secrets["google"], scopes=scope)
+service = build('drive', 'v3', credentials=creds)
 
-scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
-credentials = Credentials.from_service_account_info(st.secrets["google"], scopes=scope)
-client = gspread.authorize(creds)
-#file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
-service = build('drive', 'v3', credentials=credentials)
-
-# Google Drive folder ID
+# Google DriveフォルダーID
 drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
 
-# Function to list files in Google Drive folder
+# 指定したGoogle Driveフォルダー内のファイルをリストアップする関数
 def list_drive_files(folder_id):
     query = f"'{folder_id}' in parents"
     results = service.files().list(q=query).execute()
     files = results.get('files', [])
     return files
 
-# Get the list of folders in the specified Google Drive folder
+# 選択されたフォルダー内のファイルを取得
 folders = list_drive_files(drive_folder_id)
 folder_names = [folder['name'] for folder in folders]
 folder_ids = {folder['name']: folder['id'] for folder in folders}
-
-# Allow the user to select a folder
 selected_folder_name = st.selectbox("フォルダを選択してください", folder_names)
 selected_folder_id = folder_ids[selected_folder_name]
 
-# Get the list of CSV files in the selected folder
+# 選択されたフォルダー内のCSVファイルを取得
 csv_files = list_drive_files(selected_folder_id)
 csv_file_names = [file['name'] for file in csv_files if file['name'].endswith('.csv')]
 csv_file_ids = {file['name']: file['id'] for file in csv_files if file['name'].endswith('.csv')}
-
-# Allow the user to select a CSV file
 selected_file_name = st.selectbox("CSVファイルを選択してください", csv_file_names)
 selected_file_id = csv_file_ids[selected_file_name]
 
-# Download the selected CSV file
+# 選択されたCSVファイルをダウンロードする
 file_url = f"https://drive.google.com/uc?id={selected_file_id}"
 csv_file_path = f"/tmp/{selected_file_name}"
 response = requests.get(file_url)
 with open(csv_file_path, 'wb') as f:
     f.write(response.content)
 
-# Read data from the downloaded CSV file
+# ダウンロードしたCSVファイルからデータを読み込む
 data = pd.read_csv(csv_file_path)
 
-# Check if the data has latitude, longitude, and elevation columns
+# データに緯度、経度、標高の列が含まれているかチェック
 latitude_column = data.columns[0]
 longitude_column = data.columns[1]
 elevation_column = data.columns[2]
 
-# Center of the map (you may adjust this based on your data)
+# 地図の中心を設定
 center = [data[latitude_column].mean(), data[longitude_column].mean()]
 
-# Create a base map
+# 基本地図を作成
 m = folium.Map(center, zoom_start=6)
 
-# Add a heatmap layer to the map using the latitude, longitude, and elevation data from the CSV
-heat_map = folium.plugins.HeatMap(
-    data=data[[latitude_column, longitude_column, elevation_column]].values,  # Use the latitude, longitude, and elevation columns
-    radius=15  # You can adjust the radius of the heatmap points
+# ダウンロードしたCSVファイルの緯度、経度、標高データを使用してヒートマップレイヤーを追加する
+heat_map = HeatMap(
+    data=data[[latitude_column, longitude_column, elevation_column]].values,
+    radius=15
 ).add_to(m)
 
-# Display the map using Streamlit
+# Streamlitで地図を表示
 folium_static(m)
