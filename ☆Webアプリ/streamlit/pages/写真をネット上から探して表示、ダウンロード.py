@@ -52,6 +52,7 @@ def download_images(image_urls, save_dir):
     return image_paths
 
 
+
 # 画像をZIPファイルに圧縮
 def create_zip(image_paths, keyword):
     zip_buffer = io.BytesIO()
