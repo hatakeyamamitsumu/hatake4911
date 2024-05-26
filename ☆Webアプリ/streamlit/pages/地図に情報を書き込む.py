@@ -27,10 +27,41 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     st.sidebar.write('細かく緯度経度指定')
     st.sidebar.write('＋－ボタン用の刻みを選択')
     #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
-    latitude_input = st.sidebar.number_input("緯度を入力してください",value=latitude_slider,step=0.0001,format="%.4f",key="latitude")
-    longitude_input = st.sidebar.number_input("経度を入力してください",value=longitude_slider,step=0.0001,format="%.4f",key="longitude")
+    #latitude_input = st.sidebar.number_input("緯度を入力してください",value=latitude_slider,step=0.0001,format="%.4f",key="latitude")
+    #longitude_input = st.sidebar.number_input("経度を入力してください",value=longitude_slider,step=0.0001,format="%.4f",key="longitude")
+    ######
+    import streamlit as st
+
+# スライダーに+-ボタンを追加するカスタムコンポーネント
+def slider_with_buttons(label, min_value, max_value, value, step):
+    col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
     
-   
+    with col2:
+        st.write(label)
+        slider_value = st.slider("", min_value, max_value, value, step=step)
+    
+    with col1:
+        if st.button('-'):
+            slider_value -= step
+        if st.button('+'):
+            slider_value += step
+    
+    return slider_value
+
+# 緯度のスライダー
+latitude_slider = slider_with_buttons("おおよその緯度指定", 23.2100, 46.3200, 35.6895, 0.0001)
+
+# 経度のスライダー
+longitude_slider = slider_with_buttons("おおよその経度指定", 121.5500, 146.0800, 139.6917, 0.0001)
+
+# 緯度の入力フィールド
+latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
+
+# 経度の入力フィールド
+longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.0001, format="%.4f", key="longitude")
+
+
+    #####
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
