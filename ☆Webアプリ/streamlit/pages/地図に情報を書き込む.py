@@ -22,7 +22,17 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
     # 緯度の入力方法を選択
     latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
+    # ユーザーが選択したステップの大きさを決定
+    step_size = st.sidebar.radio("ステップサイズを選んでください", options=[0.0001, 0.001], index=0)
+    latitude_input = st.sidebar.number_input(
+    "緯度を入力してください",
+    value=latitude_slider,
+    step=step_size,
+    format="%.4f",
+    key="latitude"
+)
+
+    #latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
     
     # 経度の入力方法を選択
     longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
