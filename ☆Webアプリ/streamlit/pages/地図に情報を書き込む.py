@@ -40,8 +40,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
 
 
     # 緯度と経度のスライダー
-    latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, step=0.0001)
-    longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, step=0.0001)
+    #latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, step=0.0001)
+    #longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, step=0.0001)
 
     st.sidebar.write('細かく緯度経度指定')
     st.sidebar.write('＋－ボタン用の刻みを選択')
@@ -54,8 +54,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=step_size, format="%.4f", key="longitude")
     
     # スライダーの値を入力フィールドの値で更新
-    latitude_slider = latitude_input
-    longitude_slider = longitude_input
+    latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=latitude_input,step=0.0001)
+    longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=longitude_input,value=step=0.0001)
 
 
     # ユーザーから情報の入力を受け取る
