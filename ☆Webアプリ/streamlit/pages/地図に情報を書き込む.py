@@ -18,7 +18,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存するアプリ")
     # 地図の拡大率の設定
-    zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
+    zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=7, max_value=20, value=10)
     # 緯度の入力方法を選択
 
     latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
