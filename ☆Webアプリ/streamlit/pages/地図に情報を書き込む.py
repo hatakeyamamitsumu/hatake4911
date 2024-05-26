@@ -33,33 +33,33 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     import streamlit as st
 
 # スライダーに+-ボタンを追加するカスタムコンポーネント
-def slider_with_buttons(label, min_value, max_value, value, step):
-    col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
+    def slider_with_buttons(label, min_value, max_value, value, step):
+        col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
+        
+        with col2:
+            st.write(label)
+            slider_value = st.slider("", min_value, max_value, value, step=step)
+        
+        with col1:
+            if st.button('-'):
+                slider_value -= step
+            if st.button('+'):
+                slider_value += step
+        
+        return slider_value
     
-    with col2:
-        st.write(label)
-        slider_value = st.slider("", min_value, max_value, value, step=step)
+    # 緯度のスライダー
+    latitude_slider = slider_with_buttons("おおよその緯度指定", 23.2100, 46.3200, 35.6895, 0.0001)
     
-    with col1:
-        if st.button('-'):
-            slider_value -= step
-        if st.button('+'):
-            slider_value += step
+    # 経度のスライダー
+    longitude_slider = slider_with_buttons("おおよその経度指定", 121.5500, 146.0800, 139.6917, 0.0001)
     
-    return slider_value
-
-# 緯度のスライダー
-latitude_slider = slider_with_buttons("おおよその緯度指定", 23.2100, 46.3200, 35.6895, 0.0001)
-
-# 経度のスライダー
-longitude_slider = slider_with_buttons("おおよその経度指定", 121.5500, 146.0800, 139.6917, 0.0001)
-
-# 緯度の入力フィールド
-latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
-
-# 経度の入力フィールド
-longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.0001, format="%.4f", key="longitude")
-
+    # 緯度の入力フィールド
+    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
+    
+    # 経度の入力フィールド
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.0001, format="%.4f", key="longitude")
+    
 
     #####
     # ユーザーから情報の入力を受け取る
