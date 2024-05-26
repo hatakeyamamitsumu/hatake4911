@@ -30,10 +30,6 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # Google SheetsのファイルID
     
     # 書き込むデータ
-    scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
-    client = gspread.authorize(creds)
-    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
     data = [
         [latitude_input],  # 緯度を含むリスト
         [longitude_input]  # 経度を含むリスト
