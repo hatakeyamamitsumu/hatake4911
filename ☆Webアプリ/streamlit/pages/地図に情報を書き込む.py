@@ -20,13 +20,38 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 地図の拡大率の設定
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
     # 緯度の入力方法を選択
-    latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
-    longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
-    st.sidebar.write('細かく緯度経度指定')
-    st.sidebar.write('＋－ボタン用の刻みを選択')
-    step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
-    
+    #latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
+    #longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
+    #st.sidebar.write('細かく緯度経度指定')
+    #st.sidebar.write('＋－ボタン用の刻みを選択')
+    #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
+    import streamlit as st
 
+# セッションステートに初期値を設定
+if 'latitude' not in st.session_state:
+    st.session_state['latitude'] = 35.6895  # 初期値は任意に設定
+if 'longitude' not in st.session_state:
+    st.session_state['longitude'] = 139.6917  # 初期値は任意に設定
+
+# 緯度と経度のスライダー
+latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=st.session_state['latitude'], step=0.0001)
+longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=st.session_state['longitude'], step=0.0001)
+
+st.sidebar.write('細かく緯度経度指定')
+st.sidebar.write('＋－ボタン用の刻みを選択')
+step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m, 0.01=約1000m, 0.1=約10km", options=[0.0001, 0.001, 0.01, 0.1], index=0)
+
+# 緯度の入力
+st.session_state['latitude'] = st.sidebar.number_input("緯度を入力してください", value=st.session_state['latitude'], step=step_size, format="%.4f", key="latitude_input")
+
+# 経度の入力
+st.session_state['longitude'] = st.sidebar.number_input("経度を入力してください", value=st.session_state['longitude'], step=step_size, format="%.4f", key="longitude_input")
+
+# 現在の緯度と経度を表示
+st.write(f"現在の緯度: {st.session_state['latitude']:.4f}")
+st.write(f"現在の経度: {st.session_state['longitude']:.4f}")
+
+    #
     latitude_input = st.sidebar.number_input("緯度を入力してください",value=latitude_slider,step=step_size,format="%.4f",key="latitude")
     longitude_input = st.sidebar.number_input("経度を入力してください",value=longitude_slider,step=step_size,format="%.4f",key="longitude")
     
