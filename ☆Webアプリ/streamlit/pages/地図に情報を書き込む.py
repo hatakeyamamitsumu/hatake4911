@@ -48,10 +48,10 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001, 0.01, 0.1], index=0)
     
     # 緯度の入力フィールド
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=step_size, format="%.4f", key="latitude")
+    latitude_input = st.sidebar.number_input("緯度を入力してください", step=step_size, format="%.4f", key="latitude")
 
     # 経度の入力フィールド
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=step_size, format="%.4f", key="longitude")
+    longitude_input = st.sidebar.number_input("経度を入力してください", step=step_size, format="%.4f", key="longitude")
     
     # スライダーの値を入力フィールドの値で更新
     latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=latitude_input,step=0.0001)
