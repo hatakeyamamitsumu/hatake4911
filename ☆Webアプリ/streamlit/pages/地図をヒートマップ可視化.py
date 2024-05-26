@@ -18,7 +18,7 @@ st.text('主に国土地理院データより引用。')
 # Google Drive APIの認証情報
 
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
-creds = Credentials.from_service_account_info(st.secrets["google"], scopes=scope)
+credentials = Credentials.from_service_account_info(st.secrets["google"], scopes=scope)
 client = gspread.authorize(creds)
 #file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
 service = build('drive', 'v3', credentials=credentials)
