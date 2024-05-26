@@ -27,8 +27,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     st.sidebar.write('細かく緯度経度指定')
     st.sidebar.write('＋－ボタン用の刻みを選択')
     #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
-    #latitude_input = st.sidebar.number_input("緯度を入力してください",value=latitude_slider,step=0.0001,format="%.4f",key="latitude")
-    #longitude_input = st.sidebar.number_input("経度を入力してください",value=longitude_slider,step=0.0001,format="%.4f",key="longitude")
+    latitude_input = st.sidebar.number_input("緯度を入力してください",value=latitude_slider,step=0.0001,format="%.4f",key="latitude")
+    longitude_input = st.sidebar.number_input("経度を入力してください",value=longitude_slider,step=0.0001,format="%.4f",key="longitude")
     ######
     #####
     # ユーザーから情報の入力を受け取る
