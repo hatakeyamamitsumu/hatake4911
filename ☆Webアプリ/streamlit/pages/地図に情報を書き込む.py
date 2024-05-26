@@ -55,7 +55,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     
     # スライダーの値を入力フィールドの値で更新
     latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=latitude_input,step=0.0001)
-    longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=longitude_input,value=step=0.0001)
+    longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=longitude_input,step=0.0001)
 
 
     # ユーザーから情報の入力を受け取る
