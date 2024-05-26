@@ -17,12 +17,12 @@ st.text('主に国土地理院データより引用。')
 
 # Google Drive APIの認証情報
 
-creds = Credentials.from_service_account_info(
+credentials = Credentials.from_service_account_info(
     st.secrets["google"],
     scopes=['https://www.googleapis.com/auth/drive']
 )
 
-service = build('drive', 'v3', credentials=creds)
+service = build('drive', 'v3', credentials=credentials)
 
 # Google Drive folder ID
 drive_folder_id = "1f3XeJDSoEydQHkw867Mt26NUGe2MPJJ1"
