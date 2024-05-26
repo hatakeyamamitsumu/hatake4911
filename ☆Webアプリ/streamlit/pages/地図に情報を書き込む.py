@@ -21,7 +21,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
     # 緯度の入力方法を選択
 
-    
+    latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
+    longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
     st.sidebar.write('細かく緯度経度指定')
     st.sidebar.write('＋－ボタン用の刻みを選択')
     step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
