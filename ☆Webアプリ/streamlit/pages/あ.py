@@ -20,15 +20,11 @@ longitude_input = st.sidebar.number_input("経度を入力してください", v
 
 # スライダーの値と入力欄の値を連動させる
 # ユーザーが入力欄で値を変更したときに、スライダーの値も更新される
-if latitude_slider != latitude_input:
     latitude_slider = latitude_input
-if longitude_slider != longitude_input:
     longitude_slider = longitude_input
 
 # スライダーの値が変更されたときに、入力欄の値も更新される
-if latitude_input != latitude_slider:
     latitude_input = latitude_slider
-if longitude_input != longitude_slider:
     longitude_input = longitude_slider
 
     
