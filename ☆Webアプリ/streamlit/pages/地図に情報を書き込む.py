@@ -28,7 +28,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     
 
     latitude_input = st.sidebar.number_input("緯度を入力してください",value=latitude_slider,step=step_size,format="%.4f",key="latitude")
-    longitude_input = st.sidebar.number_input("緯度を入力してください",value=longitude_slider,step=step_size,format="%.4f",key="longitude")
+    longitude_input = st.sidebar.number_input("経度を入力してください",value=longitude_slider,step=step_size,format="%.4f",key="longitude")
     
 
     # ユーザーから情報の入力を受け取る
