@@ -1,15 +1,28 @@
-import folium
 import streamlit as st
+import folium
+import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from streamlit_folium import folium_static
-import pandas as pd
-#
+
 # Google Sheets 認証情報とスコープをsecretsから取得
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 client = gspread.authorize(creds)
 
+# 緯度の入力欄
+latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
+latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
+
+# 経度の入力欄
+longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
+longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.0001, format="%.4f", key="longitude")
+
+# スライダーの値と入力欄の値を連動させる
+if latitude_slider != latitude_input:
+    latitude_slider = latitude_input
+if longitude_slider != longitude_input:
+    longitude_slider = longitude_input
 
 # アプリ選択
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
@@ -20,19 +33,11 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     st.write("※緯度経度の0.0001度は、おおよそ10メートルです。")
     # 地図の拡大率の設定
     zoom_value = st.slider("地図の拡大率を固定したい時は、このスライダーをご利用ください", min_value=1, max_value=20, value=10)
-    # 緯度の入力方法を選択
-    latitude_slider = st.sidebar.slider("緯度を選択してください", min_value=23.2100, max_value=46.3200, value=35.6895, step=0.0001)
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=latitude_slider, step=0.0001, format="%.4f", key="latitude")
-
-    # 経度の入力方法を選択
-    longitude_slider = st.sidebar.slider("経度を選択してください", min_value=121.5500, max_value=146.0800, value=139.6917, step=0.0001)
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=longitude_slider, step=0.0001, format="%.4f", key="longitude")
-
+    
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
     # 地図を作成
-    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
