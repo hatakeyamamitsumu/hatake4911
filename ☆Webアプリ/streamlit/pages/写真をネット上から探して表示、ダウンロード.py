@@ -41,12 +41,16 @@ def download_images(image_urls, save_dir):
     
     image_paths = []
     for i, url in enumerate(image_urls):
+        # URLが相対パスの場合、Google ImagesのベースURLを追加して絶対URLを構築
+        if not url.startswith("http"):
+            url = "https://www.google.com" + url
         response = requests.get(url)
         image = Image.open(io.BytesIO(response.content))
         image_path = os.path.join(save_dir, f"{i+1}.jpg")
         image.save(image_path)
         image_paths.append(image_path)
     return image_paths
+
 
 # 画像をZIPファイルに圧縮
 def create_zip(image_paths, keyword):
