@@ -28,8 +28,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
     # 地図を作成
-    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
-    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # MousePositionプラグインを追加
     MousePosition().add_to(m)
     
