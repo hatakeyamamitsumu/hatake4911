@@ -29,7 +29,12 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     longitude_input_2 = st.sidebar.number_input("東西に１０ｍ移動",value=longitude_input_1,step=0.0001,format="%.4f",key="longitude_2")
 
     #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
+        # MousePositionプラグインを追加
+    MousePosition().add_to(m)
     
+    # フォリウムのクリックイベントを追加
+    click_event = folium.features.LatLngPopup()
+    m.add_child(click_event)
 
     
 
