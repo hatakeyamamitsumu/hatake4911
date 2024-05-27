@@ -18,13 +18,10 @@ app_selection = st.sidebar.radio("アプリを選択してください", ("地�
 if app_selection == "地図にピンを立て、コメントをつけて保存する":
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存するアプリ")
-    # 地図の拡大率の設定
-    zoom_value = st.slider("地図の倍率(遠⇔近)", min_value=7, max_value=20, value=10)
     # 緯度の入力方法を選択。
     latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.0000, step=0.001)
     latitude_input = st.sidebar.number_input("南北に１００ｍ移動　(緯度コピペ欄)",value=latitude_slider,step=0.001,format="%.4f",key="latitude")
-   
-    
+       
     longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=135.0000, step=0.001)
     longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=longitude_slider,step=0.001,format="%.4f",key="longitude")
 
