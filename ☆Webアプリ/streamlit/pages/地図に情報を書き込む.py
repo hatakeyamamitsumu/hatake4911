@@ -83,7 +83,6 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     if st.sidebar.button("緯度経度、コメントを保存"):
         # Google Sheetsのデータを取得
         spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-        spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
         sheet = client.open_by_url(spreadsheet_url).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
