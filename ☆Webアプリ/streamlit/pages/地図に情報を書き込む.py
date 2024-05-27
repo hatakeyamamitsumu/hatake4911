@@ -27,26 +27,14 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     
     longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=135.0000, step=0.001)
     longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=longitude_slider,step=0.001,format="%.4f",key="longitude")
-
-
-    #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
-        # MousePositionプラグインを追加
-   
-
-    ######
-    #####
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
-
     # 地図を作成
-    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
-
     # 地図を表示
     folium_static(m)
-
     # Google DriveのファイルID
     file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
      # ファイルを読み込む
@@ -54,7 +42,6 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     def load_data(file_id):
         url = f"https://drive.google.com/uc?id={file_id}"
         return pd.read_csv(url)
-
     # Streamlitアプリのセットアップ
     def main():
         st.title("おおよその緯度経度検索")
