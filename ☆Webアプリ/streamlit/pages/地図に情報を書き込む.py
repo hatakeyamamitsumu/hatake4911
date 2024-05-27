@@ -23,7 +23,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.0000, step=0.001)
     latitude_input_1 = st.sidebar.number_input("１００ｍ刻みで指定",value=latitude_slider,step=0.001,format="%.4f",key="latitude_1")
     latitude_input_2 = st.sidebar.number_input("１０ｍ刻みで指定",value=latitude_input_1,step=0.0001,format="%.4f",key="latitude_2")
-
+    latitude_input_1=latitude_input_2
     
     longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=135.0000, step=0.001)
     longitude_input_1 = st.sidebar.number_input("１００ｍ刻みで指定",value=longitude_slider,step=0.001,format="%.4f",key="longitude_1")
