@@ -43,7 +43,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
     # 地図を表示
-    folium_static(m)
+    #folium_static(m)
 
     # Google DriveのファイルID
     file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
