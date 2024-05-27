@@ -36,7 +36,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 地図を表示
     ###########
      # 地図を作成
-    #MousePosition(position='bottomright', separator=' | ', prefix="マウス位置：").add_to(m)
+    MousePosition(position='bottomright', separator=' | ', prefix="マウス位置：").add_to(m)
     # フォリウムのクリックイベントを追加
     click_event = folium.ClickForMarker(popup=folium.Popup("ここです！", max_width=300))
     m.add_child(click_event)
