@@ -22,7 +22,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 緯度の入力方法を選択。
  
     latitude_input = st.sidebar.number_input("南北に１００ｍ移動　(緯度コピペ欄)",value=35.0000,step=0.001,format="%.4f",key="latitude")
-    longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=135.0000r,step=0.001,format="%.4f",key="longitude")
+    longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=135.0000,step=0.001,format="%.4f",key="longitude")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
