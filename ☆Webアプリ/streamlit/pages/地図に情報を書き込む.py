@@ -30,10 +30,25 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
     # 地図を作成
-    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
-    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
+    #folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
     # 地図を表示
+    ###########
+     # 地図を作成
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    # MousePositionプラグインを追加
+    MousePosition(position='bottomright', separator=' | ', prefix="マウス位置：").add_to(m)
+    # フォリウムのクリックイベントを追加
+    click_event = folium.ClickForMarker(popup=folium.Popup("ここです！", max_width=300))
+    m.add_child(click_event)
+    # Streamlitで地図を表示し、クリックイベントを取得
+    output = st_folium(m, width=700, height=500)
+    # 入力された緯度経度にピンを立てる
+    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=600), icon=folium.Icon(color='blue')).add_to(m)
+    # 地図を表示
+    #folium_static(m)
+    #########
     folium_static(m)
     # Google DriveのファイルID
     file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
