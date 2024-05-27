@@ -2,9 +2,9 @@ import folium
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from streamlit_folium import folium_static, st_folium
+from streamlit_folium import folium_static
 import pandas as pd
-
+#
 # Google Sheets 認証情報とスコープをsecretsから取得
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
@@ -19,38 +19,66 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     st.title("地図にピンを立て、コメントをつけて保存するアプリ")
     # 地図の拡大率の設定
     zoom_value = st.slider("地図の倍率(遠⇔近)", min_value=7, max_value=20, value=10)
-    
-    # サイドバーに緯度と経度の入力欄を作成
-    latitude_input = st.sidebar.text_input("緯度", key="latitude", value="35.0000")
-    longitude_input = st.sidebar.text_input("経度", key="longitude", value="135.0000")
+    # 緯度の入力方法を選択。
+ 
+    latitude_input = st.sidebar.number_input("南北に１００ｍ移動　(緯度コピペ欄)",value=35.0000,step=0.001,format="%.4f",key="latitude")
+    longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=135.0000,step=0.001,format="%.4f",key="longitude")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
     # 地図を作成
-    m = folium.Map(location=[float(latitude_input), float(longitude_input)], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
-    
-    # フォリウムのクリックイベントを追加
-    m.add_child(folium.LatLngPopup())
+    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    # 入力された緯度経度にピンを立てる
+    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
-    # 地図を表示し、クリックイベントを取得
-    output = st_folium(m, width=700, height=500)
-    
-    # クリックイベントから緯度経度を取得して転記
-    if output and 'last_clicked' in output:
-        clicked_lat = output['last_clicked']['lat']
-        clicked_lon = output['last_clicked']['lng']
-        st.sidebar.text_input("緯度", value=str(clicked_lat), key="latitude", disabled=True)
-        st.sidebar.text_input("経度", value=str(clicked_lon), key="longitude", disabled=True)
+    # 地図を表示
+    folium_static(m)
 
+    # Google DriveのファイルID
+    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+     # ファイルを読み込む
+    @st.cache
+    def load_data(file_id):
+        url = f"https://drive.google.com/uc?id={file_id}"
+        return pd.read_csv(url)
+
+    # Streamlitアプリのセットアップ
+    def main():
+        st.title("おおよその緯度経度検索")
+
+        # CSVファイルを読み込む
+        df = load_data(file_id)
+
+        # 都道府県名の入力欄
+        prefecture = st.text_input("都道府県名を入力してください：")
+
+        # 市区町村名の入力欄
+        city = st.text_input("市区町村名を入力してください：")
+
+        # 大字・丁目名の入力欄
+        district = st.text_input("大字・丁目名を入力してください：")
+
+        # 部分一致検索を実行
+        if prefecture or city or district:
+            filtered_df = df[df["都道府県名"].str.contains(prefecture) &
+                             df["市区町村名"].str.contains(city) &
+                             df["大字・丁目名"].str.contains(district)]
+            st.write(filtered_df)
+
+    # Streamlitアプリを実行
+    if __name__ == "__main__":
+        main()
     # 書き込みボタンを追加
     if st.sidebar.button("緯度経度、コメントを保存"):
         # Google Sheetsのデータを取得
+        spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
         spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
         sheet = client.open_by_url(spreadsheet_url).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
-        new_row = [clicked_lat, clicked_lon, info]
+        new_row = [latitude_input, longitude_input, info]
         sheet.append_row(new_row)
 
         # ユーザーに成功メッセージを表示
@@ -61,7 +89,7 @@ elif app_selection == "スプレッドシートから地図上に表示":
     st.title("スプレッドシートから地図上に表示")
 
     # スプレッドシートのURL
-    spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
+    spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
     # スプレッドシートからシート名を取得
     spreadsheet = client.open_by_url(spreadsheet_url)
     sheet_names = [sheet.title for sheet in spreadsheet.worksheets()]
