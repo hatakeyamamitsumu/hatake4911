@@ -2,9 +2,9 @@ import folium
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from streamlit_folium import folium_static
 import pandas as pd
-#
+from folium.plugins import MousePosition
+from streamlit_folium import folium_static, st_folium
 # Google Sheets 認証情報とスコープをsecretsから取得
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
