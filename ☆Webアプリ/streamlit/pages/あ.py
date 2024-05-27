@@ -38,12 +38,12 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     m.add_child(click_event)
     
     # Streamlitで地図を表示し、クリックイベントを取得
-    output = st_folium(m, width=600, height=400)
+    output = st_folium(m, width=600, height=400)#地図サイズ
     # 入力された緯度経度にピンを立てる
     #folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=600)).add_to(m)
     # 入力された緯度経度にピンを立てる
-    #popup_content = f"<div style='font-size: 20px;'>{info}</div>"  # フォントサイズを16pxに設定
-    popup = folium.Popup(popup_content, max_width=800)
+    popup_content = f"<div style='font-size: 20px;'>{info}</div>"  # フォントサイズを16pxに設定
+    popup = folium.Popup(popup_content, max_width=400)
     marker = folium.Marker([latitude_input, longitude_input], popup=popup)
     marker.add_to(m)
 
