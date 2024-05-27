@@ -26,7 +26,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
    
     
     longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=135.0000, step=0.001)
-    longitude_input_1 = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=longitude_slider,step=0.001,format="%.4f",key="longitude")
+    longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=longitude_slider,step=0.001,format="%.4f",key="longitude")
 
 
     #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
