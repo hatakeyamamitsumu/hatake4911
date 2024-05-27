@@ -28,15 +28,17 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
     # 地図を作成
-    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # MousePositionプラグインを追加
     MousePosition().add_to(m)
-        # Streamlitで地図を表示し、クリックイベントを取得
-    output = st_folium(m, width=700, height=500)
+    
     # フォリウムのクリックイベントを追加
     click_event = folium.features.LatLngPopup()
     m.add_child(click_event)
     
+    # Streamlitで地図を表示し、クリックイベントを取得
+    output = st_folium(m, width=700, height=500)
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
