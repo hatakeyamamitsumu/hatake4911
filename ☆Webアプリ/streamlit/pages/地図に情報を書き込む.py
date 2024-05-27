@@ -40,7 +40,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
 
     # 地図を作成
     #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
-    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
