@@ -31,13 +31,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
 
     #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
         # MousePositionプラグインを追加
-    MousePosition().add_to(m)
-    
-    # フォリウムのクリックイベントを追加
-    click_event = folium.features.LatLngPopup()
-    m.add_child(click_event)
-
-    
+   
 
     ######
     #####
