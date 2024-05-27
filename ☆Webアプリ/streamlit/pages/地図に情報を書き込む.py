@@ -2,7 +2,8 @@ import folium
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from streamlit_folium import folium_static
+from folium.plugins import MousePosition
+from streamlit_folium import folium_static, st_folium
 import pandas as pd
 #
 # Google Sheets 認証情報とスコープをsecretsから取得
