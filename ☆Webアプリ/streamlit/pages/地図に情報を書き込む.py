@@ -23,32 +23,30 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 緯度の入力方法を選択。
     latitude_slider = st.sidebar.slider("おおよその緯度指定", min_value=23.2100, max_value=46.3200, value=35.0000, step=0.001)
     latitude_input = st.sidebar.number_input("南北に１００ｍ移動　(緯度コピペ欄)",value=latitude_slider,step=0.001,format="%.4f",key="latitude")
-
+   
     
     longitude_slider = st.sidebar.slider("おおよその経度指定", min_value=121.5500, max_value=146.0800, value=135.0000, step=0.001)
-    longitude_input = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=longitude_slider,step=0.001,format="%.4f",key="longitude")
+    longitude_input_1 = st.sidebar.number_input("東西に１００ｍ移動　(経度コピペ欄)",value=longitude_slider,step=0.001,format="%.4f",key="longitude")
+
+
+    #step_size = st.sidebar.radio("0.0001=約10m, 0.001=約100m,0.01=約1000m,0.1=約10km", options=[0.0001, 0.001,0.01,0.1], index=0)
+        # MousePositionプラグインを追加
+   
+
+    ######
+    #####
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
+
     # 地図を作成
-    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
+    #m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value)
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=zoom_value, zoom_control=False)  # 拡大縮小ボタンを非表示
     # 入力された緯度経度にピンを立てる
-    #folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
+    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
+
     # 地図を表示
-    ###########
-     # 地図を作成
-    #MousePosition(position='bottomright', separator=' | ', prefix="マウス位置：").add_to(m)
-    # フォリウムのクリックイベントを追加
-    #click_event = folium.ClickForMarker(popup=folium.Popup("ここです！", max_width=300))
-    #m.add_child(click_event)
-    # Streamlitで地図を表示し、クリックイベントを取得
-    #output = st_folium(m, width=700, height=500)
-    # 入力された緯度経度にピンを立てる
-    #folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=600), icon=folium.Icon(color='blue')).add_to(m)
-    # 地図を表示
-    # 地図を表示
-    #folium_static(m)
-    #########
     folium_static(m)
+
     # Google DriveのファイルID
     file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
      # ファイルを読み込む
@@ -56,6 +54,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     def load_data(file_id):
         url = f"https://drive.google.com/uc?id={file_id}"
         return pd.read_csv(url)
+
     # Streamlitアプリのセットアップ
     def main():
         st.title("おおよその緯度経度検索")
@@ -86,7 +85,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     if st.sidebar.button("緯度経度、コメントを保存"):
         # Google Sheetsのデータを取得
         spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
-        
+        spreadsheet_url = st.secrets["gdrive"]["spreadsheet_url_1"]
         sheet = client.open_by_url(spreadsheet_url).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
