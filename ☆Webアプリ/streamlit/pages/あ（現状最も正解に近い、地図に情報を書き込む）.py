@@ -33,26 +33,8 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # 入力された緯度経度にピンを立てる
     folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
 
-
-
-    
-    # MousePositionプラグインのCSSをカスタマイズ
-    mouse_position_css = """
-    <style>
-    .leaflet-control-mouseposition {
-        font-size: 30px;
-        font-weight: bold;
-    }
-    </style>
-    """
-    st.markdown(mouse_position_css, unsafe_allow_html=True)
-
-
-    
-
-    
     # MousePositionプラグインを追加して現在の座標を表示
-    MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
+    MousePosition(position='topleft', separator=' | ', prefix="現在の座標：",font-size:=30).add_to(m)
 
     # 地図を表示
     folium_static(m)
