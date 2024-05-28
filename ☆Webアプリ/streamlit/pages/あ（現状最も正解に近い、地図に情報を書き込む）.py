@@ -37,7 +37,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     mouse_position_css = """
     <style>
     .leaflet-control-mouseposition {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: bold;
     }
     </style>
