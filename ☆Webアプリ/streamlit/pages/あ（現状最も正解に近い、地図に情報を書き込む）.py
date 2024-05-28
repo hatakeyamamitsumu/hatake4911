@@ -30,27 +30,27 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
 
     # 地図を作成
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=10)
+    # 入力された緯度経度にピンを立てる
+    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
+
+
+
     
-
-
-        # MousePositionプラグインのCSSをカスタマイズ
+    # MousePositionプラグインのCSSをカスタマイズ
     mouse_position_css = """
     <style>
     .leaflet-control-mouseposition {
-        font-size: 20px;
+        font-size: 30px;
         font-weight: bold;
     }
     </style>
     """
-
     st.markdown(mouse_position_css, unsafe_allow_html=True)
 
 
+    
 
     
-    # 入力された緯度経度にピンを立てる
-    #folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
-
     # MousePositionプラグインを追加して現在の座標を表示
     MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
 
