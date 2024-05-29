@@ -11,7 +11,7 @@ scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.c
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 client = gspread.authorize(creds)
 file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
-file_id="X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg"
+file_id2="X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg"
 # セッション状態にクリックされた位置の緯度と経度を保存
 if "latitude" not in st.session_state:
     st.session_state.latitude = 35.0000
