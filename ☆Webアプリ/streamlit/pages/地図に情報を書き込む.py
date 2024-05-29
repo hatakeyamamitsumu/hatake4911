@@ -107,7 +107,7 @@ elif app_selection == "地図上のすべてのピンを表示":
 st.title("おおよその緯度経度検索")
 
     # CSVファイルを読み込む
-    df = load_data(file_id)
+df = load_data(file_id)
 # 都道府県名の入力欄
 prefecture = st.text_input("都道府県名を入力してください：")
 
