@@ -124,7 +124,7 @@ elif app_selection == "地図上のすべてのピンを表示":
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
         latitude, longitude, info = float(row[0]), float(row[1]), row[2]
-        folium.Marker([latitude, longitude], popup=folium.Popup(info, max_width=400,max_height=400,)).add_to(m)
+        folium.Marker([latitude, longitude], popup=folium.Popup(info, max_width=400,max_height=300,)).add_to(m)
 
     # MousePositionプラグインを追加して現在の座標を表示
     MousePosition(position='bottomright', separator=' | ', prefix="現在の座標：").add_to(m)
