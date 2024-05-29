@@ -11,7 +11,7 @@ scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.c
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 client = gspread.authorize(creds)
 file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
-
+file_id="X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg"
 # セッション状態にクリックされた位置の緯度と経度を保存
 if "latitude" not in st.session_state:
     st.session_state.latitude = 35.0000
@@ -99,8 +99,8 @@ elif app_selection == "地図上のすべてのピンを表示":
 
 
 # CSVファイルを読み込む関数
-def load_data(file_id):
-    url = f"https://docs.google.com/spreadsheets/d/{file_id}/export?format=csv"
+def load_data(file_id2):
+    url = f"https://docs.google.com/spreadsheets/d/{file_id2}/export?format=csv"
     return pd.read_csv(url)
 
 # Streamlitアプリのセットアップ
@@ -110,7 +110,7 @@ st.title("おおよその緯度経度検索")
 
 
 # CSVファイルを読み込む
-df = load_data(file_id)
+df = load_data(file_id2)
 
 # 都道府県名の入力欄
 prefecture = st.text_input("都道府県名を入力してください：")
