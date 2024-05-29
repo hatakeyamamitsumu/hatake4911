@@ -2,7 +2,7 @@ import folium
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from folium.plugins import MousePosition, LatLngPopup
+from folium.plugins import MousePosition
 from streamlit_folium import folium_static, st_folium
 import pandas as pd
 
@@ -40,7 +40,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
     
     # LatLngPopupプラグインを追加してクリック位置を表示
-    m.add_child(LatLngPopup())
+    m.add_child(folium.LatLngPopup())
 
     # 地図を表示してクリックイベントを処理
     result = st_folium(m, width=700, height=500, returned_objects=["last_clicked"])
@@ -93,4 +93,3 @@ elif app_selection == "スプレッドシートから地図上に表示":
 
     # 地図を表示
     folium_static(m)
-
