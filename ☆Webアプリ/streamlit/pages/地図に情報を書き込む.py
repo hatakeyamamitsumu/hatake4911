@@ -21,9 +21,9 @@ if "longitude" not in st.session_state:
 # アプリ選択
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
 
-if app_selection == "地図にピンを立て、コメントをつけて保存する":
+if app_selection == "地図のおすすめスポットにピンを立てる":
     # タイトルを設定
-    st.title("地図にピンを立て、コメントをつけて保存するアプリ")
+    st.title("地図にピンを立て、コメントをつけて保存できます。")
 
     # 緯度と経度の入力欄
     latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude_input")
