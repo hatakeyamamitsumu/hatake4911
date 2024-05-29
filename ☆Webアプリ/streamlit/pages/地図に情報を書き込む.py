@@ -40,6 +40,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     st.title("おおよその緯度経度検索")
 
     # CSVファイルを読み込む
+    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
     df = load_data(file_id)
     # 都道府県名の入力欄
     prefecture = st.text_input("都道府県名を入力してください：")
