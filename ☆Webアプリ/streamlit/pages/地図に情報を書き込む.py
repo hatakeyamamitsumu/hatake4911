@@ -64,14 +64,6 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         # ユーザーに成功メッセージを表示
         st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
 
-
-
-
-
-
-
-
-
 elif app_selection == "地図上のすべてのピンを表示":
     # タイトルを設定
     st.title("地図上のすべてのピンを表示")
@@ -101,7 +93,9 @@ elif app_selection == "地図上のすべてのピンを表示":
     MousePosition(position='bottomright', separator=' | ', prefix="現在の座標：").add_to(m)
 
     # 地図を表示
-    folium_static(m)
+    #folium_static(m)
+    # folium_static(m)
+    st_folium(m)
 
 
 
