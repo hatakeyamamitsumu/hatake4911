@@ -92,6 +92,9 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     # Streamlitアプリを実行
     if __name__ == "__main__":
         main()
+
+
+
 elif app_selection == "地図上のすべてのピンを表示":
     # タイトルを設定
     st.title("地図上のすべてのピンを表示")
