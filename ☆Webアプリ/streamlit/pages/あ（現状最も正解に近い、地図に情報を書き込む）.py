@@ -2,7 +2,7 @@ import folium
 import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from folium.plugins import MousePosition
+from folium.plugins import MousePosition, LatLngPopup
 from streamlit_folium import folium_static, st_folium
 import pandas as pd
 
@@ -10,7 +10,6 @@ import pandas as pd
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 client = gspread.authorize(creds)
-file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
 
 # セッション状態にクリックされた位置の緯度と経度を保存
 if "latitude" not in st.session_state:
@@ -19,15 +18,16 @@ if "longitude" not in st.session_state:
     st.session_state.longitude = 135.0000
 
 # アプリ選択
-app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
+app_selection = st.sidebar.radio("アプリを選択してください", ("地図のおすすめスポットにピンを立てる", "地図上のすべてのピンを表示"))
 
-if app_selection == "地図にピンを立て、コメントをつけて保存する":
+if app_selection == "地図のおすすめスポットにピンを立てる":
     # タイトルを設定
-    st.title("地図にピンを立て、コメントをつけて保存するアプリ")
+    st.title("地図にピンを立て、コメントをつけて保存できます。")
+    st.write("地図を動かす：左ドラッグ　ピンを立てる：左クリック")
 
     # 緯度と経度の入力欄
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude_input")
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
+    latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f")
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
@@ -40,7 +40,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
     
     # LatLngPopupプラグインを追加してクリック位置を表示
-    m.add_child(folium.LatLngPopup())
+    m.add_child(LatLngPopup())
 
     # 地図を表示してクリックイベントを処理
     result = st_folium(m, width=700, height=500, returned_objects=["last_clicked"])
@@ -64,9 +64,9 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
         # ユーザーに成功メッセージを表示
         st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
 
-elif app_selection == "スプレッドシートから地図上に表示":
+elif app_selection == "地図上のすべてのピンを表示":
     # タイトルを設定
-    st.title("スプレッドシートから地図上に表示")
+    st.title("地図上のすべてのピンを表示")
 
     # スプレッドシートのURL
     spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
