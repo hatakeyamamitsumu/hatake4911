@@ -19,7 +19,7 @@ if "longitude" not in st.session_state:
     st.session_state.longitude = 135.0000
 
 # アプリ選択
-app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
+app_selection = st.sidebar.radio("アプリを選択してください", ("地図のおすすめスポットにピンを立てる", "地図上のすべてのピンを表示"))
 
 if app_selection == "地図のおすすめスポットにピンを立てる":
     # タイトルを設定
