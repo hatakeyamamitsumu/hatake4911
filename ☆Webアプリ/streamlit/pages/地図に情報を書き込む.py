@@ -64,9 +64,9 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
         # ユーザーに成功メッセージを表示
         st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
 
-elif app_selection == "スプレッドシートから地図上に表示":
+elif app_selection == "地図上のすべてのピンを表示":
     # タイトルを設定
-    st.title("スプレッドシートから地図上に表示")
+    st.title("地図上のすべてのピンを表示")
 
     # スプレッドシートのURL
     spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
