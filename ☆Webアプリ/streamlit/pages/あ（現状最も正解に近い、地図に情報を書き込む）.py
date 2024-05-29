@@ -12,6 +12,12 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], s
 client = gspread.authorize(creds)
 file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
 
+# セッション状態にクリックされた位置の緯度と経度を保存
+if "latitude" not in st.session_state:
+    st.session_state.latitude = 35.0000
+if "longitude" not in st.session_state:
+    st.session_state.longitude = 135.0000
+
 # アプリ選択
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図にピンを立て、コメントをつけて保存する", "スプレッドシートから地図上に表示"))
 
@@ -19,15 +25,9 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存するアプリ")
 
-    # セッション状態にクリックされた位置の緯度と経度を保存
-    if "latitude" not in st.session_state:
-        st.session_state.latitude = 35.0000
-    if "longitude" not in st.session_state:
-        st.session_state.longitude = 135.0000
-
     # 緯度と経度の入力欄
-    latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude")
-    longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude")
+    latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude_input")
+    longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
@@ -49,6 +49,7 @@ if app_selection == "地図にピンを立て、コメントをつけて保存�
     if result and result.get("last_clicked"):
         st.session_state.latitude = result["last_clicked"]["lat"]
         st.session_state.longitude = result["last_clicked"]["lng"]
+        st.experimental_rerun()  # ウィジェットの値を更新するためにページをリロード
 
     # 書き込みボタンを追加
     if st.sidebar.button("緯度経度、コメントを保存"):
