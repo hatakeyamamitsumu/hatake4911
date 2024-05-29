@@ -64,30 +64,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         # ユーザーに成功メッセージを表示
         st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
 
-# おおよその緯度経度検索
-def search_coordinates():
-    st.title("おおよその緯度経度検索")
-    
-    # CSVファイルを読み込む
-    df = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRt6YGbA8gobCtW_kIj83s_W8RYh3hMQGB2N9Lfk06E5Lx_EH9SgMW7sn_3BQ2Mm8Pm8Xta70T5nZ54/pub?gid=2142684745&single=true&output=csv")
-    # 都道府県名の入力欄
-    prefecture = st.text_input("都道府県名を入力してください：")
-        
-    # 市区町村名の入力欄
-    city = st.text_input("市区町村名を入力してください：")
-        
-    # 大字・丁目名の入力欄
-    district = st.text_input("大字・丁目名を入力してください：")
-        
-    # 部分一致検索を実行
-    if prefecture or city or district:
-        filtered_df = df[df["都道府県名"].str.contains(prefecture) &
-                        df["市区町村名"].str.contains(city) &
-                        df["大字・丁目名"].str.contains(district)]
-        st.write(filtered_df)
 
-# 緯度経度検索を実行
-search_coordinates()
 
 
 
