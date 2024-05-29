@@ -76,7 +76,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
 
     # Streamlitアプリのセットアップ
     def main():
-        st.title("おおよその緯度経度検索")
+        st.write("おおよその緯度経度検索が、こちらで可能です。")
 
         # CSVファイルを読み込む
         df = load_data(file_id)
@@ -103,7 +103,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
 
 elif app_selection == "地図上のすべてのピンを表示":
     # タイトルを設定
-    st.title("地図上のすべてのピンを表示")
+    st.write("地図上のすべてのピンを表示")
 
     # スプレッドシートのURL
     spreadsheet_url = "https://docs.google.com/spreadsheets/d/1X1mppebuIXGIGd-n_9pL6wHahk1-rFbO2tAjgc9mEqg/edit?usp=drive_link"
