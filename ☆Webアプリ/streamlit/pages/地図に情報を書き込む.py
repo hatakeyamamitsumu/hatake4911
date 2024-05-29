@@ -76,7 +76,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
 
     # Streamlitアプリのセットアップ
     def main():
-        st.write("おおよその緯度経度検索が、こちらで可能です。")
+        st.subheader("おおよその緯度経度検索が、こちらで可能です。")
 
         # CSVファイルを読み込む
         df = load_data(file_id)
