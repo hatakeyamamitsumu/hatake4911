@@ -24,7 +24,7 @@ app_selection = st.sidebar.radio("アプリを選択してください", ("地�
 if app_selection == "地図のおすすめスポットにピンを立てる":
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存できます。")
-
+    st.write("地図を動かす：左ドラッグ　ピンを立てる：左クリック")
     # 緯度と経度の入力欄
     latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude_input")
     longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
