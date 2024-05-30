@@ -154,7 +154,16 @@ elif app_selection == "地図上のすべてのピンを表示":
 
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
-        latitude, longitude, info, pin_color, pin_shape = float(row[0]), float(row[1]), row[2], row[3], row[4]
+        if len(row) < 5:
+            st.error(f"不正なデータ行が検出されました: {row}")
+            continue
+
+        try:
+            latitude, longitude, info, pin_color, pin_shape = float(row[0]), float(row[1]), row[2], row[3], row[4]
+        except ValueError as e:
+            st.error(f"データ形式エラー: {row} - {str(e)}")
+            continue
+
         icon_color = {
             "赤": "red",
             "青": "blue",
@@ -165,6 +174,7 @@ elif app_selection == "地図上のすべてのピンを表示":
             "ライトブルー": "lightblue",
             "ピンク": "pink"
         }.get(pin_color, "red")
+
         icon_shape = {
             "標準": "info-sign",
             "スタート": "play",
@@ -173,14 +183,12 @@ elif app_selection == "地図上のすべてのピンを表示":
             "ベッド": "bed",
             "情報": "info-sign"
         }.get(pin_shape, "info-sign")
+
         folium.Marker(
             [latitude, longitude],
-            popup=folium.Popup(info, max_width=400),
+            popup=folium.Popup(info, max_width=300),
             icon=folium.Icon(color=icon_color, icon=icon_shape)
         ).add_to(m)
 
-    # MousePositionプラグインを追加して現在の座標を表示
-    MousePosition(position='bottomright', separator=' | ', prefix="現在の座標：").add_to(m)
-
     # 地図を表示
-    st_folium(m)
+    st_folium(m, width=700, height=500)
