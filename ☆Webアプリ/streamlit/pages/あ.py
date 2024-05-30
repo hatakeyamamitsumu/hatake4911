@@ -31,7 +31,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
 
     # ピンの種類を選択
-    pin_type = st.sidebar.selectbox("ピンの種類を選択してください", ["赤", "青", "緑"])
+    pin_type = st.sidebar.selectbox("ピンの種類を選択してください", ["赤", "青", "緑","オレンジ","パープル","ダークレッド"])
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
