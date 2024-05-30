@@ -136,9 +136,9 @@ def create_zip(image_paths, keyword):
     return zip_buffer
 
 # Streamlitアプリ
-st.title("画像クローリング・表示")
+st.subheader("画像をネット上からさがすコーナー")
 
-keyword = st.text_input("キーワードを入力してください（複数入力可能）:")
+keyword = st.text_input("キーワードを入力してください（複数条件可能）:")
 max_images = st.number_input("取得する画像の枚数を入力してください（上限50）:", min_value=1, max_value=50, value=10)
 
 if st.button("クローリング＆表示"):
