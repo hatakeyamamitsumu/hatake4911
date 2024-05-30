@@ -135,7 +135,7 @@ elif app_selection == "地図上のすべてのピンを表示":
     data = sheet.get_all_values()
 
     # 地図を作成
-    m = folium.Map(width=500, height=30)
+    m = folium.Map(width=500, height=200)
 
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
@@ -155,7 +155,7 @@ elif app_selection == "地図上のすべてのピンを表示":
         ).add_to(m)
 
     # MousePositionプラグインを追加して現在の座標を表示
-    MousePosition(position='bottomright', separator=' | ', prefix="現在の座標：").add_to(m)
+    MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
 
     # 地図を表示
     st_folium(m)
