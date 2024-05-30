@@ -11,6 +11,7 @@ scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.c
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 client = gspread.authorize(creds)
 file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+
 # セッション状態にクリックされた位置の緯度と経度を保存
 if "latitude" not in st.session_state:
     st.session_state.latitude = 35.0000
@@ -24,20 +25,38 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存できます。")
     st.write("地図を動かす：左ドラッグ　ピンを立てる：左クリック")
+
     # 緯度と経度の入力欄
     latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude_input")
     longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
 
+    # ピンの種類を選択
+    pin_type = st.sidebar.selectbox("ピンの種類を選択してください", ["赤", "青", "緑","オレンジ","パープル","ダークレッド"])
+
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
+    # ピンのアイコンを選択
+    icon_color = {
+            "赤": "red",
+            "青": "blue",
+            "緑": "green",
+            "オレンジ": "orange",
+            "パープル": "purple",
+            "ダークレッド": "darkred",
+    }.get(pin_type, "red")
+
     # 地図を作成
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=10)
-    folium.Marker([latitude_input, longitude_input], popup=folium.Popup(info, max_width=300)).add_to(m)
+    folium.Marker(
+        [latitude_input, longitude_input],
+        popup=folium.Popup(info, max_width=300),
+        icon=folium.Icon(color=icon_color)
+    ).add_to(m)
 
     # MousePositionプラグインを追加して現在の座標を表示
     MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
-    
+
     # LatLngPopupプラグインを追加してクリック位置を表示
     m.add_child(folium.LatLngPopup())
 
@@ -57,17 +76,15 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         sheet = client.open_by_url(spreadsheet_url).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
-        new_row = [st.session_state.latitude, st.session_state.longitude, info]
+        new_row = [st.session_state.latitude, st.session_state.longitude, info, pin_type]
         sheet.append_row(new_row)
 
         # ユーザーに成功メッセージを表示
         st.sidebar.success("情報と緯度経度がGoogle Sheetsに書き込まれました。")
 
-
-    
     # Google DriveのファイルID
     file_id = "12PmkKlnTSkBNVgqt1nv74-awjuvxXdka"
-     # ファイルを読み込む
+    # ファイルを読み込む
     @st.cache
     def load_data(file_id):
         url = f"https://drive.google.com/uc?id={file_id}"
@@ -122,15 +139,23 @@ elif app_selection == "地図上のすべてのピンを表示":
 
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
-        latitude, longitude, info = float(row[0]), float(row[1]), row[2]
-        folium.Marker([latitude, longitude], popup=folium.Popup(info, max_width=400)).add_to(m)
+        latitude, longitude, info, pin_type = float(row[0]), float(row[1]), row[2], row[3]
+        icon_color = {
+            "赤": "red",
+            "青": "blue",
+            "緑": "green",
+            "オレンジ": "orange",
+            "パープル": "purple",
+            "ダークレッド": "darkred",
+        }.get(pin_type, "red")
+        folium.Marker(
+            [latitude, longitude],
+            popup=folium.Popup(info, max_width=400),
+            icon=folium.Icon(color=icon_color)
+        ).add_to(m)
 
     # MousePositionプラグインを追加して現在の座標を表示
     MousePosition(position='bottomright', separator=' | ', prefix="現在の座標：").add_to(m)
 
     # 地図を表示
-    #folium_static(m)
-    # folium_static(m)
     st_folium(m)
-
-
