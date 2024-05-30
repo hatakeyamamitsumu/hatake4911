@@ -65,9 +65,8 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
 
 
     
-
     # Google DriveのファイルID
-    file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
+    file_id = "12PmkKlnTSkBNVgqt1nv74-awjuvxXdka"
      # ファイルを読み込む
     @st.cache
     def load_data(file_id):
