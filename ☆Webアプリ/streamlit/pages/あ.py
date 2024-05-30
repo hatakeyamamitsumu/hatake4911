@@ -38,9 +38,12 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
 
     # ピンのアイコンを選択
     icon_color = {
-        "赤": "red",
-        "青": "blue",
-        "緑": "green"
+            "赤": "red",
+            "青": "blue",
+            "緑": "green",
+            "オレンジ": "orange",
+            "パープル": "purple",
+            "ダークレッド": "darkred",
     }.get(pin_type, "red")
 
     # 地図を作成
@@ -140,7 +143,10 @@ elif app_selection == "地図上のすべてのピンを表示":
         icon_color = {
             "赤": "red",
             "青": "blue",
-            "緑": "green"
+            "緑": "green",
+            "オレンジ": "orange",
+            "パープル": "purple",
+            "ダークレッド": "darkred",
         }.get(pin_type, "red")
         folium.Marker(
             [latitude, longitude],
