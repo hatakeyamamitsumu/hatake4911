@@ -161,7 +161,7 @@ elif app_selection == "地図上のすべてのピンを表示":
         try:
             latitude, longitude, info, pin_color, pin_shape = float(row[0]), float(row[1]), row[2], row[3], row[4]
         except ValueError as e:
-            st.error(f"データ形式エラー: {row} - {str(e)}")
+            st.error(f"データの解析中にエラーが発生しました: {e}")
             continue
 
         icon_color = {
