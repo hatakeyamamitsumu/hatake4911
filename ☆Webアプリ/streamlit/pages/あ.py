@@ -45,7 +45,8 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         "パープル": "purple",
         "ダークレッド": "darkred",
         "ライトブルー": "lightblue",
-        "ピンク": "pink"
+        "ピンク": "pink",
+        "黒": "black"
     }.get(pin_color, "red")
 
     # ピンの形を設定
@@ -183,7 +184,8 @@ elif app_selection == "地図上のすべてのピンを表示":
             "パープル": "purple",
             "ダークレッド": "darkred",
             "ライトブルー": "lightblue",
-            "ピンク": "pink"
+            "ピンク": "pink",
+            "黒": "black"
         }.get(pin_color, "red")
 
         icon_shape = {
