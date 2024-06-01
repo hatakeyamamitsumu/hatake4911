@@ -164,11 +164,35 @@ elif app_selection == "地図上のすべてのピンを表示":
             st.error(f"データ形式エラー: {row} - {str(e)}")
             continue
 
-        icon_color = {
-            "赤": "red",
-            "青": "blue",
-            "緑": "green",
-            "オレンジ": "orange",
-            "パープル": "purple",
-            "ダークレッド": "darkred",
+        icon_color = {    icon_color = {
+        "赤": "red",
+        "青": "blue",
+        "緑": "green",
+        "オレンジ": "orange",
+        "パープル": "purple",
+        "ダークレッド": "darkred",
+        "ライトブルー": "lightblue",
+        "ピンク": "pink"
+    }.get(pin_color, "red")
+
+    # ピンの形を設定
+    icon_shape = {
+        "標準": "info-sign",
+        "スタート": "play",
+        "終了": "stop",
+        "自動車": "car",
+        "ベッド": "bed",
+        "情報": "info-sign"
+    }.get(pin_shape, "info-sign")
+        folium.Marker(
+            [latitude, longitude],
+            popup=folium.Popup(info, max_width=400),
+            icon=folium.Icon(color=icon_color)
+        ).add_to(m)
+
+    # MousePositionプラグインを追加して現在の座標を表示
+    MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
+
+    # 地図を表示
+    st_folium(m)
            
