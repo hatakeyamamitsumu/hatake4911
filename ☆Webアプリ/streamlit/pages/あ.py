@@ -34,7 +34,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     pin_color = st.sidebar.selectbox("ピンの色を選択してください", ["赤", "青", "緑", "オレンジ", "パープル", "ダークレッド", "ライトブルー", "ピンク"])
 
     # ピンの形を選択
-    pin_shape = st.sidebar.selectbox("ピンの形を選択してください", ["標準", "スタート", "終了", "自動車", "ベッド", "情報"])
+    pin_shape = st.sidebar.selectbox("ピンの形を選択してください", ["標準", "スタート", "終了", "クラウド", "封筒", "鉛筆", "地球", "ハート", "星"])
 
     # ピンの色を設定
     icon_color = {
@@ -53,9 +53,12 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         "標準": "info-sign",
         "スタート": "play",
         "終了": "stop",
-        "自動車": "car",
-        "ベッド": "bed",
-        "情報": "info-sign"
+        "クラウド": "cloud",
+        "封筒": "envelope",
+        "鉛筆": "pencil",
+        "地球": "globe",
+        "ハート": "heart",
+        "星": "star"
     }.get(pin_shape, "info-sign")
 
     # ユーザーから情報の入力を受け取る
@@ -179,9 +182,12 @@ elif app_selection == "地図上のすべてのピンを表示":
             "標準": "info-sign",
             "スタート": "play",
             "終了": "stop",
-            "自動車": "car",
-            "ベッド": "bed",
-            "情報": "info-sign"
+            "クラウド": "cloud",
+            "封筒": "envelope",
+            "鉛筆": "pencil",
+            "地球": "globe",
+            "ハート": "heart",
+            "星": "star"
         }.get(pin_shape, "info-sign")
 
         folium.Marker(
