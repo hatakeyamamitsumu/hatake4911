@@ -51,14 +51,22 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     # ピンの形を設定
     icon_shape = {
         "標準": "info-sign",
-        "スタート": "play",
-        "終了": "stop",
         "クラウド": "cloud",
         "封筒": "envelope",
+        "目": "eye-open",
+        "旗": "flag",
+        "グラス": "glass",
+        "葉っぱ": "leaf",
+        "チェック": "ok-sign",
         "鉛筆": "pencil",
-        "地球": "globe",
-        "ハート": "heart",
-        "星": "star"
+        "スタート": "play",
+        "クエスチョン": "question-sign",
+        "削除": "remove-sign",
+        "検索": "search",
+        "星": "star",
+        "サムズアップ": "thumbs-up",
+        "サムズダウン": "thumbs-down",
+        "警告": "warning-sign"
     }.get(pin_shape, "info-sign")
 
     # ユーザーから情報の入力を受け取る
@@ -179,15 +187,23 @@ elif app_selection == "地図上のすべてのピンを表示":
         }.get(pin_color, "red")
 
         icon_shape = {
-            "標準": "info-sign",
-            "スタート": "play",
-            "終了": "stop",
-            "クラウド": "cloud",
-            "封筒": "envelope",
-            "鉛筆": "pencil",
-            "地球": "globe",
-            "ハート": "heart",
-            "星": "star"
+        "標準": "info-sign",
+        "クラウド": "cloud",
+        "封筒": "envelope",
+        "目": "eye-open",
+        "旗": "flag",
+        "グラス": "glass",
+        "葉っぱ": "leaf",
+        "チェック": "ok-sign",
+        "鉛筆": "pencil",
+        "スタート": "play",
+        "クエスチョン": "question-sign",
+        "削除": "remove-sign",
+        "検索": "search",
+        "星": "star",
+        "サムズアップ": "thumbs-up",
+        "サムズダウン": "thumbs-down",
+        "警告": "warning-sign"
         }.get(pin_shape, "info-sign")
 
         folium.Marker(
