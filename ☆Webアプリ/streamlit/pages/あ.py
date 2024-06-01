@@ -30,33 +30,48 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     latitude_input = st.sidebar.number_input("緯度を入力してください", value=st.session_state.latitude, step=0.001, format="%.4f", key="latitude_input")
     longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
 
-    # ピンの種類を選択
-    pin_type = st.sidebar.selectbox("ピンの種類を選択してください", ["赤", "青", "緑", "オレンジ", "パープル", "ダークレッド"])
+    # ピンの色を選択
+    pin_color = st.sidebar.selectbox("ピンの色を選択してください", ["赤", "青", "緑", "オレンジ", "パープル", "ダークレッド", "ライトブルー", "ピンク"])
+
+    # ピンの形を選択
+    pin_shape = st.sidebar.selectbox("ピンの形を選択してください", ["標準", "スタート", "終了", "自動車", "ベッド", "情報"])
+
+    # ピンの色を設定
+    icon_color = {
+        "赤": "red",
+        "青": "blue",
+        "緑": "green",
+        "オレンジ": "orange",
+        "パープル": "purple",
+        "ダークレッド": "darkred",
+        "ライトブルー": "lightblue",
+        "ピンク": "pink"
+    }.get(pin_color, "red")
+
+    # ピンの形を設定
+    icon_shape = {
+        "標準": "info-sign",
+        "スタート": "play",
+        "終了": "stop",
+        "自動車": "car",
+        "ベッド": "bed",
+        "情報": "info-sign"
+    }.get(pin_shape, "info-sign")
 
     # ユーザーから情報の入力を受け取る
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
-
-    # ピンのアイコンを選択
-    icon_color = {
-            "赤": "red",
-            "青": "blue",
-            "緑": "green",
-            "オレンジ": "orange",
-            "パープル": "purple",
-            "ダークレッド": "darkred",
-    }.get(pin_type, "red")
 
     # 地図を作成
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=10)
     folium.Marker(
         [latitude_input, longitude_input],
         popup=folium.Popup(info, max_width=300),
-        icon=folium.Icon(color=icon_color)
+        icon=folium.Icon(color=icon_color, icon=icon_shape)
     ).add_to(m)
 
     # MousePositionプラグインを追加して現在の座標を表示
     MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
-
+    
     # LatLngPopupプラグインを追加してクリック位置を表示
     m.add_child(folium.LatLngPopup())
 
@@ -76,7 +91,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         sheet = client.open_by_url(spreadsheet_url).sheet1
 
         # 新しいデータをGoogle Sheetsに書き込む
-        new_row = [st.session_state.latitude, st.session_state.longitude, info, pin_type]
+        new_row = [st.session_state.latitude, st.session_state.longitude, info, pin_color, pin_shape]
         sheet.append_row(new_row)
 
         # ユーザーに成功メッセージを表示
@@ -135,11 +150,20 @@ elif app_selection == "地図上のすべてのピンを表示":
     data = sheet.get_all_values()
 
     # 地図を作成
-    m = folium.Map(width=500, height=200)
+    m = folium.Map(width=900, height=300)
 
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
-        latitude, longitude, info, pin_type = float(row[0]), float(row[1]), row[2], row[3]
+        if len(row) < 5:
+            st.error(f"不正なデータ行が検出されました: {row}")
+            continue
+
+        try:
+            latitude, longitude, info, pin_color, pin_shape = float(row[0]), float(row[1]), row[2], row[3], row[4]
+        except ValueError as e:
+            st.error(f"データ形式エラー: {row} - {str(e)}")
+            continue
+
         icon_color = {
             "赤": "red",
             "青": "blue",
@@ -147,15 +171,4 @@ elif app_selection == "地図上のすべてのピンを表示":
             "オレンジ": "orange",
             "パープル": "purple",
             "ダークレッド": "darkred",
-        }.get(pin_type, "red")
-        folium.Marker(
-            [latitude, longitude],
-            popup=folium.Popup(info, max_width=400),
-            icon=folium.Icon(color=icon_color)
-        ).add_to(m)
-
-    # MousePositionプラグインを追加して現在の座標を表示
-    MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
-
-    # 地図を表示
-    st_folium(m)
+           
