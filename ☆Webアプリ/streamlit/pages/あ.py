@@ -164,7 +164,7 @@ elif app_selection == "地図上のすべてのピンを表示":
             st.error(f"データ形式エラー: {row} - {str(e)}")
             continue
 
-        icon_color = {    icon_color = {
+        icon_color = {  
         "赤": "red",
         "青": "blue",
         "緑": "green",
