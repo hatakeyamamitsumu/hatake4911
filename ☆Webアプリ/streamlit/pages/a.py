@@ -34,7 +34,7 @@ document_id = '1bdkuJ9LqSNqfYA3MeMCHHsXPxLtIlBmPlpMjUBCWuw0'
 document_text = download_file(document_id)
 
 # テキストを出力
-print(document_text)
+st.text(document_text)
 
 
 # GoogleドキュメントのID
