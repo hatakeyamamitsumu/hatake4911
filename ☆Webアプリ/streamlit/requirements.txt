@@ -42,3 +42,4 @@ google-cloud-vision
 pydrive2
 icrawler
 tensorflow
+pytesseract
