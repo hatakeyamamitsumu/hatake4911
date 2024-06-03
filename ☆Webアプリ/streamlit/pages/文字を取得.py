@@ -2,17 +2,11 @@ import streamlit as st
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-import io
-#scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
-#creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
-#client = gspread.authorize(creds)
+import tempfile
 
-# Google Cloudプロジェクトのサービスアカウントキーを読み込む
-SERVICE_ACCOUNT_FILE = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
+# Streamlit secretsからGoogle Cloudプロジェクトのサービスアカウントキーを読み込む
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/documents']
-
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+credentials = service_account.Credentials.from_service_account_info(st.secrets["google"], scopes=SCOPES)
 
 # Google Drive APIクライアントを作成
 drive_service = build('drive', 'v3', credentials=credentials)
@@ -21,13 +15,17 @@ drive_service = build('drive', 'v3', credentials=credentials)
 docs_service = build('docs', 'v1', credentials=credentials)
 
 def upload_file_to_google_drive(file, folder_id):
-    file_metadata = {
-        'name': file.name,
-        'parents': [folder_id]
-    }
-    media = MediaFileUpload(file.name, resumable=True)
-    file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-    return file.get('id')
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_file.write(file.getvalue())
+        temp_file.flush()
+
+        file_metadata = {
+            'name': file.name,
+            'parents': [folder_id]
+        }
+        media = MediaFileUpload(temp_file.name, resumable=True)
+        uploaded_file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+        return uploaded_file.get('id')
 
 def extract_text_with_google_docs(file_id):
     # Google DocsにインポートしてOCRを実行
