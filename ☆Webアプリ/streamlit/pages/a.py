@@ -1,9 +1,10 @@
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+
 # 認証情報のロード
-credentials = service_account.Credentials.from_service_account_file(
-    'path/to/service_account_credentials.json',
+credentials =  Credentials.from_service_account_info(
+    st.secrets["google"],
     scopes=['https://www.googleapis.com/auth/drive.readonly'])
 
 # Google ドライブ API のビルド
