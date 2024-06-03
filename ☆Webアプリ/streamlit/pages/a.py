@@ -1,6 +1,7 @@
+import io
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-
+from googleapiclient.http import MediaIoBaseDownload
 
 # 認証情報のロード
 credentials =  Credentials.from_service_account_info(
