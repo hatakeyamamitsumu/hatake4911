@@ -2,6 +2,7 @@ import streamlit as st
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+from googleapiclient.errors import HttpError
 import tempfile
 
 # Streamlit secretsからGoogle Cloudプロジェクトのサービスアカウントキーを読み込む
@@ -28,26 +29,30 @@ def upload_file_to_google_drive(file, folder_id):
         return uploaded_file.get('id')
 
 def extract_text_with_google_docs(file_id):
-    # Google DocsにインポートしてOCRを実行
-    document = docs_service.documents().create(body={
-        'title': 'OCR Document'
-    }).execute()
-    
-    # ファイルIDを取得
-    doc_id = document.get('documentId')
+    try:
+        # Google DocsにインポートしてOCRを実行
+        document = docs_service.documents().create(body={
+            'title': 'OCR Document'
+        }).execute()
+        
+        # ファイルIDを取得
+        doc_id = document.get('documentId')
 
-    # ファイルをインポート
-    drive_service.files().copy(fileId=file_id, body={'parents': [doc_id]}).execute()
+        # ファイルをインポート
+        drive_service.files().copy(fileId=file_id, body={'parents': [doc_id]}).execute()
 
-    # Google Docsの内容を取得
-    document = docs_service.documents().get(documentId=doc_id).execute()
-    text = ''
-    for element in document.get('body').get('content'):
-        if 'paragraph' in element:
-            for text_run in element['paragraph']['elements']:
-                text += text_run['textRun']['content']
-    
-    return text
+        # Google Docsの内容を取得
+        document = docs_service.documents().get(documentId=doc_id).execute()
+        text = ''
+        for element in document.get('body').get('content'):
+            if 'paragraph' in element:
+                for text_run in element['paragraph']['elements']:
+                    text += text_run['textRun']['content']
+        
+        return text
+    except HttpError as error:
+        st.error(f"An error occurred: {error}")
+        return ""
 
 def main():
     st.title("Google DriveとGoogle Docsを使用したOCR")
