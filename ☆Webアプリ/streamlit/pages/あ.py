@@ -1,18 +1,20 @@
-import io
+import numpy as np 
+from PIL import Image, ImageDraw
+import easyocr
 import streamlit as st
-from PIL import Image
-import pytesseract
 
-# 画像をアップロード
-uploaded_image = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+reader = easyocr.Reader(['ja','en'])
+selected_image = st.file_uploader('upload image', type='jpg')
 
-if uploaded_image is not None:
-    # アップロードされた画像をPillowのImageオブジェクトに変換
-    image = Image.open(uploaded_image)
+original_image = st.empty()
+result_image = st.empty()
 
-    # 画像からテキストをOCRで取得
-    text = pytesseract.image_to_string(image)
-
-    # OCRで取得したテキストを出力
-    st.text("OCRで取得したテキスト:")
-    st.text(text)
+if (selected_image != None):
+    original_image.image(selected_image)
+    pil = Image.open(selected_image)
+    result = reader.readtext(np.array(pil))
+    draw = ImageDraw.Draw(pil)
+    for each_result in result:
+        draw.rectangle(tuple(each_result[0][0] + each_result[0][2]), outline=(0, 0, 255), width=3)
+        st.write(each_result[1])
+    result_image.image(pil)
