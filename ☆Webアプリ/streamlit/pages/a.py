@@ -4,7 +4,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
 # 認証情報のロード
-credentials =  Credentials.from_service_account_info(
+credentials = service_account.Credentials.from_service_account_file(
     st.secrets["google"],
     scopes=['https://www.googleapis.com/auth/drive.readonly'])
 
