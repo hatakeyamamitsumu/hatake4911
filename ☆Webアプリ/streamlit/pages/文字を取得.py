@@ -3,9 +3,12 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 import io
+#scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
+#creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
+#client = gspread.authorize(creds)
 
 # Google Cloudプロジェクトのサービスアカウントキーを読み込む
-SERVICE_ACCOUNT_FILE = 'path_to_your_service_account.json'
+SERVICE_ACCOUNT_FILE = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/documents']
 
 credentials = service_account.Credentials.from_service_account_file(
