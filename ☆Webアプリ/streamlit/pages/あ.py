@@ -15,6 +15,8 @@ if (selected_image != None):
     result = reader.readtext(np.array(pil))
     draw = ImageDraw.Draw(pil)
     for each_result in result:
-        draw.rectangle((tuple(each_result[0][0]), tuple(each_result[0][2])), outline=(0, 0, 255), width=3)
+        draw.rectangle(((each_result[0][0][0], each_result[0][0][1]), (each_result[0][2][0], each_result[0][2][1])), outline=(0, 0, 255), width=3)
+
+
         st.write(each_result[1])
     result_image.image(pil)
