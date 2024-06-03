@@ -1,11 +1,15 @@
 import io
+import streamlit as st
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 
+# StreamlitのsecretsからGoogleサービスアカウントの認証情報を取得
+google_secrets = st.secrets["google"]
+
 # 認証情報のロード
-credentials = service_account.Credentials.from_service_account_file(
-    st.secrets["google"],
+credentials = service_account.Credentials.from_service_account_info(
+    google_secrets,
     scopes=['https://www.googleapis.com/auth/drive.readonly'])
 
 # Google ドライブ API のビルド
@@ -31,3 +35,8 @@ document_text = download_file(document_id)
 
 # テキストを出力
 print(document_text)
+
+
+# GoogleドキュメントのID
+
+
