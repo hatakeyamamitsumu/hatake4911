@@ -43,4 +43,6 @@ pydrive2
 icrawler
 tensorflow
 
+pyautogui
+
 pytesseract
