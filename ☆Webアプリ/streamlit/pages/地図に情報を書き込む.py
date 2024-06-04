@@ -5,7 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from folium.plugins import MousePosition
 from streamlit_folium import st_folium
 import pandas as pd
-
+import time
 #Google Sheets 認証情報とスコープをsecretsから取得
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], scope)
@@ -193,3 +193,4 @@ elif app_selection == "地図上のすべてのピンを表示":
 
     # 地図を表示
     st_folium(m, width=700, height=500)
+    time.sleep(1)
