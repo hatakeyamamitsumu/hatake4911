@@ -1,13 +1,25 @@
-import numpy as np 
-from PIL import Image, ImageDraw
-import easyocr
-import pyocr
-import cv2
-from google.colab.patches import cv2_imshow
 import streamlit as st
+from PIL import Image
+import pytesseract
 
+# タイトルと説明を表示
+st.title("Streamlitで画像からテキストを抽出")
+st.write("このアプリは、アップロードされた画像からテキストを抽出します。")
 
+# 画像をアップロード
+uploaded_file = st.file_uploader("画像を選択してください")
 
+# アップロードされた画像が存在する場合
+if uploaded_file:
+    # 画像を読み込む
+    image = Image.open(uploaded_file)
+
+    # テキストを抽出
+    text = pytesseract.image_to_string(image)
+
+    # 抽出結果を表示
+    st.write("抽出結果:")
+    st.write(text)
 
 
 selected_image = st.file_uploader('upload image', type='jpg')
