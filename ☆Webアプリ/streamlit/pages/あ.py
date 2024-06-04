@@ -1,10 +1,22 @@
 import numpy as np 
 from PIL import Image, ImageDraw
 import easyocr
+import pyocr
 import streamlit as st
 
-reader = easyocr.Reader(['ja','en'])
+
+
+
+
 selected_image = st.file_uploader('upload image', type='jpg')
+
+reader = tool.image_to_string(
+    img1,
+    lang='jpn+eng',
+    builder=pyocr.builders.TextBuilder(tesseract_layout=6)
+)
+
+
 
 original_image = st.empty()
 result_image = st.empty()
