@@ -194,10 +194,10 @@ elif app_selection == "地図上のすべてのピンを表示":
             icon=folium.Icon(color=icon_color, icon=icon_shape)
         ).add_to(m)
 
-        m.zoom_control = False
-        time.sleep(1)
-        m.zoom_control = True
-    # 地図を表示
 
+    # 地図を表示
+    m.zoom_control = False
+    time.sleep(1)
+    m.zoom_control = True
     st_folium(m, width=700, height=500)
 
