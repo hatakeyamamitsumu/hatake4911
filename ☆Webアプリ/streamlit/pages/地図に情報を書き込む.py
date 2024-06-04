@@ -199,4 +199,4 @@ elif app_selection == "地図上のすべてのピンを表示":
 
     st_folium(m, width=700, height=500)
 
-    m.zoom_control = False
+    st.experimental_confirm("1秒間操作を無効", on_confirm=lambda: time.sleep(1))
