@@ -6,7 +6,7 @@ from folium.plugins import MousePosition
 from streamlit_folium import st_folium
 import pandas as pd
 import time
-import pyautogui
+
 
 #Google Sheets 認証情報とスコープをsecretsから取得
 scope = ['https://www.googleapis.com/auth/drive', 'https://spreadsheets.google.com/feeds']
@@ -154,11 +154,8 @@ elif app_selection == "地図上のすべてのピンを表示":
     data = sheet.get_all_values()
 
     # 地図を作成
-    #m = folium.Map(width=900, height=300)
     m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=8)
-    m.zoom_control = False
-    time.sleep(1)
-    m.zoom_control = True
+
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
         if len(row) < 5:
@@ -197,9 +194,10 @@ elif app_selection == "地図上のすべてのピンを表示":
             icon=folium.Icon(color=icon_color, icon=icon_shape)
         ).add_to(m)
 
+        m.zoom_control = False
+        time.sleep(1)
+        m.zoom_control = True
     # 地図を表示
 
     st_folium(m, width=700, height=500)
-    pyautogui.disable()
-    time.sleep(1)
-    pyautogui.enable()
+
