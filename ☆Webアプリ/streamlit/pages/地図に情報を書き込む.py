@@ -196,8 +196,8 @@ elif app_selection == "地図上のすべてのピンを表示":
         ).add_to(m)
 
     # 地図を表示
-    m.zoom_control = False
-    st_folium(m, width=700, height=500)
+
+    st_folium(m, width=700, height=500,zoom_control = False)
 
     time.sleep(1)
     m.zoom_control = True
