@@ -31,44 +31,31 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     longitude_input = st.sidebar.number_input("経度を入力してください", value=st.session_state.longitude, step=0.001, format="%.4f", key="longitude_input")
 
     # ピンの色を選択
-    pin_color = st.sidebar.selectbox("ピンの色を選択してください", ["赤", "青", "緑", "オレンジ", "パープル", "ダークレッド", "ライトブルー", "ピンク"])
+    pin_color = st.sidebar.selectbox("ピンの色を選択してください", ["赤", "青", "緑", "オレンジ", "ピンク","黒"])
 
     # ピンの形を選択
     
-    pin_shape = st.sidebar.selectbox("ピンの形を選択してください", ["標準","クラウド","目","封筒","家","旗","グラス","葉っぱ","チェック","鉛筆", "スタート","クエスチョン","削除","検索","星","サムズアップ", "サムズダウン","警告"])
+    pin_shape = st.sidebar.selectbox("ピンの形を選択してください", ["標準","目","家","旗","グラス","葉っぱ","クエスチョン","星",])
     # ピンの色を設定
     icon_color = {
-        "赤": "red",
-        "青": "blue",
-        "緑": "green",
-        "オレンジ": "orange",
-        "パープル": "purple",
-        "ダークレッド": "darkred",
-        "ライトブルー": "lightblue",
-        "ピンク": "pink",
-        "黒": "black"
+            "赤": "red",
+            "青": "blue",
+            "緑": "green",
+            "オレンジ": "orange",
+            "ピンク": "pink",
+            "黒": "black"
     }.get(pin_color, "red")
 
     # ピンの形を設定
     icon_shape = {
         "標準": "info-sign",
-        "クラウド": "cloud",
         "目": "eye-open",
-        "封筒": "envelope",
         "家": "home",
         "旗": "flag",
         "グラス": "glass",
         "葉っぱ": "leaf",
-        "チェック": "ok-sign",
-        "鉛筆": "pencil",
-        "スタート": "play",
         "クエスチョン": "question-sign",
-        "削除": "remove-sign",
-        "検索": "search",
         "星": "star",
-        "サムズアップ": "thumbs-up",
-        "サムズダウン": "thumbs-down",
-        "警告": "warning-sign"
     }.get(pin_shape, "info-sign")
 
     # ユーザーから情報の入力を受け取る
@@ -183,32 +170,19 @@ elif app_selection == "地図上のすべてのピンを表示":
             "青": "blue",
             "緑": "green",
             "オレンジ": "orange",
-            "パープル": "purple",
-            "ダークレッド": "darkred",
-            "ライトブルー": "lightblue",
             "ピンク": "pink",
             "黒": "black"
         }.get(pin_color, "red")
 
         icon_shape = {
         "標準": "info-sign",
-        "クラウド": "cloud",
         "目": "eye-open",
-        "封筒": "envelope",
         "家": "home",
         "旗": "flag",
         "グラス": "glass",
         "葉っぱ": "leaf",
-        "チェック": "ok-sign",
-        "鉛筆": "pencil",
-        "スタート": "play",
         "クエスチョン": "question-sign",
-        "削除": "remove-sign",
-        "検索": "search",
         "星": "star",
-        "サムズアップ": "thumbs-up",
-        "サムズダウン": "thumbs-down",
-        "警告": "warning-sign"
         }.get(pin_shape, "info-sign")
 
         folium.Marker(
