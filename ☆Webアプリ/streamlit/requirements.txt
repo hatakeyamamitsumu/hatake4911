@@ -35,7 +35,7 @@ oauth2client
 
 
 streamlit.local_storage
-
+pyocr
 google-api-python-client
 
 google-cloud-vision
