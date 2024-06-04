@@ -2,6 +2,8 @@ import numpy as np
 from PIL import Image, ImageDraw
 import easyocr
 import pyocr
+import cv2
+from google.colab.patches import cv2_imshow
 import streamlit as st
 
 
