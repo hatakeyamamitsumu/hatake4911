@@ -146,7 +146,7 @@ elif app_selection == "地図上のすべてのピンを表示":
 
     # シート名を選択
     selected_sheet_name = st.selectbox("シート名を選択してください", sheet_names)
-
+    st.write("＋－ボタンは高速連打禁止")
     # スプレッドシートからデータを取得
     sheet = spreadsheet.worksheet(selected_sheet_name)
     data = sheet.get_all_values()
