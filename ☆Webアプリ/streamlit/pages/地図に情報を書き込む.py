@@ -68,7 +68,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
         popup=folium.Popup(info, max_width=300),
         icon=folium.Icon(color=icon_color, icon=icon_shape)
     ).add_to(m)
-
+    time.sleep(1)
     # MousePositionプラグインを追加して現在の座標を表示
     MousePosition(position='topleft', separator=' | ', prefix="現在の座標：").add_to(m)
     
@@ -77,7 +77,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
 
     # 地図を表示してクリックイベントを処理
     result = st_folium(m, width=700, height=500, returned_objects=["last_clicked"])
-
+    time.sleep(1)
     # クリックした位置の緯度経度をセッション状態に保存
     if result and result.get("last_clicked"):
         st.session_state.latitude = result["last_clicked"]["lat"]
@@ -152,7 +152,7 @@ elif app_selection == "地図上のすべてのピンを表示":
     # 地図を作成
     #m = folium.Map(width=900, height=300)
     m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=8)
-
+    time.sleep(1)
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
         if len(row) < 5:
@@ -193,4 +193,4 @@ elif app_selection == "地図上のすべてのピンを表示":
 
     # 地図を表示
     st_folium(m, width=700, height=500)
-    time.sleep(5)
+    time.sleep(1)
