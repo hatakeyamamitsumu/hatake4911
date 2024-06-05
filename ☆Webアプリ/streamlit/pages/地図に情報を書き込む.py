@@ -185,13 +185,17 @@ elif app_selection == "地図上のすべてのピンを表示":
         "クエスチョン": "question-sign",
         "星": "star",
         }.get(pin_shape, "info-sign")
-
+        
+        m.zoom_control = False
+        
         folium.Marker(
             [latitude, longitude],
             popup=folium.Popup(info, max_width=300),
             icon=folium.Icon(color=icon_color, icon=icon_shape)
         ).add_to(m)
-
+        
+        time.sleep(1)
+        m.zoom_control = True
 
     # 地図を表示
 
