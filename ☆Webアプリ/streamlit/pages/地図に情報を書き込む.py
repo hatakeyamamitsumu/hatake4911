@@ -186,7 +186,7 @@ elif app_selection == "地図上のすべてのピンを表示":
         "星": "star",
         }.get(pin_shape, "info-sign")
         
-        m.zoom_control = False
+
         
         folium.Marker(
             [latitude, longitude],
@@ -194,10 +194,12 @@ elif app_selection == "地図上のすべてのピンを表示":
             icon=folium.Icon(color=icon_color, icon=icon_shape)
         ).add_to(m)
         
-        time.sleep(1)
-        m.zoom_control = True
+
 
     # 地図を表示
 
     st_folium(m, width=700, height=500)
+    m.zoom_control = False
+    time.sleep(1)
+    m.zoom_control = True
 
