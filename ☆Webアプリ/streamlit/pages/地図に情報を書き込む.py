@@ -64,7 +64,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     info = st.sidebar.text_input("ピンに添えるコメントを入力してください")
 
     # 地図を作成
-    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=8)
+    m = folium.Map(location=[latitude_input, longitude_input], zoom_start=9)
     folium.Marker(
         [latitude_input, longitude_input],
         popup=folium.Popup(info, max_width=300),
@@ -197,7 +197,7 @@ elif app_selection == "地図上のすべてのピンを表示":
 
 
     # 地図を表示
-    time.sleep(1)
+
     st_folium(m, width=700, height=500)
 
 
