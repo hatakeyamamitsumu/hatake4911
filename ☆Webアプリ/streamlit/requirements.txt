@@ -46,3 +46,4 @@ tensorflow
 pyautogui
 
 pytesseract
+sklearn
