@@ -114,8 +114,8 @@ def main():
         elif app_selection == "指定した文字の前後で改行":
             st.write("文章を、入力した文字の前後で改行し、見やすくします。文章選別の前準備としてご利用ください")
 
-            custom_delimiters = st.text_input("改行したい文字をスペースで区切って入力してください", key="delimiters")
-            custom_periods = st.text_input("改行したい文字をスペースで区切って入力してください", key="periods")
+            custom_delimiters = st.text_input("指定した文字の前で改行します。複数入力可。改行したい文字をスペースで区切って入力してください", key="delimiters")
+            custom_periods = st.text_input("指定した文字の後ろで改行します。複数入力可。改行したい文字をスペースで区切って入力してください", key="periods")
 
             if custom_delimiters or custom_periods:
                 formatted_text = split_text_around_delimiters(text, custom_delimiters, custom_periods)
