@@ -152,7 +152,7 @@ elif app_selection == "地図上のすべてのピンを表示":
     data = sheet.get_all_values()
 
     # 地図を作成
-    m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9)
+    m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9,zoom_control=False)
 
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
