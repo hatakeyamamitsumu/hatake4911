@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from docx import Document
 import os
+import re
 
 def count_words(text):
     words = text.split()
@@ -10,9 +11,7 @@ def count_words(text):
 
 def read_word_file(file):
     doc = Document(file)
-    text = ""
-    for paragraph in doc.paragraphs:
-        text += paragraph.text + "\n"
+    text = "\n".join(paragraph.text for paragraph in doc.paragraphs)
     return text
 
 def filter_and_download(text, filter_words, filter_condition):
@@ -55,10 +54,29 @@ def filter_and_display(text, filter_words):
     else:
         st.write(f"単語帳の中の単語を含む行は見つかりませんでした.")
 
-def main():
-    st.title("テキストから文章を選別")
+def split_text_around_delimiters(text, custom_delimiters, custom_periods):
+    period_pattern = "|".join(map(re.escape, custom_periods.split()))
+    delimiter_pattern = "|".join(map(re.escape, custom_delimiters.split()))
 
-    app_selection = st.sidebar.radio("アプリを選択してください", ("入力した単語でフィルタリング", "CSVファイルから単語リストでフィルタリング"))
+    split_text = re.split(f"({period_pattern}|{delimiter_pattern})", text)
+    formatted_text = []
+    for i in range(len(split_text)):
+        if i == 0:
+            formatted_text.append(split_text[i])
+        else:
+            if split_text[i-1] in custom_periods.split():
+                formatted_text.append("\n" + split_text[i])
+            elif split_text[i] in custom_delimiters.split():
+                formatted_text.append("\n" + split_text[i])
+            else:
+                formatted_text.append(split_text[i])
+    return "".join(formatted_text)
+
+def main():
+    st.title("テキスト処理アプリケーション")
+
+    app_selection = st.sidebar.radio("アプリを選択してください", 
+                                     ("入力した単語でフィルタリング", "CSVファイルから単語リストでフィルタリング", "指定した文字の前後で改行"))
 
     uploaded_file = st.file_uploader("テキストファイルまたはワードファイルをアップロードしてください", type=["txt", "docx"])
 
@@ -92,6 +110,19 @@ def main():
 
             if filter_words:
                 filter_and_display(text, filter_words)
+
+        elif app_selection == "指定した文字の前後で改行":
+            st.write("文章を、入力した文字の前後で改行し、見やすくします。文章選別の前準備としてご利用ください")
+
+            custom_delimiters = st.text_input("改行したい文字をスペースで区切って入力してください", key="delimiters")
+            custom_periods = st.text_input("改行したい文字をスペースで区切って入力してください", key="periods")
+
+            if custom_delimiters or custom_periods:
+                formatted_text = split_text_around_delimiters(text, custom_delimiters, custom_periods)
+
+                if st.button("ダウンロードしますか？"):
+                    filename = "分割結果.txt"
+                    st.download_button(label="ダウンロードボタン", data=formatted_text, file_name=filename, mime="text/plain")
 
 if __name__ == "__main__":
     main()
