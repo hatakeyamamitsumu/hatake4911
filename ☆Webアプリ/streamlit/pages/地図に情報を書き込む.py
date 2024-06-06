@@ -165,7 +165,7 @@ elif app_selection == "地図上のすべてのピンを表示":
         except ValueError as e:
             st.error(f"データの解析中にエラーが発生しました: {e}")
             continue
-
+        time.sleep(1)
         icon_color = {
             "赤": "red",
             "青": "blue",
