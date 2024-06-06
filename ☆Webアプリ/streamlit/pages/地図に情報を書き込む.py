@@ -155,7 +155,7 @@ elif app_selection == "地図上のすべてのピンを表示":
     m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9,zoom_control=False)
     
     time.sleep(1)
-      m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9,zoom_control=True)
+    m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9,zoom_control=True)
     # データから緯度経度を取得し、ピンを立てる
     for row in data[1:]:  # ヘッダーを除く
         if len(row) < 5:
