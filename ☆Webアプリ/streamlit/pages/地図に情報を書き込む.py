@@ -200,9 +200,10 @@ elif app_selection == "地図上のすべてのピンを表示":
     # 地図を表示
 
     #st_folium(m, width=700, height=500)
-    m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9,zoom_controle=False)
+
+    st_folium(m, width=700, height=500,zoom_controle=False)
     time.sleep(0.5)
-    m = folium.Map(width=900, height=300,location=[35.0000, 135.0000], zoom_start=9,zoom_controle=True)
+    st_folium(m, width=700, height=500,zoom_controle=True)
 
 
 
