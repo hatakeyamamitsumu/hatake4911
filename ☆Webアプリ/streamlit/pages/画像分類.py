@@ -8,8 +8,8 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 
-# データセットのパスを指定 hatake4911/tree/main/☆Webアプリ/画像/dataset
-dataset_path = "C:/dataset"  # ここをデータセットのパスに変更
+# データセットのパスを指定
+dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/dataset'  # ここをデータセットのパスに変更
 classes = ['cat', 'dog']
 IMG_SIZE = 64
 
