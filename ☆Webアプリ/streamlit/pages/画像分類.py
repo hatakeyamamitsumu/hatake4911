@@ -5,10 +5,10 @@ from tensorflow import keras
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from PIL import Image
 
-# 学習用データ "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
+# 学習用データ "/mount/src/hatake4911/tree/main/☆Webアプリ/画像/dataset/train"
 train_datagen = ImageDataGenerator(rescale=1./255)
 train_set = train_datagen.flow_from_directory(
-    './dataset/train',
+    "/mount/src/hatake4911/tree/main/☆Webアプリ/画像/dataset/train",
     target_size=(64, 64),
     batch_size=32,
     class_mode='categorical',
@@ -18,7 +18,7 @@ train_set = train_datagen.flow_from_directory(
 # テスト用データ
 test_datagen = ImageDataGenerator(rescale=1./255)
 test_set = test_datagen.flow_from_directory(
-    './dataset/test',
+    "/mount/src/hatake4911/tree/main/☆Webアプリ/画像/dataset/test",
     target_size=(64, 64),
     batch_size=32,
     class_mode='categorical',
