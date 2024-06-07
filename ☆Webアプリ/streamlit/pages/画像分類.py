@@ -16,7 +16,7 @@ train_set = train_datagen.flow_from_directory(
     target_size=(64, 64),
     batch_size=32,
     class_mode='categorical',
-    classes=['CAR', 'SHIP']
+    classes=['car', 'ship']
 )
 
 # テスト用データ
@@ -26,7 +26,7 @@ test_set = test_datagen.flow_from_directory(
     target_size=(64, 64),
     batch_size=32,
     class_mode='categorical',
-    classes=['CAR', 'SHIP']
+    classes=['car', 'ship']
 )
 
 # モデルの構築
