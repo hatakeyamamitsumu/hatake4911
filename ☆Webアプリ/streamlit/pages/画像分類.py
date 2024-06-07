@@ -46,13 +46,13 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 # 学習部分をコメントアウトして、エラーの詳細を確認する
 try:
     # 学習
-    # model.fit(
-    #     train_set,
-    #     steps_per_epoch=len(train_set),
-    #     epochs=20,
-    #     validation_data=test_set,
-    #     validation_steps=len(test_set)
-    # )
+     model.fit(
+         train_set,
+         steps_per_epoch=len(train_set),
+         epochs=20,
+         validation_data=test_set,
+         validation_steps=len(test_set)
+     )
     
     # 学習済みモデルをロードする場合は、以下を使用
     # model.load_weights('path_to_saved_model_weights.h5')
