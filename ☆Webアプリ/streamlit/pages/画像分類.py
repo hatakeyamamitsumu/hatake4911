@@ -5,7 +5,7 @@ from tensorflow import keras
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from PIL import Image
 
-# 学習用データ
+# 学習用データ "/mount/src/hatake4911/☆Webアプリ/画像/標識用画像/第一層",
 train_datagen = ImageDataGenerator(rescale=1./255)
 train_set = train_datagen.flow_from_directory(
     './dataset/train',
