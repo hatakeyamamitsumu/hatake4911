@@ -1,59 +1,99 @@
-import streamlit as st
+import os
 import numpy as np
+import cv2
+import streamlit as st
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Activation
+from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow import keras
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from PIL import Image
 
-# データセットのパスを変更する必要がある場合は、以下のパスを調整してください。
-train_path = "/mount/src/hatake4911/tree/main/☆Webアプリ/画像/dataset/train"
-test_path = "/mount/src/hatake4911/tree/main/☆Webアプリ/画像/dataset/test"
+# データセットのパスを指定
+dataset_path = "C:/dataset"  # ここをデータセットのパスに変更
+classes = ['cat', 'dog']
+IMG_SIZE = 64
 
-# 学習用データ
-train_datagen = ImageDataGenerator(rescale=1./255)
-train_set = train_datagen.flow_from_directory(
-    train_path,
-    target_size=(64, 64),
-    batch_size=32,
-    class_mode='categorical',
-    classes=['car', 'ship']
-)
+# モデルの作成とトレーニング
+data = []
+labels = []
 
-# テスト用データ
-test_datagen = ImageDataGenerator(rescale=1./255)
-test_set = test_datagen.flow_from_directory(
-    test_path,
-    target_size=(64, 64),
-    batch_size=32,
-    class_mode='categorical',
-    classes=['car', 'ship']
-)
+# 画像データを読み込む
+for c in classes:
+    path = os.path.join(dataset_path, c)
+    if not os.path.exists(path):
+        print(f"Directory {path} does not exist")
+        continue
 
-# モデルの構築
-model = keras.Sequential([
-    Conv2D(32, (3, 3), input_shape=(64, 64, 3), activation='relu'),
-    MaxPooling2D(pool_size=(2, 2)),
-    Conv2D(64, (3, 3), activation='relu'),
-    MaxPooling2D(pool_size=(2, 2)),
-    Flatten(),
-    Dense(units=128, activation='relu'),
-    Dense(units=2, activation='softmax')
-])
+    for img in os.listdir(path):
+        try:
+            img_path = os.path.join(path, img)
+            print(f"Trying to read image: {img_path}")
+            image = cv2.imread(img_path)
+            if image is None:
+                print(f"Failed to read {img_path}")
+                continue
 
-# モデルのコンパイル
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+            image = cv2.resize(image, (IMG_SIZE, IMG_SIZE))
+            data.append(image)
+            labels.append(classes.index(c))
+            print(f"Loaded {img_path}")
+        except Exception as e:
+            print(f"Error reading {img_path}: {e}")
 
-# 学習
-model.fit(
-    train_set,
-    steps_per_epoch=len(train_set),
-    epochs=20,
-    validation_data=test_set,
-    validation_steps=len(test_set)
-)
+if len(data) == 0 or len(labels) == 0:
+    raise ValueError("No images were loaded. Check your dataset paths and image files.")
 
-# Streamlitアプリケーション
-st.title("Car vs Ship Image Classifier")
+data = np.array(data)
+labels = np.array(labels)
+
+# データをシャッフルする
+idx = np.arange(data.shape[0])
+np.random.shuffle(idx)
+data = data[idx]
+labels = labels[idx]
+
+# データをトレーニング用と検証用に分割する
+num_samples = len(data)
+num_train = int(num_samples * 0.8)
+x_train = data[:num_train]
+y_train = labels[:num_train]
+x_val = data[num_train:]
+y_val = labels[num_train:]
+
+# 画像データの正規化
+x_train = x_train / 255.0
+x_val = x_val / 255.0
+
+# ラベルをone-hotエンコーディングに変換する
+y_train = to_categorical(y_train)
+y_val = to_categorical(y_val)
+
+# モデルを構築する
+model = Sequential()
+model.add(Conv2D(32, (3, 3), input_shape=x_train.shape[1:]))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Flatten())
+model.add(Dense(64))
+model.add(Activation('relu'))
+model.add(Dense(2))
+model.add(Activation('softmax'))
+
+# モデルをコンパイルする
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+# モデルをトレーニングする
+model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_val))
+
+# Streamlitの設定
+st.title("Cat vs Dog Image Classifier")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -63,7 +103,7 @@ if uploaded_file is not None:
     st.write("")
     st.write("Classifying...")
 
-    img = img.resize((64, 64))
+    img = img.resize((IMG_SIZE, IMG_SIZE))
     img_array = np.array(img)
     img_array = np.expand_dims(img_array, axis=0)
     img_array = img_array / 255.0
@@ -74,5 +114,5 @@ if uploaded_file is not None:
     ship_probability = prediction[0][1]
 
     st.write('Prediction:', prediction)
-    st.write('Image is class CAR with probability:', round(car_probability * 100, 5))
-    st.write('Image is class SHIP with probability:', round(ship_probability * 100, 5))
+    st.write('Image is class CAT with probability:', round(car_probability * 100, 5))
+    st.write('Image is class DOG with probability:', round(ship_probability * 100, 5))
