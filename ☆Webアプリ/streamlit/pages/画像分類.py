@@ -43,36 +43,42 @@ model = keras.Sequential([
 # モデルのコンパイル
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-# 学習
-model.fit(
-    train_set,
-    steps_per_epoch=len(train_set),
-    epochs=20,
-    validation_data=test_set,
-    validation_steps=len(test_set)
-)
-
-# Streamlitアプリケーション
-st.title("Car vs Ship Image Classifier")
-
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-
-if uploaded_file is not None:
-    img = Image.open(uploaded_file).convert("RGB")
-    st.image(img, caption='Uploaded Image.', use_column_width=True)
-    st.write("")
-    st.write("Classifying...")
-
-    img = img.resize((64, 64))
-    img_array = np.array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array = img_array / 255.0
-
-    # 結果を出力する
-    prediction = model.predict(img_array)
-    car_probability = prediction[0][0]
-    ship_probability = prediction[0][1]
-
-    st.write('Prediction:', prediction)
-    st.write('Image is class CAR with probability:', round(car_probability * 100, 5))
-    st.write('Image is class SHIP with probability:', round(ship_probability * 100, 5))
+# 学習部分をコメントアウトして、エラーの詳細を確認する
+try:
+    # 学習
+    # model.fit(
+    #     train_set,
+    #     steps_per_epoch=len(train_set),
+    #     epochs=20,
+    #     validation_data=test_set,
+    #     validation_steps=len(test_set)
+    # )
+    
+    # 学習済みモデルをロードする場合は、以下を使用
+    # model.load_weights('path_to_saved_model_weights.h5')
+    
+    st.title("Car vs Ship Image Classifier")
+    
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file).convert("RGB")
+        st.image(img, caption='Uploaded Image.', use_column_width=True)
+        st.write("")
+        st.write("Classifying...")
+    
+        img = img.resize((64, 64))
+        img_array = np.array(img)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array = img_array / 255.0
+    
+        # 結果を出力する
+        prediction = model.predict(img_array)
+        car_probability = prediction[0][0]
+        ship_probability = prediction[0][1]
+    
+        st.write('Prediction:', prediction)
+        st.write('Image is class CAR with probability:', round(car_probability * 100, 5))
+        st.write('Image is class SHIP with probability:', round(ship_probability * 100, 5))
+except Exception as e:
+    st.error(f"An error occurred: {e}")
