@@ -93,7 +93,7 @@ model.compile(loss='categorical_crossentropy',
 model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_val))
 
 # Streamlitの設定
-st.title("Cat vs Dog Image Classifier")
+st.title("Cat vs Dog 画像判定")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
