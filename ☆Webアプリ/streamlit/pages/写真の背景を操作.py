@@ -57,7 +57,7 @@ my_upload = st.sidebar.file_uploader("画像をアップロードしてくださ
 
 if my_upload is not None:
     if my_upload.size > MAX_FILE_SIZE:
-        st.error("ファイルサイズが大きすぎます。5MB以内でお願いします。")
+        st.error("ファイルサイズは、2MB～5MB以内でお願いします。")
     else:
         operation = st.sidebar.radio("操作を選択してください", ("背景を削除", "背景をぼかす"))
         if operation == "背景を削除":
