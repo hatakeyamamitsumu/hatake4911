@@ -110,9 +110,9 @@ if uploaded_file is not None:
 
     # 結果を出力する
     prediction = model.predict(img_array)
-    car_probability = prediction[0][0]
-    ship_probability = prediction[0][1]
+    cat_probability = prediction[0][0]
+    dog_probability = prediction[0][1]
 
     st.write('Prediction:', prediction)
-    st.write('Image is class CAT with probability:', round(car_probability * 100, 5))
-    st.write('Image is class DOG with probability:', round(ship_probability * 100, 5))
+    st.write('Image is class CAT with probability:', round(cat_probability * 100, 5))
+    st.write('Image is class DOG with probability:', round(dog_probability * 100, 5))
