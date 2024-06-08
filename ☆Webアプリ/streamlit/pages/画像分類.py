@@ -94,7 +94,7 @@ model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_
 
 # Streamlitの設定
 st.title("Cat vs Dog 画像判定")
-
+st.write("データセットは64*64にリサイズしてあります")
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
