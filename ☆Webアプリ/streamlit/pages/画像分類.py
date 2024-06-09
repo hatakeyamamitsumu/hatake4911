@@ -122,7 +122,7 @@ if uploaded_file is not None:
     prediction = model.predict(img_array)
     cat_probability = prediction[0][0]
     dog_probability = prediction[0][1]
-
+    st.write(len(data))
     st.write('Prediction:', prediction)
     st.write('Image is class CAT with probability:', round(cat_probability * 100, 5))
     st.write('Image is class DOG with probability:', round(dog_probability * 100, 5))
