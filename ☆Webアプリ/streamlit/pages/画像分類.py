@@ -9,7 +9,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 
 # データセットのパスを指定
-dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/dataset'  # ここをデータセットのパスに変更
+dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/dataset' # ここをデータセットのパスに変更
 classes = ['cat', 'dog']
 IMG_SIZE = 64
 
@@ -78,19 +78,29 @@ model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
+model.add(Conv2D(128, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
 model.add(Flatten())
-model.add(Dense(64))
+model.add(Dense(512))
 model.add(Activation('relu'))
 model.add(Dense(2))
 model.add(Activation('softmax'))
 
 # モデルをコンパイルする
+from tensorflow.keras.optimizers import Adam
+optimizer = Adam(learning_rate=0.0001)
 model.compile(loss='categorical_crossentropy',
-              optimizer='adam',
+              optimizer=optimizer,
               metrics=['accuracy'])
 
+# 早期停止の導入
+from tensorflow.keras.callbacks import EarlyStopping
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+
 # モデルをトレーニングする
-model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_val))
+model.fit(x_train, y_train, epochs=50, batch_size=32, validation_data=(x_val, y_val), callbacks=[early_stopping])
 
 # Streamlitの設定
 st.title("Cat vs Dog 画像判定")
