@@ -10,7 +10,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from PIL import Image
 
 # データセットのパスを指定
-dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/dataset' # ここをデータセットのパスに変更
+dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/datasets' # ここをデータセットのパスに変更
 IMG_SIZE = 224  # MobileNetV2の標準入力サイズに変更
 BATCH_SIZE = 32
 
