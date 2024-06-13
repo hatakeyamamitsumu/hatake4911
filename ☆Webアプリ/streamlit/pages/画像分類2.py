@@ -3,13 +3,16 @@ import numpy as np
 import cv2
 import streamlit as st
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Activation
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Activation, Dropout
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.callbacks import EarlyStopping
 from PIL import Image
 
 # データセットのパスを指定
-dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/datasets' # ここをデータセットのパスに変更
+dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/datasets'  # ここをデータセットのパスに変更
 classes = ['cat', 'dog']
 IMG_SIZE = 64
 
@@ -68,39 +71,44 @@ x_val = x_val / 255.0
 y_train = to_categorical(y_train)
 y_val = to_categorical(y_val)
 
-# モデルを構築する
+# データ拡張
+datagen = ImageDataGenerator(
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    fill_mode='nearest'
+)
+
+datagen.fit(x_train)
+
+# 転移学習モデルの利用
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(IMG_SIZE, IMG_SIZE, 3))
+for layer in base_model.layers:
+    layer.trainable = False
+
 model = Sequential()
-model.add(Conv2D(32, (3, 3), input_shape=x_train.shape[1:]))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
-model.add(Conv2D(64, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
-model.add(Conv2D(128, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
+model.add(base_model)
 model.add(Flatten())
-model.add(Dense(512))
+model.add(Dense(512, kernel_regularizer='l2'))  # L2正則化の導入
 model.add(Activation('relu'))
+model.add(Dropout(0.5))  # ドロップアウトの導入
 model.add(Dense(2))
 model.add(Activation('softmax'))
 
 # モデルをコンパイルする
-from tensorflow.keras.optimizers import Adam
-optimizer = Adam(learning_rate=0.0001)
+optimizer = Adam(learning_rate=0.00001)  # 学習率を調整
 model.compile(loss='categorical_crossentropy',
               optimizer=optimizer,
               metrics=['accuracy'])
 
 # 早期停止の導入
-from tensorflow.keras.callbacks import EarlyStopping
 early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
 
 # モデルをトレーニングする
-model.fit(x_train, y_train, epochs=10, batch_size=64, validation_data=(x_val, y_val), callbacks=[early_stopping])
+model.fit(datagen.flow(x_train, y_train, batch_size=32), epochs=50, validation_data=(x_val, y_val), callbacks=[early_stopping])
 
 # Streamlitの設定
 st.title("Cat vs Dog 画像判定")
