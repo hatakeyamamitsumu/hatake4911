@@ -10,8 +10,8 @@ from PIL import Image
 
 # データセットのパスを指定
 dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/datasets' # ここをデータセットのパスに変更
-classes = ['cat', 'dog']
-IMG_SIZE = 64
+classes = ['大阪城', '姫路城']
+IMG_SIZE = 128
 
 # モデルの作成とトレーニング
 data = []
@@ -103,8 +103,8 @@ early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weig
 model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_val), callbacks=[early_stopping])
 
 # Streamlitの設定
-st.title("Cat vs Dog 画像判定")
-st.write("データセットは64*64にリサイズしてあります")
+st.title(" 画像判定")
+st.write("データセットは128*128にリサイズしてあります")
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -124,5 +124,5 @@ if uploaded_file is not None:
     dog_probability = prediction[0][1]
 
     st.write('Prediction:', prediction)
-    st.write('Image is class CAT with probability:', round(cat_probability * 100, 5))
-    st.write('Image is class DOG with probability:', round(dog_probability * 100, 5))
+    st.write('Image is class 大阪城 with probability:', round(cat_probability * 100, 5))
+    st.write('Image is class 姫路城 with probability:', round(dog_probability * 100, 5))
