@@ -44,6 +44,6 @@ icrawler
 tensorflow
 
 torch
-
+torchvision
 
 
