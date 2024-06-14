@@ -19,16 +19,10 @@ if uploaded_file is not None:
     # 画像を処理して、モデルで分類する
     st.write("Classifying...")
     
-    # 画像をリサイズする
-    img = img.resize((224, 224))
-    
-    # 画像をnumpy配列に変換する
-    x = image.img_to_array(img)
-    
-    # 画像の次元を(1, 224, 224, 3)に拡張する
+    # 画像をリサイズしてnumpy配列に変換する
+    img_resized = img.resize((224, 224))
+    x = image.img_to_array(img_resized)
     x = np.expand_dims(x, axis=0)
-    
-    # 画像を前処理する
     x = preprocess_input(x)
     
     # 画像をモデルで分類する
@@ -39,4 +33,3 @@ if uploaded_file is not None:
     st.write('Predicted:')
     for pred in predictions:
         st.write(f"{pred[1]}: {pred[2]*100:.2f}%")
-
