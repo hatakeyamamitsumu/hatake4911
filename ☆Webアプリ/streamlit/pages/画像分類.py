@@ -7,9 +7,10 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Activa
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
+from io import BytesIO
 
-#データセットのパスを指定
-dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/datasets' # ここをデータセットのパスに変更
+# データセットのパスを指定
+dataset_path = '/mount/src/hatake4911/☆Webアプリ/画像/datasets'  # ここをデータセットのパスに変更
 classes = ['大阪城', '姫路城']
 IMG_SIZE = 128
 
@@ -103,7 +104,7 @@ early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weig
 model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_val), callbacks=[early_stopping])
 
 # Streamlitの設定
-st.title(" 画像判定")
+st.title("画像判定")
 st.write("データセットは128*128にリサイズしてあります")
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -113,6 +114,7 @@ if uploaded_file is not None:
     st.write("")
     st.write("Classifying...")
 
+    # 画像を読み込んでリサイズ
     img = img.resize((IMG_SIZE, IMG_SIZE))
     img_array = np.array(img)
     img_array = np.expand_dims(img_array, axis=0)
@@ -120,10 +122,9 @@ if uploaded_file is not None:
 
     # 結果を出力する
     prediction = model.predict(img_array)
-    cat_probability = prediction[0][0]
-    dog_probability = prediction[0][1]
+    osaka_probability = prediction[0][0]
+    himeji_probability = prediction[0][1]
 
     st.write('Prediction:', prediction)
-    st.write('Image is class 大阪城 with probability:', round(cat_probability * 100, 5))
-    st.write('Image is class 姫路城 with probability:', round(dog_probability * 100, 5))
-
+    st.write('Image is class 大阪城 with probability:', round(osaka_probability * 100, 5))
+    st.write('Image is class 姫路城 with probability:', round(himeji_probability * 100, 5))
