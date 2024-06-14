@@ -15,7 +15,7 @@ if uploaded_file is not None:
     # 画像を表示する
     img = Image.open(uploaded_file)
     st.image(img, caption='Uploaded Image.', use_column_width=True)
-    
+    st.write("ファイル名は英語")
     # 画像を処理して、モデルで分類する
     st.write("Classifying...")
     
