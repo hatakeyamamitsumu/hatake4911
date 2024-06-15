@@ -7,9 +7,10 @@ from PIL import Image
 # MobileNetV2モデルをロードする
 model = MobileNetV2(weights='imagenet')
 
-st.title('MobileNetV2 Image Classification')
+st.title('MobileNetV2を使った画像分類')
+st.write("使わないときはすぐに閉じてください")
 st.write("ファイル名は英語、jpgファイルでお願いします")
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # 画像を表示する
@@ -17,7 +18,7 @@ if uploaded_file is not None:
     st.image(img, caption='Uploaded Image.', use_column_width=True)
 
     # 画像を処理して、モデルで分類する
-    st.write("Classifying...")
+    st.write("分類結果")
     
     # 画像をリサイズしてnumpy配列に変換する
     img_resized = img.resize((224, 224))
