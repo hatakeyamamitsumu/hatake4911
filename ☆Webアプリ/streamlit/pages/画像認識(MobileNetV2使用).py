@@ -3,9 +3,13 @@ import numpy as np
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
 from tensorflow.keras.preprocessing import image
 from PIL import Image
+from translate import Translator
 
 # MobileNetV2モデルをロードする
 model = MobileNetV2(weights='imagenet')
+
+# Translatorの設定
+translator = Translator(to_lang="ja")
 
 st.title('MobileNetV2を使った画像分類')
 st.write("使わないときはすぐに閉じてください")
@@ -30,6 +34,8 @@ if uploaded_file is not None:
     
     # 結果をデコードして表示する
     predictions = decode_predictions(preds, top=3)[0]
-    st.write('Predicted:')
+    st.write('予測結果:')
     for pred in predictions:
-        st.write(f"{pred[1]}: {pred[2]*100:.2f}%")
+        label_en = pred[1]
+        label_ja = translator.translate(label_en)
+        st.write(f"{label_ja} ({label_en}): {pred[2]*100:.2f}%")
