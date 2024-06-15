@@ -46,6 +46,6 @@ tensorflow
 torch
 torchvision
 
-
+translate
 
 
