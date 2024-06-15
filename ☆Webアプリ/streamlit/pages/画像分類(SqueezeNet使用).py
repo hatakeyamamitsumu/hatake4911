@@ -20,9 +20,9 @@ preprocess = transforms.Compose([
 LABELS_URL = "https://raw.githubusercontent.com/anishathalye/imagenet-simple-labels/master/imagenet-simple-labels.json"
 labels = requests.get(LABELS_URL).json()
 
-st.title("SqueezeNet Image Classification")
-
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+st.title("SqueezeNetを使った画像分類")
+st.write("使わないときはすぐに閉じてください。")
+uploaded_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # 画像を表示
@@ -33,7 +33,7 @@ if uploaded_file is not None:
     img_preprocessed = preprocess(img)
     batch_img_tensor = torch.unsqueeze(img_preprocessed, 0)
 
-    st.write("Classifying...")
+    st.write("分類結果")
 
     # モデルで画像を分類
     with torch.no_grad():
