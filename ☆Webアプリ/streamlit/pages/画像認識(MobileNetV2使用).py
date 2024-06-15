@@ -9,7 +9,6 @@ model = MobileNetV2(weights='imagenet')
 
 st.title('MobileNetV2を使った画像分類')
 st.write("使わないときはすぐに閉じてください")
-st.write("ファイル名は英語、jpgファイルでお願いします")
 uploaded_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
