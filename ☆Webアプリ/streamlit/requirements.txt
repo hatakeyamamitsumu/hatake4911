@@ -45,7 +45,7 @@ tensorflow
 
 torch
 torchvision
-tensorflow-hub
+
 
 
 
