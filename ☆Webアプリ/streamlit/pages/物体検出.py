@@ -14,9 +14,10 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
-# モデルの読み込み QR_path='/mount/src/hatake4911/☆Webアプリ/QRコード各種/アンケートフォーム用QR.png'
+# モデルの読み込み QR_path='/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
+#main/☆Webアプリ/その他重要ファイル/deploy.prototxt
 MODEL_PATH = 'ssd_300_vgg_coco.caffemodel'
-PROTOTXT_PATH = 'ssd_300_vgg_coco.prototxt'
+PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
 # Streamlitアプリケーションの設定
