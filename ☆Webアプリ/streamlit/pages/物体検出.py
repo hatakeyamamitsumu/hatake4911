@@ -16,7 +16,7 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
 
 # モデルの読み込み QR_path='/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 #main/☆Webアプリ/その他重要ファイル/deploy.prototxt
-MODEL_PATH = 'ssd_300_vgg_coco.caffemodel'
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
 PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
