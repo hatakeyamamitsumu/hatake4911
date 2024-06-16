@@ -1,16 +1,27 @@
 import streamlit as st
 import cv2
 import numpy as np
-import torch
-from torchvision import transforms
 from PIL import Image
 
-# YOLOv5モデルのロード
-model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+# COCOデータセットのクラスラベルのリスト
+CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
+           "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", 
+           "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase",
+           "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", 
+           "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", 
+           "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", 
+           "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", 
+           "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
+           "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
+
+# モデルの読み込み
+MODEL_PATH = 'ssd_300_vgg_coco.caffemodel'
+PROTOTXT_PATH = 'ssd_300_vgg_coco.prototxt'
+net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
 # Streamlitアプリケーションの設定
 st.title('物体検出アプリ')
-st.write('YOLOv5を使用して物体検出を行います。')
+st.write('COCOデータセットで訓練されたSSDを使用して物体検出を行います。')
 
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
@@ -25,21 +36,32 @@ if uploaded_file is not None:
     # 画像をnumpy配列に変換
     image_np = np.array(image)
 
-    # 画像をYOLOv5モデルに入力する形式に変換
-    results = model(image_np)
+    # 画像をモデルに入力する形式に変換
+    (h, w) = image_np.shape[:2]
+    blob = cv2.dnn.blobFromImage(cv2.resize(image_np, (300, 300)), 0.007843, (300, 300), 127.5)
+    net.setInput(blob)
+    detections = net.forward()
 
-    # 検出結果をプロット
-    results.render()
+    # 検出結果のプロット
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > 0.2:
+            idx = int(detections[0, 0, i, 1])
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (startX, startY, endX, endY) = box.astype("int")
+            label = f"{CLASSES[idx]}: {confidence:.2f}"
+            cv2.rectangle(image_np, (startX, startY), (endX, endY), (0, 255, 0), 2)
+            y = startY - 15 if startY - 15 > 15 else startY + 15
+            cv2.putText(image_np, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-    # 検出結果の画像を取得
-    detected_image = results.imgs[0]
-
-    # PIL形式に変換して表示
-    detected_image = Image.fromarray(detected_image)
+    # 検出結果の画像を表示
+    detected_image = Image.fromarray(image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
 
     # 検出されたオブジェクトのラベルと信頼度を表示
     st.write("検出されたオブジェクト:")
-    for *box, conf, cls in results.xyxy[0]:  # xyxy座標、信頼度、クラスラベル
-        st.write(f"{model.names[int(cls)]} (信頼度: {conf:.2f})")
-
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > 0.2:
+            idx = int(detections[0, 0, i, 1])
+            st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
