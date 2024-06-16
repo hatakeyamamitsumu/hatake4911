@@ -14,7 +14,7 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
-# モデルの読み込み
+# モデルの読み込み QR_path='/mount/src/hatake4911/☆Webアプリ/QRコード各種/アンケートフォーム用QR.png'
 MODEL_PATH = 'ssd_300_vgg_coco.caffemodel'
 PROTOTXT_PATH = 'ssd_300_vgg_coco.prototxt'
 net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
