@@ -54,9 +54,9 @@ if uploaded_file is not None:
             detected_object = image_np[startY:endY, startX:endX]
 
             # 切り取った部分をPIL画像に変換して表示
-            column_width = st.beta_container() / 2
+
             pil_image = Image.fromarray(detected_object)
-            st.image(pil_image, caption=f"Detected Object: {label}", column_width)
+            st.image(pil_image, caption=f"Detected Object: {label}")
 
 
             st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
