@@ -1,6 +1,7 @@
 import deepl
 import streamlit as st
-
+st.title("deepl-translateという、deeplライブラリの非公式パッケージを使った翻訳アプリです。")
+st.markdwn("https://youtu.be/cUGeHn5vdfU")
 LANGUAGES = {"英語": "EN", "日本語": "JA", "中国語": "ZH"}
 
 
