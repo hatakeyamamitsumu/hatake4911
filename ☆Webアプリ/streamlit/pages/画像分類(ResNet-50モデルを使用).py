@@ -3,6 +3,7 @@ import torch
 from torchvision import models, transforms
 from PIL import Image
 import requests
+from translate import Translator  # Google Translatorを使った翻訳ライブラリ
 
 # モデルをロードして評価モードに設定（ResNet-50を使用）
 model = models.resnet50(pretrained=True)
@@ -20,8 +21,11 @@ preprocess = transforms.Compose([
 LABELS_URL = "https://raw.githubusercontent.com/anishathalye/imagenet-simple-labels/master/imagenet-simple-labels.json"
 labels = requests.get(LABELS_URL).json()
 
+# Translatorの設定（Google Translatorを使用）
+translator = Translator(to_lang="ja")
+
 # Streamlitアプリのセットアップ
-st.title("ResNet-50を使った画像分類")
+st.title("ResNet-50を使った画像分類と日本語翻訳")
 uploaded_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -46,5 +50,6 @@ if uploaded_file is not None:
 
     st.write("予測結果:")
     for i in range(top5_prob.size(0)):
-        label = labels[top5_catid[i]]
-        st.write(f"{label}: {top5_prob[i].item() * 100:.2f}%")
+        label_en = labels[top5_catid[i]]
+        label_ja = translator.translate(label_en)
+        st.write(f"{label_ja}: {top5_prob[i].item() * 100:.2f}%")
