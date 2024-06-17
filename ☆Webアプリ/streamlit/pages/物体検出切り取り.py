@@ -23,7 +23,7 @@ MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/
 PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
-# Streamlitアプリケーションの設定
+# 　Streamlitアプリケーションの設定
 st.title('物体検出アプリ')
 
 # 画像のアップロード
