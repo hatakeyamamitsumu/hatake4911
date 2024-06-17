@@ -76,7 +76,7 @@ if uploaded_file is not None:
 
         # ZIPファイルをダウンロードボタンとして提供
         st.download_button(
-            label="Download All Detected Objects",
+            label="検出物体をまとめてダウンロード",
             data=zip_buffer.getvalue(),
             file_name="detected_objects.zip",
             mime="application/zip"
