@@ -47,5 +47,6 @@ torch
 torchvision
 
 translate
-
+transformers
+sentencepiece
 
