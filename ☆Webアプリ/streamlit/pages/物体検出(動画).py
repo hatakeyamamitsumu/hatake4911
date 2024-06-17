@@ -17,7 +17,7 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
 
 # MobileNet SSDモデルの設定
 MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
-PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
+WEIGHTS_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 net = cv2.dnn.readNetFromCaffe(MODEL_PATH, WEIGHTS_PATH)
 
 # Streamlitアプリケーションの設定
