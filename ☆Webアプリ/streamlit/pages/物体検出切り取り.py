@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
+import io
 
 # COCOデータセットのクラスラベルのリスト
 CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
@@ -42,6 +43,7 @@ if uploaded_file is not None:
     detections = net.forward()
 
     # 検出された物体を切り取って表示
+    detected_images = []
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
@@ -54,10 +56,19 @@ if uploaded_file is not None:
             detected_object = image_np[startY:endY, startX:endX]
 
             # 切り取った部分をPIL画像に変換して表示
-
             pil_image = Image.fromarray(detected_object)
-            st.image(pil_image, caption=f"Detected Object: {label}")
-
+            detected_images.append((pil_image, label))
+            st.image(pil_image, caption=f"Detected Object: {label}", width=150)
 
             st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
 
+    # ダウンロードボタンを設置
+    for i, (pil_image, label) in enumerate(detected_images):
+        buffered = io.BytesIO()
+        pil_image.save(buffered, format="PNG")
+        st.download_button(
+            label=f"Download {label}",
+            data=buffered.getvalue(),
+            file_name=f"detected_object_{i}.png",
+            mime="image/png"
+        )
