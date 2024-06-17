@@ -50,4 +50,5 @@ translate
 transformers
 sentencepiece
 
+deepl
 
