@@ -49,4 +49,6 @@ torchvision
 translate
 transformers
 sentencepiece
+MarianMTModel
+MarianTokenizer
 
