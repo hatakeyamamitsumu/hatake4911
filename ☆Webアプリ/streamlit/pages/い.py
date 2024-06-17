@@ -42,7 +42,7 @@ if uploaded_file is not None:
     detections = net.forward()
 
     # 検出された物体の画像を4列で表示
-    col1, col2, col3, col4 = st.beta_columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 
     count = 0
     for i in range(detections.shape[2]):
