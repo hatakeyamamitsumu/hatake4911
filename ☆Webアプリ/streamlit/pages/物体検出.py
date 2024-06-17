@@ -22,7 +22,6 @@ net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
 # Streamlitアプリケーションの設定
 st.title('物体検出アプリ')
-st.write('COCOデータセットで訓練されたSSDを使用して物体検出を行います。')
 
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
