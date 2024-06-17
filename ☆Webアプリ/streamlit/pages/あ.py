@@ -13,7 +13,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["google"], s
 client = gspread.authorize(creds)
 file_id = "1fDInJTb7My6by9Dx70XIByDh8yux-09i"
 
-# セッション状態にクリックされた位置の緯度と経度を保存
+#   セッション状態にクリックされた位置の緯度と経度を保存
 if "latitude" not in st.session_state:
     st.session_state.latitude = 35.0000
 if "longitude" not in st.session_state:
