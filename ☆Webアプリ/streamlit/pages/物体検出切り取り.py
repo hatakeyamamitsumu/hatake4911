@@ -3,6 +3,9 @@ import cv2
 import numpy as np
 from PIL import Image
 import io
+import zipfile
+import tempfile
+import os
 
 # COCOデータセットのクラスラベルのリスト
 CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
@@ -42,33 +45,39 @@ if uploaded_file is not None:
     net.setInput(blob)
     detections = net.forward()
 
-    # 検出された物体を切り取って表示
-    detected_images = []
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > 0.2:
-            idx = int(detections[0, 0, i, 1])
-            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
-            label = f"{CLASSES[idx]}: {confidence:.2f}"
+    # 一時ディレクトリを作成
+    with tempfile.TemporaryDirectory() as temp_dir:
+        detected_images = []
+        for i in range(detections.shape[2]):
+            confidence = detections[0, 0, i, 2]
+            if confidence > 0.2:
+                idx = int(detections[0, 0, i, 1])
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                (startX, startY, endX, endY) = box.astype("int")
+                label = f"{CLASSES[idx]}: {confidence:.2f}"
 
-            # 画像から検出された部分を切り取る
-            detected_object = image_np[startY:endY, startX:endX]
+                # 画像から検出された部分を切り取る
+                detected_object = image_np[startY:endY, startX:endX]
 
-            # 切り取った部分をPIL画像に変換して表示
-            pil_image = Image.fromarray(detected_object)
-            detected_images.append((pil_image, label))
-            st.image(pil_image, caption=f"Detected Object: {label}", width=150)
+                # 切り取った部分をPIL画像に変換
+                pil_image = Image.fromarray(detected_object)
+                detected_images.append((pil_image, label))
 
-            st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
+                # 検出結果の画像を保存
+                image_path = os.path.join(temp_dir, f"detected_object_{i}.png")
+                pil_image.save(image_path)
 
-    # ダウンロードボタンを設置
-    for i, (pil_image, label) in enumerate(detected_images):
-        buffered = io.BytesIO()
-        pil_image.save(buffered, format="PNG")
+        # ZIPファイルを作成
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+            for i, (pil_image, label) in enumerate(detected_images):
+                image_path = os.path.join(temp_dir, f"detected_object_{i}.png")
+                zip_file.write(image_path, f"detected_object_{i}.png")
+
+        # ZIPファイルをダウンロードボタンとして提供
         st.download_button(
-            label=f"Download {label}",
-            data=buffered.getvalue(),
-            file_name=f"detected_object_{i}.png",
-            mime="image/png"
+            label="Download All Detected Objects",
+            data=zip_buffer.getvalue(),
+            file_name="detected_objects.zip",
+            mime="application/zip"
         )
