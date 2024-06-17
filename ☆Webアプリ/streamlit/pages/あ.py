@@ -41,10 +41,7 @@ if uploaded_file is not None:
     net.setInput(blob)
     detections = net.forward()
 
-    # 検出された物体の画像を4列で表示
-    col1, col2, col3, col4 = st.beta_columns(4)
-
-    count = 0
+    # 検出された物体を切り取って表示
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
@@ -58,20 +55,7 @@ if uploaded_file is not None:
 
             # 切り取った部分をPIL画像に変換して表示
             pil_image = Image.fromarray(detected_object)
-
-            if count % 4 == 0:
-                with col1:
-                    st.image(pil_image, caption=f"Detected Object {count+1}: {label}", use_column_width=True)
-            elif count % 4 == 1:
-                with col2:
-                    st.image(pil_image, caption=f"Detected Object {count+1}: {label}", use_column_width=True)
-            elif count % 4 == 2:
-                with col3:
-                    st.image(pil_image, caption=f"Detected Object {count+1}: {label}", use_column_width=True)
-            elif count % 4 == 3:
-                with col4:
-                    st.image(pil_image, caption=f"Detected Object {count+1}: {label}", use_column_width=True)
-            count += 1
+            st.image(pil_image, caption=f"Detected Object: {label}", use_column_width=True)
 
             st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
 
