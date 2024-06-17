@@ -23,8 +23,7 @@ if "longitude" not in st.session_state:
 app_selection = st.sidebar.radio("アプリを選択してください", ("地図のおすすめスポットにピンを立てる", "地図上のすべてのピンを表示"))
 
 # 地図のズームレベルのスライダー
-zoom_level = st.slider("地図のズームレベルを選択してください", min_value=1, max_value=20, value=9)
-
+zoom_level = st.slider("地図のズームレベルを選択してください", min_value=10, max_value=20, value=10, step=5)
 if app_selection == "地図のおすすめスポットにピンを立てる":
     # タイトルを設定
     st.title("地図にピンを立て、コメントをつけて保存できます")
