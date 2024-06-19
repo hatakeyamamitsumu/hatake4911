@@ -13,7 +13,8 @@ def detect_faces(image):
     # グレースケールに変換
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 顔を検出
-    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=3, minSize=(30, 30))
+
     # 検出された顔に矩形を描画
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
