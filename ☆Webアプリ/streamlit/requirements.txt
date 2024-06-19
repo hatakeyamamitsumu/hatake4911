@@ -51,4 +51,4 @@ transformers
 sentencepiece
 
 deepl-translate
-dlib
+
