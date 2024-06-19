@@ -1,22 +1,19 @@
-import cv2
 import streamlit as st
 import numpy as np
 from PIL import Image
+import dlib
 
-# 顔認識用のHaarカスケードファイルのパスを指定
-face_cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-
-# Haarカスケード分類器を読み込む
-face_cascade = cv2.CascadeClassifier(face_cascade_path)
+# Dlibの顔検出器を読み込む
+detector = dlib.get_frontal_face_detector()
 
 def detect_faces(image):
     # グレースケールに変換
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # 顔を検出
-    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=3, minSize=(30, 30))
-
+    faces = detector(gray_image)
     # 検出された顔に矩形を描画
-    for (x, y, w, h) in faces:
+    for face in faces:
+        x, y, w, h = (face.left(), face.top(), face.width(), face.height())
         cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
     return image
 
