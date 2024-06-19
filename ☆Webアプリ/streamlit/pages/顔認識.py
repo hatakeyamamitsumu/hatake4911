@@ -1,25 +1,19 @@
-import cv2
 import streamlit as st
 import numpy as np
 from PIL import Image
+import cv2
+from mtcnn import MTCNN
 
-# 顔認識用のHaarカスケードファイルのパスを指定
-face_cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-
-# Haarカスケード分類器を読み込む
-face_cascade = cv2.CascadeClassifier(face_cascade_path)
+# MTCNNの顔検出器を読み込む
+detector = MTCNN()
 
 def detect_faces(image):
-    # グレースケールに変換
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
-    #gray_image = cv2.equalizeHist(gray_image)
     # 顔を検出
-    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=3, minSize=(30, 30))
-
+    faces = detector.detect_faces(image)
     # 検出された顔に矩形を描画
-    for (x, y, w, h) in faces:
-        cv2.rectangle(image, (x, y), (x+w, y+h), (255, 0, 0), 2)
+    for face in faces:
+        x, y, width, height = face['box']
+        cv2.rectangle(image, (x, y), (x + width, y + height), (255, 0, 0), 2)
     return image
 
 st.title("顔認識アプリ")
