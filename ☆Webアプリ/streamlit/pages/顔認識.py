@@ -12,8 +12,8 @@ face_cascade = cv2.CascadeClassifier(face_cascade_path)
 def detect_faces(image):
     # グレースケールに変換
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # gray_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
-    gray_image = cv2.equalizeHist(gray_image)
+    gray_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
+    #gray_image = cv2.equalizeHist(gray_image)
     # 顔を検出
     faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=3, minSize=(30, 30))
 
