@@ -18,6 +18,7 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
+
 # モデルの読み込み
 MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
 PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
