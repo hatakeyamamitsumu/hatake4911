@@ -3,8 +3,7 @@ import numpy as np
 from PIL import Image
 import cv2
 
-# Haar Cascadesの分類器を読み込む ☆Webアプリ/その他重要ファイル/haarcascade_car.xml
-#car_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_car.xml')
+
 # ファイルパスを直接指定する例
 car_cascade = cv2.CascadeClassifier('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/haarcascade_car.xml')
 
