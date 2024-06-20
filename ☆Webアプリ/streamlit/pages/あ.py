@@ -56,31 +56,30 @@ if uploaded_file is not None:
                     idx = int(detections[0, 0, i, 1])
                     class_name = CLASSES[idx]
 
-                    # 特定のクラス（例: 人）に対するマスクを作成
+                    # 特定のクラス（例: 人）に対するバウンディングボックスを取得
                     if class_name == 'person':  # 例として'person'のクラスを選択
-                        mask = detections[0, 0, i, 5:9]
                         box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                         (startX, startY, endX, endY) = box.astype("int")
-                        mask = mask.astype(np.uint8)
-                        mask = cv2.resize(mask, (endX - startX + 1, endY - startY + 1))
-                        _, mask = cv2.threshold(mask, 0.5, 255, cv2.THRESH_BINARY)
-                        mask = cv2.resize(mask, (image_np.shape[1], image_np.shape[0]))
 
-                        # マスクを元画像に適用して物体のセグメンテーションを作成
-                        segmented_object = cv2.bitwise_and(image_np, image_np, mask=mask)
-                        segmented_images.append((segmented_object, class_name))
+                        # バウンディングボックスから物体を切り出す
+                        detected_object = image_np[startY:endY, startX:endX]
 
-                        # セグメンテーション結果の画像を保存
-                        image_path = os.path.join(temp_dir, f"segmented_object_{i}.png")
-                        cv2.imwrite(image_path, cv2.cvtColor(segmented_object, cv2.COLOR_RGB2BGR))
+                        # 幅または高さがゼロでないことを確認
+                        if detected_object.shape[0] > 0 and detected_object.shape[1] > 0:
+                            # 切り取った部分をPIL画像に変換
+                            pil_image = Image.fromarray(detected_object)
+                            segmented_images.append((pil_image, class_name))
+
+                            # セグメンテーション結果の画像を保存
+                            image_path = os.path.join(temp_dir, f"segmented_object_{i}.png")
+                            pil_image.save(image_path)
 
             if segmented_images:
                 # セグメンテーションされた画像を表示
                 cols = st.columns(4)
                 for i, (segmented_object, class_name) in enumerate(segmented_images):
-                    pil_image = Image.fromarray(segmented_object)
                     col = cols[i % 4]
-                    col.image(pil_image, caption=f"{class_name}", use_column_width=True)
+                    col.image(segmented_object, caption=f"{class_name}", use_column_width=True)
 
                 # ZIPファイルを作成
                 zip_buffer = io.BytesIO()
