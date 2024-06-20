@@ -65,7 +65,9 @@ if uploaded_file is not None:
                         # 輪郭を切り出す
                         contours, _ = cv2.findContours(cv2.Canny(detected_object, 50, 200), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
                         contour_image = np.zeros_like(detected_object)
-                        cv2.drawContours(contour_image, contours, -1, (255, 255, 255), 2)
+
+                        #cv2.drawContours(contour_image, contours, -1, (255, 255, 255), 2)#-1: 描画する輪郭のインデックスです。-1を指定すると、リスト内のすべての輪郭が描画されます。2: 輪郭の太さを示します
+                        cv2.drawContours(contour_image, contours, -1, (255, 255, 255), 1)
 
                         # 切り取った部分をPIL画像に変換
                         pil_image = Image.fromarray(contour_image)
