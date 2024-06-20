@@ -22,7 +22,7 @@ net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
 # Streamlitアプリケーションの設定
 st.title('物体検出アプリ')
-
+st.write('jpgファイルの方が比較的うまくいきます。')
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
