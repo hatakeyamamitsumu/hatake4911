@@ -68,7 +68,7 @@ if uploaded_file is not None:
     # NMSで選択されたインデックスに基づいて検出結果を描画
     colors = np.random.uniform(0, 255, size=(len(CLASSES), 3))
     for i in indices:
-        i = i[0]
+        i = i[0]  # インデックスを取得
         box = bboxes[i]
         startX, startY, endX, endY = box[0], box[1], box[2], box[3]
         class_id = class_ids[i]
@@ -84,7 +84,7 @@ if uploaded_file is not None:
     # 検出されたオブジェクトのラベルと信頼度を表示
     st.write("検出されたオブジェクト:")
     for i in indices:
-        i = i[0]
+        i = i[0]  # インデックスを取得
         class_id = class_ids[i]
         label = f"{CLASSES[class_id]} (信頼度: {confidences[i]:.2f})"
         st.write(label)
