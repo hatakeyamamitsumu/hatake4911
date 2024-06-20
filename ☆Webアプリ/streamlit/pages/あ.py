@@ -46,28 +46,36 @@ if uploaded_file is not None:
     confidence_threshold = 0.2
     nms_threshold = 0.4
 
-    # 検出結果のプロット
+    # 検出結果のプロットとNMSの適用
+    (h, w) = image_np.shape[:2]
+    bboxes = []
+    confidences = []
+    class_ids = []
+
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > confidence_threshold:
-            idx = int(detections[0, 0, i, 1])
-            box = detections[0, 0, i, 3:7] * np.array([image_np.shape[1], image_np.shape[0], image_np.shape[1], image_np.shape[0]])
+            class_id = int(detections[0, 0, i, 1])
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
-            label = f"{CLASSES[idx]}: {confidence:.2f}"
-            cv2.rectangle(image_np, (startX, startY), (endX, endY), (0, 255, 0), 2)
-            y = startY - 15 if startY - 15 > 15 else startY + 15
-            cv2.putText(image_np, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            bboxes.append([startX, startY, endX, endY])
+            confidences.append(float(confidence))
+            class_ids.append(class_id)
 
-    # 非最大抑制
+    # Non-Maximum Suppressionを適用
     indices = cv2.dnn.NMSBoxes(bboxes, confidences, confidence_threshold, nms_threshold)
+
+    # NMSで選択されたインデックスに基づいて検出結果を描画
+    colors = np.random.uniform(0, 255, size=(len(CLASSES), 3))
     for i in indices:
         i = i[0]
         box = bboxes[i]
-        startX, startY, endX, endY = box.astype("int")
-        label = f"{CLASSES[class_ids[i]]}: {confidences[i]:.2f}"
-        cv2.rectangle(image_np, (startX, startY), (endX, endY), (0, 255, 0), 2)
-        y = startY - 15 if startY - 15 > 15 else startY + 15
-        cv2.putText(image_np, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        startX, startY, endX, endY = box[0], box[1], box[2], box[3]
+        class_id = class_ids[i]
+        label = f"{CLASSES[class_id]}: {confidences[i]:.2f}"
+        color = colors[class_id]
+        cv2.rectangle(image_np, (startX, startY), (endX, endY), color, 2)
+        cv2.putText(image_np, label, (startX, startY - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     # 検出結果の画像を表示
     detected_image = Image.fromarray(image_np)
@@ -75,7 +83,8 @@ if uploaded_file is not None:
 
     # 検出されたオブジェクトのラベルと信頼度を表示
     st.write("検出されたオブジェクト:")
-    for i in range(len(indices)):
-        idx = indices[i][0]
-        label = f"{CLASSES[class_ids[idx]]} (信頼度: {confidences[idx]:.2f})"
+    for i in indices:
+        i = i[0]
+        class_id = class_ids[i]
+        label = f"{CLASSES[class_id]} (信頼度: {confidences[i]:.2f})"
         st.write(label)
