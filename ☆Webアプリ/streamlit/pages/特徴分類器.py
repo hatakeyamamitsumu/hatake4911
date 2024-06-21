@@ -18,7 +18,9 @@ def enhance_image(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # ヒストグラム平坦化を適用
     enhanced = cv2.equalizeHist(gray)
-    return cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
+    # 元のカラー画像にヒストグラム平坦化されたグレースケール画像をマージ
+    color_image = cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
+    return color_image
 
 # Streamlitアプリケーションの設定
 st.title("物体検出アプリ")
