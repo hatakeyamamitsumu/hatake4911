@@ -4,8 +4,8 @@ from PIL import Image
 import cv2
 
 # ファイルパスを直接指定する例
-car_cascade = cv2.CascadeClassifier('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/haarcascade_car.xml')
-
+car_cascade = cv2.CascadeClassifier('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/haarcascade特徴分類器/haarcascade_car.xml')
+main/☆Webアプリ/その他重要ファイル/haarcascade特徴分類器
 def detect_cars_haar(image, scaleFactor=1.1, minNeighbors=5):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     cars = car_cascade.detectMultiScale(gray, scaleFactor=scaleFactor, minNeighbors=minNeighbors, minSize=(30, 30))
