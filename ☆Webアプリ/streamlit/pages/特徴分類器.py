@@ -18,9 +18,9 @@ def enhance_image(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # ヒストグラム平坦化を適用
     enhanced = cv2.equalizeHist(gray)
-    # 元のカラー画像にヒストグラム平坦化されたグレースケール画像をマージ
-    color_image = cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
-    return color_image
+    # 平坦化されたグレースケール画像を3チャンネルに変換
+    enhanced = cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
+    return enhanced
 
 # Streamlitアプリケーションの設定
 st.title("物体検出アプリ")
@@ -38,8 +38,8 @@ if uploaded_file is not None:
     def detect_cars(image, scaleFactor=1.1, minNeighbors=5):
         result_image = np.copy(image)
         result_image = cv2.cvtColor(result_image, cv2.COLOR_RGB2BGR)  # RGBをBGRに変換
-        result_image = enhance_image(result_image)  # 画像を強調
-        result_image = detect_cars_haar(result_image, scaleFactor, minNeighbors)
+        enhanced_image = enhance_image(result_image)  # 画像を強調
+        result_image = detect_cars_haar(enhanced_image, scaleFactor, minNeighbors)
         result_image = cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB)  # BGRをRGBに変換
         return result_image
 
