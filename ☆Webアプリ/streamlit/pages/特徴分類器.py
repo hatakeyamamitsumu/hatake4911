@@ -21,7 +21,7 @@ def enhance_image(image):
     return cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
 
 # Streamlitアプリケーションの設定
-st.title("車の検出アプリ")
+st.title("物体検出アプリ")
 st.write("画像をアップロードしてください。")
 
 # 画像のアップロード
