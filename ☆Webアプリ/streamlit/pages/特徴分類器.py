@@ -42,8 +42,8 @@ if uploaded_file is not None:
         return result_image
 
     # パラメータの設定
-    scaleFactor = st.slider("scaleFactor", 1.01, 1.5, 1.1)
-    minNeighbors = st.slider("minNeighbors", 1, 10, 5)
+    #scaleFactor = st.slider("scaleFactor", 1.01, 1.5, 1.1)
+    #minNeighbors = st.slider("minNeighbors", 1, 10, 5)
 
     # 検出実行
     result_image = detect_cars(image_np, scaleFactor, minNeighbors)
