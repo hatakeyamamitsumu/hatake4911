@@ -54,8 +54,8 @@ if uploaded_file is not None and cascade_file is not None:
             return result_image
 
         # パラメータの設定
-        scaleFactor = st.slider("scaleFactor(小さいほど、生成される画像の数が増え、計算量が増えますが、検出精度が向上します。)", 1.01, 1.5, 1.1)
-        minNeighbors = st.slider("minNeighbors(値が低いと、誤検出やノイズが増える可能性がありますが、逆に高いと、検出精度は向上するものの、オブジェクトの一部が検出されない可能性もあります。)", 1, 10, 5)
+        scaleFactor = st.slider("scaleFactor(1.1から1.4の範囲で調整するのが一般的です)", 1.01, 1.5, 1.1)
+        minNeighbors = st.slider("minNeighbors(3から6の範囲で調整するのが一般的です)", 1, 10, 5)
 
         # 検出実行
         result_image = detect_and_display(image_np, cascade, scaleFactor, minNeighbors)
