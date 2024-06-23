@@ -25,7 +25,7 @@ labels = requests.get(LABELS_URL).json()
 translator = Translator(to_lang="ja")
 
 # Streamlitアプリのセットアップ
-st.title("ResNet-50を使った画像分類と日本語翻訳")
+st.title("ResNet-50を使った画像分類")
 uploaded_file = st.file_uploader("画像ファイルをアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
