@@ -10,7 +10,7 @@ import base64
 detector = MTCNN()
 
 def detect_faces(image):
-    # 顔を検出
+    #顔を検出
     faces = detector.detect_faces(image)
     # 顔の位置を取得
     face_positions = [(face['box'][0], face['box'][1], face['box'][2], face['box'][3]) for face in faces]
