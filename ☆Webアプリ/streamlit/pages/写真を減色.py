@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image, ImageOps
+from PIL import Image
 
 # 画像をアップロードするためのファイルアップローダー
 uploaded_file = st.file_uploader("アップロードする画像を選んでください", type=["jpg", "jpeg", "png"])
@@ -9,26 +9,16 @@ if uploaded_file is not None:
     original_image = Image.open(uploaded_file)
     st.image(original_image, caption="Original Image", use_column_width=True)
 
-    # 減色の深さを選択
-    num_colors = st.slider("減色の深さを選択してください", min_value=2, max_value=256, value=16, step=1)
-
-    # 画像の減色処理
-    with st.spinner('処理中...'):
-        # 減色処理のために色の深さに応じてビット数を計算
-        bits = 8 - num_colors.bit_length()
-
-        # 画像の減色処理を実行
-        quantized_image = ImageOps.posterize(original_image, bits)
-
-    st.success("処理が完了しました！")
+    # 画像を256色に減色する
+    quantized_image = original_image.quantize(colors=256)
 
     # 減色後の画像を表示
-    st.image(quantized_image, caption=f"Quantized Image (Colors: {2 ** bits})", use_column_width=True)
+    st.image(quantized_image, caption="Quantized Image (256 colors)", use_column_width=True)
 
     # ダウンロードリンクを提供
     if st.button('Download Quantized Image'):
         # ファイル名を設定
-        download_filename = f"quantized_image_{2 ** bits}_colors.png"
+        download_filename = "quantized_image_256_colors.png"
         # ファイルをダウンロード
         quantized_image.save(download_filename)
         st.download_button(label='Click here to download',
@@ -39,6 +29,6 @@ if uploaded_file is not None:
 # サイドバーに情報を表示
 st.sidebar.title("About")
 st.sidebar.info(
-    "これはStreamlitを使用してアップロードされた画像を減色するシンプルなアプリです。"
-    "\n\n減色処理には色の量子化（Posterize）を使用しています。"
+    "これはStreamlitを使用してアップロードされた画像を256色に減色するシンプルなアプリです。"
+    "\n\n画像の減色処理にはPILライブラリのquantizeメソッドを使用しています。"
 )
