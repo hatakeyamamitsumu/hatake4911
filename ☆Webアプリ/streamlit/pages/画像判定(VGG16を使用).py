@@ -9,7 +9,7 @@ from PIL import Image
 st.title("VGG16を使用した画像認識")
 
 # 画像をアップロードするためのファイルアップローダー
-uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("jpg画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # 画像を表示
