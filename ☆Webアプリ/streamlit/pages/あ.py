@@ -8,7 +8,7 @@ from mtcnn import MTCNN
 detector = MTCNN()
 
 def detect_faces(image):
-    # 顔を検出
+    #顔を検出
     faces = detector.detect_faces(image)
     # 検出された顔に矩形を描画して、顔の位置を返す
     face_positions = []
