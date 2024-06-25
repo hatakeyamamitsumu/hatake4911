@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 import cv2
 from mtcnn import MTCNN
+from io import BytesIO
 import base64
 
 # MTCNNの顔検出器を読み込む
