@@ -24,18 +24,15 @@ else:
 if st.button("Convert to Speech" if language == "English" else "音声に変換"):
     if text:
         # gTTSを使用してテキストを音声に変換
-        if language == "English":
-            lang_code = 'en'
-            if voice == "Male":
-                lang_code += '-us'
-            else:
-                lang_code += '-uk'
-        else:
-            lang_code = 'ja'
-            if voice == "男性":
-                lang_code += '-male'
-            else:
-                lang_code += '-female'
+if language == "English":
+    voice = st.selectbox("Choose voice / 声の種類を選択してください", ("Male", "Female"))
+    lang_code = 'en-us' if voice == "Male" else 'en-uk'
+else:
+    voice = st.selectbox("声の種類を選択してください", ("男性", "女性"))
+    lang_code = 'ja-male' if voice == "男性" else 'ja-female'
+
+tts = gTTS(text, lang=lang_code)
+
         
         tts = gTTS(text, lang=lang_code)
         
