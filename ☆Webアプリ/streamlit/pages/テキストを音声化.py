@@ -1,6 +1,7 @@
 import streamlit as st
 from gtts import gTTS
 import os
+import base64
 
 # Streamlitのタイトル
 st.title("Text to Speech App / テキスト音声化アプリ")
@@ -20,17 +21,25 @@ if st.button("Convert to Speech" if language == "English" else "音声に変換"
         lang_code = 'en' if language == "English" else 'ja'
         tts = gTTS(text, lang=lang_code)
         
-        # 音声ファイルの名前を指定
-        tts.save("output.mp3")
+        # 一時的に保存するファイルのパス
+        temp_path = "temp_output.mp3"
+        tts.save(temp_path)
+        
+        # 音声ファイルを読み込み、セッションストレージに保持
+        with open(temp_path, "rb") as audio_file:
+            audio_bytes = audio_file.read()
+            st.session_state['audio_data'] = audio_bytes
         
         # 音声ファイルを再生
-        audio_file = open("output.mp3", "rb")
-        audio_bytes = audio_file.read()
-        
         st.audio(audio_bytes, format="audio/mp3")
         
         # ダウンロードリンクを提供
-        st.markdown(f"[Download the audio file](./output.mp3)" if language == "English" else f"[音声ファイルをダウンロード](./output.mp3)", unsafe_allow_html=True)
+        b64 = base64.b64encode(audio_bytes).decode()
+        href = f'<a href="data:audio/mp3;base64,{b64}" download="output.mp3">Download the audio file</a>' if language == "English" else f'<a href="data:audio/mp3;base64,{b64}" download="output.mp3">音声ファイルをダウンロード</a>'
+        st.markdown(href, unsafe_allow_html=True)
+        
+        # 一時ファイルの削除
+        os.remove(temp_path)
     else:
         st.warning("Please enter some text to convert." if language == "English" else "変換するテキストを入力してください。")
 
