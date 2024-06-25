@@ -18,7 +18,7 @@ def detect_faces(image):
         face_positions.append((x, y, width, height))
     return image, face_positions
 
-def apply_mosaic(image, face_positions, scale=0.09):
+def apply_mosaic(image, face_positions, scale=0.3):
     for (x, y, width, height) in face_positions:
         # 顔の部分を切り取る
         face = image[y:y+height, x:x+width]
