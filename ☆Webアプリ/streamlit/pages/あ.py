@@ -1,10 +1,8 @@
 import streamlit as st
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 import cv2
 from mtcnn import MTCNN
-from io import BytesIO
-import base64
 
 # MTCNNの顔検出器を読み込む
 detector = MTCNN()
@@ -12,9 +10,13 @@ detector = MTCNN()
 def detect_faces(image):
     # 顔を検出
     faces = detector.detect_faces(image)
-    # 顔の位置を取得
-    face_positions = [(face['box'][0], face['box'][1], face['box'][2], face['box'][3]) for face in faces]
-    return face_positions
+    # 検出された顔に矩形を描画して、顔の位置を返す
+    face_positions = []
+    for face in faces:
+        x, y, width, height = face['box']
+        cv2.rectangle(image, (x, y), (x + width, y + height), (255, 0, 0), 2)
+        face_positions.append((x, y, width, height))
+    return image, face_positions
 
 def apply_mosaic(image, face_positions, scale=0.05):
     for (x, y, width, height) in face_positions:
@@ -27,14 +29,7 @@ def apply_mosaic(image, face_positions, scale=0.05):
         image[y:y+height, x:x+width] = face
     return image
 
-def get_image_download_link(img, filename, text):
-    buffered = BytesIO()
-    img.save(buffered, format="JPEG")
-    img_str = base64.b64encode(buffered.getvalue()).decode()
-    href = f'<a href="data:file/jpg;base64,{img_str}" download="{filename}">{text}</a>'
-    return href
-
-st.title("顔認識アプリ")
+st.title("顔認識とモザイク処理アプリ")
 st.write("jpg画像をアップロードしてください。")
 
 # 画像のアップロード
@@ -44,16 +39,10 @@ if uploaded_file is not None:
     # アップロードされた画像を読み込む
     image = Image.open(uploaded_file)
     # OpenCV形式に変換
-    image = np.array(image)
-    # 顔認識を実行
-    face_positions = detect_faces(image)
-    # モザイク処理を適用
-    result_image = apply_mosaic(image, face_positions)
-    # OpenCVのBGR色空間からPILのRGB色空間に変換
-    result_image_rgb = cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB)
-    # 結果の画像を表示
-    st.image(result_image_rgb, caption="認識結果", use_column_width=True)
-
-    # ダウンロードボタンを追加
-    result_pil_image = Image.fromarray(result_image_rgb)
-    st.markdown(get_image_download_link(result_pil_image, "mosaic_image.jpg", "Click here to download"), unsafe_allow_html=True)
+    image_cv = np.array(image)
+    # 顔認識を実行し、顔の位置を取得
+    result_image, face_positions = detect_faces(image_cv.copy())
+    # 顔にモザイク処理を適用
+    result_image_mosaic = apply_mosaic(result_image, face_positions)
+    # モザイクをかけた結果の画像を表示
+    st.image(result_image_mosaic, caption="モザイク処理後の画像", use_column_width=True)
