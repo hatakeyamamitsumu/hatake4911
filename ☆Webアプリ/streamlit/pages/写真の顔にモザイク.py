@@ -39,7 +39,7 @@ if uploaded_file is not None:
     # 顔認識を実行
     face_positions = detect_faces(image)
     # モザイク処理を適用
-    st.write("写真上で右クリック　→　名前を付けて保存　で写真を取得できます。")
+    st.write("写真上で右クリック　→　名前を付けて画像を保存　で写真を取得できます。")
     result_image = apply_mosaic(image, face_positions)
     # 結果の画像を表示
     st.image(result_image, caption="認識結果", use_column_width=True)
