@@ -4,6 +4,11 @@ from keras.applications.vgg16 import preprocess_input, decode_predictions
 from keras.preprocessing import image
 import streamlit as st
 from PIL import Image
+import requests
+from translate import Translator
+
+# Translatorの設定
+translator = Translator(to_lang="ja")
 
 # Streamlitのタイトル
 st.title("VGG16を使用した画像認識")
@@ -34,7 +39,8 @@ if uploaded_file is not None:
     # 予測結果を表示
     st.write("予測結果:")
     for i, (imagenet_id, label, score) in enumerate(decoded_predictions):
-        st.write(f"{i+1}: {label} ({score*100:.2f}%)")
+        label_ja = translator.translate(label)
+        st.write(f"{i+1}: {label_ja} ({label}): {score*100:.2f}%")
 
 # サイドバーに情報を表示
 st.sidebar.title("About")
