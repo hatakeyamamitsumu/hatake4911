@@ -3,6 +3,7 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.vgg16 import preprocess_input, decode_predictions
 from keras.preprocessing import image
 import streamlit as st
+from PIL import Image
 
 # Streamlitのタイトル
 st.title("VGG16を使用した画像認識")
@@ -12,11 +13,12 @@ uploaded_file = st.file_uploader("画像をアップロードしてください"
 
 if uploaded_file is not None:
     # 画像を表示
-    img = image.load_img(uploaded_file, target_size=(224, 224))
+    img = Image.open(uploaded_file)
+    img = img.resize((224, 224))
     st.image(img, caption="アップロードされた画像", use_column_width=True)
 
     # 画像を配列に変換
-    img_array = image.img_to_array(img)
+    img_array = np.array(img)
     img_array = np.expand_dims(img_array, axis=0)
     img_array = preprocess_input(img_array)
 
