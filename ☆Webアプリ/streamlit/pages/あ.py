@@ -16,7 +16,7 @@ def detect_faces(image):
     face_positions = [(face['box'][0], face['box'][1], face['box'][2], face['box'][3]) for face in faces]
     return face_positions
 
-def apply_mosaic(image, face_positions, scale=0.3):
+def apply_mosaic(image, face_positions, scale=0.05):
     for (x, y, width, height) in face_positions:
         # 顔の部分を切り取る
         face = image[y:y+height, x:x+width]
@@ -49,9 +49,11 @@ if uploaded_file is not None:
     face_positions = detect_faces(image)
     # モザイク処理を適用
     result_image = apply_mosaic(image, face_positions)
+    # OpenCVのBGR色空間からPILのRGB色空間に変換
+    result_image_rgb = cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB)
     # 結果の画像を表示
-    st.image(result_image, caption="認識結果", use_column_width=True)
+    st.image(result_image_rgb, caption="認識結果", use_column_width=True)
 
     # ダウンロードボタンを追加
-    result_pil_image = Image.fromarray(cv2.cvtColor(result_image, cv2.COLOR_BGR2RGB))
+    result_pil_image = Image.fromarray(result_image_rgb)
     st.markdown(get_image_download_link(result_pil_image, "mosaic_image.jpg", "Click here to download"), unsafe_allow_html=True)
