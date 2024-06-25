@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 
 # 画像をアップロードするためのファイルアップローダー
-uploaded_file = st.file_uploader("アップロードする画像を選んでください", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("アップロードする画像を選んでください。", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # 画像を表示
