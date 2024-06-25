@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image
 import cv2
 from mtcnn import MTCNN
 
@@ -8,17 +8,13 @@ from mtcnn import MTCNN
 detector = MTCNN()
 
 def detect_faces(image):
-    #顔を検出
+    # 顔を検出
     faces = detector.detect_faces(image)
-    # 検出された顔に矩形を描画して、顔の位置を返す
-    face_positions = []
-    for face in faces:
-        x, y, width, height = face['box']
-        cv2.rectangle(image, (x, y), (x + width, y + height), (255, 0, 0), 0)
-        face_positions.append((x, y, width, height))
-    return image, face_positions
+    # 顔の位置を取得
+    face_positions = [(face['box'][0], face['box'][1], face['box'][2], face['box'][3]) for face in faces]
+    return face_positions
 
-def apply_mosaic(image, face_positions, scale=0.3):
+def apply_mosaic(image, face_positions, scale=0.1):
     for (x, y, width, height) in face_positions:
         # 顔の部分を切り取る
         face = image[y:y+height, x:x+width]
@@ -29,7 +25,7 @@ def apply_mosaic(image, face_positions, scale=0.3):
         image[y:y+height, x:x+width] = face
     return image
 
-st.title("顔認識とモザイク処理アプリ")
+st.title("顔認識アプリ")
 st.write("jpg画像をアップロードしてください。")
 
 # 画像のアップロード
@@ -39,10 +35,10 @@ if uploaded_file is not None:
     # アップロードされた画像を読み込む
     image = Image.open(uploaded_file)
     # OpenCV形式に変換
-    image_cv = np.array(image)
-    # 顔認識を実行し、顔の位置を取得
-    result_image, face_positions = detect_faces(image_cv.copy())
-    # 顔にモザイク処理を適用
-    result_image_mosaic = apply_mosaic(result_image, face_positions)
-    # モザイクをかけた結果の画像を表示
-    st.image(result_image_mosaic, caption="モザイク処理後の画像", use_column_width=True)
+    image = np.array(image)
+    # 顔認識を実行
+    face_positions = detect_faces(image)
+    # モザイク処理を適用
+    result_image = apply_mosaic(image, face_positions)
+    # 結果の画像を表示
+    st.image(result_image, caption="認識結果", use_column_width=True)
