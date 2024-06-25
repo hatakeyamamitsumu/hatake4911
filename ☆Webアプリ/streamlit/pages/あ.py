@@ -14,7 +14,7 @@ def detect_faces(image):
     face_positions = []
     for face in faces:
         x, y, width, height = face['box']
-        cv2.rectangle(image, (x, y), (x + width, y + height), (255, 0, 0), 0)
+        cv2.rectangle(image, (x, y), (x + width-1, y + height-1), (255, 0, 0), 0)
         face_positions.append((x, y, width, height))
     return image, face_positions
 
@@ -24,7 +24,7 @@ def apply_mosaic(image, face_positions, scale=0.05):
         face = image[y:y+height, x:x+width]
         # 顔の部分にモザイク処理を適用
         face = cv2.resize(face, (0, 0), fx=scale, fy=scale)
-        face = cv2.resize(face, (width+1, height+1), interpolation=cv2.INTER_NEAREST)
+        face = cv2.resize(face, (width, height), interpolation=cv2.INTER_NEAREST)
         # モザイクをかけた顔を元の画像に戻す
         image[y:y+height, x:x+width] = face
     return image
