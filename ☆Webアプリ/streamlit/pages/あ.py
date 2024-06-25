@@ -24,7 +24,7 @@ def apply_mosaic(image, face_positions, scale=0.05):
         face = image[y:y+height, x:x+width]
         # 顔の部分にモザイク処理を適用
         face = cv2.resize(face, (0, 0), fx=scale, fy=scale)
-        face = cv2.resize(face, (width, height), interpolation=cv2.INTER_NEAREST)
+        face = cv2.resize(face, (width+1, height+1), interpolation=cv2.INTER_NEAREST)
         # モザイクをかけた顔を元の画像に戻す
         image[y:y+height, x:x+width] = face
     return image
