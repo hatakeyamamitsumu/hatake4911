@@ -14,8 +14,8 @@ def main():
     
     if uploaded_file is not None:
         text = uploaded_file.read().decode("utf-8")
-        st.write("アップロードしたテキスト：")
-        st.write(text)
+        #st.write("アップロードしたテキスト：")
+        #st.write(text)
 
         result = perform_morphological_analysis(text)
         st.write("形態素解析結果：")
