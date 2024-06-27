@@ -57,28 +57,30 @@ if uploaded_file is not None:
     net.setInput(blob)
     detections = net.forward()
 
-    # 検出結果をプロット
-    mask = np.zeros(image_np.shape[:2], dtype="uint8")
+    # 検出されたオブジェクトのラベルをリストに追加
+    detected_objects = []
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
             idx = int(detections[0, 0, i, 1])
-            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
-            cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
+            detected_objects.append(CLASSES[idx])
 
-    # ユーザーが選択した部分のみを残し、それ以外をぼかす処理
-    selected_region = st.selectbox("物体検出結果から選択した部分をぼかします", options=[False, True])
-    if selected_region:
-        mask_inverse = cv2.bitwise_not(mask)
-        blurred_image_np = cv2.GaussianBlur(image_np, (blur_strength, blur_strength), 0)
-        result_image_np = np.where(mask_inverse[:, :, None] == 0, image_np, blurred_image_np)
-    else:
-        blurred_image_np = cv2.GaussianBlur(image_np, (blur_strength, blur_strength), 0)
-        result_image_np = blurred_image_np
+    # セレクトボックスでオブジェクトを選択
+    selected_object = st.selectbox('オブジェクトを選択してください', detected_objects)
+
+    # 画像のコピーを作成し、選択されたオブジェクト以外をぼかす
+    blurred_image_np = np.copy(image_np)
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > 0.2:
+            idx = int(detections[0, 0, i, 1])
+            if CLASSES[idx] != selected_object:
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                (startX, startY, endX, endY) = box.astype("int")
+                blurred_image_np[startY:endY, startX:endX] = cv2.GaussianBlur(blurred_image_np[startY:endY, startX:endX], (blur_strength, blur_strength), 0)
 
     # 検出結果の画像を表示
-    detected_image = Image.fromarray(result_image_np)
+    detected_image = Image.fromarray(blurred_image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
 
     # 検出されたオブジェクトのラベルと信頼度を表示
