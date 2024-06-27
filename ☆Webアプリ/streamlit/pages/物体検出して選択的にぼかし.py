@@ -32,7 +32,7 @@ except cv2.error as e:
     st.stop()
 
 # Streamlitアプリケーションの設定
-st.title('各物体のぼかし選択アプリ')
+st.title('物体検出して選択的にぼかし')
 st.write('jpgファイルの方が比較的うまくいきます。')
 
 # ぼかし具合を選択するスライダー
