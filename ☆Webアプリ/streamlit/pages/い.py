@@ -2,7 +2,6 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
-import os
 
 # COCOデータセットのクラスラベルのリスト
 CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
@@ -32,7 +31,7 @@ except cv2.error as e:
     st.stop()
 
 # Streamlitアプリケーションの設定
-st.title('物体検出アプリ')
+st.title('物体検出とぼかしアプリ')
 st.write('jpgファイルの方が比較的うまくいきます。')
 
 # ぼかし具合を選択するスライダー
@@ -74,7 +73,11 @@ if uploaded_file is not None:
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
             idx = int(detections[0, 0, i, 1])
-            if CLASSES[idx] != selected_object:
+            if CLASSES[idx] == selected_object:
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                (startX, startY, endX, endY) = box.astype("int")
+                blurred_image_np[startY:endY, startX:endX] = cv2.GaussianBlur(blurred_image_np[startY:endY, startX:endX], (blur_strength, blur_strength), 0)
+            else:
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                 (startX, startY, endX, endY) = box.astype("int")
                 blurred_image_np[startY:endY, startX:endX] = cv2.GaussianBlur(blurred_image_np[startY:endY, startX:endX], (blur_strength, blur_strength), 0)
