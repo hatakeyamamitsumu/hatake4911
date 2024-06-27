@@ -58,5 +58,5 @@ gtts
 mecab-python3
 unidic-lite
 
-cv2
+cv
 opencv-python-headless
