@@ -7,11 +7,6 @@ from torchvision import models, transforms
 import zipfile
 import io
 
-try:
-    import cv2
-    st.write("cv2のインポートに成功しました。")
-except ImportError as e:
-    st.error(f"cv2のインポートに失敗しました: {e}")
 # Mask R-CNNモデルの読み込み
 model = models.detection.maskrcnn_resnet50_fpn(pretrained=True)
 model.eval()
@@ -46,6 +41,10 @@ def draw_segmentation_map(image, boxes, masks):
             for k in range(masks[i].shape[2]):
                 if masks[i, 0, j, k]:
                     image[j, k, :] = alpha * image[j, k, :] + (1 - alpha) * np.array(color)
+    
+    # 境界ボックスを描画
+    #for box in boxes:
+        #cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (255, 0, 0), 2)
     
     return image
 
