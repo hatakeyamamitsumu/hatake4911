@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
+import os
 
 # COCOデータセットのクラスラベルのリスト
 CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
@@ -14,10 +15,21 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
-# モデルの読み込み
-MODEL_PATH = 'mobilenet_iter_73000.caffemodel'
-PROTOTXT_PATH = 'deploy.prototxt'
-net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
+# モデルの読み込みパス
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
+PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
+
+# ファイルの存在確認
+if not os.path.exists(MODEL_PATH):
+    st.error(f"モデルファイルが見つかりません: {MODEL_PATH}")
+if not os.path.exists(PROTOTXT_PATH):
+    st.error(f"プロトタイプファイルが見つかりません: {PROTOTXT_PATH}")
+
+try:
+    net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
+except cv2.error as e:
+    st.error(f"モデルの読み込みに失敗しました: {e}")
+    st.stop()
 
 # Streamlitアプリケーションの設定
 st.title('物体検出アプリ')
@@ -59,3 +71,11 @@ if uploaded_file is not None:
     # 検出結果の画像を表示
     detected_image = Image.fromarray(result_image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
+
+    # 検出されたオブジェクトのラベルと信頼度を表示
+    st.write("検出されたオブジェクト:")
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+        if confidence > 0.2:
+            idx = int(detections[0, 0, i, 1])
+            st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
