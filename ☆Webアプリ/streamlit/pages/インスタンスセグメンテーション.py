@@ -42,10 +42,6 @@ def draw_segmentation_map(image, boxes, masks):
                 if masks[i, 0, j, k]:
                     image[j, k, :] = alpha * image[j, k, :] + (1 - alpha) * np.array(color)
     
-    # 境界ボックスを描画
-    #for box in boxes:
-        #cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (255, 0, 0), 2)
-    
     return image
 
 st.title("インスタンスセグメンテーションアプリ")
