@@ -7,6 +7,11 @@ from torchvision import models, transforms
 import zipfile
 import io
 
+try:
+    import cv2
+    st.write("cv2のインポートに成功しました。")
+except ImportError as e:
+    st.error(f"cv2のインポートに失敗しました: {e}")
 # Mask R-CNNモデルの読み込み
 model = models.detection.maskrcnn_resnet50_fpn(pretrained=True)
 model.eval()
