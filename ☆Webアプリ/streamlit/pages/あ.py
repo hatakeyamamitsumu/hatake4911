@@ -4,6 +4,8 @@ from PIL import Image
 import cv2
 import torch
 from torchvision import models, transforms
+import zipfile
+import io
 
 # Mask R-CNNモデルの読み込み
 model = models.detection.maskrcnn_resnet50_fpn(pretrained=True)
@@ -32,7 +34,7 @@ def get_prediction(img, threshold=0.5):
     return pred_boxes, pred_masks
 
 def draw_segmentation_map(image, boxes, masks):
-    alpha = 0.5  # マスクの透明度
+    alpha = 1  # マスクの透明度
     for i in range(len(masks)):
         color = np.random.randint(0, 255, 3).tolist()
         for j in range(masks[i].shape[1]):
@@ -41,8 +43,8 @@ def draw_segmentation_map(image, boxes, masks):
                     image[j, k, :] = alpha * image[j, k, :] + (1 - alpha) * np.array(color)
     
     # 境界ボックスを描画
-    for box in boxes:
-        cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (255, 0, 0), 2)
+    #for box in boxes:
+        #cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (255, 0, 0), 2)
     
     return image
 
@@ -63,5 +65,25 @@ if uploaded_file is not None:
     # セグメンテーション結果を描画
     segmented_image = draw_segmentation_map(image_np.copy(), boxes, masks)
     
-    # 結果の画像を表示
-    st.image(segmented_image, caption="インスタンスセグメンテーション結果", use_column_width=True)
+    # zipファイルにセグメンテーションされた画像を保存してダウンロード
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+        for i in range(len(masks)):
+            # マスク画像を作成
+            mask_image = np.zeros_like(image_np)
+            mask_image[masks[i, 0]] = segmented_image[masks[i, 0]]
+            
+            # PIL Imageに変換してzipファイルに追加
+            mask_pil = Image.fromarray(mask_image)
+            mask_bytes = io.BytesIO()
+            mask_pil.save(mask_bytes, format='JPEG')
+            zip_file.writestr(f'segmentation_{i+1}.jpg', mask_bytes.getvalue())
+    
+    # zipファイルをダウンロードするリンクを表示
+    zip_buffer.seek(0)
+    st.download_button(
+        label='Download Segmentation Results as ZIP',
+        data=zip_buffer,
+        file_name='segmentation_results.zip',
+        mime='application/zip'
+    )
