@@ -17,15 +17,16 @@ def detect_faces(image):
     return face_positions
 
 def apply_mosaic(image, face_positions, scale=0.05):
+    mosaic_image = image.copy()
     for (x, y, width, height) in face_positions:
         # 顔の部分を切り取る
-        face = image[y:y + height, x:x + width]
+        face = mosaic_image[y:y + height, x:x + width]
         # 顔の部分にモザイク処理を適用
         face = cv2.resize(face, (0, 0), fx=scale, fy=scale)
         face = cv2.resize(face, (width, height), interpolation=cv2.INTER_NEAREST)
         # モザイクをかけた顔を元の画像に戻す
-        image[y:y + height, x:x + width] = face
-    return image
+        mosaic_image[y:y + height, x:x + width] = face
+    return mosaic_image
 
 st.title("顔認識とモザイク処理アプリ")
 st.write("jpg画像をアップロードしてください。")
@@ -48,10 +49,10 @@ if uploaded_file is not None:
         # 各顔に対してモザイクを適用するかどうかを選択するチェックボックス
         selected_faces = []
         for i, (x, y, width, height) in enumerate(face_positions):
-            if st.checkbox(f"顔 {i + 1}"):
+            if st.checkbox(f"顔 {i + 1}", key=f"checkbox_{i}"):
                 selected_faces.append((x, y, width, height))
         
-        # 顔にモザイク処理を適用
+        # モザイクをかける場合のみ適用
         if selected_faces:
             result_image_mosaic = apply_mosaic(image_cv.copy(), selected_faces)
         else:
