@@ -14,15 +14,15 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
-# モデルの読み込み QR_path='/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
-#main/☆Webアプリ/その他重要ファイル/deploy.prototxt
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
-PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
+# モデルの読み込み
+MODEL_PATH = 'mobilenet_iter_73000.caffemodel'
+PROTOTXT_PATH = 'deploy.prototxt'
 net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
 # Streamlitアプリケーションの設定
 st.title('物体検出アプリ')
 st.write('jpgファイルの方が比較的うまくいきます。')
+
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
@@ -42,20 +42,22 @@ if uploaded_file is not None:
     net.setInput(blob)
     detections = net.forward()
 
-    # 検出結果のプロット
+    # 検出結果をプロット
+    mask = np.zeros(image_np.shape[:2], dtype="uint8")
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
             idx = int(detections[0, 0, i, 1])
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
-            label = f"{CLASSES[idx]}: {confidence:.2f}"
-            cv2.rectangle(image_np, (startX, startY), (endX, endY), (0, 255, 0), 2)
-            y = startY - 15 if startY - 15 > 15 else startY + 15
-            cv2.putText(image_np, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
+
+    # ぼかし処理
+    blurred_image_np = cv2.GaussianBlur(image_np, (21, 21), 0)
+    result_image_np = np.where(mask[:, :, None] == 255, image_np, blurred_image_np)
 
     # 検出結果の画像を表示
-    detected_image = Image.fromarray(image_np)
+    detected_image = Image.fromarray(result_image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
 
     # 検出されたオブジェクトのラベルと信頼度を表示
