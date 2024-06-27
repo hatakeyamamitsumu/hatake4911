@@ -14,12 +14,18 @@ def main():
     
     if uploaded_file is not None:
         text = uploaded_file.read().decode("utf-8")
-        #st.write("アップロードしたテキスト：")
-        #st.write(text)
-
+        
         result = perform_morphological_analysis(text)
         st.write("形態素解析結果：")
         st.write(result)
+
+        # 解析結果をダウンロードできるボタン
+        st.download_button(
+            label="解析結果をダウンロード",
+            data=result,
+            file_name="morphological_analysis_result.txt",
+            mime="text/plain"
+        )
 
 if __name__ == "__main__":
     main()
