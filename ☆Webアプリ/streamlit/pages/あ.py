@@ -43,29 +43,16 @@ if uploaded_file is not None:
     detections = net.forward()
 
     # 検出結果をプロット
-    labels = []
+    mask = np.zeros(image_np.shape[:2], dtype="uint8")
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
             idx = int(detections[0, 0, i, 1])
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
-            labels.append(CLASSES[idx])
-
-    # 検出されたオブジェクトのリストを表示し、選択させる
-    selected_label = st.selectbox("ぼかさない物体を選択してください:", labels)
+            cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
 
     # ぼかし処理
-    mask = np.zeros(image_np.shape[:2], dtype="uint8")
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > 0.2:
-            idx = int(detections[0, 0, i, 1])
-            if CLASSES[idx] == selected_label:
-                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-                (startX, startY, endX, endY) = box.astype("int")
-                cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
-
     blurred_image_np = cv2.GaussianBlur(image_np, (21, 21), 0)
     inverse_mask = cv2.bitwise_not(mask)
     foreground = cv2.bitwise_and(image_np, image_np, mask=mask)
