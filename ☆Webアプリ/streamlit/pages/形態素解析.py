@@ -20,7 +20,7 @@ def main():
         st.write(result)
 
         # 解析結果をダウンロードできるボタン
-        st.download_button(
+        st.sidebar.download_button(
             label="解析結果をダウンロード",
             data=result,
             file_name="morphological_analysis_result.txt",
