@@ -35,6 +35,9 @@ except cv2.error as e:
 st.title('物体検出アプリ')
 st.write('jpgファイルの方が比較的うまくいきます。')
 
+# ぼかし具合を選択するスライダー
+blur_strength = st.slider('ぼかし具合を選択してください (カーネルサイズ)', 1, 50, 21, step=2)
+
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
@@ -65,7 +68,7 @@ if uploaded_file is not None:
             cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
 
     # ぼかし処理
-    blurred_image_np = cv2.GaussianBlur(image_np, (21, 21), 0)
+    blurred_image_np = cv2.GaussianBlur(image_np, (blur_strength, blur_strength), 0)
     result_image_np = np.where(mask[:, :, None] == 255, image_np, blurred_image_np)
 
     # 検出結果の画像を表示
