@@ -54,3 +54,5 @@ deepl-translate
 mtcnn
 
 gtts
+
+opencv-python-headless
