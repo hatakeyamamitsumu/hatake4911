@@ -32,7 +32,7 @@ def get_prediction(img, threshold=0.5):
     return pred_boxes, pred_masks
 
 def draw_segmentation_map(image, boxes, masks):
-    alpha = 0  # マスクの透明度
+    alpha = 1  # マスクの透明度
     for i in range(len(masks)):
         color = np.random.randint(0, 255, 3).tolist()
         for j in range(masks[i].shape[1]):
