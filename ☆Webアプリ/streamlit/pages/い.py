@@ -1,12 +1,9 @@
 import streamlit as st
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 import cv2
 import torch
 from torchvision import models, transforms
-import io
-import zipfile
-import os
 
 # Mask R-CNNモデルの読み込み
 model = models.detection.maskrcnn_resnet50_fpn(pretrained=True)
@@ -66,28 +63,8 @@ if uploaded_file is not None:
     # セグメンテーション結果を描画
     segmented_image = draw_segmentation_map(image_np.copy(), boxes, masks)
     
-    # 各インスタンスを切り分けて保存
-    instances_images = []
+    # 各インスタンスを切り分けて表示
     for i, mask in enumerate(masks):
         instance_image = image_np.copy()
-        instance_image[mask] = segmented_image[mask]
-        instances_images.append(instance_image)
-    
-    # 各画像を並べて表示
-    st.image(instances_images, caption="セグメンテーションされたインスタンス", width=200)
-    
-    # ZIPファイルにまとめてダウンロードする関数
-    def download_zip(instances_images):
-        zip_buffer = io.BytesIO()
-        with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
-            for i, instance_image in enumerate(instances_images):
-                img_pil = Image.fromarray(instance_image)
-                img_io = io.BytesIO()
-                img_pil.save(img_io, format='PNG')
-                zip_file.writestr(f'instance_{i+1}.png', img_io.getvalue())
-        
-        zip_buffer.seek(0)
-        st.download_button(label='ダウンロード', data=zip_buffer, file_name='segmented_instances.zip', mime='application/zip')
-    
-    # ダウンロードボタンを追加
-    download_zip(instances_images)
+        instance_image[~mask] = 0  # マスク以外の部分を黒にする
+        st.image(instance_image, caption=f"Instance {i+1}", use_column_width=True)
