@@ -14,7 +14,7 @@ def detect_faces(image):
     face_positions = []
     for face in faces:
         x, y, width, height = face['box']
-        cv2.rectangle(image, (x, y), (x + width-1, y + height-1), (255, 0, 0), 0)
+        cv2.rectangle(image, (x, y), (x + width-2, y + height-2), (255, 0, 0), 0)
         face_positions.append((x, y, width, height))
     return image, face_positions
 
