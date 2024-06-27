@@ -31,7 +31,7 @@ except cv2.error as e:
     st.stop()
 
 # Streamlitアプリケーションの設定
-st.title('複数物体の検出とぼかしアプリ')
+st.title('各物体のぼかし選択アプリ')
 st.write('jpgファイルの方が比較的うまくいきます。')
 
 # ぼかし具合を選択するスライダー
@@ -62,27 +62,30 @@ if uploaded_file is not None:
         confidence = detections[0, 0, i, 2]
         if confidence > 0.2:
             idx = int(detections[0, 0, i, 1])
-            detected_objects.append(CLASSES[idx])
+            detected_objects.append({
+                'class': CLASSES[idx],
+                'confidence': confidence,
+                'box': detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            })
 
-    # セレクトボックスでオブジェクトを複数選択
-    selected_objects = st.multiselect('オブジェクトを選択してください', detected_objects)
+    # 各オブジェクトに対してぼかしを適用するかどうかを選択するチェックボックス
+    selected_objects = []
+    for obj in detected_objects:
+        if st.checkbox(f"{obj['class']} (信頼度: {obj['confidence']:.2f})"):
+            selected_objects.append(obj)
 
     # 画像のコピーを作成し、選択されたオブジェクトの部分だけをぼかす
     blurred_image_np = np.copy(image_np)
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > 0.2:
-            idx = int(detections[0, 0, i, 1])
-            if CLASSES[idx] in selected_objects:
-                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-                (startX, startY, endX, endY) = box.astype("int")
-                blurred_image_np[startY:endY, startX:endX] = cv2.GaussianBlur(blurred_image_np[startY:endY, startX:endX], (blur_strength, blur_strength), 0)
+    for obj in selected_objects:
+        idx = CLASSES.index(obj['class'])
+        box = obj['box'].astype("int")
+        blurred_image_np[box[1]:box[3], box[0]:box[2]] = cv2.GaussianBlur(blurred_image_np[box[1]:box[3], box[0]:box[2]], (blur_strength, blur_strength), 0)
 
     # 検出結果の画像を表示
     detected_image = Image.fromarray(blurred_image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
 
-    # 検出されたオブジェクトのラベルと信頼度を表示
+    # 選択されたオブジェクトのラベルと信頼度を表示
     st.write("選択されたオブジェクト:")
     for obj in selected_objects:
-        st.write(obj)
+        st.write(f"{obj['class']} (信頼度: {obj['confidence']:.2f})")
