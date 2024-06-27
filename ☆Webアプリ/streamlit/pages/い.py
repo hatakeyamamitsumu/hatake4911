@@ -5,6 +5,8 @@ import cv2
 import torch
 from torchvision import models, transforms
 import io
+import zipfile
+import os
 
 # Mask R-CNNモデルの読み込み
 model = models.detection.maskrcnn_resnet50_fpn(pretrained=True)
@@ -64,15 +66,28 @@ if uploaded_file is not None:
     # セグメンテーション結果を描画
     segmented_image = draw_segmentation_map(image_np.copy(), boxes, masks)
     
-    # 結果の画像を表示
-    st.image(segmented_image, caption="インスタンスセグメンテーション結果", use_column_width=True)
+    # 各インスタンスを切り分けて保存
+    instances_images = []
+    for i, mask in enumerate(masks):
+        instance_image = image_np.copy()
+        instance_image[mask] = segmented_image[mask]
+        instances_images.append(instance_image)
     
-    # PNG形式でダウンロードボタンを追加
-    def download_image(image, filename='segmented_image.png'):
-        img_pil = Image.fromarray(image)
-        img_io = io.BytesIO()
-        img_pil.save(img_io, format='PNG')
-        img_io.seek(0)
-        st.download_button(label='ダウンロード', data=img_io, file_name=filename, mime='image/png')
+    # 各画像を並べて表示
+    st.image(instances_images, caption="セグメンテーションされたインスタンス", width=200)
     
-    download_image(segmented_image)
+    # ZIPファイルにまとめてダウンロードする関数
+    def download_zip(instances_images):
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+            for i, instance_image in enumerate(instances_images):
+                img_pil = Image.fromarray(instance_image)
+                img_io = io.BytesIO()
+                img_pil.save(img_io, format='PNG')
+                zip_file.writestr(f'instance_{i+1}.png', img_io.getvalue())
+        
+        zip_buffer.seek(0)
+        st.download_button(label='ダウンロード', data=zip_buffer, file_name='segmented_instances.zip', mime='application/zip')
+    
+    # ダウンロードボタンを追加
+    download_zip(instances_images)
