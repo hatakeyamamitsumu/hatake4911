@@ -7,7 +7,7 @@ def perform_morphological_analysis(text):
     return parsed_text
 
 def main():
-    st.title("形態素解析アプリ")
+    st.title("形態素解析アプリ　")
     st.write("テキストファイルをアップロードして形態素解析を行います。")
 
     uploaded_file = st.file_uploader("テキストファイルを選択してください", type="txt")
