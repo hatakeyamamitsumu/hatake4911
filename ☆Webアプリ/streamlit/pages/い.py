@@ -26,7 +26,7 @@ def get_prediction(img, threshold=0.5):
     pred_masks = predictions[0]['masks'].detach().numpy()
     
     pred_boxes = pred_boxes[pred_score >= threshold].astype(np.int32)
-    pred_masks = pred_masks[pred_score >= threshold]
+    pred_masks = pred_masks[:, pred_score >= threshold]
     pred_masks = pred_masks > threshold
     
     return pred_boxes, pred_masks
@@ -37,7 +37,7 @@ def draw_segmentation_map(image, boxes, masks):
         color = np.random.randint(0, 255, 3).tolist()
         for j in range(masks[i].shape[1]):
             for k in range(masks[i].shape[2]):
-                if masks[i, 0, j, k]:
+                if masks[i, j, k]:
                     image[j, k, :] = alpha * image[j, k, :] + (1 - alpha) * np.array(color)
     
     # 境界ボックスを描画
