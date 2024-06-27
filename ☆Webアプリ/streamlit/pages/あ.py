@@ -54,11 +54,8 @@ if uploaded_file is not None:
 
     # ぼかし処理
     blurred_image_np = cv2.GaussianBlur(image_np, (21, 21), 0)
-    inverse_mask = cv2.bitwise_not(mask)
-    foreground = cv2.bitwise_and(image_np, image_np, mask=mask)
-    background = cv2.bitwise_and(blurred_image_np, blurred_image_np, mask=inverse_mask)
-    final_image = cv2.add(foreground, background)
+    result_image_np = np.where(mask[:, :, None] == 255, image_np, blurred_image_np)
 
     # 検出結果の画像を表示
-    detected_image = Image.fromarray(final_image)
+    detected_image = Image.fromarray(result_image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
