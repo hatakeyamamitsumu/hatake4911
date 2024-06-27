@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import os
+
 # COCOデータセットのクラスラベルのリスト
 CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
            "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", 
@@ -69,23 +70,19 @@ if uploaded_file is not None:
             })
 
     # 各オブジェクトに対してぼかしを適用するかどうかを選択するチェックボックス
-    selected_objects = []
     for obj in detected_objects:
-        if st.checkbox(f"{obj['class']} (信頼度: {obj['confidence']:.2f})"):
-            selected_objects.append(obj)
-
-    # 画像のコピーを作成し、選択されたオブジェクトの部分だけをぼかす
-    blurred_image_np = np.copy(image_np)
-    for obj in selected_objects:
-        idx = CLASSES.index(obj['class'])
-        box = obj['box'].astype("int")
-        blurred_image_np[box[1]:box[3], box[0]:box[2]] = cv2.GaussianBlur(blurred_image_np[box[1]:box[3], box[0]:box[2]], (blur_strength, blur_strength), 0)
+        checkbox_id = f"{obj['class']}_{obj['confidence']}"
+        if st.checkbox(f"{obj['class']} (信頼度: {obj['confidence']:.2f})", key=checkbox_id):
+            box = obj['box'].astype("int")
+            image_np[box[1]:box[3], box[0]:box[2]] = cv2.GaussianBlur(image_np[box[1]:box[3], box[0]:box[2]], (blur_strength, blur_strength), 0)
 
     # 検出結果の画像を表示
-    detected_image = Image.fromarray(blurred_image_np)
+    detected_image = Image.fromarray(image_np)
     st.image(detected_image, caption='検出結果', use_column_width=True)
 
     # 選択されたオブジェクトのラベルと信頼度を表示
     st.write("選択されたオブジェクト:")
-    for obj in selected_objects:
-        st.write(f"{obj['class']} (信頼度: {obj['confidence']:.2f})")
+    for obj in detected_objects:
+        checkbox_id = f"{obj['class']}_{obj['confidence']}"
+        if st.session_state.get(checkbox_id, False):
+            st.write(f"{obj['class']} (信頼度: {obj['confidence']:.2f})")
