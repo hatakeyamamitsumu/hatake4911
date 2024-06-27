@@ -28,8 +28,8 @@ def main():
         col2.write("ぼかし画像 :wrench:")
         col2.image(blurred_image)
 
-        st.sidebar.markdown("\n")
-        st.sidebar.download_button(
+        st.markdown("\n")
+        st.download_button(
             "ダウンロード", convert_image(blurred_image), "blurred_image.png", "image/png"
         )
 
