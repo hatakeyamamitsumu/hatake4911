@@ -59,4 +59,5 @@ mecab-python3
 unidic-lite
 
 
-opencv-python-headless
+#opencv-python-headless
+opencv-python
