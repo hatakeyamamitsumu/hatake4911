@@ -67,7 +67,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=9)
     folium.Marker(
         [latitude_input, longitude_input],
-        popup=folium.Popup(info, max_width=500),
+        popup=folium.Popup(info, max_width=300),
         icon=folium.Icon(color=icon_color, icon=icon_shape)
     ).add_to(m)
 
@@ -78,7 +78,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     m.add_child(folium.LatLngPopup())
 
     # 地図を表示してクリックイベントを処理
-    result = st_folium(m, width=500, height=300, returned_objects=["last_clicked"])
+    result = st_folium(m, width=600, height=300, returned_objects=["last_clicked"])
 
     # クリックした位置の緯度経度をセッション状態に保存
     if result and result.get("last_clicked"):
@@ -152,7 +152,7 @@ elif app_selection == "地図上のすべてのピンを表示":
     data = sheet.get_all_values()
 
     # 地図を作成
-    m = folium.Map(width=500, height=300,location=[35.0000, 135.0000], zoom_start=9)
+    m = folium.Map(width=600, height=300,location=[35.0000, 135.0000], zoom_start=9)
 
     
     # データから緯度経度を取得し、ピンを立てる
