@@ -60,6 +60,18 @@ if uploaded_file is not None:
             result_image_mosaic = apply_mosaic(image_cv.copy(), selected_faces)
             # モザイクをかけた結果の画像を表示
             st.image(result_image_mosaic, caption="モザイク処理後の画像", use_column_width=True)
+            
+            # モザイクをかけた画像をダウンロード
+            result_image_pil = Image.fromarray(result_image_mosaic)
+            mosaic_buffer = io.BytesIO()
+            result_image_pil.save(mosaic_buffer, format='JPEG')
+            mosaic_buffer.seek(0)
+            st.download_button(
+                label='Download Mosaic Image',
+                data=mosaic_buffer,
+                file_name='mosaic_image.jpg',
+                mime='image/jpeg'
+            )
         else:
             st.write("モザイク処理を適用する顔を選択してください。")
 
