@@ -67,7 +67,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     m = folium.Map(location=[latitude_input, longitude_input], zoom_start=9)
     folium.Marker(
         [latitude_input, longitude_input],
-        popup=folium.Popup(info, max_width=500),
+        popup=folium.Popup(info, max_width=600),
         icon=folium.Icon(color=icon_color, icon=icon_shape)
     ).add_to(m)
 
@@ -191,7 +191,7 @@ elif app_selection == "地図上のすべてのピンを表示":
         
         folium.Marker(
             [latitude, longitude],
-            popup=folium.Popup(info, max_width=500),
+            popup=folium.Popup(info, max_width=600),
             icon=folium.Icon(color=icon_color, icon=icon_shape)
         ).add_to(m)
         
