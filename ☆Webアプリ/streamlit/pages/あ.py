@@ -6,7 +6,7 @@ from mtcnn import MTCNN
 import zipfile
 import io
 
-# MTCNNの顔検出器を読み込む
+#MTCNNの顔検出器を読み込む
 detector = MTCNN()
 
 def detect_faces(image):
