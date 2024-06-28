@@ -78,7 +78,7 @@ if app_selection == "地図のおすすめスポットにピンを立てる":
     m.add_child(folium.LatLngPopup())
 
     # 地図を表示してクリックイベントを処理
-    result = st_folium(m, width=700, height=500, returned_objects=["last_clicked"])
+    result = st_folium(m, width=500, height=300, returned_objects=["last_clicked"])
 
     # クリックした位置の緯度経度をセッション状態に保存
     if result and result.get("last_clicked"):
