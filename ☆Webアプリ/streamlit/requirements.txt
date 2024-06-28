@@ -61,3 +61,5 @@ unidic-lite
 
 #opencv-python-headless
 opencv-python
+
+pydub
