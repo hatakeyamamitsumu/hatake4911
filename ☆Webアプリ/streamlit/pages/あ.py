@@ -54,7 +54,7 @@ if uploaded_file is not None:
             selected_faces.append((x, y, width, height))
 
     # モザイク処理オプション
-    if st.button("モザイク処理を適用"):
+    if st.button("モザイク処理を適用しますか？"):
         if selected_faces:
             # 選択された顔にモザイク処理を適用
             result_image_mosaic = apply_mosaic(image_cv.copy(), selected_faces)
