@@ -34,7 +34,7 @@ def apply_mosaic(image, face_positions, scale=0.2):
     return image
 
 st.title("顔認識アプリ")
-st.write("jpg画像をアップロードしてください。")
+st.write("JPG画像をアップロードしてください。")
 
 # 画像のアップロード
 uploaded_file = st.file_uploader("画像を選択", type=["jpg", "jpeg", "png"])
