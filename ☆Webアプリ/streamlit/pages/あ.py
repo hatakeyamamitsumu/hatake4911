@@ -67,7 +67,7 @@ if uploaded_file is not None:
             result_image_pil.save(mosaic_buffer, format='JPEG')
             mosaic_buffer.seek(0)
             st.download_button(
-                label='Download Mosaic Image',
+                label='モザイクをかけた写真をダウンロード',
                 data=mosaic_buffer,
                 file_name='mosaic_image.jpg',
                 mime='image/jpeg'
@@ -76,7 +76,7 @@ if uploaded_file is not None:
             st.write("モザイク処理を適用する顔を選択してください。")
 
     # 顔画像のダウンロードオプション
-    if st.button("顔画像を切り取ってダウンロード"):
+    if st.button("ダウンロードしますか？"):
         # 顔画像をzipファイルに追加
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
@@ -90,7 +90,7 @@ if uploaded_file is not None:
         # zipファイルをダウンロードするリンクを表示
         zip_buffer.seek(0)
         st.download_button(
-            label='Download Extracted Faces as ZIP',
+            label='ZIPファイルに顔をまとめてダウンロード',
             data=zip_buffer,
             file_name='extracted_faces.zip',
             mime='application/zip'
