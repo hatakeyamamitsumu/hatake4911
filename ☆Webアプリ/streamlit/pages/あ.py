@@ -76,7 +76,7 @@ if uploaded_file is not None:
             st.write("モザイク処理を適用する顔を選択してください。")
 
     # 顔画像のダウンロードオプション
-    if st.button("ダウンロードしますか？"):
+    if st.button("顔を切り取ってダウンロード"):
         # 顔画像をzipファイルに追加
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
