@@ -3,7 +3,7 @@ import streamlit as st
 
 st.title("deepl-translateという、deeplライブラリの非公式パッケージを使った翻訳アプリです。")
 
-link_str = "(https://youtu.be/cUGeHn5vdfU)"
+link_str = "(https://youtu.be/cUGeHn5vdfU)"#参考にしたサイト
 st.markdown(link_str, unsafe_allow_html=True)
 
 LANGUAGES = {"英語": "EN", "日本語": "JA", "中国語": "ZH", "ドイツ語": "DE"}
