@@ -1,10 +1,7 @@
 import streamlit as st
 import deepl
 
-st.title("Deepl Translate App with File Upload")
-
-link_str = "(https://youtu.be/cUGeHn5vdfU)"  # 参考にしたサイト
-st.markdown(link_str, unsafe_allow_html=True)
+st.title("DeepL Translate App with File Upload")
 
 LANGUAGES = {"英語": "EN", "日本語": "JA", "中国語": "ZH", "ドイツ語": "DE"}
 
@@ -15,13 +12,11 @@ def deepl_translate(text, src_lang="JA", target_lang="EN"):
     return translated_text
 
 def main():
-    st.title("Deepl Translate by Streamlit")
+    st.title("DeepL Translate by Streamlit")
     uploaded_file = st.file_uploader("ファイルをアップロードしてください", type=['txt'])
 
     if uploaded_file is not None:
         file_contents = uploaded_file.read()
-        st.text("アップロードされたファイルの内容:")
-        st.text(file_contents.decode('utf-8'))
 
         src_lang = st.selectbox("入力テキストの言語", options=list(LANGUAGES.keys()))
         target_lang = st.selectbox("翻訳後テキストの言語", options=list(LANGUAGES.keys()))
