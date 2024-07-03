@@ -28,5 +28,13 @@ def main():
             st.text("翻訳結果:")
             st.text(translated_text)
 
+            # 翻訳結果をダウンロードする
+            st.markdown(get_download_link(translated_text, "翻訳結果.txt"), unsafe_allow_html=True)
+
+def get_download_link(text, filename):
+    """指定されたテキストをファイルとしてダウンロードするためのリンクを生成する関数"""
+    href = f'<a href="data:text/plain;charset=utf-8,{text}" download="{filename}">Click here to download {filename}</a>'
+    return href
+
 if __name__ == "__main__":
     main()
