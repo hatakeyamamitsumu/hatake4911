@@ -1,19 +1,18 @@
 import deepl
 import streamlit as st
+
 st.title("deepl-translateという、deeplライブラリの非公式パッケージを使った翻訳アプリです。")
 
 link_str = "(https://youtu.be/cUGeHn5vdfU)"
 st.markdown(link_str, unsafe_allow_html=True)
 
-LANGUAGES = {"英語": "EN", "日本語": "JA", "中国語": "ZH"}
-
+LANGUAGES = {"英語": "EN", "日本語": "JA", "中国語": "ZH", "ドイツ語": "DE"}
 
 def deepl_translate(text, src_lang="JA", target_lang="EN"):
     translated_text = deepl.translate(
         source_language=src_lang, target_language=target_lang, text=text
     )
     return translated_text
-
 
 def main():
     st.title("Deepl by Streamlit")
@@ -41,7 +40,5 @@ def main():
         height=500,
     )
 
-
 if __name__ == "__main__":
     main()
-
