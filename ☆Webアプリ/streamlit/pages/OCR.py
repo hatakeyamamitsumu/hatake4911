@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw
 import easyocr
 import streamlit as st
-st.title("easyocrを使った簡単な文字読み取り")
+st.title("easyocrを使った簡単な写真の中の文字読み取り")
 st.write("jpgファイルをアップロードしてください")
 reader = easyocr.Reader(['ja','en'])
 selected_image = st.file_uploader('upload image', type='jpg')
