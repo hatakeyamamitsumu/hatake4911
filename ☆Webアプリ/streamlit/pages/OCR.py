@@ -1,31 +1,19 @@
-import cv2
-import pytesseract
-from PIL import Image
+from PIL import Image, ImageDraw
+import easyocr
+import streamlit as st
 
-# 画像ファイルのパス
-image_path = 'path_to_your_image.jpg'
+reader = easyocr.Reader(['ja','en'])
+selected_image = st.file_uploader('upload image', type='jpg')
 
-# 画像を読み込む
-image = cv2.imread(image_path)
+original_image = st.empty()
+result_image = st.empty()
 
-# 画像をグレースケールに変換
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-# ノイズ除去
-gray = cv2.medianBlur(gray, 3)
-
-# 画像を二値化
-_, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-# TesseractでOCRを実行
-text = pytesseract.image_to_string(binary, lang='eng')
-
-print("抽出されたテキスト:")
-print(text)
-
-# 結果を保存したい場合は、以下のコードを追加
-output_path = 'output_text.txt'
-with open(output_path, 'w', encoding='utf-8') as f:
-    f.write(text)
-
-print(f"抽出されたテキストを {output_path} に保存しました。")
+if (selected_image != None):
+    original_image.image(selected_image)
+    pil = Image.open(selected_image)
+    result = reader.readtext(pil)
+    draw = ImageDraw.Draw(pil)
+    for each_result in result:
+        draw.rectangle(tuple(each_result[0][0] + each_result[0][2]), outline=(0, 0, 255), width=3)
+        st.write(each_result[1])
+    result_image.image(pil)
