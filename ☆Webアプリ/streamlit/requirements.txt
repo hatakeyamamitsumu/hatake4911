@@ -62,3 +62,4 @@ unidic-lite
 opencv-python-headless
 #opencv-python
 
+pytesseract
