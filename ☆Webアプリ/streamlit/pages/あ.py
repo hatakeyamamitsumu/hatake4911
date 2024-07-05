@@ -39,7 +39,8 @@ if selected_image is not None:
 
     # 結果を処理して表示
     for bbox, text, score in result:
-        # 矩形を描画
+        # bboxをタプルに変換して矩形を描画
+        bbox = tuple(map(tuple, bbox))
         draw.rectangle(bbox, outline="blue", width=3)
         # テキストと信頼性スコアを表示
         st.write(f"テキスト: {text}, 信頼性: {score}")
