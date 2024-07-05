@@ -26,7 +26,7 @@ if selected_image is not None:
 
     # 画像の前処理と二値化処理
     # 例: リサイズと二値化
-    pil_image = pil_image.resize((800, 600))  # 例として800x600にリサイズ
+
     pil_image = ImageOps.grayscale(pil_image)  # グレースケールに変換
     threshold = 127  # 二値化の閾値
     pil_image = pil_image.point(lambda p: p > threshold and 255)  # 二値化
