@@ -1,6 +1,10 @@
+
 import streamlit as st
 from PIL import Image
 import pytesseract
+
+# Tesseractのパスを設定
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Windowsの場合の例
 
 st.title("OCR App using Streamlit and Tesseract")
 
