@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
+import os
 
 # COCOデータセットのクラスラベルのリスト
 CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
@@ -17,53 +18,58 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
 # モデルの読み込み
 MODEL_PATH = 'mobilenet_iter_73000.caffemodel'
 PROTOTXT_PATH = 'deploy.prototxt'
-net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
-# Streamlitアプリケーションの設定
-st.title('物体検出アプリ')
-st.write('jpgファイルの方が比較的うまくいきます。')
+# ファイルパスの存在確認
+if not os.path.exists(MODEL_PATH) or not os.path.exists(PROTOTXT_PATH):
+    st.error(f"モデルファイルまたはプロトファイルが見つかりません。パスを確認してください。")
+else:
+    net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
-# 画像のアップロード
-uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
+    # Streamlitアプリケーションの設定
+    st.title('物体検出アプリ')
+    st.write('jpgファイルの方が比較的うまくいきます。')
 
-if uploaded_file is not None:
-    # 画像を読み込む
-    image = Image.open(uploaded_file)
-    st.image(image, caption='アップロードされた画像', use_column_width=True)
-    st.write("")
-    st.write("物体検出中...")
+    # 画像のアップロード
+    uploaded_file = st.file_uploader("画像をアップロードしてください", type=["jpg", "jpeg", "png"])
 
-    # 画像をnumpy配列に変換
-    image_np = np.array(image)
+    if uploaded_file is not None:
+        # 画像を読み込む
+        image = Image.open(uploaded_file)
+        st.image(image, caption='アップロードされた画像', use_column_width=True)
+        st.write("")
+        st.write("物体検出中...")
 
-    # 画像をモデルに入力する形式に変換
-    (h, w) = image_np.shape[:2]
-    blob = cv2.dnn.blobFromImage(cv2.resize(image_np, (300, 300)), 0.007843, (300, 300), 127.5)
-    net.setInput(blob)
-    detections = net.forward()
+        # 画像をnumpy配列に変換
+        image_np = np.array(image)
 
-    # 検出結果をプロット
-    mask = np.zeros(image_np.shape[:2], dtype="uint8")
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > 0.2:
-            idx = int(detections[0, 0, i, 1])
-            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
-            cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
+        # 画像をモデルに入力する形式に変換
+        (h, w) = image_np.shape[:2]
+        blob = cv2.dnn.blobFromImage(cv2.resize(image_np, (300, 300)), 0.007843, (300, 300), 127.5)
+        net.setInput(blob)
+        detections = net.forward()
 
-    # ぼかし処理
-    blurred_image_np = cv2.GaussianBlur(image_np, (21, 21), 0)
-    result_image_np = np.where(mask[:, :, None] == 255, image_np, blurred_image_np)
+        # 検出結果をプロット
+        mask = np.zeros(image_np.shape[:2], dtype="uint8")
+        for i in range(detections.shape[2]):
+            confidence = detections[0, 0, i, 2]
+            if confidence > 0.2:
+                idx = int(detections[0, 0, i, 1])
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                (startX, startY, endX, endY) = box.astype("int")
+                cv2.rectangle(mask, (startX, startY), (endX, endY), 255, -1)
 
-    # 検出結果の画像を表示
-    detected_image = Image.fromarray(result_image_np)
-    st.image(detected_image, caption='検出結果', use_column_width=True)
+        # ぼかし処理
+        blurred_image_np = cv2.GaussianBlur(image_np, (21, 21), 0)
+        result_image_np = np.where(mask[:, :, None] == 255, image_np, blurred_image_np)
 
-    # 検出されたオブジェクトのラベルと信頼度を表示
-    st.write("検出されたオブジェクト:")
-    for i in range(detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > 0.2:
-            idx = int(detections[0, 0, i, 1])
-            st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
+        # 検出結果の画像を表示
+        detected_image = Image.fromarray(result_image_np)
+        st.image(detected_image, caption='検出結果', use_column_width=True)
+
+        # 検出されたオブジェクトのラベルと信頼度を表示
+        st.write("検出されたオブジェクト:")
+        for i in range(detections.shape[2]):
+            confidence = detections[0, 0, i, 2]
+            if confidence > 0.2:
+                idx = int(detections[0, 0, i, 1])
+                st.write(f"{CLASSES[idx]} (信頼度: {confidence:.2f})")
