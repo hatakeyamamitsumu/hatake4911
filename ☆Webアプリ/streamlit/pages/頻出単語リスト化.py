@@ -42,7 +42,7 @@ def main():
         csv = df.to_csv(index=False, encoding='utf-8')
         b64 = base64.b64encode(csv.encode()).decode()
         href = f'<a href="data:file/csv;base64,{b64}" download="word_frequencies.csv">ダウンロードCSVファイル</a>'
-        st.markdown(href, unsafe_allow_html=True)
+        st.sidebar.markdown(href, unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
