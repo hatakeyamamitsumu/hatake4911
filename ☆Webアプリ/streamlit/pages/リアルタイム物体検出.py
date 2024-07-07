@@ -20,9 +20,15 @@ MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/
 PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 
 # ファイルパスの存在確認
-if not os.path.exists(MODEL_PATH) or not os.path.exists(PROTOTXT_PATH):
-    st.error(f"モデルファイルまたはプロトファイルが見つかりません。パスを確認してください。")
-else:
+try:
+    if not os.path.exists(MODEL_PATH):
+        st.error(f"モデルファイルが見つかりません: {MODEL_PATH}")
+    if not os.path.exists(PROTOTXT_PATH):
+        st.error(f"プロトファイルが見つかりません: {PROTOTXT_PATH}")
+    
+    st.write(f"モデルファイルのパス: {MODEL_PATH}")
+    st.write(f"プロトファイルのパス: {PROTOTXT_PATH}")
+
     net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
 
     # Streamlitアプリケーションの設定
@@ -65,3 +71,6 @@ else:
         FRAME_WINDOW.image(frame, channels='BGR')
 
     cap.release()
+
+except Exception as e:
+    st.error(f"エラーが発生しました: {e}")
