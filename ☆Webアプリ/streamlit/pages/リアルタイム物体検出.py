@@ -1,4 +1,5 @@
 import streamlit as st
+import　cv2
 # カメラからビデオをキャプチャ
 cap = cv2.VideoCapture(0)
 
