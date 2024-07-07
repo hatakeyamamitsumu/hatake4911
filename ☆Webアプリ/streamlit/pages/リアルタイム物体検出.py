@@ -2,75 +2,45 @@ import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
-import os
+from ultralytics import YOLO
 
-# COCOデータセットのクラスラベルのリスト
-CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
-           "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", 
-           "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase",
-           "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", 
-           "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", 
-           "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", 
-           "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", 
-           "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
-           "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
+# YOLOv8モデルの読み込み
+model = YOLO('yolov8n.pt')  # yolov8n.ptはYOLOv8の公式プリトレインモデルです
 
-# モデルの読み込み
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
-PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
+# Streamlitアプリケーションの設定
+st.title('リアルタイム物体検出アプリ')
+st.write('PCカメラの映像を使用してリアルタイムで物体検出を行います。')
 
-# ファイルパスの存在確認
-try:
-    if not os.path.exists(MODEL_PATH):
-        st.error(f"モデルファイルが見つかりません: {MODEL_PATH}")
-    if not os.path.exists(PROTOTXT_PATH):
-        st.error(f"プロトファイルが見つかりません: {PROTOTXT_PATH}")
-    
-    st.write(f"モデルファイルのパス: {MODEL_PATH}")
-    st.write(f"プロトファイルのパス: {PROTOTXT_PATH}")
+run = st.checkbox('物体検出を開始')
+FRAME_WINDOW = st.image([])
 
-    net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
+# Webカメラの設定
+cap = cv2.VideoCapture(0)
 
-    # Streamlitアプリケーションの設定
-    st.title('リアルタイム物体検出アプリ')
-    st.write('PCカメラの映像を使用してリアルタイムで物体検出を行います。')
+while run:
+    ret, frame = cap.read()
+    if not ret:
+        st.error("カメラの映像を取得できませんでした。")
+        break
 
-    run = st.checkbox('物体検出を開始')
-    FRAME_WINDOW = st.image([])
+    # 物体検出
+    results = model(frame)
 
-    # Webカメラの設定
-    cap = cv2.VideoCapture(0)
+    # 検出結果をプロット
+    for result in results:
+        boxes = result.boxes  # 検出されたボックス
+        for box in boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            confidence = box.conf[0]
+            class_id = int(box.cls[0])
+            label = f"{model.names[class_id]}: {confidence:.2f}"
+            
+            # 赤枠で囲む
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+            y = y1 - 10 if y1 - 10 > 10 else y1 + 10
+            cv2.putText(frame, label, (x1, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
-    while run:
-        ret, frame = cap.read()
-        if not ret:
-            st.error("カメラの映像を取得できませんでした。")
-            break
+    # フレームを表示
+    FRAME_WINDOW.image(frame, channels='BGR')
 
-        # 画像をモデルに入力する形式に変換
-        (h, w) = frame.shape[:2]
-        blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)), 0.007843, (300, 300), 127.5)
-        net.setInput(blob)
-        detections = net.forward()
-
-        # 検出結果をプロット
-        for i in range(detections.shape[2]):
-            confidence = detections[0, 0, i, 2]
-            if confidence > 0.2:
-                idx = int(detections[0, 0, i, 1])
-                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-                (startX, startY, endX, endY) = box.astype("int")
-                label = f"{CLASSES[idx]}: {confidence:.2f}"
-                
-                # 赤枠で囲む
-                cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 0, 255), 2)
-                y = startY - 10 if startY - 10 > 10 else startY + 10
-                cv2.putText(frame, label, (startX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-
-        # フレームを表示
-        FRAME_WINDOW.image(frame, channels='BGR')
-
-    cap.release()
-
-except Exception as e:
-    st.error(f"エラーが発生しました: {e}")
+cap.release()
