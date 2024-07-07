@@ -65,3 +65,6 @@ opencv-python-headless
 #opencv-python
 
 pytesseract
+
+
+ultralytics
