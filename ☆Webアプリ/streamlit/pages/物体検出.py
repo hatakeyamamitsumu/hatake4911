@@ -15,8 +15,9 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", 
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
-# モデルの読み込み
+# モデルの読み込み　☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel
 MODEL_PATH = 'mobilenet_iter_73000.caffemodel'
+
 PROTOTXT_PATH = 'deploy.prototxt'
 
 # ファイルパスの存在確認
