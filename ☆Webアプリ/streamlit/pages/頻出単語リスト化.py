@@ -3,6 +3,7 @@ from collections import Counter
 import string
 import pandas as pd
 from io import StringIO
+import base64  # Add this import
 
 def calculate_word_frequency(text):
     # 文字句の前処理
