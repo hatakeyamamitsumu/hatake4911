@@ -16,9 +16,8 @@ CLASSES = ["background", "person", "bicycle", "car", "motorbike", "aeroplane", "
            "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
 
 # モデルの読み込み　☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel
-MODEL_PATH = 'mobilenet_iter_73000.caffemodel'
-
-PROTOTXT_PATH = 'deploy.prototxt'
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/mobilenet_iter_73000.caffemodel'
+PROTOTXT_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/deploy.prototxt'
 
 # ファイルパスの存在確認
 if not os.path.exists(MODEL_PATH) or not os.path.exists(PROTOTXT_PATH):
