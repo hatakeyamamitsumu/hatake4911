@@ -26,9 +26,12 @@ def main():
         # 単語頻度を計算
         word_freq = calculate_word_frequency(text)
 
+        # 単語頻度を昇順にソート
+        sorted_word_freq = sorted(word_freq.items(), key=lambda x: x[1])
+
         # 結果を表示
-        st.header('単語の頻出度')
-        for word, freq in word_freq.items():
+        st.header('単語の頻出度（昇順）')
+        for word, freq in sorted_word_freq:
             st.write(f"- {word}: {freq}")
 
 if __name__ == '__main__':
