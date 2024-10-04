@@ -2,18 +2,12 @@ import streamlit as st
 from ultralytics import YOLOWorld
 from PIL import Image, ImageDraw
 
-# YOLO-Worldモデルの読み込み
-model = YOLOWorld('/path/to/your/model.pt')
+def detect_objects(img_path, model, conf_thres=0.5, iou_thres=0.45):
+    # 画像を読み込む
+    img = Image.open(img_path)
 
-# 画像ファイルのアップロード
-uploaded_image = st.file_uploader("Choose an image file", type=['jpg', 'png'])
-if uploaded_image is not None:
-    # 画像の保存
-    with open('temp.jpg', 'wb') as f:
-        f.write(uploaded_image.getbuffer())
-
-    # 物体検出
-    results = model.predict(source='temp.jpg')
+    # YOLOv8で物体検出
+    results = model.predict(source=img, conf=conf_thres, iou=iou_thres)
 
     # 結果を描画
     draw = ImageDraw.Draw(img)
@@ -21,7 +15,7 @@ if uploaded_image is not None:
         x1, y1, x2, y2 = int(xyxy[0]), int(xyxy[1]), int(xyxy[2]), int(xyxy[3])
         draw.rectangle([(x1, y1), (x2, y2)], outline='red')
 
-    return img
+    return img  # 関数内でreturnする
 
 # YOLO-Worldモデルの読み込み
 model = YOLOWorld('/path/to/your/model.pt')
