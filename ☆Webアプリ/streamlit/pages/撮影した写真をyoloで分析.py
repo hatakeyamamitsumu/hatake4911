@@ -18,7 +18,7 @@ def detect_objects(img_path, model, conf_thres=0.5, iou_thres=0.45):
     return img  # 関数内でreturnする
 
 # YOLO-Worldモデルの読み込み
-model = YOLOWorld('/path/to/your/model.pt')
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
 
 # 画像ファイルのアップロード
 uploaded_image = st.file_uploader("Choose an image file", type=['jpg', 'png'])
