@@ -61,8 +61,8 @@ easyocr
 unidic-lite
 ultralytics
 
-opencv-python-headless
-#opencv-python
+#opencv-python-headless
+opencv-python
 
 pytesseract
 
