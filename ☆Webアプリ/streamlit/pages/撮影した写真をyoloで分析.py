@@ -3,7 +3,7 @@ from ultralytics import YOLOWorld
 from PIL import Image, ImageDraw
 
 def detect_objects(img_path, model, conf_thres=0.5, iou_thres=0.45):
-    # 画像を読み込む
+    # 　画像を読み込む
     img = Image.open(img_path)
 
     # YOLOv8で物体検出
