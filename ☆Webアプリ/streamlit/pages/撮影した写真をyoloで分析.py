@@ -15,7 +15,7 @@ def detect_objects(img_path, model, conf_thres=0.5, iou_thres=0.45):
         x1, y1, x2, y2 = int(xyxy[0]), int(xyxy[1]), int(xyxy[2]), int(xyxy[3])
         draw.rectangle([(x1, y1), (x2, y2)], outline='red')
 
-    return img  # 関数内でreturnする
+    return img
 
 # YOLO-Worldモデルの読み込み
 model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
