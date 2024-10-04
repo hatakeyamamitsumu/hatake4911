@@ -3,7 +3,7 @@ import streamlit as st
 from ultralytics import YOLOWorld
 
 # YOLO-Worldモデルの読み込み
-model = YOLOWorld('yolov8s-world.pt')  # ダウンロードしたモデルのパスに置き換える
+model = YOLOWorld('yolov8s.pt')  # ダウンロードしたモデルのパスに置き換える
 
 # 動画ファイルのアップロード
 uploaded_file = st.file_uploader("Choose a video file", type=['mp4', 'mov'])
