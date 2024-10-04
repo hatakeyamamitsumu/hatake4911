@@ -59,7 +59,7 @@ mecab-python3
 
 easyocr
 unidic-lite
-ultralytics
+ultralytics[core]
 
 #opencv-python-headless
 opencv-python
