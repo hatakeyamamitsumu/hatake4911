@@ -1,7 +1,6 @@
 import streamlit as st
 from ultralytics import YOLOWorld
 from PIL import Image, ImageDraw
-import cv2
 
 def detect_objects(img_path, model, conf_thres=0.5, iou_thres=0.45):
     # 画像を読み込む
@@ -19,7 +18,7 @@ def detect_objects(img_path, model, conf_thres=0.5, iou_thres=0.45):
     return img
 
 # YOLO-Worldモデルの読み込み
-model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
+model = YOLOWorld('/path/to/your/model.pt')
 
 # 画像ファイルのアップロード
 uploaded_image = st.file_uploader("Choose an image file", type=['jpg', 'png'])
@@ -33,24 +32,3 @@ if uploaded_image is not None:
 
     # 結果を表示
     st.image(result_img)
-
-# 動画ファイルのアップロード
-uploaded_video = st.file_uploader("Choose a video file", type=['mp4', 'mov'])
-if uploaded_video is not None:
-    # OpenCVで動画を読み込む
-    cap = cv2.VideoCapture(uploaded_video)
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        # OpenCVの画像をPILに変換
-        img_pil = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-
-        # 物体検出
-        result_img = detect_objects(img_pil, model)
-
-        # Streamlitで画像を表示
-        st.image(result_img)
-
-    cap.release()
