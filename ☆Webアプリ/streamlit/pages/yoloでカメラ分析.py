@@ -2,7 +2,7 @@ import streamlit as st
 from ultralytics import YOLOWorld
 import cv2
 
-# YOLO-Worldモデルの読み込み
+# 　YOLO-Worldモデルの読み込み
 model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
 
 # PCカメラのキャプチャ
