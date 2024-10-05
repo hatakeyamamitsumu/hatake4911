@@ -2,42 +2,43 @@ import streamlit as st
 from ultralytics import YOLOWorld
 import cv2
 
-# YOLO-Worldモデルの読み込み
+# YOLO-World model loading (replace with your model path)
 model = YOLOWorld('yolov8s.pt')
 
-# 動画ファイルのアップロード
-uploaded_file = st.file_uploader("Choose a video file", type=['mp4', 'mov'])
+def detect_objects(uploaded_image):
+  """
+  Function to handle image upload, processing, and error handling.
 
-# 動画ファイルが選択された場合
-if uploaded_file is not None:
-    # OpenCVで動画を読み込む
-    cap = cv2.VideoCapture(uploaded_file)
+  Args:
+      uploaded_image (streamlit.UploadedFile): User uploaded image file.
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+  Returns:
+      None: If an error occurs, displays an error message to the user.
+              Otherwise, displays the processed image with detections.
+  """
+  if uploaded_image is not None:
+    try:
+      # Access uploaded image using its name
+      img = cv2.imdecode(np.frombuffer(uploaded_image.getvalue(), np.uint8), cv2.IMREAD_COLOR)
 
-        # 物体検出の実行
-        results = model.predict(source=frame)
+      # Check if image decoding was successful
+      if img is None:
+        raise Exception("Failed to decode uploaded image.")
 
-        # 結果の描画 (OpenCVで描画)
-        annotated_frame = results[0].plot()
+      # Object detection using YOLOv8
+      results = model.predict(source=img)
+      annotated_img = results[0].plot(cmap='hsv')  # Display detections with colormap
 
-        # Streamlitで画像を表示
-        st.image(annotated_frame, channels="BGR")
+      # Display processed image with detections
+      st.image(annotated_img, channels="BGR", use_column_width=True)
 
-# 静止画のアップロード
-uploaded_image = st.file_uploader("Choose an image file", type=['jpg', 'png'])
-if uploaded_image is not None:
-    # OpenCVで画像を読み込む
-    img = cv2.imread(uploaded_image)
+    except Exception as e:
+      st.error(f"Error processing image: {e}")
 
-    # 物体検出の実行
-    results = model.predict(source=img)
+# Streamlit app layout
+st.title("YOLOv8 Object Detection with Streamlit")
+st.subheader("Upload an image file (JPG or PNG only)")
+uploaded_image = st.file_uploader("", type=['jpg', 'png'])
 
-    # 結果の描画 (OpenCVで描画)
-    annotated_img = results[0].plot()
-
-    # Streamlitで画像を表示
-    st.image(annotated_img, channels="BGR")
+# Call the detection function
+detect_objects(uploaded_image)
