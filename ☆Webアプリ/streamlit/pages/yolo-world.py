@@ -42,7 +42,9 @@ if uploaded_image is not None:
 
     # 結果の描画 (PILで描画)
     draw = ImageDraw.Draw(img_pil)
-    # ... (上記と同様の描画処理)
+    for *xyxy, conf, cls in results.xyxy[0]:
+        x1, y1, x2, y2 = int(xyxy[0]), int(xyxy[1]), int(xyxy[2]), int(xyxy[3])
+        draw.rectangle([(x1, y1), (x2, y2)], outline='red')
 
     # Streamlitで画像を表示
     st.image(img_pil)
