@@ -1,44 +1,43 @@
-import streamlit as st
-from ultralytics import YOLOWorld
 import cv2
-import numpy as np
+import os
 
-# モデルの読み込み (パスを適宜変更)
-model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
+# 画像を保存するディレクトリ
+save_dir = 'captured_images'
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
 
-def detect_objects_from_camera(model):
-    """
-    カメラから画像を取得し、物体検出を行う関数
+# カメラキャプチャの設定
+cap = cv2.VideoCapture(0)
 
-    Args:
-        model: YOLOv8モデル
+# 画像保存用のリスト
+image_paths = []
 
-    Returns:
-        処理済みの画像 (BGR形式)
-    """
+# 撮影と保存
+while True:
+    ret, frame = cap.read()
 
-    # カメラキャプチャの設定
-    cap = cv2.VideoCapture(0)
+    # 撮影した画像を表示
+    cv2.imshow('frame', frame)
 
-    while True:
-        # フレームを取得
-        ret, frame = cap.read()
+    # 's'キーを押すと画像を保存
+    if cv2.waitKey(1) == ord('s'):
+        filename = f'image_{len(image_paths)}.jpg'
+        filepath = os.path.join(save_dir, filename)
+        cv2.imwrite(filepath, frame)
+        image_paths.append(filepath)
+        print(f"画像を保存しました: {filepath}")
 
-        # 物体検出
-        results = model.predict(source=frame)
-        annotated_frame = results[0].plot()
+    # 'q'キーを押すと終了
+    if cv2.waitKey(1) == ord('q'):
+        break
 
-        # フレームを表示
-        cv2.imshow('Object Detection', annotated_frame)
+# カメラを解放
+cap.release()
+cv2.destroyAllWindows()
 
-        # 'q'キーを押すと終了
-        if cv2.waitKey(1) == ord('q'):
-            break
-
-    # カメラを解放
-    cap.release()
-    cv2.destroyAllWindows()
-
-# Streamlitアプリのレイアウト
-st.title("YOLOv8 リアルタイム物体検出アプリ")
-st.button("カメラ起動", on_click=detect_objects_from_camera, args=(model,))
+# 保存した画像をまとめて分析 (例: 各画像の平均色を計算)
+for image_path in image_paths:
+    img = cv2.imread(image_path)
+    avg_color_per_row = np.average(img, axis=0)
+    avg_color = np.average(avg_color_per_row, axis=0)
+    print(f"{image_path}の平均色は: {avg_color}")
