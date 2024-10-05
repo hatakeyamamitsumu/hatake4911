@@ -1,7 +1,7 @@
 import streamlit as st
 from ultralytics import YOLOWorld
 import cv2
-
+import numpy as np
 # YOLO-World model loading (replace with your model path)
 model = YOLOWorld('yolov8s.pt')
 
