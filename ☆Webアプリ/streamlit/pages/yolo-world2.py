@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 
-def detect_objects(uploaded_image):
+def detect_objects(uploaded_image, model):
   """
   Function to handle image upload, processing, and error handling.
 
@@ -51,12 +51,13 @@ def display_results(processed_image):
 
 
 # Streamlit app layout
+# Streamlit app layout
 st.title("YOLOv8 Object Detection with Streamlit")
 st.subheader("Upload an image file (JPG or PNG only)")
 uploaded_image = st.file_uploader("", type=['jpg', 'png'])
 
-# Call the detection function
-processed_image = detect_objects(uploaded_image)
+# Call the detection function with the model
+processed_image = detect_objects(uploaded_image, model)
 
 # Display the results if processing was successful
 display_results(processed_image)
