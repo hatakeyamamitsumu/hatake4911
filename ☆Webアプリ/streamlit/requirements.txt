@@ -1,3 +1,4 @@
+Python 3.9.19
 streamlit==1.29.0
 Pillow==9.5.0
 pandas==1.4.4
@@ -62,7 +63,7 @@ unidic-lite
 ultralytics[core]
 
 #opencv-python-headless
-opencv-python
+opencv-python==4.9.0.80
 
 pytesseract
 
