@@ -1,5 +1,6 @@
 import streamlit as st
 import cv2
+import numpy as np  # NumPyモジュールのインポートを追加
 
 # カメラ入力
 picture = st.camera_input("Take a picture")
