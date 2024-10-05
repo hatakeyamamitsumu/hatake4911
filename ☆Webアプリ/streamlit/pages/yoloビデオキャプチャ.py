@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # YOLO-Worldモデルの読み込み
-model = YOLOWorld('yolov8s-world.pt')  # ダウンロードしたモデルのパスに置き換える
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt') # ダウンロードしたモデルのパスに置き換える
 
 # 動画ストリームの取得
 cap = cv2.VideoCapture(0)
