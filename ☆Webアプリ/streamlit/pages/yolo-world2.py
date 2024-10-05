@@ -2,8 +2,7 @@ import streamlit as st
 from ultralytics import YOLOWorld
 import cv2
 import numpy as np
-# YOLO-World model loading (replace with your model path)
-model = YOLOWorld('yolov8s.pt')
+
 
 def detect_objects(uploaded_image):
   """
@@ -13,8 +12,8 @@ def detect_objects(uploaded_image):
       uploaded_image (streamlit.UploadedFile): User uploaded image file.
 
   Returns:
-      None: If an error occurs, displays an error message to the user.
-              Otherwise, displays the processed image with detections.
+      cv2.Mat: The processed image with detections (BGR format).
+      None: If an error occurs.
   """
   if uploaded_image is not None:
     try:
@@ -27,13 +26,29 @@ def detect_objects(uploaded_image):
 
       # Object detection using YOLOv8
       results = model.predict(source=img)
-      annotated_img = results[0].plot(cmap='hsv')  # Display detections with colormap
+      annotated_img = results[0].plot(cmap='hsv')  # Display detections with colormap (BGR format)
 
-      # Display processed image with detections
-      st.image(annotated_img, channels="BGR", use_column_width=True)
+      return annotated_img
 
     except Exception as e:
       st.error(f"Error processing image: {e}")
+      return None  # Indicate error
+
+  return None  # No image uploaded
+
+
+def display_results(processed_image):
+  """
+  Function to display the processed image with detections in Streamlit.
+
+  Args:
+      processed_image (cv2.Mat): The processed image with detections (BGR format).
+  """
+  if processed_image is not None:
+    # Convert BGR to RGB for Streamlit display
+    rgb_image = cv2.cvtColor(processed_image, cv2.COLOR_BGR2RGB)
+    st.image(rgb_image, channels="RGB", use_column_width=True)
+
 
 # Streamlit app layout
 st.title("YOLOv8 Object Detection with Streamlit")
@@ -41,4 +56,7 @@ st.subheader("Upload an image file (JPG or PNG only)")
 uploaded_image = st.file_uploader("", type=['jpg', 'png'])
 
 # Call the detection function
-detect_objects(uploaded_image)
+processed_image = detect_objects(uploaded_image)
+
+# Display the results if processing was successful
+display_results(processed_image)
