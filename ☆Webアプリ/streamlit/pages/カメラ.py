@@ -1,11 +1,11 @@
 import streamlit as st
 import cv2
 
-# カメラから画像を取得
+# Camera input with correct indentation
 picture = st.camera_input("Take a picture")
 
 if picture:
-    # OpenCVで画像を読み込む
+    # OpenCV image processing
     byte_arr = np.frombuffer(picture.read(), np.uint8)
     cv_image = cv2.imdecode(byte_arr, cv2.IMREAD_COLOR)
 
