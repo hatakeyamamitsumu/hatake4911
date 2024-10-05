@@ -1,4 +1,4 @@
-python==3.9.19
+
 streamlit==1.29.0
 Pillow==9.5.0
 pandas==1.4.4
