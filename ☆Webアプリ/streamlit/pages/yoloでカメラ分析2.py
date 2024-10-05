@@ -12,9 +12,6 @@ save_dir = 'captured_images'
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
-# 画像保存用のリスト
-image_paths = []
-
 # カメラ入力
 picture = st.camera_input("写真を撮ってください")
 
@@ -29,8 +26,13 @@ if picture:
     # 画像を保存
     filename = f'captured_image_{len(image_paths)}.jpg'
     filepath = os.path.join(save_dir, filename)
-    cv2.imwrite(filepath, cv_image)
-    image_paths.append(filepath)
+    try:
+        cv2.imwrite(filepath, cv_image)
+        image_paths.append(filepath)
+        print(f"画像を保存しました: {filepath}")
+    except cv2.error as e:
+        print(f"画像の保存に失敗しました: {e}")
+        # エラー処理を追加 (例えば、エラーメッセージを表示するなど)
 
     # 物体検出を実行
     processed_image = detect_objects(filepath, model)
@@ -38,6 +40,10 @@ if picture:
     # 結果を表示
     if processed_image is not None:
         # BGRをRGBに変換
+        rgb_image = cv2.cvtColor(processed_image, cv2.COLOR_BGR2RGB)
+        st.image(rgb_image, channels="RGB", use_column_width=True)
+
+# ... (detect_objects 関数など、残りのコードは省略)
         rgb_image = cv2.cvtColor(processed_image, cv2.COLOR_BGR2RGB)
         st.image(rgb_image, channels="RGB", use_column_width=True)
 
