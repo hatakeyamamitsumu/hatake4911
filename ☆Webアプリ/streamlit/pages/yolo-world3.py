@@ -6,7 +6,7 @@ import numpy as np
 # モデルの読み込み
 model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt') # モデルのパスを適宜変更
 
-# カメラキャプチャ
+# 　カメラキャプチャ
 cap = cv2.VideoCapture(0)
 
 def detect_objects(img, model, conf_thres=0.5):
