@@ -1,38 +1,35 @@
+
 import streamlit as st
-from ultralytics import YOLOWorld
 import cv2
 import numpy as np
+from ultralytics import YOLOWorld  # YOLOv8ライブラリをインポート
 
-# モデルの読み込み
+# モデルの読み込み (モデルのパスは適宜変更)
 model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt') # モデルのパスを適宜変更
 
-# 　カメラキャプチャ
-cap = cv2.VideoCapture(0)
+# セッション状態を初期化
+if 'captured_image' not in st.session_state:
+    st.session_state.captured_image = None
 
-def detect_objects(img, model, conf_thres=0.5):
-    # 物体検出 (バッチサイズ1で処理)
-    results = model(img[None, ...], conf=conf_thres)  # 信頼度閾値を設定
-    # 検出結果を画像に重ねる
-    annotated_img = results[0].plot()
-    return annotated_img
+# カメラ入力
+picture = st.camera_input("写真を撮ってください")
 
-# Streamlitアプリのレイアウト
-st.title("YOLOv8 物体検出アプリ (PCカメラ)")
+if picture:
+    # OpenCVで画像を読み込む
+    byte_arr = np.frombuffer(picture.read(), np.uint8)
+    cv_image = cv2.imdecode(byte_arr, cv2.IMREAD_COLOR)
 
-# カメラのプレビューを表示する場所
-placeholder = st.empty()
+    # セッション状態に画像を保存
+    st.session_state.captured_image = cv_image
 
-# 撮影ボタン
-if st.button('写真を撮る'):
-    ret, frame = cap.read()
-    if not ret:
-        st.error("カメラから画像を取得できませんでした。")
-    else:
-        # 物体検出
-        result_img = detect_objects(frame, model)
-        # BGRをRGBに変換
-        rgb_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
-        placeholder.image(rgb_img, channels="RGB", use_column_width=True)
+    # 画像を表示
+    st.image(cv_image, channels="BGR")
 
-# カメラの解放
-cap.release()
+# セッション状態に画像がある場合、YOLOで分析するボタンを表示
+if st.session_state.captured_image is not None:
+    if st.button("画像を分析"):
+        # YOLOで物体検出
+        results = model(st.session_state.captured_image[None, ...])
+        # 結果を可視化
+        result_img = results[0].plot()
+        st.image(result_img, channels="RGB")
