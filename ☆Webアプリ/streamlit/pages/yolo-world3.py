@@ -17,7 +17,7 @@ picture = st.camera_input("写真を撮ってください")
 if picture:
     # OpenCVで画像を読み込む
     byte_arr = np.frombuffer(picture.read(), np.uint8)
-    cv_image = cv2.imdecode(byte_arr, cv2.IMREAD_COLOR)
+    cv_image = cv2.cvtColor(cv_image, cv2.COLOR_RGB2BGR)
 
     # セッション状態に画像を保存
     st.session_state.captured_image = cv_image
