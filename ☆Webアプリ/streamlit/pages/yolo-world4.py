@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # モデルの読み込み
-model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')  # モデルのパスを適宜変更
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
 
 # カメラキャプチャ
 cap = cv2.VideoCapture(0)
@@ -27,20 +27,19 @@ confidence_threshold = st.slider("信頼度閾値", min_value=0.0, max_value=1.0
 
 placeholder = st.empty()
 
-# リアルタイム処理
-while True:
+# 撮影ボタン
+if st.button('写真を撮る'):
     ret, frame = cap.read()
     if not ret:
         st.error("カメラから画像を取得できませんでした。")
-        break
+    else:
+        # 物体検出
+        result_img = detect_objects(frame, model, confidence_threshold)
 
-    # 物体検出
-    result_img = detect_objects(frame, model, confidence_threshold)
-
-    # 結果を表示
-    if result_img is not None:
-        rgb_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
-        placeholder.image(rgb_img, channels="RGB", use_column_width=True)
+        # 結果を表示
+        if result_img is not None:
+            rgb_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
+            placeholder.image(rgb_img, channels="RGB", use_column_width=True)
 
 # カメラの解放
 cap.release()
