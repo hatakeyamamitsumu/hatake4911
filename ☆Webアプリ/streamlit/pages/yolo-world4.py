@@ -1,10 +1,10 @@
 import streamlit as st
-from ultralytics import YOLO
+from ultralytics import YOLOworld
 import cv2
 import numpy as np
 
 # モデルの読み込み
-model = YOLO('yolov8s.pt')  # モデルのパスを適宜変更
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')  # モデルのパスを適宜変更
 
 # カメラキャプチャ
 cap = cv2.VideoCapture(0)
