@@ -1,5 +1,5 @@
 import streamlit as st
-from ultralytics import YOLOworld
+from ultralytics import YOLOWorld
 import cv2
 import numpy as np
 
