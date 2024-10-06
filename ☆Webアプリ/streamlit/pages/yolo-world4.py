@@ -2,10 +2,9 @@ import streamlit as st
 from ultralytics import YOLOWorld
 import cv2
 import numpy as np
-# 画像サイズを調整する例
 
 # モデルの読み込み
-model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt') # モデルのパスを適宜変更
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')  # モデルのパスを適宜変更
 
 def detect_objects(img, model, conf_thres=0.5):
     """物体検出を行う関数"""
@@ -23,6 +22,9 @@ st.title("YOLOv8 物体検出アプリ")
 # カメラの使用を選択
 use_camera = st.checkbox("カメラを使用する")
 
+# 撮影した画像を保持する変数
+captured_image = None
+
 if use_camera:
     # カメラキャプチャ
     cap = cv2.VideoCapture(0)
@@ -35,35 +37,24 @@ if use_camera:
             if not ret:
                 st.error("カメラから画像を取得できませんでした。")
             else:
+                # 撮影した画像を保持
+                captured_image = frame.copy()
                 # 物体検出
-                result_img = detect_objects(frame, model)
+                result_img = detect_objects(captured_image, model)
                 # 結果を表示
                 if result_img is not None:
                     rgb_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
                     st.image(rgb_img, channels="RGB", use_column_width=True)
         cap.release()
-else:
-    # 画像アップロード
-    picture = st.camera_input("写真を撮ってください")
-    if picture:
-        # OpenCVで画像を読み込む
-        byte_arr = np.frombuffer(picture.read(), np.uint8)
-        cv_image = cv2.imdecode(byte_arr, cv2.IMREAD_COLOR)
 
+# 撮影した画像がある場合、再度物体検出ボタンを表示
+if captured_image is not None:
+    if st.button('再度検出'):
         # 物体検出
-        result_img = detect_objects(cv_image, model)
-
-        # 画像を表示
+        result_img = detect_objects(captured_image, model)
+        # 結果を表示
         if result_img is not None:
             rgb_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
             st.image(rgb_img, channels="RGB", use_column_width=True)
 
-        # 画像を保存し、ダウンロードボタンを表示
-        cv2.imwrite("captured_image.jpg", cv_image)
-        with open("captured_image.jpg", "rb") as file:
-            st.download_button(
-                label="画像をダウンロード",
-                data=file,
-                file_name="captured_image.jpg",
-                mime="image/jpeg"
-            )
+# 画像アップロードの機能は省略（必要であれば追加）
