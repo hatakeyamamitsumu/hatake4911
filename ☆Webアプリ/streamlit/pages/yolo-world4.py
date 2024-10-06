@@ -17,7 +17,7 @@ def detect_objects(img, model, conf_thres=0.5):
         return None
 
 # Streamlitアプリのレイアウト
-st.title("YOLOv8 物体検出アプリ")
+st.title("YOLOv8 物体検出　アプリ")
 
 # カメラの使用を選択
 use_camera = st.checkbox("カメラを使用する")
