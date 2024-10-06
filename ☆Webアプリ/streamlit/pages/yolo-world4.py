@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # モデルの読み込み
-model = YOLO('yolov8s.pt')  # モデルのパスを適宜変更
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt') # モデルのパスを適宜変更
 
 def detect_objects(img, model, conf_thres=0.5):
     """物体検出を行う関数"""
