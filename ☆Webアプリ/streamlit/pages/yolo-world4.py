@@ -4,11 +4,6 @@ import cv2
 import numpy as np
 # 画像サイズを調整する例
 
-img = cv2.imread('image.jpg')
-height, width, channels = img.shape
-new_height = height // 2
-new_width = width // 2
-resized_img = cv2.resize(img, (new_width, new_height))
 # モデルの読み込み
 model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt') # モデルのパスを適宜変更
 
