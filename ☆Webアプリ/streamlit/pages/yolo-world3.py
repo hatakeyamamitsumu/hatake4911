@@ -6,46 +6,54 @@ import numpy as np
 # モデルの読み込み (パスを適宜変更)
 model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s.pt')
 
-def detect_objects(img, model):
+# カメラキャプチャの設定
+cap = cv2.VideoCapture(0)
+
+def detect_objects(uploaded_image, model):
     """
     物体検出を行う関数
 
     Args:
-        img: 入力画像
+        uploaded_image: アップロードされた画像
         model: YOLOv8モデル
 
     Returns:
         処理済みの画像 (BGR形式)
     """
 
-    results = model.predict(source=img)
-    annotated_img = results[0].plot()
-    return annotated_img
+    try:
+        # 画像のデコード
+        img = cv2.imdecode(np.frombuffer(uploaded_image.getvalue(), np.uint8), cv2.IMREAD_COLOR)
+
+        # 物体検出
+        results = model.predict(source=img)
+        annotated_img = results[0].plot()
+
+        return annotated_img
+    except Exception as e:
+        st.error(f"エラーが発生しました: {e}")
+        return None
 
 # Streamlitアプリのレイアウト
-st.title("YOLOv8 物体検出アプリ (PCカメラ)")
+st.title("YOLOv8 物体検出アプリ")
+st.subheader("画像ファイルをアップロードしてください")
 
-# カメラキャプチャの設定
-cap = cv2.VideoCapture(0)
+uploaded_image = st.file_uploader("", type=['jpg', 'jpeg', 'png'])
 
-# 画像表示用のプレースホルダー
-image_placeholder = st.empty()
+if uploaded_image is not None:
+    # 物体検出を実行
+    processed_image = detect_objects(uploaded_image, model)
 
-# ボタン
-if st.button('写真を撮って分析'):
-    # フレーム取得
-    ret, frame = cap.read()
-    if not ret:
-        st.error('カメラから画像を取得できませんでした')
-    else:
-        # 物体検出
-        annotated_frame = detect_objects(frame, model)
-
+    # 結果を表示
+    if processed_image is not None:
         # BGRをRGBに変換
-        rgb_image = cv2.cvtColor(annotated_frame, cv2.COLOR_BGR2RGB)
+        rgb_image = cv2.cvtColor(processed_image, cv2.COLOR_BGR2RGB)
+        st.image(rgb_image, channels="RGB", use_column_width=True)
 
-        # Streamlitに表示
-        image_placeholder.image(rgb_image, channels="RGB", use_column_width=True)
+# 追加機能の例 (閾値のスライダー)
+confidence_threshold = st.slider("信頼度閾値", min_value=0.0, max_value=1.0, value=0.5)
+# モデルの再初期化 (閾値変更時に必要)
+model.conf = confidence_threshold
 
-# 終了処理
+# カメラの解放
 cap.release()
