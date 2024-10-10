@@ -3,7 +3,7 @@
 
 import streamlit as st
 from ultralytics import YOLOWorld
-import streamlit as st
+import numpy as np
 
 
 # モデルのロード
