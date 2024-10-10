@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # モデルの読み込み (パスを適宜変更)
-model = YOLO('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov11l.pt')
+model = YOLO('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11l.pt')
 
 def detect_objects(uploaded_image, model):
  
