@@ -7,16 +7,7 @@ import numpy as np
 model = YOLO('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov11l.pt')
 
 def detect_objects(uploaded_image, model):
-    """
-    物体検出を行う関数
-
-    Args:
-        uploaded_image: アップロードされた画像
-        model: YOLOv8モデル
-
-    Returns:
-        処理済みの画像 (BGR形式)
-    """
+ 
 
     try:
         # 画像のデコード
