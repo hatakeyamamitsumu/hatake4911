@@ -1,21 +1,28 @@
-
 import streamlit as st
 from ultralytics import YOLO
+import cv2
+import numpy as np
 
-# モデルのロード
-#model = YOLO("yolov8n-pose.pt")  # 姿勢推定モデル
+# Model load
 model = YOLO("/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8n-pose.pt")  # 姿勢推定モデル
-# タイトル設定
+
+# Title
 st.title("YOLOによる姿勢推定アプリ")
 
-# 画像アップロード
+# Image upload
 uploaded_file = st.file_uploader("画像を選択してください", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
-    # 画像の読み込み
-    img = uploaded_file.read()
-    # 推論実行
-    results = model(img)
-    # 結果の表示
-    for img in results.imgs:
-        st.image(img)
+    try:
+        # Image reading
+        file_bytes = np.frombuffer(uploaded_file.read(), np.uint8)
+        img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+
+        # Inference
+        results = model(img)
+
+        # Display results (assuming results.imgs holds images)
+        for img in results.imgs:
+            st.image(img)
+    except Exception as e:
+        st.error(f"エラーが発生しました: {e}")  
