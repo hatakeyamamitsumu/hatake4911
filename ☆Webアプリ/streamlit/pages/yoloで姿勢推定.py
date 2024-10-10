@@ -2,14 +2,12 @@
 
 
 import streamlit as st
-from ultralytics import YOLO
+from ultralytics import YOLOWorld
 import streamlit as st
-from ultralytics import YOLO
-import cv2
-import numpy as np
+
 
 # モデルのロード
-model = YOLO("/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11n-pose.pt")  # 姿勢推定モデル
+model = YOLOWorld("/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11n-pose.pt")  # 姿勢推定モデル
 
 # タイトル設定
 st.title("YOLOによる姿勢推定アプリ")
