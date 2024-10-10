@@ -2,7 +2,7 @@ import streamlit as st
 from ultralytics import YOLO
 
 # モデルのロード  
-model = YOLO("/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt")  # 姿勢推定モデル
+model = YOLO("/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11n-pose.pt")  # 姿勢推定モデル
 
 # タイトル設定
 st.title("YOLOによる姿勢推定アプリ")
