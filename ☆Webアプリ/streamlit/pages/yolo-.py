@@ -23,7 +23,7 @@ def detect_objects(uploaded_image, model):
         return None
 
 # Streamlitアプリのレイアウト
-st.title("YOLOv8 物体検出アプリ")
+st.title("YOLO 物体検出アプリ")
 st.subheader("画像ファイルをアップロードしてください")
 
 uploaded_image = st.file_uploader("", type=['jpg', 'jpeg', 'png'])
