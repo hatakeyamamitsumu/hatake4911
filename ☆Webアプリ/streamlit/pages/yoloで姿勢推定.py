@@ -3,6 +3,8 @@
 
 import streamlit as st
 from ultralytics import YOLO
+import streamlit as st
+from ultralytics import YOLO
 import cv2
 import numpy as np
 
@@ -24,11 +26,17 @@ if uploaded_file is not None:
         # 推論実行
         results = model(img)
 
-        # 推論結果の可視化 (例)
+        # 推論結果の表示
         # results.print()  # 推論結果の詳細を表示
         # results.show()  # 画像上に結果を可視化
 
-        # Streamlitで表示
-        st.image(results.imgs[0])
+        # 推論結果から画像を取得し、Streamlitで表示
+        if len(results.xyxy) > 0:
+            # 検出結果がある場合
+            img = results.plot()[0]  # 最初の検出結果の画像を取得
+            st.image(img)
+        else:
+            # 検出結果がない場合
+            st.write("人物が検出されませんでした")
     except Exception as e:
         st.error(f"エラーが発生しました: {e}")
