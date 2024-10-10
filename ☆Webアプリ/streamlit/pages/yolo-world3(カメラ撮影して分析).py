@@ -3,8 +3,10 @@ from ultralytics import YOLOWorld
 import cv2
 import numpy as np
 
+#  モデルの読み込み (パスを適宜変更)
+model = YOLOWorld('/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s.pt')
 # YOLOv8モデルのロード
-model = YOLOWorld('yolov8s.pt')  # モデルのパスを適宜変更
+#model = YOLOWorld('yolov8s.pt')  # モデルのパスを適宜変更
 
 # カメラ入力
 picture = st.camera_input("写真を撮ってください")
