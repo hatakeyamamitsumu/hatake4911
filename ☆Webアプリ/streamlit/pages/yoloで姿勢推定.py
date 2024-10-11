@@ -1,9 +1,9 @@
-
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 from ultralytics import YOLO
 import streamlit as st
-
+import os
 # モデルのパスを環境変数から取得（例）
 MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s-pose.pt'  # Replace with your actual path
 # モデルのロード
@@ -15,8 +15,11 @@ def load_model(model_path):
 def process_image(img, model):
     # 画像処理のロジック
     results = model(img)
-    # ... (画像処理の結果を表示するなど)
-    return results
+    
+    save_path = "temp_image.jpg"
+    cv2.imwrite(save_path, results[0].plot())
+    return save_path
+    #return results
 
 # 動画処理
 def process_video(video_path, model):
@@ -57,21 +60,25 @@ def main():
             img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
             
             img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            results = process_image(img_rgb, model)
+            results = process_image(img_rgb, model
             
             st.image(results[0].plot())
-        elif uploaded_file.type == "video/mp4":
-            # 動画処理
-            process_video(uploaded_file, model)
 
-
-
+                        save_path = process_image(img_rgb, model)
+            
+            # ダウンロードボタンの追加
             st.download_button(
                 label="ダウンロード",
                 data=open(save_path, 'rb').read(),
                 file_name="result.jpg",
                 mime='image/jpeg'
             )
+        elif uploaded_file.type == "video/mp4":
+            # 動画処理
+            process_video(uploaded_file, model)
+
+
+
 
 
 
