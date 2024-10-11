@@ -6,8 +6,7 @@ from ultralytics import YOLO
 import os
 
 # モデルのパスを環境変数から取得（例）
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s-pose.pt'  # Replace with your actual path
-# モデルのロード
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s-pose.pt'
 def load_model(model_path):
     model = YOLO(model_path)
     return model
