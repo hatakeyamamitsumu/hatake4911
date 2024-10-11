@@ -37,8 +37,16 @@ def main():
         # 画像処理
         result_path = process_image(img, model)
 
-        # 結果を表示
+        # 画像を表示
         st.image(result_path, caption="姿勢推定結果", use_column_width=True)
+
+        # ダウンロードボタン
+        with open(result_path, "rb") as f:
+            download_button = st.download_button(
+                label="結果をダウンロード",
+                data=f,
+                file_name="pose_estimation.jpg"
+            )
 
 if __name__ == "__main__":
     main()
