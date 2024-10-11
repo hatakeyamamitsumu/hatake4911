@@ -9,8 +9,7 @@ from ultralytics import YOLO
 import streamlit as st
 
 # モデルのパスを環境変数から取得（例）
-MODEL_PATH = os.environ.get('MODEL_PATH', '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8n-pose.pt')
-
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8n-pose.pt'  # Replace with your actual path
 # モデルのロード
 def load_model(model_path):
     model = YOLO(model_path)
