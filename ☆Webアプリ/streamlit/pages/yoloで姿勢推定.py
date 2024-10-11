@@ -1,5 +1,4 @@
 
-#import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 from ultralytics import YOLO
@@ -65,5 +64,15 @@ def main():
             # 動画処理
             process_video(uploaded_file, model)
 
+
+
+
 if __name__ == "__main__":
     main()
+
+            st.download_button(
+                label="ダウンロード",
+                data=open(save_path, 'rb').read(),
+                file_name="result.jpg",
+                mime='image/jpeg'
+            )
