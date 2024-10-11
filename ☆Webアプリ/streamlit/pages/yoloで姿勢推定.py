@@ -4,7 +4,7 @@ import streamlit as st
 from ultralytics import YOLO
 
 # モデルのパス
-MODEL_PATH = '/path/to/your/yolov8s-pose.pt'  # 自分のモデルのパスに置き換えてください
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s-pose.pt'  # 自分のモデルのパスに置き換えてください
 
 def load_model(model_path):
     model = YOLO(model_path)
