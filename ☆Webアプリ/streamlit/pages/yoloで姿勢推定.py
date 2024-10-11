@@ -66,13 +66,16 @@ def main():
 
 
 
-
-if __name__ == "__main__":
-    main()
-
             st.download_button(
                 label="ダウンロード",
                 data=open(save_path, 'rb').read(),
                 file_name="result.jpg",
                 mime='image/jpeg'
             )
+
+
+
+if __name__ == "__main__":
+    main()
+
+
