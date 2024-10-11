@@ -2,8 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# モデルのパスを環境変数から取得（例）
-MODEL_PATH = os.environ.get('MODEL_PATH', '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8n-pose.pt')
+
 
 import cv2
 from ultralytics import YOLO
