@@ -61,7 +61,7 @@ def main():
             img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
             
             img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            results = process_image(imgimg_rgb, model)
+            results = process_image(img_rgb, model)
             
             st.image(results[0].plot())
         elif uploaded_file.type == "video/mp4":
