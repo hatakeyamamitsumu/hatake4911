@@ -1,11 +1,12 @@
-import matplotlib.pyplot as plt
-import numpy as np
 import cv2
-from ultralytics import YOLO
+import numpy as np
+import matplotlib.pyplot as plt
 import streamlit as st
+from ultralytics import YOLO
 import os
+
 # モデルのパスを環境変数から取得（例）
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s-pose.pt'  # Replace with your actual path
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolov8s-pose.pt'  # Replace with your actual path
 # モデルのロード
 def load_model(model_path):
     model = YOLO(model_path)
@@ -16,32 +17,16 @@ def process_image(img, model):
     # 画像処理のロジック
     results = model(img)
     
-    save_path = "temp_image.jpg"
-    cv2.imwrite(save_path, results[0].plot())
-    return save_path
-    #return results
+    # 一時ファイルのパスを生成
+    temp_dir = "temp"
+    os.makedirs(temp_dir, exist_ok=True)  # ディレクトリが存在しない場合は作成
+    temp_file = os.path.join(temp_dir, "result.jpg")
+    
+    # 画像を保存
+    cv2.imwrite(temp_file, results[0].plot())
+    
+    return temp_file
 
-# 動画処理
-def process_video(video_path, model):
-    # 動画処理のロジック
-    cap = cv2.VideoCapture(video_path)
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        # フレームを処理
-        results = process_image(frame, model)
-
-        # 結果を表示
-        cv2.imshow('Video', results[0].plot())
-        if cv2.waitKey(1) == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-# メイン関数
 def main():
     # StreamlitのUI設定
     st.title("YOLOv8 姿勢推定")
@@ -54,35 +39,27 @@ def main():
     if uploaded_file is not None:
         # ファイルの種類によって処理を分岐
         if uploaded_file.type in ["image/png", "image/jpeg"]:
-            # 画像処理　
+            # 画像処理
             bytes_data = uploaded_file.read()
             np_array = np.frombuffer(bytes_data, np.uint8)
             img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
-            
             img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            results = process_image(img_rgb, model
-            
-            st.image(results[0].plot())
+            results = process_image(img_rgb, model)
 
-                        save_path = process_image(img_rgb, model)
-            
             # ダウンロードボタンの追加
-            st.download_button(
-                label="ダウンロード",
-                data=open(save_path, 'rb').read(),
-                file_name="result.jpg",
-                mime='image/jpeg'
-            )
+            with open(results, "rb") as f:
+                st.download_button(
+                    label="ダウンロード",
+                    data=f.read(),
+                    file_name="result.jpg",
+                    mime='image/jpeg'
+                )
+
+            # 一時ファイルを削除
+            os.remove(results)
         elif uploaded_file.type == "video/mp4":
             # 動画処理
             process_video(uploaded_file, model)
 
-
-
-
-
-
 if __name__ == "__main__":
     main()
-
-
