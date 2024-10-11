@@ -55,11 +55,14 @@ def main():
     if uploaded_file is not None:
         # ファイルの種類によって処理を分岐
         if uploaded_file.type in ["image/png", "image/jpeg"]:
-            # 画像処理
+            # 画像処理　
             bytes_data = uploaded_file.read()
             np_array = np.frombuffer(bytes_data, np.uint8)
             img = cv2.imdecode(np_array, cv2.IMREAD_COLOR)
-            results = process_image(img, model)
+            
+            img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            results = process_image(imgimg_rgb, model)
+            
             st.image(results[0].plot())
         elif uploaded_file.type == "video/mp4":
             # 動画処理
