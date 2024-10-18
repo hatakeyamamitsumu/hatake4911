@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import time
 
 # モデルのパス
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt'  # 自分のモデルのパスに置き換えてください
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt'
 
 # モデルのロード
 model = YOLO(MODEL_PATH)
@@ -33,13 +33,11 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 # Streamlit UIの設定
 st.title("リアルタイム姿勢推定")
 
-# ストリーム用の空のイメージ
-frame_window = st.empty()
+# カメラを起動するボタン
+if st.button("カメラを開始"):
+    # カメラキャプチャ (デフォルトのカメラ: 0)
+    cap = cv2.VideoCapture(0)
 
-# カメラキャプチャ
-cap = cv2.VideoCapture(0)
-
-if cap.isOpened():
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -56,13 +54,10 @@ if cap.isOpened():
                 draw_keypoints_and_skeleton(frame, keypoints)
 
         # 画像を表示
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_window.image(frame)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        st.image(frame_rgb, channels="RGB")
 
-        time.sleep(0.03)  # 30ミリ秒の遅延を追加
+        # 1秒待機
+        time.sleep(1)  # 1秒ごとに撮影
 
-else:
-    st.write("カメラを開けませんでした")
-
-# 処理終了時にリリース
-cap.release()
+    cap.release()
