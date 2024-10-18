@@ -5,7 +5,7 @@ from ultralytics import YOLO
 
 # モデルのパス
 MODEL_PATH = 'yolo11l-pose.pt'
-
+https://github.com/hatakeyamamitsumu/hatake4911/blob/main/%E2%98%86Web%E3%82%A2%E3%83%97%E3%83%AA/%E3%81%9D%E3%81%AE%E4%BB%96%E9%87%8D%E8%A6%81%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB/yolo11s-pose.pt
 # モデルのロード
 model = YOLO(MODEL_PATH)
 
