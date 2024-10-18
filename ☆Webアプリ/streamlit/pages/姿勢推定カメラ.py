@@ -1,12 +1,10 @@
-
 import streamlit as st
 import cv2
 import numpy as np
-import time
 from ultralytics import YOLO
 
 # モデルのパス
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt'  # 自分のモデルのパスに置き換えてください
+MODEL_PATH = 'yolo11l-pose.pt'
 
 # モデルのロード
 model = YOLO(MODEL_PATH)
@@ -33,36 +31,33 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 
 # Streamlit UIの設定
 st.title("リアルタイム姿勢推定")
-run_button = st.button("カメラ開始")
 
-# カメラキャプチャ
-if run_button:
-    cap = cv2.VideoCapture(0)
-    frame_window = st.image([])  # 空のイメージを初期化
+# カメラ入力
+picture = st.camera_input("写真を撮ってください")
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            st.write("カメラ映像の取得に失敗しました")
-            break
+if picture:
+    # OpenCVで画像を読み込む
+    byte_arr = np.frombuffer(picture.read(), np.uint8)
+    cv_image = cv2.imdecode(byte_arr, cv2.IMREAD_COLOR)
 
-        # 推論
-        results = model(frame)
+    # 推論
+    results = model(cv_image)
 
-        # キーポイントと骨格を描画
-        for result in results:
-            if result.keypoints is not None:
-                keypoints = result.keypoints.xy
-                draw_keypoints_and_skeleton(frame, keypoints)
+    # キーポイントと骨格を描画
+    for result in results:
+        if result.keypoints is not None:
+            keypoints = result.keypoints.xy
+            draw_keypoints_and_skeleton(cv_image, keypoints)
 
-        # 画像を表示
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_window.image(frame)  # ここで画像を更新
+    # 画像を表示
+    st.image(cv_image, channels="BGR")
 
-        # 30ミリ秒の遅延を追加
-        time.sleep(0.03)
-
-        if st.button("停止"):
-            break
-
-    cap.release()
+    # 画像を保存し、ダウンロードボタンを表示
+    cv2.imwrite("captured_image.jpg", cv_image)
+    with open("captured_image.jpg", "rb") as file:
+        st.download_button(
+            label="画像をダウンロード",
+            data=file,
+            file_name="captured_image.jpg",
+            mime="image/jpeg"
+        )
