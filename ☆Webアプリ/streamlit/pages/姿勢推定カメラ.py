@@ -31,33 +31,40 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 
 # Streamlit UIの設定
 st.title("リアルタイム姿勢推定")
-run_button = st.button("カメラ開始")
-frame_window = st.image([])
+
+# カメラ開始のチェックボックス
+run = st.checkbox("カメラ開始")
+
+# カメラフレーム表示領域
+frame_window = st.empty()
 
 # カメラキャプチャ
-if run_button:
+if run:
     cap = cv2.VideoCapture(0)
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            st.write("カメラ映像の取得に失敗しました")
-            break
+    if not cap.isOpened():
+        st.write("カメラ映像の取得に失敗しました")
+    else:
+        while run:
+            ret, frame = cap.read()
+            if not ret:
+                st.write("フレームの読み込みに失敗しました")
+                break
 
-        # 推論
-        results = model(frame)
+            # 推論
+            results = model(frame)
 
-        # キーポイントと骨格を描画
-        for result in results:
-            if result.keypoints is not None:
-                keypoints = result.keypoints.xy
-                draw_keypoints_and_skeleton(frame, keypoints)
+            # キーポイントと骨格を描画
+            for result in results:
+                if result.keypoints is not None:
+                    keypoints = result.keypoints.xy
+                    draw_keypoints_and_skeleton(frame, keypoints)
 
-        # 画像を表示
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_window.image(frame)
+            # 画像を表示
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame_window.image(frame)
 
-        if st.button("停止"):
-            break
+            # Stop the camera if the checkbox is unchecked
+            run = st.checkbox("カメラ開始", value=True)
 
     cap.release()
