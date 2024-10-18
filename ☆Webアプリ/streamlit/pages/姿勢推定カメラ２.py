@@ -5,7 +5,7 @@ from ultralytics import YOLO
 import time
 
 # モデルのパス
-MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt'
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt'  # 自分のモデルのパスに置き換えてください
 
 # モデルのロード
 model = YOLO(MODEL_PATH)
@@ -33,31 +33,38 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 # Streamlit UIの設定
 st.title("リアルタイム姿勢推定")
 
-# カメラを起動するボタン
-if st.button("カメラを開始"):
-    # カメラキャプチャ (デフォルトのカメラ: 0)
-    cap = cv2.VideoCapture(0)
+# カメラキャプチャの開始
+cap = cv2.VideoCapture(0)  # デフォルトのカメラを使用
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            st.write("カメラ映像の取得に失敗しました")
-            break
+# キャプチャした画像を表示するための変数
+latest_frame = None
 
-        # 推論
-        results = model(frame)
+# 3秒ごとに画像を撮影
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        st.write("カメラ映像の取得に失敗しました")
+        break
 
-        # キーポイントと骨格を描画
-        for result in results:
-            if result.keypoints is not None:
-                keypoints = result.keypoints.xy
-                draw_keypoints_and_skeleton(frame, keypoints)
+    # 推論
+    results = model(frame)
 
-        # 画像を表示
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # キーポイントと骨格を描画
+    for result in results:
+        if result.keypoints is not None:
+            keypoints = result.keypoints.xy
+            draw_keypoints_and_skeleton(frame, keypoints)
+
+    # 最新のフレームを保存
+    latest_frame = frame
+
+    # 画像を表示
+    if latest_frame is not None:
+        frame_rgb = cv2.cvtColor(latest_frame, cv2.COLOR_BGR2RGB)
         st.image(frame_rgb, channels="RGB")
 
-        # 1秒待機
-        time.sleep(1)  # 1秒ごとに撮影
+    # 3秒待機
+    time.sleep(3)  # 3秒ごとに撮影
 
-    cap.release()
+# 処理終了
+cap.release()
