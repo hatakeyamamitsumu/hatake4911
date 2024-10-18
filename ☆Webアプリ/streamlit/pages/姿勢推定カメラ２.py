@@ -33,37 +33,29 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 # Streamlit UIの設定
 st.title("リアルタイム姿勢推定")
 
-run_button = st.button("カメラを開始")
-stop_button = st.button("カメラを停止", key="stop_button")
+# フレーム表示用
+frame_window = st.image([])  # 空のイメージを作成
 
-if run_button:
-    # カメラキャプチャ (デフォルトのカメラ: 0)
-    cap = cv2.VideoCapture(0)
-    frame_window = st.image([])  # 空のイメージを作成
+# カメラ入力をループして連続取得
+while True:
+    picture = st.camera_input("カメラ映像を取得中...")
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            st.write("カメラ映像の取得に失敗しました")
-            break
+    if picture:
+        # OpenCVで画像を読み込む
+        byte_arr = np.frombuffer(picture.read(), np.uint8)
+        cv_image = cv2.imdecode(byte_arr, cv2.IMREAD_COLOR)
 
         # 推論
-        results = model(frame)
+        results = model(cv_image)
 
         # キーポイントと骨格を描画
         for result in results:
             if result.keypoints is not None:
                 keypoints = result.keypoints.xy
-                draw_keypoints_and_skeleton(frame, keypoints)
+                draw_keypoints_and_skeleton(cv_image, keypoints)
 
         # 画像を表示
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_window.image(frame)  # ここでリアルタイムでフレームを更新
+        cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+        frame_window.image(cv_image)  # ここでリアルタイムでフレームを更新
 
         time.sleep(0.03)  # 30ミリ秒の遅延を追加
-
-        # 停止ボタンが押されたらループを終了
-        if stop_button:
-            break
-
-    cap.release()
