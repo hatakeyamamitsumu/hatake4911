@@ -58,7 +58,7 @@ if st.button("自動撮影を開始"):
         st.image(frame_rgb, channels="RGB")
 
         # 3秒待機
-        time.sleep(3)
+        time.sleep(10)
 
 # 処理終了
 cap.release()
