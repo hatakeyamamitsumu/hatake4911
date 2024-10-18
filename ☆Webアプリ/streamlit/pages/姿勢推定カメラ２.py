@@ -34,37 +34,31 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 st.title("リアルタイム姿勢推定")
 
 # カメラキャプチャの開始
-cap = cv2.VideoCapture(0)  # デフォルトのカメラを使用
+cap = cv2.VideoCapture(0)
 
-# キャプチャした画像を表示するための変数
-latest_frame = None
+# 画像を自動で取得するためのボタン
+if st.button("自動撮影を開始"):
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            st.write("カメラ映像の取得に失敗しました")
+            break
 
-# 3秒ごとに画像を撮影
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        st.write("カメラ映像の取得に失敗しました")
-        break
+        # 推論
+        results = model(frame)
 
-    # 推論
-    results = model(frame)
+        # キーポイントと骨格を描画
+        for result in results:
+            if result.keypoints is not None:
+                keypoints = result.keypoints.xy
+                draw_keypoints_and_skeleton(frame, keypoints)
 
-    # キーポイントと骨格を描画
-    for result in results:
-        if result.keypoints is not None:
-            keypoints = result.keypoints.xy
-            draw_keypoints_and_skeleton(frame, keypoints)
-
-    # 最新のフレームを保存
-    latest_frame = frame
-
-    # 画像を表示
-    if latest_frame is not None:
-        frame_rgb = cv2.cvtColor(latest_frame, cv2.COLOR_BGR2RGB)
+        # 画像を表示
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         st.image(frame_rgb, channels="RGB")
 
-    # 3秒待機
-    time.sleep(10)  # 3秒ごとに撮影
+        # 3秒待機
+        time.sleep(3)
 
 # 処理終了
 cap.release()
