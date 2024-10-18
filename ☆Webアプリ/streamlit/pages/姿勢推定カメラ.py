@@ -1,6 +1,8 @@
+
 import streamlit as st
 import cv2
 import numpy as np
+import time
 from ultralytics import YOLO
 
 # モデルのパス
@@ -31,40 +33,36 @@ def draw_keypoints_and_skeleton(frame, keypoints):
 
 # Streamlit UIの設定
 st.title("リアルタイム姿勢推定")
-
-# カメラ開始のチェックボックス
-run = st.checkbox("カメラ開始")
-
-# カメラフレーム表示領域
-frame_window = st.empty()
+run_button = st.button("カメラ開始")
 
 # カメラキャプチャ
-if run:
+if run_button:
     cap = cv2.VideoCapture(0)
+    frame_window = st.image([])  # 空のイメージを初期化
 
-    if not cap.isOpened():
-        st.write("カメラ映像の取得に失敗しました")
-    else:
-        while run:
-            ret, frame = cap.read()
-            if not ret:
-                st.write("フレームの読み込みに失敗しました")
-                break
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            st.write("カメラ映像の取得に失敗しました")
+            break
 
-            # 推論
-            results = model(frame)
+        # 推論
+        results = model(frame)
 
-            # キーポイントと骨格を描画
-            for result in results:
-                if result.keypoints is not None:
-                    keypoints = result.keypoints.xy
-                    draw_keypoints_and_skeleton(frame, keypoints)
+        # キーポイントと骨格を描画
+        for result in results:
+            if result.keypoints is not None:
+                keypoints = result.keypoints.xy
+                draw_keypoints_and_skeleton(frame, keypoints)
 
-            # 画像を表示
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame_window.image(frame)
+        # 画像を表示
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame_window.image(frame)  # ここで画像を更新
 
-            # Stop the camera if the checkbox is unchecked
-            run = st.checkbox("カメラ開始", value=True)
+        # 30ミリ秒の遅延を追加
+        time.sleep(0.03)
+
+        if st.button("停止"):
+            break
 
     cap.release()
