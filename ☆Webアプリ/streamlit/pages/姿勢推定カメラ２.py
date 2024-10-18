@@ -64,7 +64,7 @@ while True:
         st.image(frame_rgb, channels="RGB")
 
     # 3秒待機
-    time.sleep(3)  # 3秒ごとに撮影
+    time.sleep(10)  # 3秒ごとに撮影
 
 # 処理終了
 cap.release()
