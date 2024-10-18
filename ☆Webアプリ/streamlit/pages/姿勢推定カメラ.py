@@ -4,7 +4,7 @@ import numpy as np
 from ultralytics import YOLO
 
 # モデルのパス
-MODEL_PATH = 'yolo11l-pose.pt'
+MODEL_PATH = '/mount/src/hatake4911/☆Webアプリ/その他重要ファイル/yolo11s-pose.pt'  # 自分のモデルのパスに置き換えてください
 
 # モデルのロード
 model = YOLO(MODEL_PATH)
